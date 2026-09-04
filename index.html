@@ -1259,8 +1259,17 @@
 
             <div class="form-grid-2">
               <div class="form-group">
-                <label class="form-label">Time Limit (Minutes, 0 = Unlimited)</label>
-                <input type="number" id="builder-quiz-time" class="form-control" value="10" min="0">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label class="form-label" style="margin-bottom:0;">Time Limit (Minutes)</label>
+                  <label style="font-size:12px; display:inline-flex; align-items:center; gap:5px; cursor:pointer; color:var(--text-muted);">
+                    <input type="checkbox" id="builder-enable-time" checked onchange="toggleBuilderTimer(this.checked)">
+                    <span>वेळ मर्यादा (Timer)</span>
+                  </label>
+                </div>
+                <input type="number" id="builder-quiz-time" class="form-control" value="10" min="0" placeholder="0 = No time limit">
+                <small id="builder-time-hint" style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">
+                  वेळ मर्यादा नको असल्यास 0 ठेवा किंवा अनचेक करा (Untimed / Practice Test).
+                </small>
               </div>
               <div class="form-group">
                 <label class="form-label">Passing Percentage (%)</label>
@@ -1555,26 +1564,44 @@ Answer: H2O
               </select>
             </div>
 
-            <!-- Option 1: 1-Click OnClick Popup Button -->
+            <!-- Option 1: 🌟 Interactive Quiz Scene Card (Best for Blogger) -->
             <div class="embed-card">
-              <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
-                <i class="fas fa-mouse-pointer"></i> 1. OnClick Popup Button (Best for Blogger & Websites)
-              </h3>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin:0;">
+                  <i class="fas fa-layer-group"></i> 1. Interactive Quiz Scene Card (ब्लॉगसाठी सर्वोत्तम - Best for Blogger)
+                </h3>
+                <span class="badge purple">Recommended</span>
+              </div>
               <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
-                Paste this into your Blogger post (in <strong>HTML View</strong>) or WordPress (Custom HTML block). Clicking the button launches the quiz in a modal popup right on your blog!
+                हा कोड तुमच्या ब्लॉगर पोस्टमध्ये (<strong>HTML View</strong> मध्ये) पेस्ट करा. ब्लॉगवर बटनाच्या वर <strong>क्विझचा संपूर्ण सीन (शीर्षक, वर्णन, प्रश्न संख्या, वेळ मर्यादा किंवा विना-वेळ)</strong> दिसेल आणि कार्डवर किंवा बटनावर कुठेही क्लिक करताच चाचणी सुरू होईल!
               </p>
 
               <div class="code-box">
-                <button class="btn-copy-code" onclick="copySnippet('code-popup', this)"><i class="fas fa-copy"></i> Copy</button>
-                <code id="code-popup"></code>
+                <button class="btn-copy-code" onclick="copySnippet('code-scene-card', this)"><i class="fas fa-copy"></i> Copy Scene Card Code</button>
+                <code id="code-scene-card"></code>
               </div>
 
-              <!-- Live Test Button -->
-              <div class="live-preview-box">
-                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">LIVE PREVIEW (Click to test OnClick modal):</div>
-                <button class="btn btn-primary" id="btn-live-embed-test" onclick="triggerSelectedQuizModal()">
-                  🎯 Take Quiz: Maharashtra GK
-                </button>
+              <!-- Live Test Preview Card -->
+              <div class="live-preview-box" style="margin-top:16px;">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">
+                  LIVE SCENE PREVIEW (तुमच्या ब्लॉगवर असे दिसेल - टेस्ट करण्यासाठी खाली क्लिक करा):
+                </div>
+                <div id="live-scene-preview-container"></div>
+              </div>
+            </div>
+
+            <!-- Option 2: 🎯 1-Click Popup Button Only (Compact) -->
+            <div class="embed-card">
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
+                <i class="fas fa-mouse-pointer"></i> 2. Compact 1-Click Popup Button (केवळ बटण)
+              </h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+                जर तुम्हाला ब्लॉगच्या साइडबारमध्ये किंवा मजकुराच्या मध्ये फक्त साधे बटण हवे असेल, तर हा कोड वापरा:
+              </p>
+
+              <div class="code-box">
+                <button class="btn-copy-code" onclick="copySnippet('code-popup', this)"><i class="fas fa-copy"></i> Copy Button Code</button>
+                <code id="code-popup"></code>
               </div>
             </div>
 
@@ -2094,11 +2121,32 @@ Answer: H2O
     // ==========================================================================
     var builderQuestionCount = 0;
 
+    function toggleBuilderTimer(enabled) {
+      var timeInput = document.getElementById('builder-quiz-time');
+      var hint = document.getElementById('builder-time-hint');
+      if (enabled) {
+        timeInput.disabled = false;
+        if (Number(timeInput.value) <= 0) timeInput.value = 10;
+        if (hint) hint.textContent = 'वेळ मर्यादा चालू आहे (Timed Test).';
+      } else {
+        timeInput.disabled = true;
+        timeInput.value = 0;
+        if (hint) hint.textContent = 'वेळ मर्यादा नाही (Untimed / Practice Test).';
+      }
+    }
+
     function openQuizBuilder() {
       document.getElementById('builder-quiz-id').value = '';
       document.getElementById('builder-quiz-title').value = '';
       document.getElementById('builder-quiz-desc').value = '';
-      document.getElementById('builder-quiz-time').value = 10;
+      var timeCheckbox = document.getElementById('builder-enable-time');
+      if (timeCheckbox) timeCheckbox.checked = true;
+      var timeInput = document.getElementById('builder-quiz-time');
+      timeInput.disabled = false;
+      timeInput.value = 10;
+      var hint = document.getElementById('builder-time-hint');
+      if (hint) hint.textContent = 'वेळ मर्यादा नको असल्यास 0 ठेवा किंवा अनचेक करा (Untimed / Practice Test).';
+
       document.getElementById('builder-quiz-pass').value = 50;
       document.getElementById('builder-quiz-retake').checked = true;
       document.getElementById('builder-quiz-answers').checked = true;
@@ -2119,7 +2167,16 @@ Answer: H2O
       document.getElementById('builder-quiz-id').value = q.id;
       document.getElementById('builder-quiz-title').value = q.title;
       document.getElementById('builder-quiz-desc').value = q.description || '';
-      document.getElementById('builder-quiz-time').value = q.timeLimitMinutes || 0;
+
+      var hasTime = Number(q.timeLimitMinutes) > 0;
+      var timeCheckbox = document.getElementById('builder-enable-time');
+      if (timeCheckbox) timeCheckbox.checked = hasTime;
+      var timeInput = document.getElementById('builder-quiz-time');
+      timeInput.disabled = !hasTime;
+      timeInput.value = q.timeLimitMinutes || 0;
+      var hint = document.getElementById('builder-time-hint');
+      if (hint) hint.textContent = hasTime ? 'वेळ मर्यादा चालू आहे (' + q.timeLimitMinutes + ' Mins).' : 'वेळ मर्यादा नाही (Untimed / Practice Test).';
+
       document.getElementById('builder-quiz-pass').value = q.passingScore || 50;
       document.getElementById('builder-quiz-retake').checked = q.allowRetake !== false;
       document.getElementById('builder-quiz-answers').checked = q.showAnswers !== false;
@@ -2268,7 +2325,9 @@ Answer: H2O
         id: quizId,
         title: title,
         description: document.getElementById('builder-quiz-desc').value.trim(),
-        timeLimitMinutes: Number(document.getElementById('builder-quiz-time').value) || 0,
+        timeLimitMinutes: (document.getElementById('builder-enable-time') && !document.getElementById('builder-enable-time').checked)
+          ? 0
+          : (Number(document.getElementById('builder-quiz-time').value) || 0),
         passingScore: Number(document.getElementById('builder-quiz-pass').value) || 50,
         allowRetake: document.getElementById('builder-quiz-retake').checked,
         showAnswers: document.getElementById('builder-quiz-answers').checked,
@@ -2775,7 +2834,60 @@ Answer: H2O
 
       var isBuiltin = (quizId === 'quiz_maha_gk' || quizId === 'quiz_web_dev');
 
-      // 1. Popup Snippet
+      var qCount = q ? (q.questions || []).length : 0;
+      var timeText = (q && q.timeLimitMinutes > 0) ? (q.timeLimitMinutes + ' Mins') : 'Untimed (वेळ मर्यादा नाही)';
+      var passText = (q ? (q.passingScore || 50) : 50) + '% Pass';
+
+      // 1. Scene Card Snippet (Recommended for Blogger)
+      var sceneCardCode = '<!-- RK QuizMaker Interactive Quiz Scene Card -->\n' +
+        '<div class="rk-quiz-card" onclick="RKQuiz.open(\'' + quizId + '\')">\n' +
+        '  <div class="rk-card-badge-row">\n' +
+        '    <span class="rk-card-pill"><i class="fas fa-bolt"></i> Interactive Quiz</span>\n' +
+        '    <span class="rk-card-chip"><i class="fas fa-question-circle"></i> ' + qCount + ' Questions</span>\n' +
+        '    <span class="rk-card-chip"><i class="fas fa-stopwatch"></i> ' + timeText + '</span>\n' +
+        '    <span class="rk-card-chip"><i class="fas fa-award"></i> ' + passText + '</span>\n' +
+        '  </div>\n' +
+        '  <h3 class="rk-card-title">' + escapeHtml(title) + '</h3>\n' +
+        (q && q.description ? '  <p class="rk-card-desc">' + escapeHtml(q.description) + '</p>\n' : '') +
+        '  <div class="rk-card-footer">\n' +
+        '    <button type="button" class="rk-quiz-btn" onclick="event.stopPropagation(); RKQuiz.open(\'' + quizId + '\')">\n' +
+        '      🎯 Take Quiz / चाचणी सुरू करा\n' +
+        '    </button>\n' +
+        '    <span class="rk-card-cta-hint"><i class="fas fa-mouse-pointer"></i> क्लिक करून चाचणी सुरू करा</span>\n' +
+        '  </div>\n' +
+        '</div>\n' +
+        '<' + 'script src="' + scriptUrl + '"' + serverAttr + '><' + '/script>';
+
+      if (!isBuiltin && q) {
+        sceneCardCode += '\n<' + 'script>\nRKQuiz.register(' + JSON.stringify(q, null, 2) + ');\n<' + '/script>';
+      }
+      var sceneCardEl = document.getElementById('code-scene-card');
+      if (sceneCardEl) sceneCardEl.textContent = sceneCardCode;
+
+      // Update Live Scene Preview box in dashboard
+      var previewBox = document.getElementById('live-scene-preview-container');
+      if (previewBox && q) {
+        previewBox.innerHTML = [
+          '<div class="rk-quiz-card" onclick="startQuizPlayer(\'' + quizId + '\')" style="margin: 8px 0; max-width: 100%;">',
+          '  <div class="rk-card-badge-row">',
+          '    <span class="rk-card-pill"><i class="fas fa-bolt"></i> Interactive Quiz</span>',
+          '    <span class="rk-card-chip"><i class="fas fa-question-circle"></i> ' + qCount + ' Questions</span>',
+          '    <span class="rk-card-chip"><i class="fas fa-stopwatch"></i> ' + timeText + '</span>',
+          '    <span class="rk-card-chip"><i class="fas fa-award"></i> ' + passText + '</span>',
+          '  </div>',
+          '  <h3 class="rk-card-title">' + escapeHtml(title) + '</h3>',
+          (q.description ? '  <p class="rk-card-desc">' + escapeHtml(q.description) + '</p>' : ''),
+          '  <div class="rk-card-footer">',
+          '    <button type="button" class="rk-quiz-btn" onclick="event.stopPropagation(); startQuizPlayer(\'' + quizId + '\')">',
+          '      🎯 Take Quiz / चाचणी सुरू करा',
+          '    </button>',
+          '    <span class="rk-card-cta-hint"><i class="fas fa-mouse-pointer"></i> क्लिक करून टेस्ट करा</span>',
+          '  </div>',
+          '</div>'
+        ].join('\n');
+      }
+
+      // 2. Compact Popup Button Snippet
       var popupCode = '<!-- RK QuizMaker 1-Click Popup Button -->\n' +
         '<button class="rk-quiz-btn" onclick="RKQuiz.open(\'' + quizId + '\')">\n' +
         '  🎯 Take Quiz: ' + escapeHtml(title) + '\n' +
@@ -2923,12 +3035,28 @@ Answer: H2O
       submitBtn.onclick = submitPlayerQuiz;
       body.appendChild(submitBtn);
 
-      // Start timer if specified
+      // Bottom Exit / Close button
+      var closeBtn = document.createElement('button');
+      closeBtn.className = 'btn btn-outline';
+      closeBtn.style.width = '100%';
+      closeBtn.style.padding = '10px';
+      closeBtn.style.marginTop = '10px';
+      closeBtn.style.color = '#ef4444';
+      closeBtn.style.borderColor = '#fca5a5';
+      closeBtn.innerHTML = '<i class="fas fa-times-circle"></i> Exit / Close Quiz (क्विझ बंद करा)';
+      closeBtn.onclick = function () { closePlayerModal(); };
+      body.appendChild(closeBtn);
+
+      // Start timer or Untimed mode
+      isPlayerTimerActive = q.timeLimitMinutes > 0;
+      var metaEl = document.getElementById('player-modal-meta');
       if (q.timeLimitMinutes > 0) {
         playerTimeSeconds = q.timeLimitMinutes * 60;
+        metaEl.innerHTML = '<span class="badge yellow" style="cursor:pointer;" onclick="togglePlayerTimerMode()"><i class="fas fa-stopwatch"></i> <span id="player-timer-text">' + formatPlayerTimer(playerTimeSeconds) + '</span> (क्लिक करून Untimed करा)</span>';
         startPlayerTimer();
       } else {
-        document.getElementById('player-modal-meta').textContent = 'No Time Limit';
+        if (playerTimer) clearInterval(playerTimer);
+        metaEl.innerHTML = '<span class="badge green"><i class="fas fa-infinity"></i> Untimed (वेळ मर्यादा नाही)</span>';
       }
 
       document.getElementById('quiz-player-modal').style.display = 'flex';
@@ -2996,10 +3124,33 @@ Answer: H2O
       showToast('Poll vote recorded!');
     }
 
+    var isPlayerTimerActive = true;
+
+    function togglePlayerTimerMode() {
+      var metaEl = document.getElementById('player-modal-meta');
+      if (isPlayerTimerActive) {
+        if (playerTimer) clearInterval(playerTimer);
+        isPlayerTimerActive = false;
+        metaEl.innerHTML = '<span class="badge blue" style="cursor:pointer;" onclick="togglePlayerTimerMode()"><i class="fas fa-infinity"></i> Untimed Mode (क्लिक करून Timer चालू करा)</span>';
+      } else {
+        isPlayerTimerActive = true;
+        metaEl.innerHTML = '<span class="badge yellow" style="cursor:pointer;" onclick="togglePlayerTimerMode()"><i class="fas fa-stopwatch"></i> <span id="player-timer-text">' + formatPlayerTimer(playerTimeSeconds) + '</span> (क्लिक करून Untimed करा)</span>';
+        startPlayerTimer();
+      }
+    }
+
+    function formatPlayerTimer(sec) {
+      if (sec <= 0) return '00:00';
+      var m = Math.floor(sec / 60);
+      var s = sec % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
     function startPlayerTimer() {
       if (playerTimer) clearInterval(playerTimer);
       updateTimerLabel();
       playerTimer = setInterval(function () {
+        if (!isPlayerTimerActive) return;
         playerTimeSeconds--;
         updateTimerLabel();
         if (playerTimeSeconds <= 0) {
@@ -3011,10 +3162,13 @@ Answer: H2O
     }
 
     function updateTimerLabel() {
-      var m = Math.floor(playerTimeSeconds / 60);
-      var s = playerTimeSeconds % 60;
-      document.getElementById('player-modal-meta').textContent =
-        '⏱ Time Left: ' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      var txtEl = document.getElementById('player-timer-text');
+      if (txtEl) {
+        txtEl.textContent = formatPlayerTimer(playerTimeSeconds);
+      } else {
+        document.getElementById('player-modal-meta').textContent =
+          '⏱ Time Left: ' + formatPlayerTimer(playerTimeSeconds);
+      }
     }
 
     function submitPlayerQuiz() {
@@ -3143,14 +3297,19 @@ Answer: H2O
       }
 
       html += '<div style="margin-top:24px; display:flex; gap:12px; justify-content:center;">' +
-        '<button class="btn btn-primary" onclick="closePlayerModal()">Close</button>' +
+        '<button class="btn btn-primary" onclick="closePlayerModal(true)">Close</button>' +
         (activeQuizForPlayer.allowRetake ? '<button class="btn btn-outline" onclick="startQuizPlayer(\'' + activeQuizForPlayer.id + '\')"><i class="fas fa-redo"></i> Retake Quiz</button>' : '') +
       '</div></div>';
 
       body.innerHTML = html;
     }
 
-    function closePlayerModal() {
+    function closePlayerModal(force) {
+      if (!force && typeof playerAnswers === 'object' && Object.keys(playerAnswers).length > 0) {
+        if (!confirm('Are you sure you want to exit the quiz? Any answered questions will be lost. (तुम्हाला खरोखर चाचणी बंद करायची आहे का?)')) {
+          return;
+        }
+      }
       if (playerTimer) clearInterval(playerTimer);
       document.getElementById('quiz-player-modal').style.display = 'none';
       document.body.style.overflow = '';

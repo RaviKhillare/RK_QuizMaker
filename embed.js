@@ -1,5 +1,5 @@
 /**
- * RK_QuizMaker Embed Widget & Standalone Player v2.0.0
+ * RK_QuizMaker Embed Widget & Standalone Player v2.1.0
  * Enables 1-click popup and inline quizzes on Blogger, WordPress, and any website.
  * Works 100% standalone (zero server required) AND supports Google Sheets/Apps Script sync.
  * 
@@ -11,7 +11,7 @@
 (function (window, document) {
   'use strict';
 
-  // Find the current script tag to detect configured server URL or settings
+  // Find current script tag to detect configured server URL
   var currentScript = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
     return scripts[scripts.length - 1];
@@ -21,14 +21,13 @@
     ? currentScript.getAttribute('data-server-url').trim()
     : '';
 
-  // Filter out placeholder dummy URLs
   var isSampleUrl = !rawServerUrl ||
     rawServerUrl.indexOf('SAMPLE_') > -1 ||
     rawServerUrl.indexOf('AKfycbz_SAMPLE') > -1;
 
   var configuredServerUrl = isSampleUrl ? '' : rawServerUrl;
 
-  // Built-in Default Quizzes (Ready out-of-the-box for instant embedding)
+  // Built-in Default Quizzes
   var DEFAULT_BUILTIN_QUIZZES = {
     'quiz_maha_gk': {
       id: 'quiz_maha_gk',
@@ -104,7 +103,7 @@
           options: ['<js>', '<javascript>', '<script>', '<link>'],
           correctAnswer: '<script>',
           points: 1,
-          explanation: 'The <script src="..."> tag is the standard HTML tag for loading JavaScript.'
+          explanation: 'The <script src="..."> tag is standard for loading JavaScript.'
         },
         {
           questionId: 'qw2',
@@ -113,7 +112,7 @@
           options: ['flex', 'grid', 'float-left', 'inline-block'],
           correctAnswer: 'flex, grid, inline-block',
           points: 2,
-          explanation: 'flex, grid, and inline-block are valid CSS display properties; float-left is invalid.'
+          explanation: 'flex, grid, and inline-block are valid CSS display properties.'
         },
         {
           questionId: 'qw3',
@@ -148,6 +147,7 @@
   var pollVotes = {};
   var timerInterval = null;
   var timeLeftSeconds = 0;
+  var isTimerEnabled = true;
 
   var RKQuiz = {
     serverUrl: configuredServerUrl,
@@ -160,6 +160,8 @@
     register: function (quizObj) {
       if (quizObj && quizObj.id) {
         this.quizzes[quizObj.id] = quizObj;
+        // Refresh any matching scene cards on the page
+        this.init();
       }
     },
 
@@ -189,20 +191,16 @@
         quiz = this.quizzes[quizOrId] || null;
       }
 
-      // Check if user has an explicit real external server URL and requested iframe mode
       var server = options.serverUrl || this.serverUrl;
       var hasRealServer = server && server.indexOf('http') === 0 && server.indexOf('SAMPLE_') === -1;
 
       var modal = getOrCreateModal();
 
       if (quiz) {
-        // Render standalone native player directly (Fast, 100% reliable, no Google Drive 404)
         renderNativePlayer(quiz, modal);
       } else if (hasRealServer && typeof quizOrId === 'string') {
-        // Fallback to real Apps Script iframe if quiz data is on the server
         renderIframePlayer(quizOrId, server, modal);
       } else {
-        // Not found error with helpful recovery instructions
         renderNotFoundError(quizOrId, modal);
       }
 
@@ -212,12 +210,10 @@
       setTimeout(function () {
         modal.classList.add('rk-modal-active');
       }, 10);
-
-      document.addEventListener('keydown', handleEscKey);
     },
 
     /**
-     * Close the modal popup
+     * Close the modal popup unconditionally
      */
     close: function () {
       var modal = document.getElementById('rk-quiz-modal');
@@ -232,33 +228,111 @@
           }
         }, 250);
       }
-      document.removeEventListener('keydown', handleEscKey);
     },
 
     /**
-     * Initialize inline embeds on page
+     * Initialize inline embeds & auto-enhance standalone buttons with Quiz Scene cards
      */
     init: function () {
       injectStyles();
 
+      // 1. Auto-decorate standalone buttons into Quiz Scene Cards
+      autoEnhanceStandaloneButtons();
+
+      // 2. Render explicitly marked quiz scene containers [data-rk-quiz-card]
+      var cardContainers = document.querySelectorAll('[data-rk-quiz-card]');
+      for (var j = 0; j < cardContainers.length; j++) {
+        var cardBox = cardContainers[j];
+        var qId = cardBox.getAttribute('data-rk-quiz-card');
+        if (qId && !cardBox.hasAttribute('data-rk-initialized')) {
+          cardBox.setAttribute('data-rk-initialized', 'true');
+          var qObj = this.quizzes[qId];
+          if (qObj) {
+            cardBox.innerHTML = generateSceneCardHtml(qObj);
+          }
+        }
+      }
+
+      // 3. Render inline embeds [data-rk-quiz]
       var inlineContainers = document.querySelectorAll('[data-rk-quiz]');
       for (var i = 0; i < inlineContainers.length; i++) {
         var container = inlineContainers[i];
-        var qId = container.getAttribute('data-rk-quiz');
-        if (qId && !container.hasAttribute('data-rk-initialized')) {
+        var quizId = container.getAttribute('data-rk-quiz');
+        if (quizId && !container.hasAttribute('data-rk-initialized')) {
           container.setAttribute('data-rk-initialized', 'true');
-          var quiz = this.quizzes[qId];
-          if (quiz) {
-            renderInlinePlayer(quiz, container);
+          var q = this.quizzes[quizId];
+          if (q) {
+            renderInlinePlayer(q, container);
           }
         }
       }
     }
   };
 
-  function handleEscKey(e) {
-    if (e.key === 'Escape' || e.keyCode === 27) {
-      RKQuiz.close();
+  /**
+   * Generates rich HTML for the Quiz Scene Teaser Card
+   */
+  function generateSceneCardHtml(quiz) {
+    var qCount = (quiz.questions || []).length;
+    var timeText = quiz.timeLimitMinutes > 0 ? (quiz.timeLimitMinutes + ' Mins (वेळ मर्यादा)') : 'Untimed (वेळ मर्यादा नाही)';
+    var passScore = (quiz.passingScore || 50) + '% Pass';
+
+    return [
+      '<div class="rk-quiz-card" onclick="RKQuiz.open(\'' + quiz.id + '\')">',
+      '  <div class="rk-card-badge-row">',
+      '    <span class="rk-card-pill"><i class="fas fa-bolt"></i> Interactive Quiz</span>',
+      '    <span class="rk-card-chip"><i class="fas fa-question-circle"></i> ' + qCount + ' Questions</span>',
+      '    <span class="rk-card-chip"><i class="fas fa-stopwatch"></i> ' + timeText + '</span>',
+      '    <span class="rk-card-chip"><i class="fas fa-award"></i> ' + passScore + '</span>',
+      '  </div>',
+      '  <h3 class="rk-card-title">' + escapeHtml(quiz.title) + '</h3>',
+      (quiz.description ? '  <p class="rk-card-desc">' + escapeHtml(quiz.description) + '</p>' : ''),
+      '  <div class="rk-card-footer">',
+      '    <button type="button" class="rk-quiz-btn" onclick="event.stopPropagation(); RKQuiz.open(\'' + quiz.id + '\')">',
+      '      🎯 Take Quiz / चाचणी सुरू करा',
+      '    </button>',
+      '    <span class="rk-card-cta-hint"><i class="fas fa-mouse-pointer"></i> क्लिक करून चाचणी सुरू करा</span>',
+      '  </div>',
+      '</div>'
+    ].join('\n');
+  }
+
+  /**
+   * If a blog has a simple button like <button class="rk-quiz-btn" onclick="RKQuiz.open('quiz_maha_gk')">,
+   * this automatically builds the Quiz Scene above it!
+   */
+  function autoEnhanceStandaloneButtons() {
+    var buttons = document.querySelectorAll('button.rk-quiz-btn, a.rk-quiz-btn');
+    for (var i = 0; i < buttons.length; i++) {
+      var btn = buttons[i];
+
+      // Check if already decorated or inside an existing rk-quiz-card
+      if (btn.closest('.rk-quiz-card') || btn.getAttribute('data-rk-decorated') === 'true') {
+        continue;
+      }
+
+      // Try to determine quiz ID from onclick attribute or data-quiz-id
+      var qId = btn.getAttribute('data-quiz-id') || '';
+      if (!qId) {
+        var onclickStr = btn.getAttribute('onclick') || '';
+        var match = onclickStr.match(/RKQuiz\.open\(['"]([^'"]+)['"]\)/);
+        if (match && match[1]) {
+          qId = match[1];
+        }
+      }
+
+      if (qId && RKQuiz.quizzes[qId]) {
+        btn.setAttribute('data-rk-decorated', 'true');
+        var qObj = RKQuiz.quizzes[qId];
+
+        // Create scene card wrapper and replace/wrap the button
+        var sceneWrapper = document.createElement('div');
+        sceneWrapper.innerHTML = generateSceneCardHtml(qObj);
+        var sceneCard = sceneWrapper.firstElementChild;
+
+        btn.parentNode.insertBefore(sceneCard, btn);
+        btn.style.display = 'none'; // Hide lone button, since scene card has the button inside it
+      }
     }
   }
 
@@ -268,10 +342,11 @@
       modal = document.createElement('div');
       modal.id = 'rk-quiz-modal';
       modal.className = 'rk-modal-overlay';
+      // NOTE: Backdrop does NOT have onclick="RKQuiz.close()" so clicking outside will NOT close the quiz!
       modal.innerHTML = [
-        '<div class="rk-modal-backdrop" onclick="RKQuiz.close()"></div>',
+        '<div class="rk-modal-backdrop"></div>',
         '<div class="rk-modal-dialog">',
-        '  <button type="button" class="rk-modal-close" onclick="RKQuiz.close()" aria-label="Close Quiz">&times;</button>',
+        '  <button type="button" class="rk-modal-close" onclick="window.RKQuizInternal.confirmClose()" aria-label="Close Quiz">&times;</button>',
         '  <div class="rk-modal-body" id="rk-modal-body-content"></div>',
         '</div>'
       ].join('\n');
@@ -286,7 +361,10 @@
   function renderNativePlayer(quiz, modal) {
     activeQuiz = quiz;
     userAnswers = {};
-    if (timerInterval) clearInterval(timerInterval);
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
 
     var bodyContent = document.getElementById('rk-modal-body-content');
     if (!bodyContent) return;
@@ -301,12 +379,33 @@
       if (q.type !== 'POLL') totalPoints += (Number(q.points) || 1);
     });
 
-    var timeBadgeHtml = '';
-    if (quiz.timeLimitMinutes > 0) {
-      timeLeftSeconds = quiz.timeLimitMinutes * 60;
-      timeBadgeHtml = '<div class="rk-timer-badge" id="rk-live-timer"><i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds) + '</div>';
+    // Determine initial timer state
+    var hasTimeLimit = Number(quiz.timeLimitMinutes) > 0;
+    isTimerEnabled = hasTimeLimit;
+    if (hasTimeLimit) {
+      timeLeftSeconds = Number(quiz.timeLimitMinutes) * 60;
     } else {
-      timeBadgeHtml = '<div class="rk-meta-chip"><i class="fas fa-infinity"></i> No Limit</div>';
+      timeLeftSeconds = 0;
+    }
+
+    // Timer Mode Controller HTML
+    var timerControllerHtml = '';
+    if (hasTimeLimit) {
+      timerControllerHtml = [
+        '<div class="rk-timer-control-box">',
+        '  <div class="rk-mode-switch">',
+        '    <button type="button" class="rk-mode-chip ' + (isTimerEnabled ? 'active' : '') + '" id="rk-btn-mode-timed" onclick="window.RKQuizInternal.setTimerMode(true)">',
+        '      ⏱️ Timed (' + quiz.timeLimitMinutes + 'm)',
+        '    </button>',
+        '    <button type="button" class="rk-mode-chip ' + (!isTimerEnabled ? 'active' : '') + '" id="rk-btn-mode-untimed" onclick="window.RKQuizInternal.setTimerMode(false)">',
+        '      ⏳ Untimed (वेळ मर्यादा नाही)',
+        '    </button>',
+        '  </div>',
+        '  <div class="rk-timer-badge" id="rk-live-timer"><i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds) + '</div>',
+        '</div>'
+      ].join('\n');
+    } else {
+      timerControllerHtml = '<div class="rk-meta-chip"><i class="fas fa-infinity"></i> Untimed (वेळ मर्यादा नाही)</div>';
     }
 
     var html = [
@@ -314,7 +413,7 @@
       '  <div class="rk-player-header">',
       '    <div class="rk-header-top">',
       '      <h2>' + escapeHtml(quiz.title) + '</h2>',
-      '      ' + timeBadgeHtml,
+      '      ' + timerControllerHtml,
       '    </div>',
       (quiz.description ? '    <p class="rk-header-desc">' + escapeHtml(quiz.description) + '</p>' : ''),
       '    <div class="rk-meta-row">',
@@ -394,10 +493,13 @@
 
     html.push('    </div>'); // end rk-questions-list
 
-    // Action button
+    // Action button & Explicit Close Button at end
     html.push('    <div class="rk-submit-wrap">');
     html.push('      <button type="button" class="rk-submit-btn" id="rk-btn-submit" onclick="window.RKQuizInternal.submit()">');
     html.push('        Submit Quiz & View Results <i class="fas fa-arrow-right"></i>');
+    html.push('      </button>');
+    html.push('      <button type="button" class="rk-close-bottom-btn" onclick="window.RKQuizInternal.confirmClose()">');
+    html.push('        <i class="fas fa-times-circle"></i> Exit / Close Quiz (क्विझ बंद करा)');
     html.push('      </button>');
     html.push('    </div>');
 
@@ -409,7 +511,7 @@
     bodyContent.innerHTML = html.join('\n');
 
     // Start timer if applicable
-    if (quiz.timeLimitMinutes > 0) {
+    if (isTimerEnabled && timeLeftSeconds > 0) {
       startTimer();
     }
   }
@@ -457,6 +559,52 @@
   // QUIZ LOGIC & EVENT HANDLERS
   // ==========================================================================
   window.RKQuizInternal = {
+    /**
+     * Toggles between Timed and Untimed (Practice) modes
+     */
+    setTimerMode: function (timed) {
+      isTimerEnabled = timed;
+      var btnTimed = document.getElementById('rk-btn-mode-timed');
+      var btnUntimed = document.getElementById('rk-btn-mode-untimed');
+      var timerEl = document.getElementById('rk-live-timer');
+
+      if (btnTimed) btnTimed.classList.toggle('active', timed);
+      if (btnUntimed) btnUntimed.classList.toggle('active', !timed);
+
+      if (timed) {
+        if (!timerInterval && timeLeftSeconds > 0) {
+          startTimer();
+        }
+        if (timerEl) timerEl.innerHTML = '<i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds);
+      } else {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        if (timerEl) timerEl.innerHTML = '<i class="fas fa-infinity"></i> Untimed Mode';
+      }
+    },
+
+    /**
+     * Confirms before exiting to prevent accidental answer loss
+     */
+    confirmClose: function () {
+      var answeredCount = 0;
+      for (var k in userAnswers) {
+        if (userAnswers[k] !== undefined && userAnswers[k] !== null && userAnswers[k] !== '') {
+          answeredCount++;
+        }
+      }
+
+      if (answeredCount > 0) {
+        if (confirm('Are you sure you want to exit the quiz? Any answered questions will be lost. (तुम्हाला खरोखर चाचणी बंद करायची आहे का?)')) {
+          RKQuiz.close();
+        }
+      } else {
+        RKQuiz.close();
+      }
+    },
+
     selectMCQ: function (qId, optVal, element) {
       userAnswers[qId] = optVal;
       var parent = element.parentElement;
@@ -511,7 +659,6 @@
         }
       }
 
-      // Update vote percentage fills
       for (var opt in pollVotes[qId]) {
         var sId = sanitizeId(opt);
         var el = document.getElementById('rk-pbar-' + qId + '-' + sId);
@@ -595,7 +742,7 @@
       var passingScore = activeQuiz.passingScore || 50;
       var passed = percentage >= passingScore;
 
-      // Render Result Card
+      // Hide questions and user cards
       var questionsList = document.getElementById('rk-questions-list');
       var submitWrap = document.querySelector('.rk-submit-wrap');
       var userCard = document.querySelector('.rk-user-card');
@@ -665,7 +812,7 @@
         if (bodyContent) bodyContent.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      // Sync submission to server in background if configured
+      // Background submission to server if configured
       if (RKQuiz.serverUrl && RKQuiz.serverUrl.indexOf('http') === 0 && RKQuiz.serverUrl.indexOf('SAMPLE_') === -1) {
         try {
           var payload = {
@@ -716,8 +863,10 @@
   }
 
   function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
     var timerEl = document.getElementById('rk-live-timer');
     timerInterval = setInterval(function () {
+      if (!isTimerEnabled) return;
       timeLeftSeconds--;
       if (timerEl) timerEl.innerHTML = '<i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds);
 
@@ -805,6 +954,37 @@
       '  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);',
       '}',
       '.rk-quiz-btn:active { transform: translateY(0); }',
+      '/* Quiz Scene Card Styles (Above button & blog teaser) */',
+      '.rk-quiz-card {',
+      '  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);',
+      '  border: 1.5px solid #e2e8f0;',
+      '  border-radius: 16px;',
+      '  padding: 22px 24px;',
+      '  max-width: 640px;',
+      '  margin: 20px auto;',
+      '  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);',
+      '  cursor: pointer;',
+      '  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);',
+      '  position: relative;',
+      '  overflow: hidden;',
+      '  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;',
+      '  text-align: left;',
+      '  border-top: 4px solid #4f46e5;',
+      '}',
+      '.rk-quiz-card:hover {',
+      '  transform: translateY(-4px);',
+      '  box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.25);',
+      '  border-color: #818cf8;',
+      '}',
+      '.rk-card-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }',
+      '.rk-card-pill { display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: #4f46e5; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }',
+      '.rk-card-chip { display: inline-flex; align-items: center; gap: 6px; background: #ffffff; color: #334155; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 8px; border: 1px solid #e2e8f0; }',
+      '.rk-card-chip i { color: #4f46e5; }',
+      '.rk-card-title { font-size: 18.5px; font-weight: 700; color: #0f172a; margin: 0 0 8px; line-height: 1.35; }',
+      '.rk-card-desc { font-size: 13.5px; color: #64748b; margin: 0 0 16px; line-height: 1.55; }',
+      '.rk-card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px dashed #e2e8f0; padding-top: 16px; flex-wrap: wrap; gap: 10px; }',
+      '.rk-card-cta-hint { font-size: 12px; color: #94a3b8; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; }',
+      '/* Modal Overlay & Dialog */',
       '.rk-modal-overlay {',
       '  position: fixed;',
       '  top: 0; left: 0; right: 0; bottom: 0;',
@@ -868,7 +1048,7 @@
       '  display: flex;',
       '  flex-direction: column;',
       '}',
-      '/* Player UI Elements */',
+      '/* Player Header & Timer Mode Controls */',
       '.rk-player-wrapper { display: flex; flex-direction: column; min-height: 100%; }',
       '.rk-player-header {',
       '  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);',
@@ -876,9 +1056,14 @@
       '  padding: 24px 28px 20px;',
       '  position: relative;',
       '}',
-      '.rk-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; padding-right: 36px; }',
+      '.rk-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; padding-right: 36px; flex-wrap: wrap; }',
       '.rk-header-top h2 { font-size: 20px; font-weight: 700; margin: 0; line-height: 1.3; }',
       '.rk-header-desc { font-size: 13.5px; opacity: 0.9; margin: 0 0 14px; line-height: 1.5; }',
+      '.rk-timer-control-box { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }',
+      '.rk-mode-switch { display: inline-flex; background: rgba(0, 0, 0, 0.2); padding: 3px; border-radius: 20px; gap: 3px; }',
+      '.rk-mode-chip { background: transparent; border: none; color: #ffffff; padding: 4px 10px; border-radius: 16px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }',
+      '.rk-mode-chip:hover { background: rgba(255, 255, 255, 0.2); }',
+      '.rk-mode-chip.active { background: #ffffff; color: #4f46e5; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }',
       '.rk-meta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }',
       '.rk-meta-chip { font-size: 12px; background: rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }',
       '.rk-timer-badge { background: #fef08a; color: #854d0e; font-weight: 700; padding: 4px 12px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); flex-shrink: 0; }',
@@ -908,9 +1093,11 @@
       '.rk-poll-fill { position: absolute; top: 0; left: 0; bottom: 0; background: #e0e7ff; transition: width 0.4s ease; z-index: 1; }',
       '.rk-poll-text { position: relative; z-index: 2; display: flex; justify-content: space-between; width: 100%; padding: 12px 16px; font-weight: 600; font-size: 14px; color: #1e293b; }',
       '.rk-poll-pct { font-weight: 700; color: #4f46e5; }',
-      '.rk-submit-wrap { margin-top: 24px; }',
+      '.rk-submit-wrap { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }',
       '.rk-submit-btn { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3); }',
       '.rk-submit-btn:hover { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); transform: translateY(-1px); }',
+      '.rk-close-bottom-btn { width: 100%; background: transparent; color: #64748b; border: 1.5px solid #cbd5e1; padding: 11px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; }',
+      '.rk-close-bottom-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }',
       '/* Result View */',
       '.rk-result-card { background: #ffffff; border-radius: 14px; padding: 24px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }',
       '.rk-score-banner { text-align: center; padding: 24px 16px; border-radius: 12px; margin-bottom: 24px; }',
@@ -952,6 +1139,7 @@
       '  .rk-user-inputs { grid-template-columns: 1fr !important; }',
       '  .rk-score-stats { gap: 8px !important; }',
       '  .rk-stat-box { padding: 6px 10px !important; }',
+      '  .rk-quiz-card { padding: 16px 18px !important; margin: 14px 0 !important; }',
       '}'
     ];
 
