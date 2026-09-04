@@ -51,6 +51,7 @@
         {
           questionId: 'q2',
           type: 'MCQ',
+          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg',
           question: 'Which of the following forts was the birthplace of Chhatrapati Shivaji Maharaj?',
           options: ['Raigad Fort', 'Shivneri Fort', 'Sinhagad Fort', 'Torna Fort'],
           correctAnswer: 'Shivneri Fort',
@@ -445,6 +446,9 @@
       html.push('          <span class="rk-q-badge">Q' + (idx + 1) + ' • ' + typeLabel + '</span>');
       html.push('          <span class="rk-q-pts">' + ptsLabel + '</span>');
       html.push('        </div>');
+      if (q.imageUrl) {
+        html.push('        <div class="rk-q-img-wrap"><img src="' + escapeQuotes(q.imageUrl) + '" class="rk-q-img" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>');
+      }
       html.push('        <div class="rk-q-text">' + escapeHtml(q.question) + '</div>');
 
       if (q.type === 'MCQ') {
@@ -728,6 +732,7 @@
 
         reviewItems.push({
           question: q.question,
+          imageUrl: q.imageUrl || '',
           type: q.type,
           userAnswer: userAns || '(No Answer)',
           correctAnswer: q.correctAnswer,
@@ -783,6 +788,9 @@
             resHtml.push('      <span class="rk-review-badge ' + badgeClass + '">' + badgeText + '</span>');
             resHtml.push('    </div>');
             resHtml.push('    <div style="font-weight:700; font-size:15px; margin-bottom:8px; color:#0f172a;">Q' + (idx + 1) + ': ' + escapeHtml(item.question) + '</div>');
+            if (item.imageUrl) {
+              resHtml.push('    <div style="text-align:center; margin:8px 0;"><img src="' + escapeQuotes(item.imageUrl) + '" style="max-height:140px; max-width:100%; border-radius:6px; border:1px solid #e2e8f0; object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>');
+            }
             resHtml.push('    <div class="rk-review-line"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(item.userAnswer)) + '</div>');
 
             if (item.isCorrect === false && item.correctAnswer) {
@@ -1080,6 +1088,8 @@
       '.rk-q-badge { font-size: 11px; font-weight: 700; color: #4f46e5; background: #e0e7ff; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }',
       '.rk-q-pts { font-size: 12px; font-weight: 600; color: #64748b; }',
       '.rk-q-text { font-size: 15.5px; font-weight: 700; color: #0f172a; margin-bottom: 14px; line-height: 1.45; }',
+      '.rk-q-img-wrap { text-align: center; margin-bottom: 14px; }',
+      '.rk-q-img { max-height: 220px; max-width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; object-fit: contain; }',
       '.rk-options-group { display: flex; flex-direction: column; gap: 10px; }',
       '.rk-opt-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; background: #ffffff; min-height: 48px; box-sizing: border-box; }',
       '.rk-opt-item:hover { border-color: #cbd5e1; background: #f8fafc; }',

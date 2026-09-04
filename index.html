@@ -1334,7 +1334,7 @@
                   <i class="fas fa-font"></i> Plain Text Paste
                 </button>
                 <button class="bulk-subtab-btn" id="btn-subtab-chatgpt" onclick="switchBulkSubtab('chatgpt')">
-                  <i class="fas fa-robot" style="color:#7c3aed;"></i> ChatGPT Prompt Generator
+                  <i class="fas fa-robot" style="color:#7c3aed;"></i> AI Prompt Generator (ChatGPT/Gemini)
                 </button>
               </div>
             </div>
@@ -1398,7 +1398,8 @@ How is this platform?	POLL	Excellent, Good, Average		0	Feedback"></textarea>
                   <code>Options</code> (पर्याय, स्वल्पविरामाने वेगळे केलेले) | 
                   <code>Correct Answer</code> (अचूक उत्तर) | 
                   <code>Points</code> (गुण) | 
-                  <code>Explanation</code> (स्पष्टीकरण)
+                  <code>Explanation</code> (स्पष्टीकरण) | 
+                  <code>Image_URL</code> (पर्यायी फोटो/डायग्राम लिंक)
                 </div>
               </div>
 
@@ -1411,12 +1412,13 @@ How is this platform?	POLL	Excellent, Good, Average		0	Feedback"></textarea>
             <!-- SUBTAB 2: PLAIN TEXT PASTE -->
             <div id="subtab-text-content" class="bulk-subtab-pane" style="display: none;">
               <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px;">
-                Paste questions in simple natural text format. Our smart parser auto-detects titles, choices, answers, and explanations.
+                Paste questions in simple natural text format. Our smart parser auto-detects titles, choices, answers, photos/images, and explanations.
               </p>
 
               <div class="syntax-card">
-                <div style="color: #94a3b8; margin-bottom: 6px;">// Example Supported Format:</div>
+                <div style="color: #94a3b8; margin-bottom: 6px;">// Example Supported Format (with optional Photo / Image):</div>
                 <pre>1. What is the capital of Maharashtra?
+[Image: https://images.unsplash.com/photo-1590402494682-cd3fb53b1f70]
 A) Pune
 B) Mumbai
 C) Nagpur
@@ -1450,23 +1452,46 @@ Answer: H2O
               </div>
             </div>
 
-            <!-- SUBTAB 3: CHATGPT PROMPT GENERATOR -->
+            <!-- SUBTAB 3: UNIVERSAL AI PROMPT GENERATOR -->
             <div id="subtab-chatgpt-content" class="bulk-subtab-pane" style="display: none;">
               <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%); border: 1.5px solid var(--primary-border); border-radius: 12px; padding: 22px; margin-bottom: 20px;">
                 <h3 style="font-size: 17px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">
-                  <i class="fas fa-robot"></i> ChatGPT Question Generator for Google Sheets
+                  <i class="fas fa-robot"></i> Universal AI Quiz Prompt Generator (ChatGPT / Gemini / Claude / DeepSeek)
                 </h3>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px;">
-                  Generate questions from ChatGPT in the exact Google Sheet format with 1-click! Enter your topic, copy the generated prompt, and paste it into ChatGPT.
+                  Generate questions from ChatGPT, Google Gemini, Claude, or any AI! Choose your preferred format (Google Sheet Table vs Plain Text), copy the prompt in 1-click, and paste it into AI.
                 </p>
+
+                <!-- Format Selection Card -->
+                <div style="background: #ffffff; padding: 14px 18px; border-radius: 10px; border: 1.5px solid var(--border); margin-bottom: 16px;">
+                  <label class="form-label" style="font-weight: 700; margin-bottom: 8px; color: var(--text); display: block;">
+                    <i class="fas fa-layer-group" style="color:var(--primary);"></i> Choose Prompt Output Format (प्रॉम्प्टचा फॉरमॅट निवडा):
+                  </label>
+                  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; font-size: 13.5px; color: #1e293b;">
+                      <input type="radio" name="gpt-format-mode" id="fmt-mode-table" value="table" checked onchange="updateChatGptPrompt()">
+                      <span>📊 Google Sheets & Table Format (गुगल शीट / एक्सेल टेबल फॉरमॅट)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; font-size: 13.5px; color: #1e293b;">
+                      <input type="radio" name="gpt-format-mode" id="fmt-mode-text" value="text" onchange="updateChatGptPrompt()">
+                      <span>📝 Plain Text Format (साधा टेक्स्ट फॉरमॅट)</span>
+                    </label>
+                  </div>
+                  <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="gpt-include-image" onchange="updateChatGptPrompt()">
+                    <label for="gpt-include-image" style="font-size: 13px; cursor: pointer; color: var(--text); font-weight: 500;">
+                      <i class="fas fa-image" style="color: #06b6d4;"></i> Include Photo / Diagram Image URL request (प्रश्नामध्ये फोटो/डायग्राम लिंक समाविष्ट करा)
+                    </label>
+                  </div>
+                </div>
 
                 <div class="form-grid-3">
                   <div class="form-group">
-                    <label class="form-label">Quiz Topic:</label>
+                    <label class="form-label">Quiz Topic (विषय):</label>
                     <input type="text" id="gpt-topic-input" class="form-control" value="महाराष्ट्र इतिहास व भूगोल (Maharashtra History & Geography)" oninput="updateChatGptPrompt()">
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Language:</label>
+                    <label class="form-label">Language (भाषा):</label>
                     <select id="gpt-lang-select" class="form-control" onchange="updateChatGptPrompt()">
                       <option value="मराठी (Marathi)">मराठी (Marathi)</option>
                       <option value="English">English</option>
@@ -1474,7 +1499,7 @@ Answer: H2O
                     </select>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Number of Questions:</label>
+                    <label class="form-label">Number of Questions (प्रश्नांची संख्या):</label>
                     <select id="gpt-count-select" class="form-control" onchange="updateChatGptPrompt()">
                       <option value="5">5 Questions</option>
                       <option value="10" selected>10 Questions</option>
@@ -1487,7 +1512,7 @@ Answer: H2O
 
                 <div class="form-grid-2">
                   <div class="form-group">
-                    <label class="form-label">Question Types:</label>
+                    <label class="form-label">Question Types (प्रश्नांचे प्रकार):</label>
                     <select id="gpt-type-select" class="form-control" onchange="updateChatGptPrompt()">
                       <option value="Mixed (MCQ, Checkbox, Short Answer, Live Poll)">Mixed (MCQ, Checkbox, Short, Poll)</option>
                       <option value="MCQ (Multiple Choice) Only">MCQ (Multiple Choice) Only</option>
@@ -1495,7 +1520,7 @@ Answer: H2O
                     </select>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Difficulty Level:</label>
+                    <label class="form-label">Difficulty Level (काठिण्य पातळी):</label>
                     <select id="gpt-diff-select" class="form-control" onchange="updateChatGptPrompt()">
                       <option value="Competitive Exam (MPSC / Police Bharti / Talathi)">Competitive Exam (MPSC / Bharti)</option>
                       <option value="School / College Level">School / College Level</option>
@@ -1507,9 +1532,9 @@ Answer: H2O
                 <!-- Generated Prompt Box -->
                 <div style="margin-top: 14px;">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-weight: 700; font-size: 13px; color: var(--text);">Ready-to-Use ChatGPT Prompt:</span>
+                    <span style="font-weight: 700; font-size: 13px; color: var(--text);" id="gpt-prompt-label">Ready-to-Use AI Prompt (Google Sheets Table Format):</span>
                     <button class="btn btn-primary btn-sm" onclick="copyChatGptPrompt(this)">
-                      <i class="fas fa-copy"></i> Copy ChatGPT Prompt
+                      <i class="fas fa-copy"></i> Copy AI Prompt (प्रॉम्प्ट कॉपी करा)
                     </button>
                   </div>
                   <div class="code-box" style="color: #a5f3fc; max-height: 240px; overflow-y: auto;">
@@ -1520,16 +1545,16 @@ Answer: H2O
                 <!-- 3-Step Guide -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px;">
                   <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                    <strong style="color: var(--primary);">Step 1: Copy Prompt</strong>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Click the button above to copy the generated prompt.</p>
+                    <strong style="color: var(--primary);">Step 1: Copy AI Prompt</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">वरील बटनावर क्लिक करून तयार झालेला प्रॉम्प्ट कॉपी करा.</p>
                   </div>
                   <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                    <strong style="color: var(--primary);">Step 2: Paste in ChatGPT</strong>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Open <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> and paste. ChatGPT outputs a clean table.</p>
+                    <strong style="color: var(--primary);">Step 2: Paste in ChatGPT / Gemini</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">ChatGPT, Gemini किंवा Claude उघडून हा प्रॉम्प्ट पेस्ट करा.</p>
                   </div>
                   <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                    <strong style="color: var(--primary);">Step 3: Paste Table Here</strong>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Copy ChatGPT's table and paste into Option B of the Google Sheets tab!</p>
+                    <strong style="color: var(--primary);">Step 3: Paste Result Here</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="gpt-step3-text">AI चे उत्तर कॉपी करून हव्या त्या टॅबमध्ये पेस्ट करा.</p>
                   </div>
                 </div>
               </div>
@@ -1643,24 +1668,102 @@ Answer: H2O
            VIEW 6: RESULTS & POLL ANALYTICS
            ==================================================================== -->
       <section id="view-results" class="tab-view">
-        <!-- Submissions Table Card -->
-        <div class="card">
+        <!-- Filter Header Bar -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+            <div class="card-title">
+              <i class="fas fa-chart-line" style="color:var(--primary);"></i> Advanced Test-Wise Results & Analytics Hub
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-outline btn-sm" onclick="exportSubmissionsCSV()">
+                <i class="fas fa-file-excel" style="color:#059669;"></i> Export Filtered CSV
+              </button>
+            </div>
+          </div>
+          <div class="card-body" style="background:#f8fafc; border-bottom: 1px solid var(--border); padding: 16px 20px;">
+            <div class="form-grid-3">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700;"><i class="fas fa-filter" style="color:var(--primary);"></i> Select Test / Quiz (चाचणी निवडा):</label>
+                <select id="results-quiz-filter" class="form-control" onchange="renderResultsView()">
+                  <option value="ALL">-- All Tests / सर्व चाचण्या --</option>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700;"><i class="fas fa-check-double" style="color:var(--success);"></i> Filter by Status (निकाल):</label>
+                <select id="results-status-filter" class="form-control" onchange="renderResultsView()">
+                  <option value="ALL">All Results (सर्व निकाल)</option>
+                  <option value="PASS">Passed Only (उत्तीर्ण)</option>
+                  <option value="FAIL">Failed Only (अनुत्तीर्ण)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700;"><i class="fas fa-search"></i> Search Student (विद्यार्थी शोधा):</label>
+                <input type="text" id="results-search-input" class="form-control" placeholder="Search by name or email..." oninput="renderResultsView()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Test-Wise Quick KPI Metrics -->
+          <div class="metrics-grid" style="padding: 18px 24px; margin-bottom: 0; background: #ffffff;">
+            <div class="metric-card">
+              <div class="metric-icon purple"><i class="fas fa-users"></i></div>
+              <div class="metric-val" id="stat-test-attempts">0</div>
+              <div class="metric-lbl">Total Attempts (एकूण सोडवले)</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon cyan"><i class="fas fa-chart-pie"></i></div>
+              <div class="metric-val" id="stat-test-avg">0%</div>
+              <div class="metric-lbl">Average Score (सरासरी गुण)</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon yellow"><i class="fas fa-trophy"></i></div>
+              <div class="metric-val" id="stat-test-topper" style="font-size:16px; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="None">None</div>
+              <div class="metric-lbl">Top Scorer (सर्वोच्च गुण)</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon green"><i class="fas fa-award"></i></div>
+              <div class="metric-val" id="stat-test-passrate">0%</div>
+              <div class="metric-lbl">Passing Rate (उत्तीर्ण टक्केवारी)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard Card -->
+        <div class="card" id="results-leaderboard-card" style="margin-bottom: 20px;">
           <div class="card-header">
-            <div class="card-title"><i class="fas fa-user-graduate" style="color:var(--primary);"></i> Student Submissions</div>
-            <button class="btn btn-outline btn-sm" onclick="exportSubmissionsCSV()"><i class="fas fa-file-excel"></i> Export CSV</button>
+            <div class="card-title">
+              <i class="fas fa-medal" style="color:#f59e0b;"></i> Top Rankers Leaderboard (<span id="leaderboard-quiz-title">All Quizzes</span>)
+            </div>
+            <span class="badge yellow" id="leaderboard-badge"><i class="fas fa-trophy"></i> Top Performers</span>
+          </div>
+          <div class="card-body" style="padding: 16px;">
+            <div id="leaderboard-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+              <!-- Populated dynamically: 1st, 2nd, 3rd podium cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Submissions Table Card -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-user-graduate" style="color:var(--primary);"></i> Student Submissions List (<span id="submissions-count-badge">0</span>)
+            </div>
           </div>
           <div class="card-body" style="padding: 0;">
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Participant</th>
-                    <th>Quiz</th>
-                    <th>Score</th>
-                    <th>Percentage</th>
-                    <th>Result</th>
-                    <th>Date</th>
-                    <th>Action</th>
+                    <th style="width: 70px;"># Rank</th>
+                    <th>Participant (नाव व ईमेल)</th>
+                    <th>Quiz Title (चाचणीचे नाव)</th>
+                    <th>Score (गुण)</th>
+                    <th>Percentage (%)</th>
+                    <th>Status (निकाल)</th>
+                    <th>Date & Time</th>
+                    <th style="text-align: right;">Action</th>
                   </tr>
                 </thead>
                 <tbody id="submissions-table-body">
@@ -1674,7 +1777,9 @@ Answer: H2O
         <!-- Live Poll Analytics Card -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><i class="fas fa-poll" style="color:var(--secondary);"></i> Live Poll Voting Distribution</div>
+            <div class="card-title">
+              <i class="fas fa-poll" style="color:var(--secondary);"></i> Live Poll Voting Distribution (<span id="poll-filter-title">All Tests</span>)
+            </div>
           </div>
           <div class="card-body" id="polls-analytics-container">
             <!-- Populated dynamically -->
@@ -1750,6 +1855,25 @@ Answer: H2O
     </div>
   </div>
 
+  <!-- ==========================================================================
+       STUDENT DETAILED ANSWER REVIEW MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="student-review-modal">
+    <div class="modal-box" style="max-width: 800px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 18px; font-weight: 700;" id="student-review-title">Detailed Answer Review</h3>
+          <span style="font-size: 12px; color: var(--text-muted);" id="student-review-meta">Question-by-question student answers and explanations</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeStudentReviewModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="student-review-body">
+        <!-- Renders participant answers breakdown -->
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Element -->
   <div class="toast" id="app-toast">
     <i class="fas fa-check-circle" style="color:var(--success);"></i>
@@ -1787,6 +1911,7 @@ Answer: H2O
           {
             questionId: 'q2',
             type: 'MCQ',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg',
             question: 'Which of the following forts was the birthplace of Chhatrapati Shivaji Maharaj?',
             options: ['Raigad Fort', 'Shivneri Fort', 'Sinhagad Fort', 'Torna Fort'],
             correctAnswer: 'Shivneri Fort',
@@ -1883,7 +2008,14 @@ Answer: H2O
         totalPoints: 5,
         percentage: 100,
         passed: true,
-        date: '2026-09-04 14:32'
+        date: '2026-09-04 14:32',
+        review: [
+          { question: 'What is the capital city of Maharashtra?', userAnswer: 'Mumbai', correctAnswer: 'Mumbai', isCorrect: true, explanation: 'Mumbai is the financial and state capital of Maharashtra.', pointsEarned: 1 },
+          { question: 'Which of the following forts was the birthplace of Chhatrapati Shivaji Maharaj?', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg', userAnswer: 'Shivneri Fort', correctAnswer: 'Shivneri Fort', isCorrect: true, explanation: 'Chhatrapati Shivaji Maharaj was born at Shivneri Fort near Junnar.', pointsEarned: 1 },
+          { question: 'Which of these rivers flow through Maharashtra? (Select all that apply)', userAnswer: ['Godavari', 'Krishna', 'Tapi'], correctAnswer: 'Godavari, Krishna, Tapi', isCorrect: true, explanation: 'Godavari, Krishna, and Tapi flow through Maharashtra.', pointsEarned: 2 },
+          { question: 'Which city in Maharashtra is known as the "Wine Capital of India"?', userAnswer: 'Nashik', correctAnswer: 'Nashik', isCorrect: true, explanation: 'Nashik produces over half of India’s wine and is known as the Wine Capital.', pointsEarned: 1 },
+          { question: 'Which mode of study do you find most effective?', userAnswer: 'Online Quizzes & Videos', correctAnswer: '', isCorrect: null, explanation: '', pointsEarned: 0 }
+        ]
       },
       {
         id: 'sub_2',
@@ -1895,7 +2027,14 @@ Answer: H2O
         totalPoints: 5,
         percentage: 80,
         passed: true,
-        date: '2026-09-04 16:15'
+        date: '2026-09-04 16:15',
+        review: [
+          { question: 'What is the capital city of Maharashtra?', userAnswer: 'Mumbai', correctAnswer: 'Mumbai', isCorrect: true, explanation: 'Mumbai is the financial and state capital of Maharashtra.', pointsEarned: 1 },
+          { question: 'Which of the following forts was the birthplace of Chhatrapati Shivaji Maharaj?', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg', userAnswer: 'Shivneri Fort', correctAnswer: 'Shivneri Fort', isCorrect: true, explanation: 'Chhatrapati Shivaji Maharaj was born at Shivneri Fort near Junnar.', pointsEarned: 1 },
+          { question: 'Which of these rivers flow through Maharashtra? (Select all that apply)', userAnswer: ['Godavari', 'Ganga'], correctAnswer: 'Godavari, Krishna, Tapi', isCorrect: false, explanation: 'Godavari, Krishna, and Tapi flow through Maharashtra, while Ganga flows across North India.', pointsEarned: 0 },
+          { question: 'Which city in Maharashtra is known as the "Wine Capital of India"?', userAnswer: 'Nashik', correctAnswer: 'Nashik', isCorrect: true, explanation: 'Nashik produces over half of India’s wine and is known as the Wine Capital.', pointsEarned: 1 },
+          { question: 'Which mode of study do you find most effective?', userAnswer: 'Hybrid (Both)', correctAnswer: '', isCorrect: null, explanation: '', pointsEarned: 0 }
+        ]
       },
       {
         id: 'sub_3',
@@ -1907,7 +2046,13 @@ Answer: H2O
         totalPoints: 4,
         percentage: 50,
         passed: false,
-        date: '2026-09-04 17:05'
+        date: '2026-09-04 17:05',
+        review: [
+          { question: 'Which HTML tag is used to link an external JavaScript file?', userAnswer: '<script>', correctAnswer: '<script>', isCorrect: true, explanation: 'The script tag with src attribute is standard in HTML.', pointsEarned: 1 },
+          { question: 'Which of the following are valid CSS display properties?', userAnswer: ['flex', 'float-left'], correctAnswer: 'flex, grid, inline-block', isCorrect: false, explanation: 'flex, grid, and inline-block are display properties.', pointsEarned: 0 },
+          { question: 'What does CSS stand for?', userAnswer: 'Cascading Style Sheets', correctAnswer: 'Cascading Style Sheets', isCorrect: true, explanation: 'Cascading Style Sheets (CSS).', pointsEarned: 1 },
+          { question: 'Which JavaScript frontend framework do you prefer?', userAnswer: 'React', correctAnswer: '', isCorrect: null, explanation: '', pointsEarned: 0 }
+        ]
       }
     ];
 
@@ -1976,8 +2121,7 @@ Answer: H2O
     function renderAllViews() {
       renderMetrics();
       renderQuizzes();
-      renderSubmissions();
-      renderPollAnalytics();
+      renderResultsView();
       populateQuizSelects();
     }
 
@@ -2019,13 +2163,17 @@ Answer: H2O
         'builder': ['Quiz Builder & Visual Editor', 'Configure quiz parameters, points, and add MCQ, Short, Long, or Poll questions.'],
         'bulk': ['Bulk Question Import Hub', 'Fast plain-text syntax parser to import 50+ questions at once.'],
         'embed': ['Embed & Share Center', 'Generate 1-click OnClick popup buttons for Blogger and WordPress.'],
-        'results': ['Submissions & Live Poll Analytics', 'View detailed student answer records and vote percentages.'],
+        'results': ['Test-Wise Results & Poll Analytics Hub', 'Comprehensive student leaderboard, test metrics, and detailed answer reviews.'],
         'database': ['Google Sheets Database', 'Permanent, 100% lifetime free cloud database settings.']
       };
 
       if (titleMap[viewId]) {
         document.getElementById('view-header-title').textContent = titleMap[viewId][0];
         document.getElementById('view-header-desc').textContent = titleMap[viewId][1];
+      }
+
+      if (viewId === 'results') {
+        renderResultsView();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2083,8 +2231,9 @@ Answer: H2O
       var div = document.createElement('div');
       div.className = 'quiz-card';
 
-      var timerText = quiz.timeLimitMinutes > 0 ? (quiz.timeLimitMinutes + ' mins') : 'Unlimited';
+      var timerText = quiz.timeLimitMinutes > 0 ? (quiz.timeLimitMinutes + ' mins') : 'Untimed';
       var qCount = (quiz.questions || []).length;
+      var solveCount = (submissions || []).filter(function (s) { return s.quizId === quiz.id; }).length;
 
       div.innerHTML = '<div>' +
         '<div class="quiz-title">' + escapeHtml(quiz.title) + '</div>' +
@@ -2093,6 +2242,7 @@ Answer: H2O
           '<span class="badge purple"><i class="fas fa-question-circle"></i> ' + qCount + ' Questions</span>' +
           '<span class="badge cyan"><i class="fas fa-clock"></i> ' + timerText + '</span>' +
           '<span class="badge green"><i class="fas fa-trophy"></i> Pass: ' + (quiz.passingScore || 50) + '%</span>' +
+          '<span class="badge yellow" style="background:#fef3c7; color:#b45309; font-weight:700;"><i class="fas fa-users"></i> ' + solveCount + ' Solved (सोडवले)</span>' +
         '</div>' +
       '</div>' +
       '<div class="quiz-actions">' +
@@ -2215,6 +2365,13 @@ Answer: H2O
         '<label class="form-label">Question Text *</label>' +
         '<input type="text" class="form-control b-q-text" value="' + escapeQuotes(data.question) + '" placeholder="Type question prompt..." required>' +
       '</div>' +
+      '<div class="form-group">' +
+        '<label class="form-label"><i class="fas fa-image" style="color:var(--primary);"></i> Question Image / Photo URL (Optional - फोटो/आकृती लिंक)</label>' +
+        '<input type="url" class="form-control b-q-image" value="' + escapeQuotes(data.imageUrl || '') + '" placeholder="https://example.com/photo.jpg" oninput="previewBuilderImg(' + idx + ', this.value)">' +
+        '<div id="b-q-img-preview-' + idx + '" style="margin-top:6px;' + (data.imageUrl ? '' : 'display:none;') + '">' +
+          (data.imageUrl ? '<img src="' + escapeQuotes(data.imageUrl) + '" style="max-height:120px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Preview" onerror="this.parentElement.style.display=\'none\'">' : '') +
+        '</div>' +
+      '</div>' +
       '<div class="form-grid-2">' +
         '<div class="form-group">' +
           '<label class="form-label">Type</label>' +
@@ -2248,6 +2405,19 @@ Answer: H2O
 
       container.appendChild(block);
       updateBuilderQCount();
+    }
+
+    function previewBuilderImg(idx, url) {
+      var wrap = document.getElementById('b-q-img-preview-' + idx);
+      if (!wrap) return;
+      url = (url || '').trim();
+      if (!url) {
+        wrap.style.display = 'none';
+        wrap.innerHTML = '';
+        return;
+      }
+      wrap.innerHTML = '<img src="' + escapeQuotes(url) + '" style="max-height:120px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Preview" onerror="this.parentElement.style.display=\'none\'">';
+      wrap.style.display = 'block';
     }
 
     function removeQuestionFromBuilder(idx) {
@@ -2299,6 +2469,8 @@ Answer: H2O
         var optsRaw = b.querySelector('.b-q-options').value;
         var ansRaw = b.querySelector('.b-q-answer').value.trim();
         var expRaw = b.querySelector('.b-q-exp').value.trim();
+        var imgEl = b.querySelector('.b-q-image');
+        var imgUrl = imgEl ? imgEl.value.trim() : '';
 
         var opts = optsRaw ? optsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
 
@@ -2306,6 +2478,7 @@ Answer: H2O
           questionId: 'q_' + (i + 1) + '_' + Math.random().toString(36).substr(2, 4),
           type: qType,
           question: qText,
+          imageUrl: imgUrl,
           options: opts,
           correctAnswer: ansRaw,
           points: qType === 'POLL' ? 0 : qPoints,
@@ -2379,12 +2552,12 @@ Answer: H2O
 
     // Download CSV Template for Google Sheets
     function downloadGoogleSheetTemplate() {
-      var headers = 'Question,Type,Options,Correct Answer,Points,Explanation\n';
+      var headers = 'Question,Type,Options,Correct Answer,Points,Explanation,Image_URL\n';
       var sampleRows = [
-        '"What is the capital of Maharashtra?","MCQ","Pune, Mumbai, Nagpur, Nashik","Mumbai",1,"Mumbai is the capital city."',
-        '"Select official languages of Maharashtra:","CHECKBOX","Marathi, Hindi, English","Marathi",2,"Marathi is the official language."',
-        '"Chemical formula of water?","SHORT_ANSWER","","H2O",1,"Water is H2O."',
-        '"How would you rate this test?","POLL","Excellent, Good, Average","",0,"Feedback poll"'
+        '"What is the capital of Maharashtra?","MCQ","Pune, Mumbai, Nagpur, Nashik","Mumbai",1,"Mumbai is the capital city.","https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg"',
+        '"Select official languages of Maharashtra:","CHECKBOX","Marathi, Hindi, English","Marathi",2,"Marathi is the official language.",""',
+        '"Chemical formula of water?","SHORT_ANSWER","","H2O",1,"Water is H2O.",""',
+        '"How would you rate this test?","POLL","Excellent, Good, Average","",0,"Feedback poll",""'
       ].join('\n');
 
       var blob = new Blob([headers + sampleRows], { type: 'text/csv;charset=utf-8;' });
@@ -2548,6 +2721,7 @@ Answer: H2O
         var ansRaw = row[3] || '';
         var points = Number(row[4]) || 1;
         var explanation = row[5] || '';
+        var imageUrl = (row[6] || '').trim();
 
         var opts = optsRaw ? optsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
 
@@ -2561,6 +2735,7 @@ Answer: H2O
           questionId: 'q_sheet_' + (r + 1) + '_' + Math.random().toString(36).substr(2, 4),
           type: type,
           question: qText,
+          imageUrl: imageUrl,
           options: opts,
           correctAnswer: ansRaw,
           points: type === 'POLL' ? 0 : points,
@@ -2575,6 +2750,12 @@ Answer: H2O
       var container = document.getElementById('bulk-preview-cards');
       container.innerHTML = '';
 
+      if (!questions || questions.length === 0) {
+        container.innerHTML = '<p style="color:var(--danger); padding:10px;">No valid questions recognized. Please verify format.</p>';
+        document.getElementById('bulk-preview-container').style.display = 'block';
+        return;
+      }
+
       questions.forEach(function (q, i) {
         var div = document.createElement('div');
         div.style.background = '#ffffff';
@@ -2583,7 +2764,12 @@ Answer: H2O
         div.style.padding = '12px 16px';
         div.style.marginBottom = '10px';
 
+        var imgPreview = q.imageUrl
+          ? '<div style="margin:6px 0;"><img src="' + escapeQuotes(q.imageUrl) + '" style="max-height:90px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>'
+          : '';
+
         div.innerHTML = '<strong>' + (i + 1) + '. [' + q.type + ']</strong> ' + escapeHtml(q.question) + '<br>' +
+          imgPreview +
           (q.options.length > 0 ? '<span style="font-size:12.5px; color:var(--text-muted);">Options: ' + escapeHtml(q.options.join(', ')) + '</span><br>' : '') +
           (q.correctAnswer ? '<span style="font-size:12.5px; color:var(--success);">Answer: ' + escapeHtml(q.correctAnswer) + '</span><br>' : '') +
           (q.explanation ? '<span style="font-size:12px; color:var(--text-muted);">Explanation: ' + escapeHtml(q.explanation) + '</span>' : '');
@@ -2594,7 +2780,7 @@ Answer: H2O
       document.getElementById('bulk-preview-container').style.display = 'block';
     }
 
-    // Interactive ChatGPT Prompt Generator
+    // Universal Dual-Format AI Prompt Generator (ChatGPT / Google Gemini / Claude / DeepSeek)
     function updateChatGptPrompt() {
       var topicInput = document.getElementById('gpt-topic-input');
       if (!topicInput) return;
@@ -2604,18 +2790,53 @@ Answer: H2O
       var type = document.getElementById('gpt-type-select').value;
       var diff = document.getElementById('gpt-diff-select').value;
 
-      var promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
-        'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
-        'Difficulty Level: ' + diff + '.\n' +
-        'Question Types: ' + type + '.\n\n' +
-        'Format your response strictly as a clean, copyable TABLE with these exact 6 COLUMNS:\n' +
-        '1. Question: The full question prompt.\n' +
-        '2. Type: Must be exactly one of: MCQ, CHECKBOX, SHORT_ANSWER, LONG_ANSWER, or POLL.\n' +
-        '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma (e.g., Option 1, Option 2, Option 3, Option 4). Leave blank for SHORT_ANSWER and LONG_ANSWER.\n' +
-        '4. Correct Answer: Exact text of the correct choice. For CHECKBOX, comma-separated choices. For POLL/LONG_ANSWER, leave blank.\n' +
-        '5. Points: Marks (e.g., 1 or 2). For POLL, 0.\n' +
-        '6. Explanation: Brief 1-2 sentence explanation of why the answer is correct.\n\n' +
-        'Important: Output ONLY the table directly, with no greeting or conversational text, so I can copy and paste directly into Google Sheets.';
+      var modeRadio = document.querySelector('input[name="gpt-format-mode"]:checked');
+      var mode = modeRadio ? modeRadio.value : 'table';
+      var includeImage = document.getElementById('gpt-include-image') ? document.getElementById('gpt-include-image').checked : false;
+
+      var promptLabel = document.getElementById('gpt-prompt-label');
+      var step3El = document.getElementById('gpt-step3-text');
+      var promptText = '';
+
+      if (mode === 'table') {
+        if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Google Sheets & Table Format):';
+        if (step3El) step3El.textContent = "AI ने तयार केलेले टेबल कॉपी करा आणि 'Google Sheets & CSV' टॅबमधील Option B मध्ये पेस्ट करा.";
+
+        promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
+          'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
+          'Difficulty Level: ' + diff + '.\n' +
+          'Question Types: ' + type + '.\n\n' +
+          'Format your response strictly as a clean, copyable TABLE with these exact ' + (includeImage ? '7' : '6') + ' COLUMNS:\n' +
+          '1. Question: The full question prompt.\n' +
+          '2. Type: Must be exactly one of: MCQ, CHECKBOX, SHORT_ANSWER, LONG_ANSWER, or POLL.\n' +
+          '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma (e.g., Option 1, Option 2, Option 3, Option 4). Leave blank for SHORT_ANSWER and LONG_ANSWER.\n' +
+          '4. Correct Answer: Exact text of the correct choice. For CHECKBOX, comma-separated choices. For POLL/LONG_ANSWER, leave blank.\n' +
+          '5. Points: Marks (e.g., 1 or 2). For POLL, 0.\n' +
+          '6. Explanation: Brief 1-2 sentence explanation of why the answer is correct.\n' +
+          (includeImage ? '7. Image_URL: Direct URL to a relevant diagram or photo (e.g. from Wikimedia or Unsplash), or leave blank if no image is needed.\n\n' : '\n') +
+          'Important: Output ONLY the table directly, with no greeting or conversational text, so I can copy and paste directly into Google Sheets.';
+      } else {
+        if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Plain Text Format):';
+        if (step3El) step3El.textContent = "AI चे उत्तर कॉपी करा आणि 'Plain Text Paste' टॅबमध्ये पेस्ट करा.";
+
+        promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
+          'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
+          'Difficulty Level: ' + diff + '.\n' +
+          'Question Types: ' + type + '.\n\n' +
+          'Format your response strictly in the following clean Plain Text format for every question:\n\n' +
+          '1. [Question Prompt text here]\n' +
+          (includeImage ? '[Image: https://example.com/diagram.jpg] (Optional direct image URL)\n' : '') +
+          'A) Option 1\n' +
+          'B) Option 2\n' +
+          'C) Option 3\n' +
+          'D) Option 4\n' +
+          'Answer: [Correct Option Letter or Text]\n' +
+          'Explanation: [Brief 1-2 sentence explanation]\n\n' +
+          'For Checkbox questions, append [CHECKBOX] to the question and provide comma-separated answers (e.g., Answer: A, B).\n' +
+          'For Short Answer, append [SHORT] and write Answer: [Text].\n' +
+          'For Poll questions, append [POLL] and list choices with bullet points.\n\n' +
+          'Important: Output ONLY the questions directly with no introductory or conversational remarks.';
+      }
 
       document.getElementById('gpt-prompt-display').textContent = promptText;
     }
@@ -2625,7 +2846,7 @@ Answer: H2O
       navigator.clipboard.writeText(text).then(function () {
         var orig = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        showToast('ChatGPT prompt copied to clipboard!');
+        showToast('AI prompt copied to clipboard!');
         setTimeout(function () { btn.innerHTML = orig; }, 2000);
       });
     }
@@ -2638,30 +2859,7 @@ Answer: H2O
       }
 
       var parsed = parseBulkText(text);
-      var container = document.getElementById('bulk-preview-cards');
-      container.innerHTML = '';
-
-      if (parsed.length === 0) {
-        container.innerHTML = '<p style="color:var(--danger);">No questions recognized. Check the syntax formatting.</p>';
-      } else {
-        parsed.forEach(function (q, i) {
-          var div = document.createElement('div');
-          div.style.background = '#ffffff';
-          div.style.border = '1px solid var(--border)';
-          div.style.borderRadius = '8px';
-          div.style.padding = '12px 16px';
-          div.style.marginBottom = '10px';
-
-          div.innerHTML = '<strong>' + (i + 1) + '. [' + q.type + ']</strong> ' + escapeHtml(q.question) + '<br>' +
-            (q.options.length > 0 ? '<span style="font-size:12.5px; color:var(--text-muted);">Options: ' + escapeHtml(q.options.join(', ')) + '</span><br>' : '') +
-            (q.correctAnswer ? '<span style="font-size:12.5px; color:var(--success);">Answer: ' + escapeHtml(q.correctAnswer) + '</span><br>' : '') +
-            (q.explanation ? '<span style="font-size:12px; color:var(--text-muted);">Explanation: ' + escapeHtml(q.explanation) + '</span>' : '');
-
-          container.appendChild(div);
-        });
-      }
-
-      document.getElementById('bulk-preview-container').style.display = 'block';
+      renderBulkPreviewCards(parsed);
     }
 
     function executeBulkImport() {
@@ -2733,10 +2931,15 @@ Answer: H2O
         var options = [];
         var answer = '';
         var explanation = '';
+        var imageUrl = '';
         var points = 1;
 
         for (var i = 1; i < lines.length; i++) {
           var line = lines[i];
+
+          var imgMatch = line.match(/^(?:\[?(?:Image|Photo|Img)\s*[:=-]\s*(https?:\/\/[^\s\]]+)\]?)/i);
+          if (imgMatch) { imageUrl = imgMatch[1].trim(); continue; }
+
           var ansMatch = line.match(/^(?:Answer|Ans|Correct)\s*[:=-]\s*(.*)$/i);
           if (ansMatch) { answer = ansMatch[1].trim(); continue; }
 
@@ -2776,6 +2979,7 @@ Answer: H2O
           questionId: 'q_bulk_' + (bIdx + 1) + '_' + Math.random().toString(36).substr(2, 4),
           type: type,
           question: qText,
+          imageUrl: imageUrl,
           options: options,
           correctAnswer: answer,
           points: type === 'POLL' ? 0 : points,
@@ -2982,8 +3186,13 @@ Answer: H2O
         var html = '<div style="display:flex; justify-content:space-between; margin-bottom:12px;">' +
           '<span class="badge purple">Q' + (qIdx + 1) + ' • ' + typeBadge + '</span>' +
           '<span class="badge">' + pointsText + '</span>' +
-        '</div>' +
-        '<div style="font-weight:700; font-size:15px; margin-bottom:14px;">' + escapeHtml(qItem.question) + '</div>';
+        '</div>';
+
+        if (qItem.imageUrl) {
+          html += '<div style="text-align:center; margin-bottom:14px;"><img src="' + escapeQuotes(qItem.imageUrl) + '" style="max-height:220px; max-width:100%; border-radius:8px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>';
+        }
+
+        html += '<div style="font-weight:700; font-size:15px; margin-bottom:14px;">' + escapeHtml(qItem.question) + '</div>';
 
         if (qItem.type === 'MCQ') {
           (qItem.options || []).forEach(function (opt) {
@@ -3213,6 +3422,7 @@ Answer: H2O
 
         review.push({
           question: q.question,
+          imageUrl: q.imageUrl || '',
           userAnswer: userAns,
           correctAnswer: q.correctAnswer,
           isCorrect: isCorrect,
@@ -3235,7 +3445,8 @@ Answer: H2O
         totalPoints: totalPoints,
         percentage: percentage,
         passed: passed,
-        date: new Date().toLocaleString()
+        date: new Date().toLocaleString(),
+        review: review
       };
 
       submissions.unshift(newSub);
@@ -3283,8 +3494,13 @@ Answer: H2O
             '<div style="display:flex; justify-content:space-between; margin-bottom:6px;">' +
               '<strong>Q' + (i + 1) + ': ' + escapeHtml(r.question) + '</strong>' +
               statusBadge +
-            '</div>' +
-            '<div style="font-size:13px; margin:4px 0;"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(r.userAnswer)) + '</div>';
+            '</div>';
+
+          if (r.imageUrl) {
+            html += '<div style="margin:8px 0;"><img src="' + escapeQuotes(r.imageUrl) + '" style="max-height:140px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>';
+          }
+
+          html += '<div style="font-size:13px; margin:4px 0;"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(r.userAnswer)) + '</div>';
 
           if (r.correctAnswer && r.isCorrect === false) {
             html += '<div style="font-size:13px; color:var(--success); margin:4px 0;"><strong>Correct Answer:</strong> ' + escapeHtml(r.correctAnswer) + '</div>';
@@ -3316,41 +3532,181 @@ Answer: H2O
     }
 
     // ==========================================================================
-    // RESULTS & SUBMISSIONS TABLE
+    // ADVANCED TEST-WISE RESULTS & POLLS ANALYTICS HUB
     // ==========================================================================
-    function renderSubmissions() {
+    function populateResultsQuizFilter() {
+      var sel = document.getElementById('results-quiz-filter');
+      if (!sel) return;
+      var curVal = sel.value || 'ALL';
+
+      sel.innerHTML = '<option value="ALL">-- All Tests / सर्व चाचण्या --</option>';
+      quizzes.forEach(function (q) {
+        var opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = q.title;
+        sel.appendChild(opt);
+      });
+
+      if (curVal && sel.querySelector('option[value="' + curVal + '"]')) {
+        sel.value = curVal;
+      } else {
+        sel.value = 'ALL';
+      }
+    }
+
+    function renderResultsView() {
+      populateResultsQuizFilter();
+
+      var quizFilterEl = document.getElementById('results-quiz-filter');
+      var statusFilterEl = document.getElementById('results-status-filter');
+      var searchInputEl = document.getElementById('results-search-input');
+
+      var quizFilter = quizFilterEl ? quizFilterEl.value : 'ALL';
+      var statusFilter = statusFilterEl ? statusFilterEl.value : 'ALL';
+      var searchQuery = searchInputEl ? searchInputEl.value.trim().toLowerCase() : '';
+
+      var selectedQuizObj = (quizFilter !== 'ALL') ? quizzes.find(function (q) { return q.id === quizFilter; }) : null;
+
+      // Update Card Header Titles
+      var lbTitle = document.getElementById('leaderboard-quiz-title');
+      if (lbTitle) lbTitle.textContent = selectedQuizObj ? selectedQuizObj.title : 'All Quizzes';
+
+      var pollTitle = document.getElementById('poll-filter-title');
+      if (pollTitle) pollTitle.textContent = selectedQuizObj ? selectedQuizObj.title : 'All Tests';
+
+      // 1. All submissions for this specific test (for KPIs & Leaderboard)
+      var testSubs = (quizFilter === 'ALL')
+        ? submissions.slice()
+        : submissions.filter(function (s) { return s.quizId === quizFilter; });
+
+      // KPI 1: Attempts
+      var totalAttempts = testSubs.length;
+      document.getElementById('stat-test-attempts').textContent = totalAttempts;
+
+      // KPI 2: Average Score %
+      var avgScore = totalAttempts > 0
+        ? Math.round(testSubs.reduce(function (acc, s) { return acc + (s.percentage || 0); }, 0) / totalAttempts)
+        : 0;
+      document.getElementById('stat-test-avg').textContent = avgScore + '%';
+
+      // KPI 3: Top Scorer / Topper
+      var topper = null;
+      testSubs.forEach(function (s) {
+        if (!topper || (s.percentage > topper.percentage) || (s.percentage === topper.percentage && s.score > topper.score)) {
+          topper = s;
+        }
+      });
+      var topperEl = document.getElementById('stat-test-topper');
+      if (topper) {
+        topperEl.textContent = topper.userName + ' (' + topper.percentage + '%)';
+        topperEl.title = topper.userName + ' - ' + topper.score + '/' + topper.totalPoints + ' (' + topper.percentage + '%)';
+      } else {
+        topperEl.textContent = 'None';
+        topperEl.title = 'No submissions yet';
+      }
+
+      // KPI 4: Pass Rate %
+      var passedCount = testSubs.filter(function (s) { return s.passed; }).length;
+      var passRate = totalAttempts > 0 ? Math.round((passedCount / totalAttempts) * 100) : 0;
+      document.getElementById('stat-test-passrate').textContent = passRate + '%';
+
+      // 2. Render Leaderboard Cards (Top 3 Rankers)
+      var lbContainer = document.getElementById('leaderboard-container');
+      lbContainer.innerHTML = '';
+
+      var sortedRankers = testSubs.slice().sort(function (a, b) {
+        return (b.percentage - a.percentage) || (b.score - a.score);
+      });
+
+      if (sortedRankers.length === 0) {
+        lbContainer.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 20px; color:var(--text-muted); font-size:13.5px;">' +
+          '<i class="fas fa-medal" style="font-size:24px; margin-bottom:8px; display:block; color:#f59e0b;"></i>' +
+          'No submissions recorded for this test yet. Share your quiz to see student rankings here! (अद्याप कोणीही ही चाचणी सोडवली नाही)' +
+        '</div>';
+      } else {
+        var topRankers = sortedRankers.slice(0, 3);
+        var rankMeta = [
+          { medal: '🥇', label: '1st Rank (Topper)', border: '#f59e0b', bg: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', badgeBg: '#fef3c7', badgeColor: '#b45309' },
+          { medal: '🥈', label: '2nd Rank', border: '#94a3b8', bg: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', badgeBg: '#f1f5f9', badgeColor: '#475569' },
+          { medal: '🥉', label: '3rd Rank', border: '#fdba74', bg: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)', badgeBg: '#ffedd5', badgeColor: '#c2410c' }
+        ];
+
+        topRankers.forEach(function (ranker, idx) {
+          var meta = rankMeta[idx];
+          var card = document.createElement('div');
+          card.style.background = meta.bg;
+          card.style.border = '1.5px solid ' + meta.border;
+          card.style.borderRadius = '12px';
+          card.style.padding = '14px 16px';
+          card.style.boxShadow = '0 2px 6px rgba(0,0,0,0.04)';
+
+          card.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
+            '<span style="background:' + meta.badgeBg + '; color:' + meta.badgeColor + '; font-weight:800; font-size:11.5px; padding:3px 8px; border-radius:6px;">' + meta.label + '</span>' +
+            '<span style="font-size:22px;">' + meta.medal + '</span>' +
+          '</div>' +
+          '<div style="font-weight:700; font-size:15px; color:#0f172a; margin-bottom:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escapeHtml(ranker.userName) + '</div>' +
+          '<div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escapeHtml(ranker.email || 'No email') + '</div>' +
+          '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+            '<span style="font-weight:800; font-size:15px; color:' + meta.badgeColor + ';">' + ranker.score + '/' + ranker.totalPoints + ' (' + ranker.percentage + '%)</span>' +
+            '<button class="btn btn-outline btn-sm" style="padding:3px 8px; font-size:11px; background:#ffffff;" onclick="viewStudentReview(\'' + ranker.id + '\')"><i class="fas fa-eye"></i> View</button>' +
+          '</div>';
+
+          lbContainer.appendChild(card);
+        });
+      }
+
+      // 3. Filter Table Submissions by Status & Search
+      var filteredTableSubs = testSubs.filter(function (s) {
+        if (statusFilter === 'PASS' && !s.passed) return false;
+        if (statusFilter === 'FAIL' && s.passed) return false;
+        if (searchQuery) {
+          var nameMatch = (s.userName || '').toLowerCase().indexOf(searchQuery) > -1;
+          var emailMatch = (s.email || '').toLowerCase().indexOf(searchQuery) > -1;
+          if (!nameMatch && !emailMatch) return false;
+        }
+        return true;
+      });
+
+      var countBadge = document.getElementById('submissions-count-badge');
+      if (countBadge) countBadge.textContent = filteredTableSubs.length;
+
       var tbody = document.getElementById('submissions-table-body');
       tbody.innerHTML = '';
 
-      if (submissions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">No student submissions recorded yet.</td></tr>';
-        return;
+      if (filteredTableSubs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">' +
+          '<i class="fas fa-search" style="font-size:24px; margin-bottom:8px; display:block;"></i>No matching submissions found for this filter.' +
+        '</td></tr>';
+      } else {
+        filteredTableSubs.forEach(function (sub, i) {
+          var tr = document.createElement('tr');
+          var passPill = sub.passed
+            ? '<span class="status-pill pass"><i class="fas fa-check"></i> PASS</span>'
+            : '<span class="status-pill fail"><i class="fas fa-times"></i> FAIL</span>';
+
+          var rankIcon = (i === 0 && sub.passed) ? '🥇 1' : (i === 1 && sub.passed ? '🥈 2' : (i === 2 && sub.passed ? '🥉 3' : (i + 1)));
+
+          tr.innerHTML = '<td><strong>' + rankIcon + '</strong></td>' +
+            '<td><strong>' + escapeHtml(sub.userName) + '</strong><br><span style="font-size:11.5px; color:var(--text-muted);">' + escapeHtml(sub.email || 'No email') + '</span></td>' +
+            '<td>' + escapeHtml(sub.quizTitle) + '</td>' +
+            '<td><strong>' + sub.score + '</strong> / ' + sub.totalPoints + '</td>' +
+            '<td><strong>' + sub.percentage + '%</strong></td>' +
+            '<td>' + passPill + '</td>' +
+            '<td style="color:var(--text-muted); font-size:12px;">' + escapeHtml(sub.date) + '</td>' +
+            '<td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="viewStudentReview(\'' + sub.id + '\')" title="View Detailed Answers Review"><i class="fas fa-eye"></i> Review</button></td>';
+
+          tbody.appendChild(tr);
+        });
       }
 
-      submissions.forEach(function (sub) {
-        var tr = document.createElement('tr');
-        var passPill = sub.passed
-          ? '<span class="status-pill pass"><i class="fas fa-check"></i> PASS</span>'
-          : '<span class="status-pill fail"><i class="fas fa-times"></i> FAIL</span>';
-
-        tr.innerHTML = '<td><strong>' + escapeHtml(sub.userName) + '</strong><br><span style="font-size:11.5px; color:var(--text-muted);">' + escapeHtml(sub.email || 'No email') + '</span></td>' +
-          '<td>' + escapeHtml(sub.quizTitle) + '</td>' +
-          '<td><strong>' + sub.score + '</strong> / ' + sub.totalPoints + '</td>' +
-          '<td>' + sub.percentage + '%</td>' +
-          '<td>' + passPill + '</td>' +
-          '<td style="color:var(--text-muted); font-size:12px;">' + escapeHtml(sub.date) + '</td>' +
-          '<td><button class="btn btn-outline btn-sm" onclick="alert(\'Detailed score: ' + sub.score + '/' + sub.totalPoints + ' (' + sub.percentage + '%)\')"><i class="fas fa-eye"></i></button></td>';
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderPollAnalytics() {
-      var container = document.getElementById('polls-analytics-container');
-      container.innerHTML = '';
+      // 4. Render Test-Wise Poll Analytics
+      var pollContainer = document.getElementById('polls-analytics-container');
+      pollContainer.innerHTML = '';
 
       var pollQuestions = [];
-      quizzes.forEach(function (q) {
+      var targetQuizzes = selectedQuizObj ? [selectedQuizObj] : quizzes;
+
+      targetQuizzes.forEach(function (q) {
         (q.questions || []).forEach(function (item) {
           if (item.type === 'POLL') {
             pollQuestions.push({ quizTitle: q.title, item: item });
@@ -3359,59 +3715,169 @@ Answer: H2O
       });
 
       if (pollQuestions.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted);">No live poll questions found across your quizzes.</p>';
+        pollContainer.innerHTML = '<p style="color:var(--text-muted); padding:10px;">No live poll questions found for this test.</p>';
+      } else {
+        pollQuestions.forEach(function (pObj) {
+          var qItem = pObj.item;
+          var pData = pollVotes[qItem.questionId] || {};
+          var total = 0;
+          for (var k in pData) total += pData[k];
+
+          var div = document.createElement('div');
+          div.style.marginBottom = '20px';
+          div.style.background = '#f8fafc';
+          div.style.padding = '16px 18px';
+          div.style.borderRadius = '8px';
+          div.style.border = '1px solid var(--border)';
+
+          var html = '<div style="display:flex; justify-content:space-between; margin-bottom:10px;">' +
+            '<div><strong>' + escapeHtml(qItem.question) + '</strong><br><span style="font-size:12px; color:var(--text-muted);">Quiz: ' + escapeHtml(pObj.quizTitle) + '</span></div>' +
+            '<span class="badge purple">' + total + ' Votes</span>' +
+          '</div>';
+
+          (qItem.options || []).forEach(function (opt) {
+            var count = pData[opt] || 0;
+            var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            html += '<div style="margin-bottom:8px;">' +
+              '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">' +
+                '<span>' + escapeHtml(opt) + ' (' + count + ' votes)</span>' +
+                '<strong>' + pct + '%</strong>' +
+              '</div>' +
+              '<div style="height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">' +
+                '<div style="height:100%; background:linear-gradient(90deg, #4f46e5, #06b6d4); width:' + pct + '%; transition:width 0.5s;"></div>' +
+              '</div>' +
+            '</div>';
+          });
+
+          div.innerHTML = html;
+          pollContainer.appendChild(div);
+        });
+      }
+    }
+
+    // Modal: View Student Detailed Answer Review
+    function viewStudentReview(subId) {
+      var sub = submissions.find(function (s) { return s.id === subId; });
+      if (!sub) {
+        showToast('Submission record not found.');
         return;
       }
 
-      pollQuestions.forEach(function (pObj) {
-        var qItem = pObj.item;
-        var pData = pollVotes[qItem.questionId] || {};
-        var total = 0;
-        for (var k in pData) total += pData[k];
+      document.getElementById('student-review-title').textContent = 'Review: ' + sub.userName + ' (' + sub.quizTitle + ')';
+      document.getElementById('student-review-meta').textContent = 'Date: ' + sub.date + ' • Email: ' + (sub.email || 'None');
 
-        var div = document.createElement('div');
-        div.style.marginBottom = '24px';
-        div.style.background = '#f8fafc';
-        div.style.padding = '18px';
-        div.style.borderRadius = '8px';
-        div.style.border = '1px solid var(--border)';
+      var body = document.getElementById('student-review-body');
+      body.innerHTML = '';
 
-        var html = '<div style="display:flex; justify-content:space-between; margin-bottom:10px;">' +
-          '<div><strong>' + escapeHtml(qItem.question) + '</strong><br><span style="font-size:12px; color:var(--text-muted);">Quiz: ' + escapeHtml(pObj.quizTitle) + '</span></div>' +
-          '<span class="badge purple">' + total + ' Votes</span>' +
-        '</div>';
+      var passBadge = sub.passed
+        ? '<span class="status-pill pass" style="font-size:13px; padding:4px 12px;"><i class="fas fa-check"></i> PASSED</span>'
+        : '<span class="status-pill fail" style="font-size:13px; padding:4px 12px;"><i class="fas fa-times"></i> FAILED</span>';
 
-        (qItem.options || []).forEach(function (opt) {
-          var count = pData[opt] || 0;
-          var pct = total > 0 ? Math.round((count / total) * 100) : 0;
-          html += '<div style="margin-bottom:8px;">' +
-            '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">' +
-              '<span>' + escapeHtml(opt) + ' (' + count + ' votes)</span>' +
-              '<strong>' + pct + '%</strong>' +
-            '</div>' +
-            '<div style="height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">' +
-              '<div style="height:100%; background:linear-gradient(90deg, #4f46e5, #06b6d4); width:' + pct + '%; transition:width 0.5s;"></div>' +
-            '</div>' +
-          '</div>';
+      var headerHtml = '<div style="background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">' +
+        '<div>' +
+          '<div style="font-size:17px; font-weight:800; color:var(--text);">' + escapeHtml(sub.userName) + '</div>' +
+          '<div style="font-size:12.5px; color:var(--text-muted);"><i class="fas fa-envelope"></i> ' + escapeHtml(sub.email || 'No email registered') + ' • <i class="fas fa-book"></i> ' + escapeHtml(sub.quizTitle) + '</div>' +
+        '</div>' +
+        '<div style="display:flex; gap:12px; align-items:center;">' +
+          '<div style="text-align:right;">' +
+            '<div style="font-size:18px; font-weight:800; color:var(--primary);">' + sub.score + ' / ' + sub.totalPoints + ' (' + sub.percentage + '%)</div>' +
+          '</div>' +
+          passBadge +
+        '</div>' +
+      '</div>';
+
+      body.innerHTML += headerHtml;
+
+      var reviewList = sub.review;
+
+      // Fallback: If review array wasn't stored (older submission), attempt reconstruction from quiz
+      if (!reviewList || reviewList.length === 0) {
+        var parentQuiz = quizzes.find(function (q) { return q.id === sub.quizId; });
+        if (parentQuiz) {
+          reviewList = (parentQuiz.questions || []).map(function (q) {
+            return {
+              question: q.question,
+              imageUrl: q.imageUrl || '',
+              userAnswer: '(Answer record archived)',
+              correctAnswer: q.correctAnswer,
+              isCorrect: null,
+              explanation: q.explanation,
+              pointsEarned: 0
+            };
+          });
+        }
+      }
+
+      if (!reviewList || reviewList.length === 0) {
+        body.innerHTML += '<p style="color:var(--text-muted); text-align:center; padding:20px;">No detailed per-question breakdown recorded for this submission.</p>';
+      } else {
+        body.innerHTML += '<h4 style="font-size:15px; font-weight:700; margin-bottom:14px;"><i class="fas fa-clipboard-check" style="color:var(--primary);"></i> Question-by-Question Breakdown:</h4>';
+
+        reviewList.forEach(function (r, idx) {
+          var border = r.isCorrect === true
+            ? 'border-left: 4px solid var(--success);'
+            : (r.isCorrect === false ? 'border-left: 4px solid var(--danger);' : 'border-left: 4px solid var(--secondary);');
+
+          var statusBadge = r.isCorrect === true
+            ? '<span class="status-pill pass"><i class="fas fa-check"></i> Correct</span>'
+            : (r.isCorrect === false ? '<span class="status-pill fail"><i class="fas fa-times"></i> Incorrect</span>' : '<span class="badge">Recorded</span>');
+
+          var qDiv = document.createElement('div');
+          qDiv.style.background = '#ffffff';
+          qDiv.style.border = '1px solid var(--border)';
+          qDiv.setAttribute('style', qDiv.getAttribute('style') + '; ' + border);
+          qDiv.style.borderRadius = '8px';
+          qDiv.style.padding = '14px 16px';
+          qDiv.style.marginBottom = '12px';
+
+          var imgHtml = r.imageUrl
+            ? '<div style="margin:8px 0;"><img src="' + escapeQuotes(r.imageUrl) + '" style="max-height:140px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>'
+            : '';
+
+          qDiv.innerHTML = '<div style="display:flex; justify-content:space-between; margin-bottom:6px;">' +
+            '<strong>Q' + (idx + 1) + ': ' + escapeHtml(r.question) + '</strong>' +
+            statusBadge +
+          '</div>' +
+          imgHtml +
+          '<div style="font-size:13px; margin:4px 0;"><strong>Student Answer:</strong> <span style="color:' + (r.isCorrect === true ? 'var(--success)' : (r.isCorrect === false ? 'var(--danger)' : 'var(--text)')) + '; font-weight:600;">' + escapeHtml(formatAns(r.userAnswer)) + '</span></div>' +
+          (r.correctAnswer && r.isCorrect === false ? '<div style="font-size:13px; color:var(--success); margin:4px 0;"><strong>Correct Answer:</strong> ' + escapeHtml(r.correctAnswer) + '</div>' : '') +
+          (r.explanation ? '<div style="font-size:12px; color:var(--text-muted); background:#f8fafc; padding:8px 12px; border-radius:6px; margin-top:6px; border:1px solid var(--border);"><i class="fas fa-lightbulb" style="color:#f59e0b;"></i> ' + escapeHtml(r.explanation) + '</div>' : '');
+
+          body.appendChild(qDiv);
         });
+      }
 
-        div.innerHTML = html;
-        container.appendChild(div);
-      });
+      body.innerHTML += '<div style="margin-top:20px; text-align:right;">' +
+        '<button class="btn btn-primary" onclick="closeStudentReviewModal()">Close Review</button>' +
+      '</div>';
+
+      document.getElementById('student-review-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStudentReviewModal() {
+      document.getElementById('student-review-modal').style.display = 'none';
+      document.body.style.overflow = '';
     }
 
     function exportSubmissionsCSV() {
-      if (submissions.length === 0) {
-        showToast('No submissions to export.');
+      var quizFilterEl = document.getElementById('results-quiz-filter');
+      var quizFilter = quizFilterEl ? quizFilterEl.value : 'ALL';
+      var exportSubs = (quizFilter === 'ALL')
+        ? submissions
+        : submissions.filter(function (s) { return s.quizId === quizFilter; });
+
+      if (exportSubs.length === 0) {
+        showToast('No submissions found to export.');
         return;
       }
 
       var csv = ['Name,Email,Quiz Title,Score,Total Points,Percentage,Result,Date'];
-      submissions.forEach(function (s) {
+      exportSubs.forEach(function (s) {
         csv.push([
-          '"' + s.userName.replace(/"/g, '""') + '"',
+          '"' + (s.userName || '').replace(/"/g, '""') + '"',
           '"' + (s.email || '').replace(/"/g, '""') + '"',
-          '"' + s.quizTitle.replace(/"/g, '""') + '"',
+          '"' + (s.quizTitle || '').replace(/"/g, '""') + '"',
           s.score,
           s.totalPoints,
           s.percentage + '%',
@@ -3424,11 +3890,11 @@ Answer: H2O
       var url = URL.createObjectURL(blob);
       var link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', 'RK_QuizMaker_Submissions_' + Date.now() + '.csv');
+      link.setAttribute('download', 'RK_QuizMaker_Results_' + (quizFilter === 'ALL' ? 'All' : quizFilter) + '_' + Date.now() + '.csv');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      showToast('Submissions CSV downloaded!');
+      showToast('Exported ' + exportSubs.length + ' results to CSV!');
     }
 
     // ==========================================================================
