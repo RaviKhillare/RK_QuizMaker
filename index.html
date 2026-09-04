@@ -1516,10 +1516,10 @@ Answer: H2O
             questionId: 'qw1',
             type: 'MCQ',
             question: 'Which HTML tag is used to link an external JavaScript file?',
-            options: ['<js>', '<javascript>', '<script>', '<link>'],
-            correctAnswer: '<script>',
+            options: ['&lt;js&gt;', '&lt;javascript&gt;', '&lt;script&gt;', '&lt;link&gt;'],
+            correctAnswer: '&lt;script&gt;',
             points: 1,
-            explanation: 'The <script src="app.js"></script> tag is standard.'
+            explanation: 'The script tag with src attribute is standard in HTML.'
           },
           {
             questionId: 'qw2',
@@ -2195,7 +2195,7 @@ Answer: H2O
         '<button class="rk-quiz-btn" onclick="RKQuiz.open(\'' + quizId + '\')">\n' +
         '  🎯 Take Quiz: ' + escapeHtml(title) + '\n' +
         '</button>\n' +
-        '<script src="' + scriptUrl + '" data-server-url="' + webAppUrl + '"><\/script>';
+        '<' + 'script src="' + scriptUrl + '" data-server-url="' + webAppUrl + '"><' + '/script>';
       document.getElementById('code-popup').textContent = popupCode;
 
       // 2. Iframe Snippet
