@@ -227,6 +227,17 @@
       '  height: 100%;',
       '  border: none;',
       '  display: block;',
+      '}',
+      '@media (max-width: 640px) {',
+      '  .rk-modal-overlay { padding: 0 !important; }',
+      '  .rk-modal-dialog {',
+      '    width: 100% !important;',
+      '    height: 100% !important;',
+      '    max-width: 100% !important;',
+      '    max-height: 100% !important;',
+      '    border-radius: 0 !important;',
+      '  }',
+      '  .rk-modal-close { top: 10px !important; right: 10px !important; }',
       '}'
     ].join('\n');
 

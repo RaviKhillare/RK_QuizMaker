@@ -934,6 +934,130 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Mobile Drawer & Responsiveness */
+    .mobile-menu-btn {
+      display: none;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 95;
+    }
+
+    .bulk-subtab-btn {
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .bulk-subtab-btn.active {
+      background: #eef2ff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+        box-shadow: var(--shadow-lg);
+        z-index: 1000;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
+      .main-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+      }
+      .top-header {
+        padding: 12px 16px !important;
+      }
+      .content-body {
+        padding: 16px 12px !important;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+      }
+      .metric-card {
+        padding: 14px !important;
+      }
+      .metric-val {
+        font-size: 20px !important;
+      }
+      .welcome-banner {
+        padding: 20px 16px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+      }
+      .welcome-banner::after {
+        display: none !important;
+      }
+      .modal-box {
+        width: 95vw !important;
+        max-height: 94vh !important;
+        border-radius: 12px !important;
+      }
+      .modal-header, .modal-body {
+        padding: 16px !important;
+      }
+      .player-opt {
+        min-height: 48px !important;
+        padding: 12px 14px !important;
+        font-size: 14.5px !important;
+      }
+      .btn {
+        padding: 8px 14px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .metrics-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .cloud-pill {
+        display: none !important;
+      }
+      .header-title-box h1 {
+        font-size: 17px !important;
+      }
+      .header-actions .btn-sm span {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -992,6 +1116,9 @@
     </div>
   </aside>
 
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
   <!-- ==========================================================================
        MAIN CONTENT CONTAINER
        ========================================================================== -->
@@ -999,9 +1126,12 @@
 
     <!-- Top Navbar -->
     <header class="top-header">
-      <div class="header-title-box">
-        <h1 id="view-header-title">Dashboard Overview</h1>
-        <p id="view-header-desc">Manage quizzes, view real-time metrics, and generate embed codes.</p>
+      <div style="display: flex; align-items: center;">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+        <div class="header-title-box">
+          <h1 id="view-header-title">Dashboard Overview</h1>
+          <p id="view-header-desc">Manage quizzes, view real-time metrics, and generate embed codes.</p>
+        </div>
       </div>
 
       <div class="header-actions">
@@ -1184,17 +1314,100 @@
            ==================================================================== -->
       <section id="view-bulk" class="tab-view">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title"><i class="fas fa-bolt" style="color:#f59e0b;"></i> Smart Plain-Text Bulk Import</div>
+          <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 14px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div class="card-title"><i class="fas fa-file-import" style="color:#f59e0b;"></i> Bulk Question Import Hub</div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="bulk-subtab-btn active" id="btn-subtab-sheets" onclick="switchBulkSubtab('sheets')">
+                  <i class="fab fa-google-drive" style="color:#059669;"></i> Google Sheets & CSV
+                </button>
+                <button class="bulk-subtab-btn" id="btn-subtab-text" onclick="switchBulkSubtab('text')">
+                  <i class="fas fa-font"></i> Plain Text Paste
+                </button>
+                <button class="bulk-subtab-btn" id="btn-subtab-chatgpt" onclick="switchBulkSubtab('chatgpt')">
+                  <i class="fas fa-robot" style="color:#7c3aed;"></i> ChatGPT Prompt Generator
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px;">
-              Paste questions directly from Word, Notepad, or WhatsApp. Our engine automatically parses question titles, options, question types, correct answers, and explanations.
-            </p>
 
-            <div class="syntax-card">
-              <div style="color: #94a3b8; margin-bottom: 6px;">// Example Supported Format:</div>
-              <pre>1. What is the capital of Maharashtra?
+          <div class="card-body">
+            
+            <div class="form-group" style="background:#f8fafc; padding:14px; border-radius:8px; border:1px solid var(--border); margin-bottom:20px;">
+              <label class="form-label" style="font-weight:700;">Target Quiz for Imported Questions:</label>
+              <select id="bulk-target-select" class="form-control" style="max-width:450px;">
+                <option value="">-- Create as Brand New Quiz --</option>
+              </select>
+            </div>
+
+            <!-- SUBTAB 1: GOOGLE SHEETS & CSV IMPORT -->
+            <div id="subtab-sheets-content" class="bulk-subtab-pane">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">
+                  Import questions directly from a <strong>Google Sheet</strong> or copy & paste table cells from Google Sheets / Excel / CSV.
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-outline btn-sm" onclick="downloadGoogleSheetTemplate()">
+                    <i class="fas fa-download"></i> Download CSV Template
+                  </button>
+                </div>
+              </div>
+
+              <!-- Google Sheet URL Box -->
+              <div style="background: #ffffff; border: 1.5px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px;">
+                <label class="form-label" style="font-weight:700;"><i class="fab fa-google-drive" style="color:#059669;"></i> Option A: Import via Google Sheet Link</label>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px;">
+                  Enter your Google Sheet URL (Make sure Share setting is: <em>Anyone with the link can view</em>):
+                </p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <input type="url" id="google-sheet-url-input" class="form-control" placeholder="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5n.../edit" style="flex:1; min-width:240px;">
+                  <button class="btn btn-primary" onclick="fetchAndParseGoogleSheet()"><i class="fas fa-sync-alt"></i> Fetch Questions</button>
+                </div>
+              </div>
+
+              <!-- Direct Table Paste Box -->
+              <div style="background: #ffffff; border: 1.5px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 18px;">
+                <label class="form-label" style="font-weight:700;"><i class="fas fa-table" style="color:#4f46e5;"></i> Option B: Copy & Paste Cells from Google Sheet / Excel</label>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px;">
+                  Copy your table cells directly from Google Sheets (Ctrl+C) and paste them here (Ctrl+V):
+                </p>
+                <textarea id="sheet-tsv-paste-area" class="form-control" rows="8" placeholder="Question	Type	Options	Correct Answer	Points	Explanation
+What is the capital of Maharashtra?	MCQ	Pune, Mumbai, Nagpur, Nashik	Mumbai	1	State capital
+Which are web technologies?	CHECKBOX	HTML, CSS, Python	HTML, CSS	2	Web markup & styles
+Water formula?	SHORT_ANSWER		H2O	1	Hydrogen and Oxygen
+How is this platform?	POLL	Excellent, Good, Average		0	Feedback"></textarea>
+              </div>
+
+              <!-- Expected Format Guide -->
+              <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 20px;">
+                <div style="font-weight: 700; font-size: 13px; margin-bottom: 6px; color: var(--text);">
+                  <i class="fas fa-columns"></i> Required Google Sheet Column Headers (Row 1):
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); line-height: 1.7;">
+                  <code>Question</code> (प्रश्नाचा मजकूर) | 
+                  <code>Type</code> (MCQ / CHECKBOX / SHORT_ANSWER / LONG_ANSWER / POLL) | 
+                  <code>Options</code> (पर्याय, स्वल्पविरामाने वेगळे केलेले) | 
+                  <code>Correct Answer</code> (अचूक उत्तर) | 
+                  <code>Points</code> (गुण) | 
+                  <code>Explanation</code> (स्पष्टीकरण)
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="previewSheetTable()"><i class="fas fa-eye"></i> Preview Parsed</button>
+                <button class="btn btn-primary" onclick="executeSheetImport()"><i class="fas fa-upload"></i> Import to Quiz</button>
+              </div>
+            </div>
+
+            <!-- SUBTAB 2: PLAIN TEXT PASTE -->
+            <div id="subtab-text-content" class="bulk-subtab-pane" style="display: none;">
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px;">
+                Paste questions in simple natural text format. Our smart parser auto-detects titles, choices, answers, and explanations.
+              </p>
+
+              <div class="syntax-card">
+                <div style="color: #94a3b8; margin-bottom: 6px;">// Example Supported Format:</div>
+                <pre>1. What is the capital of Maharashtra?
 A) Pune
 B) Mumbai
 C) Nagpur
@@ -1215,32 +1428,112 @@ Answer: H2O
 - Excellent
 - Good
 - Average</pre>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Paste Questions Text:</label>
+                <textarea id="bulk-text-area" class="form-control" rows="10" placeholder="Paste questions here in the format shown above..."></textarea>
+              </div>
+
+              <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="previewBulkText()"><i class="fas fa-eye"></i> Preview Parsed</button>
+                <button class="btn btn-primary" onclick="executeBulkImport()"><i class="fas fa-upload"></i> Import to Quiz</button>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Target Quiz:</label>
-              <select id="bulk-target-select" class="form-control">
-                <option value="">-- Create as Brand New Quiz --</option>
-              </select>
+            <!-- SUBTAB 3: CHATGPT PROMPT GENERATOR -->
+            <div id="subtab-chatgpt-content" class="bulk-subtab-pane" style="display: none;">
+              <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%); border: 1.5px solid var(--primary-border); border-radius: 12px; padding: 22px; margin-bottom: 20px;">
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--primary); margin-bottom: 6px;">
+                  <i class="fas fa-robot"></i> ChatGPT Question Generator for Google Sheets
+                </h3>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px;">
+                  Generate questions from ChatGPT in the exact Google Sheet format with 1-click! Enter your topic, copy the generated prompt, and paste it into ChatGPT.
+                </p>
+
+                <div class="form-grid-3">
+                  <div class="form-group">
+                    <label class="form-label">Quiz Topic:</label>
+                    <input type="text" id="gpt-topic-input" class="form-control" value="महाराष्ट्र इतिहास व भूगोल (Maharashtra History & Geography)" oninput="updateChatGptPrompt()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Language:</label>
+                    <select id="gpt-lang-select" class="form-control" onchange="updateChatGptPrompt()">
+                      <option value="मराठी (Marathi)">मराठी (Marathi)</option>
+                      <option value="English">English</option>
+                      <option value="हिंदी (Hindi)">हिंदी (Hindi)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Number of Questions:</label>
+                    <select id="gpt-count-select" class="form-control" onchange="updateChatGptPrompt()">
+                      <option value="5">5 Questions</option>
+                      <option value="10" selected>10 Questions</option>
+                      <option value="20">20 Questions</option>
+                      <option value="30">30 Questions</option>
+                      <option value="50">50 Questions</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label">Question Types:</label>
+                    <select id="gpt-type-select" class="form-control" onchange="updateChatGptPrompt()">
+                      <option value="Mixed (MCQ, Checkbox, Short Answer, Live Poll)">Mixed (MCQ, Checkbox, Short, Poll)</option>
+                      <option value="MCQ (Multiple Choice) Only">MCQ (Multiple Choice) Only</option>
+                      <option value="Live Polls Only">Live Polls Only</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Difficulty Level:</label>
+                    <select id="gpt-diff-select" class="form-control" onchange="updateChatGptPrompt()">
+                      <option value="Competitive Exam (MPSC / Police Bharti / Talathi)">Competitive Exam (MPSC / Bharti)</option>
+                      <option value="School / College Level">School / College Level</option>
+                      <option value="General Public / Easy">General Public / Easy</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Generated Prompt Box -->
+                <div style="margin-top: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: 700; font-size: 13px; color: var(--text);">Ready-to-Use ChatGPT Prompt:</span>
+                    <button class="btn btn-primary btn-sm" onclick="copyChatGptPrompt(this)">
+                      <i class="fas fa-copy"></i> Copy ChatGPT Prompt
+                    </button>
+                  </div>
+                  <div class="code-box" style="color: #a5f3fc; max-height: 240px; overflow-y: auto;">
+                    <code id="gpt-prompt-display"></code>
+                  </div>
+                </div>
+
+                <!-- 3-Step Guide -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px;">
+                  <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <strong style="color: var(--primary);">Step 1: Copy Prompt</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Click the button above to copy the generated prompt.</p>
+                  </div>
+                  <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <strong style="color: var(--primary);">Step 2: Paste in ChatGPT</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Open <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> and paste. ChatGPT outputs a clean table.</p>
+                  </div>
+                  <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <strong style="color: var(--primary);">Step 3: Paste Table Here</strong>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Copy ChatGPT's table and paste into Option B of the Google Sheets tab!</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Paste Questions Text:</label>
-              <textarea id="bulk-text-area" class="form-control" rows="10" placeholder="Paste questions here in the format shown above..."></textarea>
-            </div>
-
-            <div style="display: flex; gap: 12px; justify-content: flex-end;">
-              <button class="btn btn-outline" onclick="previewBulkText()"><i class="fas fa-eye"></i> Preview Parsed</button>
-              <button class="btn btn-primary" onclick="executeBulkImport()"><i class="fas fa-upload"></i> Import to Quiz</button>
-            </div>
-
-            <!-- Preview Card -->
+            <!-- Preview Card (Shared) -->
             <div id="bulk-preview-container" style="display: none; margin-top: 24px;">
               <h4 style="margin-bottom: 12px; font-size: 15px; font-weight: 700; color: var(--success);">
                 <i class="fas fa-check-circle"></i> Parsed Questions Preview:
               </h4>
               <div id="bulk-preview-cards"></div>
             </div>
+
           </div>
         </div>
       </section>
@@ -1620,6 +1913,7 @@ Answer: H2O
       loadState();
       renderAllViews();
       updateEmbedSnippets();
+      updateChatGptPrompt();
     });
 
     function loadState() {
@@ -1660,6 +1954,14 @@ Answer: H2O
       populateQuizSelects();
     }
 
+    // Mobile Drawer Toggle
+    function toggleSidebar() {
+      var sb = document.querySelector('.sidebar');
+      var bd = document.getElementById('sidebar-backdrop');
+      if (sb) sb.classList.toggle('open');
+      if (bd) bd.classList.toggle('active');
+    }
+
     // View Navigation
     function switchView(viewId) {
       document.querySelectorAll('.tab-view').forEach(function (el) { el.classList.remove('active'); });
@@ -1674,6 +1976,14 @@ Answer: H2O
           b.classList.add('active');
         }
       });
+
+      // Auto-close sidebar on mobile
+      if (window.innerWidth <= 768) {
+        var sb = document.querySelector('.sidebar');
+        var bd = document.getElementById('sidebar-backdrop');
+        if (sb) sb.classList.remove('open');
+        if (bd) bd.classList.remove('active');
+      }
 
       // Update titles
       var titleMap = {
@@ -1988,8 +2298,279 @@ Answer: H2O
     }
 
     // ==========================================================================
-    // BULK IMPORT LOGIC
+    // BULK IMPORT LOGIC & SUBTABS
     // ==========================================================================
+    function switchBulkSubtab(tabName) {
+      document.querySelectorAll('.bulk-subtab-btn').forEach(function (btn) {
+        btn.classList.remove('active');
+      });
+      document.querySelectorAll('.bulk-subtab-pane').forEach(function (pane) {
+        pane.style.display = 'none';
+      });
+
+      var activeBtn = document.getElementById('btn-subtab-' + tabName);
+      var activePane = document.getElementById('subtab-' + tabName + '-content');
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activePane) activePane.style.display = 'block';
+
+      if (tabName === 'chatgpt') {
+        updateChatGptPrompt();
+      }
+    }
+
+    // Download CSV Template for Google Sheets
+    function downloadGoogleSheetTemplate() {
+      var headers = 'Question,Type,Options,Correct Answer,Points,Explanation\n';
+      var sampleRows = [
+        '"What is the capital of Maharashtra?","MCQ","Pune, Mumbai, Nagpur, Nashik","Mumbai",1,"Mumbai is the capital city."',
+        '"Select official languages of Maharashtra:","CHECKBOX","Marathi, Hindi, English","Marathi",2,"Marathi is the official language."',
+        '"Chemical formula of water?","SHORT_ANSWER","","H2O",1,"Water is H2O."',
+        '"How would you rate this test?","POLL","Excellent, Good, Average","",0,"Feedback poll"'
+      ].join('\n');
+
+      var blob = new Blob([headers + sampleRows], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'RK_Quiz_GoogleSheet_Template.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Google Sheet CSV Template downloaded!');
+    }
+
+    // Parse Google Sheet URL (Public export or gviz endpoint)
+    function fetchAndParseGoogleSheet() {
+      var inputUrl = document.getElementById('google-sheet-url-input').value.trim();
+      if (!inputUrl) {
+        showToast('Please enter a Google Sheet URL.');
+        return;
+      }
+
+      var idMatch = inputUrl.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!idMatch) {
+        alert('Invalid Google Sheet URL. Please ensure it looks like:\nhttps://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit');
+        return;
+      }
+
+      var sheetId = idMatch[1];
+      var csvExportUrl = 'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv';
+
+      showToast('Fetching Google Sheet...');
+      fetch(csvExportUrl)
+        .then(function (res) {
+          if (!res.ok) throw new Error('Could not access Google Sheet. Check sharing permissions (Anyone with link can view).');
+          return res.text();
+        })
+        .then(function (csvText) {
+          var questions = parseSheetCsvOrTsv(csvText);
+          if (questions.length === 0) {
+            alert('No questions found. Make sure Row 1 has headers: Question, Type, Options, Correct Answer, Points, Explanation');
+            return;
+          }
+          document.getElementById('sheet-tsv-paste-area').value = csvText;
+          renderBulkPreviewCards(questions);
+          showToast('Successfully fetched ' + questions.length + ' questions from Google Sheet!');
+        })
+        .catch(function (err) {
+          alert('Error: ' + err.message + '\n\nTip: You can also open the Google Sheet, select all rows (Ctrl+A, Ctrl+C), and paste them into Option B below!');
+        });
+    }
+
+    // Preview / Parse Table Paste from Google Sheets or Excel
+    function previewSheetTable() {
+      var text = document.getElementById('sheet-tsv-paste-area').value.trim();
+      if (!text) {
+        showToast('Please paste table cells from Google Sheet or Excel.');
+        return;
+      }
+
+      var questions = parseSheetCsvOrTsv(text);
+      if (questions.length === 0) {
+        showToast('No valid questions found. Check columns order.');
+        return;
+      }
+
+      renderBulkPreviewCards(questions);
+    }
+
+    function executeSheetImport() {
+      var text = document.getElementById('sheet-tsv-paste-area').value.trim();
+      if (!text) {
+        showToast('Please paste table cells or fetch from Google Sheet first.');
+        return;
+      }
+
+      var questions = parseSheetCsvOrTsv(text);
+      if (questions.length === 0) {
+        showToast('No valid questions parsed.');
+        return;
+      }
+
+      var targetQuizId = document.getElementById('bulk-target-select').value;
+      if (targetQuizId) {
+        var quiz = quizzes.find(function (q) { return q.id === targetQuizId; });
+        if (quiz) {
+          quiz.questions = (quiz.questions || []).concat(questions);
+          showToast('Added ' + questions.length + ' questions to ' + quiz.title);
+        }
+      } else {
+        var title = prompt('Enter a title for this new quiz:', 'Google Sheet Quiz ' + new Date().toLocaleDateString());
+        if (!title) return;
+
+        var newQ = {
+          id: 'quiz_' + Date.now().toString(36),
+          title: title,
+          description: 'Imported from Google Sheet.',
+          timeLimitMinutes: 10,
+          passingScore: 50,
+          allowRetake: true,
+          showAnswers: true,
+          shuffleQuestions: false,
+          questions: questions
+        };
+        quizzes.unshift(newQ);
+        showToast('Created quiz with ' + questions.length + ' questions from Google Sheet!');
+      }
+
+      document.getElementById('sheet-tsv-paste-area').value = '';
+      document.getElementById('bulk-preview-container').style.display = 'none';
+      saveState();
+      renderAllViews();
+      switchView('quizzes');
+    }
+
+    // Universal Table Parser (Supports TSV copied from Google Sheet and CSV)
+    function parseSheetCsvOrTsv(text) {
+      if (!text) return [];
+      text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+      var rawLines = text.split('\n');
+      var isTsv = text.indexOf('\t') > -1;
+      var rows = [];
+
+      for (var i = 0; i < rawLines.length; i++) {
+        var line = rawLines[i].trim();
+        if (!line) continue;
+        if (isTsv) {
+          rows.push(line.split('\t').map(function (c) { return c.trim().replace(/^["']|["']$/g, ''); }));
+        } else {
+          // CSV line splitter respecting quotes
+          var cols = [];
+          var inQuotes = false;
+          var cur = '';
+          for (var c = 0; c < line.length; c++) {
+            var ch = line[c];
+            if (ch === '"') inQuotes = !inQuotes;
+            else if (ch === ',' && !inQuotes) { cols.push(cur.trim().replace(/^["']|["']$/g, '')); cur = ''; }
+            else cur += ch;
+          }
+          cols.push(cur.trim().replace(/^["']|["']$/g, ''));
+          rows.push(cols);
+        }
+      }
+
+      if (rows.length === 0) return [];
+
+      // Check if Row 0 is header
+      var startIndex = 0;
+      var firstCell = (rows[0][0] || '').toLowerCase();
+      if (firstCell === 'question' || firstCell === 'प्रश्न' || firstCell.indexOf('title') > -1) {
+        startIndex = 1;
+      }
+
+      var parsed = [];
+      for (var r = startIndex; r < rows.length; r++) {
+        var row = rows[r];
+        if (!row || !row[0]) continue;
+
+        var qText = row[0];
+        var type = (row[1] || 'MCQ').toUpperCase();
+        var optsRaw = row[2] || '';
+        var ansRaw = row[3] || '';
+        var points = Number(row[4]) || 1;
+        var explanation = row[5] || '';
+
+        var opts = optsRaw ? optsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+
+        if (type.indexOf('CHECKBOX') > -1 || type.indexOf('MULTI') > -1) type = 'CHECKBOX';
+        else if (type.indexOf('SHORT') > -1) type = 'SHORT_ANSWER';
+        else if (type.indexOf('LONG') > -1 || type.indexOf('PARA') > -1) type = 'LONG_ANSWER';
+        else if (type.indexOf('POLL') > -1) type = 'POLL';
+        else type = 'MCQ';
+
+        parsed.push({
+          questionId: 'q_sheet_' + (r + 1) + '_' + Math.random().toString(36).substr(2, 4),
+          type: type,
+          question: qText,
+          options: opts,
+          correctAnswer: ansRaw,
+          points: type === 'POLL' ? 0 : points,
+          explanation: explanation
+        });
+      }
+
+      return parsed;
+    }
+
+    function renderBulkPreviewCards(questions) {
+      var container = document.getElementById('bulk-preview-cards');
+      container.innerHTML = '';
+
+      questions.forEach(function (q, i) {
+        var div = document.createElement('div');
+        div.style.background = '#ffffff';
+        div.style.border = '1px solid var(--border)';
+        div.style.borderRadius = '8px';
+        div.style.padding = '12px 16px';
+        div.style.marginBottom = '10px';
+
+        div.innerHTML = '<strong>' + (i + 1) + '. [' + q.type + ']</strong> ' + escapeHtml(q.question) + '<br>' +
+          (q.options.length > 0 ? '<span style="font-size:12.5px; color:var(--text-muted);">Options: ' + escapeHtml(q.options.join(', ')) + '</span><br>' : '') +
+          (q.correctAnswer ? '<span style="font-size:12.5px; color:var(--success);">Answer: ' + escapeHtml(q.correctAnswer) + '</span><br>' : '') +
+          (q.explanation ? '<span style="font-size:12px; color:var(--text-muted);">Explanation: ' + escapeHtml(q.explanation) + '</span>' : '');
+
+        container.appendChild(div);
+      });
+
+      document.getElementById('bulk-preview-container').style.display = 'block';
+    }
+
+    // Interactive ChatGPT Prompt Generator
+    function updateChatGptPrompt() {
+      var topicInput = document.getElementById('gpt-topic-input');
+      if (!topicInput) return;
+      var topic = topicInput.value.trim() || 'General Knowledge';
+      var lang = document.getElementById('gpt-lang-select').value;
+      var count = document.getElementById('gpt-count-select').value;
+      var type = document.getElementById('gpt-type-select').value;
+      var diff = document.getElementById('gpt-diff-select').value;
+
+      var promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
+        'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
+        'Difficulty Level: ' + diff + '.\n' +
+        'Question Types: ' + type + '.\n\n' +
+        'Format your response strictly as a clean, copyable TABLE with these exact 6 COLUMNS:\n' +
+        '1. Question: The full question prompt.\n' +
+        '2. Type: Must be exactly one of: MCQ, CHECKBOX, SHORT_ANSWER, LONG_ANSWER, or POLL.\n' +
+        '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma (e.g., Option 1, Option 2, Option 3, Option 4). Leave blank for SHORT_ANSWER and LONG_ANSWER.\n' +
+        '4. Correct Answer: Exact text of the correct choice. For CHECKBOX, comma-separated choices. For POLL/LONG_ANSWER, leave blank.\n' +
+        '5. Points: Marks (e.g., 1 or 2). For POLL, 0.\n' +
+        '6. Explanation: Brief 1-2 sentence explanation of why the answer is correct.\n\n' +
+        'Important: Output ONLY the table directly, with no greeting or conversational text, so I can copy and paste directly into Google Sheets.';
+
+      document.getElementById('gpt-prompt-display').textContent = promptText;
+    }
+
+    function copyChatGptPrompt(btn) {
+      var text = document.getElementById('gpt-prompt-display').textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        showToast('ChatGPT prompt copied to clipboard!');
+        setTimeout(function () { btn.innerHTML = orig; }, 2000);
+      });
+    }
+
     function previewBulkText() {
       var text = document.getElementById('bulk-text-area').value.trim();
       if (!text) {
