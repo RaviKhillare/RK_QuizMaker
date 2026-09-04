@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            opacity: 0.8;
+            font-size: 13px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid #764ba2;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin: 0 0 15px 0;
+            color: #444;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+            background-color: #f8faff;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #4285F4 0%, #1a73e8 100%);
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .input-icon-group {
+            position: relative;
+        }
+
+        .input-icon-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .input-icon-group input {
+            padding-left: 35px;
+        }
+
+        /* Notification List Styles */
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notif-item {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .notif-item input {
+            margin-bottom: 8px;
+        }
+
+        .notif-item input:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff5252;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-add {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .success {
+            display: none;
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h2>Admin Settings</h2>
+        <p>Configure appearance & links</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h3>Basic Info</h3>
+            <div class="form-group">
+                <label>Add-on Title</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-heading"></i>
+                    <input type="text" id="addonTitle" placeholder="Google Forms Addon">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Subtitle</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-quote-right"></i>
+                    <input type="text" id="addonSubtitle" placeholder="Bulk Import/Export Tool">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Avatar Image URL</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-image"></i>
+                    <input type="text" id="avatarIcon" placeholder="https://example.com/logo.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Social Media</h3>
+            <div class="form-group">
+                <label>YouTube URL</label>
+                <div class="input-icon-group">
+                    <i class="fab fa-youtube"></i>
+                    <input type="text" id="youtubeUrl" placeholder="https://youtube.com/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Facebook URL</label>
+                <div class="input-icon-group">
+                    <i class="fab fa-facebook"></i>
+                    <input type="text" id="facebookUrl" placeholder="https://facebook.com/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>LinkedIn URL</label>
+                <div class="input-icon-group">
+                    <i class="fab fa-linkedin"></i>
+                    <input type="text" id="linkedinUrl" placeholder="https://linkedin.com/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Blogger/Website URL</label>
+                <div class="input-icon-group">
+                    <i class="fab fa-blogger"></i>
+                    <input type="text" id="bloggerUrl" placeholder="https://blogger.com/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <div class="input-icon-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" id="emailAddr" placeholder="mailto:contact@example.com">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Notifications</h3>
+            <p style="font-size:12px; color:#666;">Add multiple rolling messages.</p>
+            <div id="notif-container" class="notif-list"></div>
+            <button class="btn-add" onclick="addNotificationField()">+ Add Notification</button>
+        </div>
+
+        <button class="btn-save" onclick="saveSettings()" id="btn-save">Save All Settings</button>
+        <div id="result" class="success"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            google.script.run.withSuccessHandler(function (settings) {
+                if (settings) {
+                    document.getElementById('addonTitle').value = settings.addonTitle || '';
+                    document.getElementById('addonSubtitle').value = settings.addonSubtitle || '';
+                    document.getElementById('avatarIcon').value = settings.avatarIcon || '';
+
+                    document.getElementById('youtubeUrl').value = settings.youtubeUrl || '';
+                    document.getElementById('facebookUrl').value = settings.facebookUrl || '';
+                    document.getElementById('linkedinUrl').value = settings.linkedinUrl || '';
+                    document.getElementById('bloggerUrl').value = settings.bloggerUrl || '';
+                    document.getElementById('emailAddr').value = settings.emailAddr || '';
+
+                    // Notifications
+                    var notifs = settings.notifications || [];
+                    if (Array.isArray(notifs)) {
+                        notifs.forEach(function (n) {
+                            addNotificationField(n.text, n.link);
+                        });
+                    }
+                }
+            }).getSettings();
+        };
+
+        function addNotificationField(textVal, linkVal) {
+            var container = document.getElementById('notif-container');
+            var div = document.createElement('div');
+            div.className = 'notif-item';
+            div.innerHTML = `
+            <button class="btn-remove" onclick="this.parentElement.remove()">x</button>
+            <input type="text" class="n-text" placeholder="Message" value="${textVal || ''}">
+            <input type="text" class="n-link" placeholder="Link (Optional)" value="${linkVal || ''}">
+        `;
+            container.appendChild(div);
+        }
+
+        function saveSettings() {
+            // Gather Notifications
+            var notifItems = document.querySelectorAll('.notif-item');
+            var notifications = [];
+            notifItems.forEach(function (item) {
+                var text = item.querySelector('.n-text').value;
+                var link = item.querySelector('.n-link').value;
+                if (text.trim()) {
+                    notifications.push({ text: text, link: link });
+                }
+            });
+
+            var settings = {
+                addonTitle: document.getElementById('addonTitle').value,
+                addonSubtitle: document.getElementById('addonSubtitle').value,
+                avatarIcon: document.getElementById('avatarIcon').value,
+
+                youtubeUrl: document.getElementById('youtubeUrl').value,
+                facebookUrl: document.getElementById('facebookUrl').value,
+                linkedinUrl: document.getElementById('linkedinUrl').value,
+                bloggerUrl: document.getElementById('bloggerUrl').value,
+                emailAddr: document.getElementById('emailAddr').value,
+
+                notifications: notifications // Sent as array
+            };
+
+            var btn = document.getElementById('btn-save');
+            var res = document.getElementById('result');
+
+            btn.disabled = true;
+            btn.innerText = "Saving...";
+            res.style.display = 'none';
+
+            google.script.run
+                .withSuccessHandler(function () {
+                    res.style.display = 'block';
+                    res.innerText = 'Settings Saved Successfully!';
+                    btn.disabled = false;
+                    btn.innerText = "Save All Settings";
+                    setTimeout(function () { res.style.display = 'none'; }, 4000);
+                })
+                .saveSettings(settings);
+        }
+    </script>
+</body>
+
+</html>

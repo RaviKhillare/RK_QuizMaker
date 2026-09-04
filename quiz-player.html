@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RK Quiz Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Header Card */
+    .header-card {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-card::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 160px;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    .header-card h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header-card p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 8px 14px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .timer-badge {
+      background: #fef08a;
+      color: #854d0e;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    /* Progress bar */
+    .progress-container {
+      background: #e2e8f0;
+      border-radius: 10px;
+      height: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #06b6d4);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* User Registration Card */
+    .user-box {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 540px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    /* Question Card */
+    .q-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+    }
+
+    .q-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .q-num {
+      background: #eef2ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .q-points {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .q-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* Option Items */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-label {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14.5px;
+      transition: all 0.2s;
+      background: #ffffff;
+      user-select: none;
+    }
+
+    .opt-label:hover {
+      border-color: var(--primary);
+      background: #f8faff;
+      transform: translateX(4px);
+    }
+
+    .opt-label input[type="radio"],
+    .opt-label input[type="checkbox"] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    .opt-label.selected {
+      border-color: var(--primary);
+      background: #eef2ff;
+      font-weight: 500;
+    }
+
+    /* Poll Styles */
+    .poll-opt {
+      position: relative;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .poll-opt:hover:not(.voted) {
+      border-color: var(--secondary);
+      transform: translateX(4px);
+    }
+
+    .poll-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), rgba(79, 70, 229, 0.2));
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .poll-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14.5px;
+    }
+
+    .poll-pct {
+      font-weight: 700;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .poll-opt.user-voted {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.05);
+    }
+
+    .poll-opt.user-voted .poll-bar {
+      background: linear-gradient(90deg, rgba(79, 70, 229, 0.2), rgba(6, 182, 212, 0.3));
+    }
+
+    /* Buttons */
+    .btn-submit {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Result Card */
+    .result-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      display: none;
+      margin-bottom: 24px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .score-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .score-circle.pass {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .score-circle.fail {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .score-number {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    .result-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 20px 0;
+      padding: 14px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .stat-box .num {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-box .lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Review Card */
+    .review-item {
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      padding: 16px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .review-item.correct {
+      border-left: 5px solid var(--success);
+    }
+
+    .review-item.incorrect {
+      border-left: 5px solid var(--danger);
+    }
+
+    .review-item.neutral {
+      border-left: 5px solid var(--secondary);
+    }
+
+    .review-badge {
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .review-badge.correct { color: var(--success); }
+    .review-badge.incorrect { color: var(--danger); }
+    .review-badge.neutral { color: var(--secondary); }
+
+    .review-ans {
+      font-size: 13.5px;
+      margin: 4px 0;
+    }
+
+    .review-exp {
+      font-size: 13px;
+      color: var(--text-muted);
+      background: #f8fafc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Loading Spinner */
+    .loader {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Quiz Header -->
+    <div class="header-card" id="quiz-header">
+      <h1 id="quiz-title"><i class="fas fa-spinner fa-spin"></i> Loading Quiz...</h1>
+      <p id="quiz-desc"></p>
+      <div class="meta-bar" id="quiz-meta" style="display: none;">
+        <div class="meta-item">
+          <i class="fas fa-question-circle"></i> <span id="q-count-badge">0 Questions</span>
+        </div>
+        <div class="meta-item">
+          <i class="fas fa-trophy"></i> Passing: <span id="pass-score-badge">50%</span>
+        </div>
+        <div id="timer-box" style="display:none;">
+          <span class="timer-badge"><i class="fas fa-clock"></i> <span id="timer-display">00:00</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-container" id="prog-wrap" style="display: none;">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- User Information -->
+    <div class="user-box" id="user-box" style="display: none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="user-name"><i class="fas fa-user"></i> Your Name *</label>
+          <input type="text" id="user-name" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="user-email"><i class="fas fa-envelope"></i> Email Address (Optional)</label>
+          <input type="email" id="user-email" placeholder="name@example.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions Container -->
+    <div id="questions-list"></div>
+
+    <!-- Submit Button -->
+    <button class="btn-submit" id="btn-submit-quiz" onclick="submitQuiz()" style="display: none;">
+      <span>Submit Quiz</span> <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <!-- Results Section -->
+    <div class="result-card" id="result-card">
+      <div class="score-circle" id="score-circle">
+        <span class="score-number" id="score-percentage">0%</span>
+        <span class="score-label" id="score-status">PASS</span>
+      </div>
+      <h2 class="result-title" id="result-greeting">Quiz Completed!</h2>
+      <p id="result-msg" style="color: var(--text-muted);"></p>
+
+      <div class="result-stats">
+        <div class="stat-box">
+          <div class="num" id="stat-score">0 / 0</div>
+          <div class="lbl">Score</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="stat-pct">0%</div>
+          <div class="lbl">Percentage</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="stat-req">50%</div>
+          <div class="lbl">Passing Mark</div>
+        </div>
+      </div>
+
+      <div id="review-section" style="margin-top: 24px;">
+        <h3 style="text-align: left; margin-bottom: 14px; font-size: 16px;"><i class="fas fa-clipboard-check"></i> Answer Review:</h3>
+        <div id="review-items"></div>
+      </div>
+
+      <button class="btn-submit" id="btn-retake" onclick="resetQuiz()" style="margin-top: 20px; background: #64748b; display: none;">
+        <i class="fas fa-redo"></i> Retake Quiz
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Powered by <a href="https://timepasstimewithravi.blogspot.com/" target="_blank">RK QuizMaker</a> • Free & Open Source
+    </div>
+
+  </div>
+
+  <script>
+    var currentQuizId = '<?= quizId ?>';
+    var isEmbed = <?= embed ? 'true' : 'false' ?>;
+    var quizData = null;
+    var userAnswers = {};
+    var timerInterval = null;
+    var timeLeftSeconds = 0;
+
+    window.onload = function() {
+      loadQuiz();
+    };
+
+    function loadQuiz() {
+      if (!currentQuizId) {
+        document.getElementById('quiz-title').textContent = 'Error: No Quiz ID provided';
+        return;
+      }
+
+      // Check if running in Google Apps Script environment or standalone
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(renderQuiz)
+          .withFailureHandler(function(err) {
+            document.getElementById('quiz-title').textContent = 'Failed to load quiz: ' + err.message;
+          })
+          .getQuiz(currentQuizId, false);
+      } else {
+        // Fallback fetch API
+        fetch('<?= webAppUrl ?>?api=getQuiz&quizId=' + currentQuizId)
+          .then(function(res){ return res.json(); })
+          .then(renderQuiz)
+          .catch(function(err){
+            document.getElementById('quiz-title').textContent = 'Error loading quiz.';
+          });
+      }
+    }
+
+    function renderQuiz(data) {
+      if (!data || !data.questions) {
+        document.getElementById('quiz-title').textContent = 'Quiz not found.';
+        return;
+      }
+
+      quizData = data;
+      document.getElementById('quiz-title').textContent = data.title;
+      document.getElementById('quiz-desc').textContent = data.description || '';
+      document.getElementById('q-count-badge').textContent = data.questions.length + ' Questions';
+      document.getElementById('pass-score-badge').textContent = (data.passingScore || 50) + '%';
+      document.getElementById('quiz-meta').style.display = 'flex';
+      document.getElementById('prog-wrap').style.display = 'block';
+      document.getElementById('user-box').style.display = 'block';
+      document.getElementById('btn-submit-quiz').style.display = 'flex';
+
+      // Setup Timer if specified
+      if (data.timeLimitMinutes && data.timeLimitMinutes > 0) {
+        timeLeftSeconds = data.timeLimitMinutes * 60;
+        document.getElementById('timer-box').style.display = 'block';
+        startTimer();
+      }
+
+      var container = document.getElementById('questions-list');
+      container.innerHTML = '';
+
+      data.questions.forEach(function(q, index) {
+        var card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = 'q-card-' + q.questionId;
+
+        var typeBadge = q.type.replace('_', ' ');
+        var pointsText = q.type === 'POLL' ? 'Poll' : (q.points + ' pt' + (q.points > 1 ? 's' : ''));
+
+        var html = '<div class="q-header">' +
+          '<span class="q-num">Q' + (index + 1) + ' • ' + typeBadge + '</span>' +
+          '<span class="q-points">' + pointsText + '</span>' +
+        '</div>' +
+        '<div class="q-text">' + escapeHtml(q.question) + '</div>' +
+        '<div class="options-container" id="opt-wrap-' + q.questionId + '">';
+
+        if (q.type === 'MCQ') {
+          html += '<div class="options-list">';
+          (q.options || []).forEach(function(opt, optIdx) {
+            html += '<label class="opt-label" onclick="selectMCQ(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\', this)">' +
+              '<input type="radio" name="ans_' + q.questionId + '" value="' + escapeQuotes(opt) + '">' +
+              '<span>' + escapeHtml(opt) + '</span>' +
+            '</label>';
+          });
+          html += '</div>';
+        } else if (q.type === 'CHECKBOX') {
+          html += '<div class="options-list">';
+          (q.options || []).forEach(function(opt, optIdx) {
+            html += '<label class="opt-label" onclick="selectCheckbox(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\', this)">' +
+              '<input type="checkbox" name="ans_' + q.questionId + '" value="' + escapeQuotes(opt) + '">' +
+              '<span>' + escapeHtml(opt) + '</span>' +
+            '</label>';
+          });
+          html += '</div>';
+        } else if (q.type === 'SHORT_ANSWER' || q.type === 'TEXT') {
+          html += '<div class="form-group">' +
+            '<input type="text" placeholder="Type your short answer here..." oninput="recordTextAnswer(\'' + q.questionId + '\', this.value)">' +
+          '</div>';
+        } else if (q.type === 'LONG_ANSWER' || q.type === 'PARAGRAPH') {
+          html += '<div class="form-group">' +
+            '<textarea rows="4" placeholder="Write your detailed explanation here..." oninput="recordTextAnswer(\'' + q.questionId + '\', this.value)"></textarea>' +
+          '</div>';
+        } else if (q.type === 'POLL') {
+          html += '<div class="options-list" id="poll-list-' + q.questionId + '">';
+          var stats = q.pollStats || { counts: {}, percentages: {}, totalVotes: 0 };
+          (q.options || []).forEach(function(opt) {
+            var pct = stats.percentages[opt] || 0;
+            html += '<div class="poll-opt" id="popt-' + q.questionId + '-' + sanitizeId(opt) + '" onclick="votePoll(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\')">' +
+              '<div class="poll-bar" style="width: ' + pct + '%"></div>' +
+              '<div class="poll-content">' +
+                '<span>' + escapeHtml(opt) + '</span>' +
+                '<span class="poll-pct">' + pct + '%</span>' +
+              '</div>' +
+            '</div>';
+          });
+          html += '</div>';
+        }
+
+        html += '</div>';
+        card.innerHTML = html;
+        container.appendChild(card);
+      });
+
+      updateProgress();
+    }
+
+    function selectMCQ(qId, val, labelElem) {
+      userAnswers[qId] = val;
+      var parent = labelElem.closest('.options-list');
+      parent.querySelectorAll('.opt-label').forEach(function(el) { el.classList.remove('selected'); });
+      labelElem.classList.add('selected');
+      updateProgress();
+    }
+
+    function selectCheckbox(qId, val, labelElem) {
+      if (!Array.isArray(userAnswers[qId])) {
+        userAnswers[qId] = [];
+      }
+      var idx = userAnswers[qId].indexOf(val);
+      var checkbox = labelElem.querySelector('input[type="checkbox"]');
+      if (checkbox.checked) {
+        if (idx === -1) userAnswers[qId].push(val);
+        labelElem.classList.add('selected');
+      } else {
+        if (idx > -1) userAnswers[qId].splice(idx, 1);
+        labelElem.classList.remove('selected');
+      }
+      updateProgress();
+    }
+
+    function recordTextAnswer(qId, val) {
+      userAnswers[qId] = val.trim();
+      updateProgress();
+    }
+
+    function votePoll(qId, option) {
+      userAnswers[qId] = option;
+      var list = document.getElementById('poll-list-' + qId);
+      list.querySelectorAll('.poll-opt').forEach(function(el) {
+        el.classList.add('voted');
+        el.style.pointerEvents = 'none';
+      });
+
+      var selectedEl = document.getElementById('popt-' + qId + '-' + sanitizeId(option));
+      if (selectedEl) selectedEl.classList.add('user-voted');
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(stats) {
+            updatePollUI(qId, stats);
+          })
+          .submitPollVote(currentQuizId, qId, option);
+      }
+      updateProgress();
+    }
+
+    function updatePollUI(qId, stats) {
+      if (!stats || !stats.percentages) return;
+      var list = document.getElementById('poll-list-' + qId);
+      if (!list) return;
+
+      for (var opt in stats.percentages) {
+        var pct = stats.percentages[opt];
+        var el = document.getElementById('popt-' + qId + '-' + sanitizeId(opt));
+        if (el) {
+          var bar = el.querySelector('.poll-bar');
+          var pctText = el.querySelector('.poll-pct');
+          if (bar) bar.style.width = pct + '%';
+          if (pctText) pctText.textContent = pct + '%';
+        }
+      }
+    }
+
+    function updateProgress() {
+      if (!quizData || !quizData.questions) return;
+      var total = quizData.questions.length;
+      var answered = 0;
+      quizData.questions.forEach(function(q) {
+        var a = userAnswers[q.questionId];
+        if (a !== undefined && a !== null && (Array.isArray(a) ? a.length > 0 : String(a).trim() !== '')) {
+          answered++;
+        }
+      });
+
+      var pct = Math.round((answered / total) * 100);
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }
+
+    function startTimer() {
+      updateTimerDisplay();
+      timerInterval = setInterval(function() {
+        timeLeftSeconds--;
+        updateTimerDisplay();
+        if (timeLeftSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert('Time has expired! Submitting your answers now.');
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      var mins = Math.floor(timeLeftSeconds / 60);
+      var secs = timeLeftSeconds % 60;
+      document.getElementById('timer-display').textContent =
+        (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    function submitQuiz() {
+      var nameInput = document.getElementById('user-name');
+      var name = (nameInput ? nameInput.value.trim() : '') || 'Anonymous';
+      var email = (document.getElementById('user-email') ? document.getElementById('user-email').value.trim() : '');
+
+      if (!name) {
+        alert('Please enter your name before submitting.');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+
+      var btn = document.getElementById('btn-submit-quiz');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loader"></span> Submitting...';
+
+      if (timerInterval) clearInterval(timerInterval);
+
+      var payload = {
+        userName: name,
+        userEmail: email,
+        answers: userAnswers
+      };
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(renderResults)
+          .withFailureHandler(function(err) {
+            btn.disabled = false;
+            btn.innerHTML = 'Submit Quiz <i class="fas fa-arrow-right"></i>';
+            alert('Failed to submit: ' + err.message);
+          })
+          .submitQuizResponse(currentQuizId, payload);
+      } else {
+        // Fallback mock/API for standalone preview
+        alert('Demo submission recorded!');
+      }
+    }
+
+    function renderResults(res) {
+      if (!res) return;
+
+      document.getElementById('questions-list').style.display = 'none';
+      document.getElementById('user-box').style.display = 'none';
+      document.getElementById('btn-submit-quiz').style.display = 'none';
+      document.getElementById('prog-wrap').style.display = 'none';
+
+      var circle = document.getElementById('score-circle');
+      circle.className = 'score-circle ' + (res.passed ? 'pass' : 'fail');
+      document.getElementById('score-percentage').textContent = res.percentage + '%';
+      document.getElementById('score-status').textContent = res.passed ? 'PASSED' : 'FAILED';
+
+      document.getElementById('result-greeting').textContent = res.passed ? '🎉 Congratulations, ' + res.userName + '!' : 'Keep practicing, ' + res.userName + '!';
+      document.getElementById('result-msg').textContent = res.passed
+        ? 'You have successfully cleared the quiz criteria.'
+        : 'You fell short of the required passing percentage.';
+
+      document.getElementById('stat-score').textContent = res.score + ' / ' + res.totalPoints;
+      document.getElementById('stat-pct').textContent = res.percentage + '%';
+      document.getElementById('stat-req').textContent = res.passingScore + '%';
+
+      var reviewWrap = document.getElementById('review-items');
+      reviewWrap.innerHTML = '';
+
+      if (res.review && res.review.length > 0) {
+        res.review.forEach(function(item, idx) {
+          var div = document.createElement('div');
+          var statusClass = item.isCorrect === true ? 'correct' : (item.isCorrect === false ? 'incorrect' : 'neutral');
+          div.className = 'review-item ' + statusClass;
+
+          var badge = item.isCorrect === true
+            ? '<span class="review-badge correct"><i class="fas fa-check-circle"></i> Correct (+' + item.pointsEarned + ' pts)</span>'
+            : (item.isCorrect === false
+              ? '<span class="review-badge incorrect"><i class="fas fa-times-circle"></i> Incorrect (0 pts)</span>'
+              : '<span class="review-badge neutral"><i class="fas fa-info-circle"></i> Recorded</span>');
+
+          var html = badge +
+            '<div style="font-weight:600; margin-bottom:6px;">Q' + (idx + 1) + ': ' + escapeHtml(item.question) + '</div>' +
+            '<div class="review-ans"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(item.userAnswer)) + '</div>';
+
+          if (item.correctAnswer && item.isCorrect === false) {
+            html += '<div class="review-ans" style="color: var(--success);"><strong>Correct Answer:</strong> ' + escapeHtml(String(item.correctAnswer)) + '</div>';
+          }
+
+          if (item.explanation) {
+            html += '<div class="review-exp"><i class="fas fa-lightbulb"></i> ' + escapeHtml(item.explanation) + '</div>';
+          }
+
+          div.innerHTML = html;
+          reviewWrap.appendChild(div);
+        });
+      }
+
+      if (quizData.allowRetake) {
+        document.getElementById('btn-retake').style.display = 'inline-flex';
+      }
+
+      document.getElementById('result-card').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      userAnswers = {};
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('questions-list').style.display = 'block';
+      document.getElementById('user-box').style.display = 'block';
+      document.getElementById('btn-submit-quiz').style.display = 'flex';
+      document.getElementById('prog-wrap').style.display = 'block';
+      var btn = document.getElementById('btn-submit-quiz');
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Quiz <i class="fas fa-arrow-right"></i>';
+      renderQuiz(quizData);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function formatAns(ans) {
+      if (ans === undefined || ans === null || ans === '') return '(No Answer)';
+      if (Array.isArray(ans)) return ans.join(', ');
+      return String(ans);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeQuotes(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    function sanitizeId(str) {
+      return String(str).replace(/[^a-zA-Z0-9]/g, '_');
+    }
+  </script>
+</body>
+</html>

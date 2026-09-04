@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Gemstones&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+
+    /* Developer Section */
+    .developer-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px 12px;
+      border-bottom: 3px solid #764ba2;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .developer-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .developer-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      /* Ensure image fits circle */
+    }
+
+    .developer-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .developer-info {
+      /* Allow shrinking to prevent overflow */
+      min-width: 0;
+    }
+
+    /* Fixed Admin Link Styles */
+    .admin-link {
+      align-self: flex-start;
+      margin-left: auto;
+      margin-right: -10px;
+      /* Pull closer to edge */
+      margin-top: -10px;
+    }
+
+    .admin-link button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+
+    .admin-link button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Ticker Styles */
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background-color: #fff9c4;
+      /* Pale yellow */
+      border-bottom: 1px solid #ffd54f;
+      height: 30px;
+      position: relative;
+    }
+
+    .ticker {
+      display: inline-block;
+      white-space: nowrap;
+      padding-right: 100%;
+      animation: ticker-scroll 20s linear infinite;
+      line-height: 30px;
+    }
+
+    .ticker-item {
+      display: inline-block;
+      padding: 0 2rem;
+      font-size: 12px;
+      color: #333;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .ticker-item a {
+      color: #d32f2f;
+      text-decoration: none;
+      display: inline-block;
+      width: 100%;
+    }
+
+    @keyframes ticker-scroll {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      100% {
+        transform: translate3d(-100%, 0, 0);
+      }
+    }
+
+    .ticker-wrap:hover .ticker {
+      animation-play-state: paused;
+    }
+
+    .admin-link {
+      margin-left: auto;
+      /* Push to right */
+      align-self: flex-start;
+    }
+
+    .admin-link button {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px;
+      transition: color 0.3s;
+    }
+
+    .admin-link button:hover {
+      color: white;
+    }
+
+    .developer-info {
+      text-align: left;
+      color: white;
+      flex-grow: 1;
+      padding-left: 5px;
+    }
+
+    .developer-info h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .developer-info p {
+      margin: 4px 0 8px 0;
+      font-size: 12px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      margin-top: 5px;
+    }
+
+    .social-link {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: 2px solid white;
+    }
+
+    .social-link:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github {
+      /* Reused for generic or remove if unused */
+      display: none;
+    }
+
+    .social-link.youtube {
+      background-color: rgba(255, 0, 0, 0.6);
+    }
+
+    .social-link.youtube:hover {
+      background-color: #FF0000;
+    }
+
+    .social-link.facebook {
+      background-color: rgba(24, 119, 242, 0.6);
+    }
+
+    .social-link.facebook:hover {
+      background-color: #1877F2;
+    }
+
+    .social-link.linkedin {
+      background-color: rgba(0, 119, 181, 0.6);
+    }
+
+    .social-link.linkedin:hover {
+      background-color: #0077b5;
+    }
+
+    .social-link.blogger {
+      background-color: rgba(255, 87, 34, 0.6);
+    }
+
+    .social-link.blogger:hover {
+      background-color: #FF5722;
+    }
+
+    .social-link.email {
+      background-color: rgba(234, 67, 53, 0.6);
+    }
+
+    .social-link.email:hover {
+      background-color: #ea4335;
+    }
+
+    .branding-below {
+      padding: 10px;
+      margin-top: 10px;
+      padding-bottom: 50px;
+      /* Space for sticky footer */
+    }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .block {
+      padding: 0;
+      border: 2px solid #221f1f;
+      border-radius: 8px;
+      margin: 0 8px 12px 8px;
+      background-color: #ddd4a1;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .block:hover {
+      border-color: #d0d0d0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    details.block summary {
+      padding: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      color: #333;
+      list-style: none;
+      /* Hide default triangle */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ddd4a1;
+      outline: none;
+    }
+
+    details.block summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.block summary::after {
+      content: '\f107';
+      /* FontAwesome angle-down */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      transition: transform 0.3s ease;
+    }
+
+    details.block[open] summary {
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      /* subtle divider */
+    }
+
+    details.block[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .block .content {
+      padding: 14px;
+      background-color: rgba(255, 255, 255, 0.3);
+      /* Slight lighten for content area */
+    }
+
+    .block h3 {
+      /* Keeping h3 style if needed, though we use summary now */
+      color: #333;
+      margin: 0 0 10px 0;
+      border-bottom: 3px solid #4285F4;
+      padding-bottom: 8px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .block .secondary {
+      color: #666;
+      font-size: 13px;
+      margin: 0 0 12px 0;
+      /* Adjusted margins */
+      line-height: 1.4;
+    }
+
+    .error {
+      color: #c62828;
+      background-color: #ffebee;
+      padding: 10px 12px;
+      border-left: 4px solid #d04f4f;
+      border-radius: 4px;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .success {
+      color: #2e7d32;
+      background-color: #e8f5e9;
+      padding: 10px 12px;
+      border-left: 4px solid #4CAF50;
+      border-radius: 4px;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .success a {
+      color: #1565c0;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #1565c0;
+      transition: all 0.3s;
+      padding: 0 2px;
+    }
+
+    .success a:hover {
+      color: #0d47a1;
+      background-color: rgba(21, 101, 192, 0.1);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+      font-size: 13px;
+      text-transform: capitalize;
+    }
+
+    .form-group input {
+      border: 2px solid #4285F4;
+      border-radius: 4px;
+      padding: 9px 11px;
+      transition: all 0.3s;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #1a73e8;
+      box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+      background-color: #f0f7ff;
+    }
+
+    .form-group input:hover {
+      border-color: #1a73e8;
+    }
+
+    /* Action Buttons */
+    .action {
+      background: linear-gradient(135deg, #4285F4 0%, #1a73e8 100%);
+      color: white;
+      border: 2px solid #1a73e8;
+      padding: 11px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: 'Geometry', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(26, 115, 232, 0.2);
+      width: 100%;
+      margin: 8px 0;
+      text-align: center;
+      align-items: center;
+    }
+
+    .action:hover {
+      background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+    }
+
+    .action:active {
+      transform: translateY(0);
+    }
+
+    .action:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Create Buttons */
+    .create {
+      background: linear-gradient(135deg, #34A853 0%, #0f8644 100%);
+      color: white;
+      border: 2px solid #0f8644;
+      padding: 11px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: 'Geometry', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(15, 134, 68, 0.2);
+      width: 100%;
+      margin: 8px 0;
+      text-align: center;
+      align-items: center;
+    }
+
+    .create:hover {
+      background: linear-gradient(135deg, #0f8644 0%, #0a5f34 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 134, 68, 0.4);
+    }
+
+    .create:active {
+      transform: translateY(0);
+    }
+
+    .create:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .template-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .template-btn {
+      flex: 1 1 45%;
+      padding: 12px 6px;
+      font-size: 13px;
+      border: 2px solid;
+      border-radius: 6px;
+      cursor: pointer;
+      color: rgb(0, 0, 0);
+      font-weight: 400;
+      transition: all 0.3s ease;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Geometry', cursive;
+      padding-top: 12px;
+
+    }
+
+    .template-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .template-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .template-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-mcq {
+      background: linear-gradient(135deg, #4285F4 0%, #1a73e8 100%);
+      border-color: #1a73e8;
+    }
+
+    .btn-mcq:hover {
+      background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    }
+
+    .btn-checkbox {
+      background: linear-gradient(135deg, #34A853 0%, #0f8644 100%);
+      border-color: #0f8644;
+    }
+
+    .btn-checkbox:hover {
+      background: linear-gradient(135deg, #0f8644 0%, #0a5f34 100%);
+    }
+
+    .btn-dropdown {
+      background: linear-gradient(135deg, #EA4335 0%, #c5221f 100%);
+      border-color: #c5221f;
+    }
+
+    .btn-dropdown:hover {
+      background: linear-gradient(135deg, #c5221f 0%, #a50e0e 100%);
+    }
+
+    .btn-text {
+      background: linear-gradient(135deg, #FBBC04 0%, #f57c00 100%);
+      border-color: #f57c00;
+      color: #333;
+    }
+
+    .btn-text:hover {
+      background: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+      color: white;
+    }
+
+    .btn-paragraph {
+      background: linear-gradient(135deg, #9C27B0 0%, #6a1b9a 100%);
+      border-color: #6a1b9a;
+    }
+
+    .btn-paragraph:hover {
+      background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);
+    }
+
+    .bottom {
+      padding: 12px;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .gray {
+      color: #999;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Developer Header Section -->
+  <div class="developer-header">
+    <div class="developer-container">
+      <div class="developer-avatar">
+        <? if (settings.avatarIcon && settings.avatarIcon.indexOf('http') === 0) { ?>
+        <img src="<?= settings.avatarIcon ?>" alt="Avatar">
+        <? } else { ?>
+        <i class="<?= settings.avatarIcon || 'fas fa-code' ?>"></i>
+        <? } ?>
+      </div>
+      <div class="developer-info">
+        <h2>
+          <?= settings.addonTitle ?>
+        </h2>
+        <p>
+          <?= settings.addonSubtitle ?>
+        </p>
+        <div class="social-links">
+          <? if (settings.youtubeUrl) { ?>
+          <a href="<?= settings.youtubeUrl ?>" target="_blank" class="social-link youtube" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <? } ?>
+          <? if (settings.facebookUrl) { ?>
+          <a href="<?= settings.facebookUrl ?>" target="_blank" class="social-link facebook" title="Facebook">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <? } ?>
+          <? if (settings.linkedinUrl) { ?>
+          <a href="<?= settings.linkedinUrl ?>" target="_blank" class="social-link linkedin" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <? } ?>
+          <? if (settings.bloggerUrl) { ?>
+          <a href="<?= settings.bloggerUrl ?>" target="_blank" class="social-link blogger" title="Blogger">
+            <i class="fab fa-blogger"></i>
+          </a>
+          <? } ?>
+          <? if (settings.emailAddr) { ?>
+          <a href="<?= settings.emailAddr ?>" class="social-link email" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <? } ?>
+        </div>
+      </div>
+      <!-- Admin link removed as requested -->
+    </div>
+  </div>
+
+  <? if (settings.notifications && settings.notifications.length > 0) { ?>
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <? for (var i = 0; i < settings.notifications.length; i++) { 
+           var n = settings.notifications[i]; 
+      ?>
+      <div class="ticker-item">
+        <? if (n.link) { ?>
+        <a href="<?= n.link ?>" target="_blank">
+          <?= n.text ?> <i class="fas fa-external-link-alt"></i>
+        </a>
+        <? } else { ?>
+        <?= n.text ?>
+        <? } ?>
+      </div>
+      <? } ?>
+    </div>
+  </div>
+  <? } ?>
+
+  <div class="sidebar branding-below">
+
+    <details class="block">
+      <summary>Help & Templates</summary>
+      <div class="content">
+        <p class="secondary">Get sample spreadsheets to get started.</p>
+        <button onclick="getTemplate()" id="btn-template">Get Sample Spreadsheet</button>
+        <div id="template-result"></div>
+      </div>
+    </details>
+
+    <details class="block">
+      <summary>Import Questions</summary>
+      <div class="content">
+        <p class="secondary">Import questions from a Google Sheet.</p>
+        <div class="form-group">
+          <label for="sheetUrl">Spreadsheet URL</label>
+          <input type="text" id="sheetUrl" style="width: 100%" placeholder="https://docs.google.com/spreadsheets/d/...">
+        </div>
+        <button class="create" onclick="runImport()" id="btn-import">Import Questions</button>
+        <div id="import-result"></div>
+      </div>
+    </details>
+
+    <details class="block">
+      <summary>Export Form</summary>
+      <div class="content">
+        <p class="secondary">Export all questions to a new Google Sheet.</p>
+        <button class="action" onclick="runExport()" id="btn-export">Export All</button>
+        <div id="export-result"></div>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="sidebar bottom">
+    <span class="gray branding-text"><a href="https://timepasstimewithravi.blogspot.com/" target="_blank"
+        style="text-decoration:none; color:#999;">© 2025 Ravindra Khillare</a></span>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+    function runExport() {
+      $('#btn-export').prop('disabled', true).text('Exporting...');
+      $('#export-result').text('');
+
+      google.script.run
+        .withSuccessHandler(function (url) {
+          $('#btn-export').prop('disabled', false).text('Export All');
+          $('#export-result').html('<div class="success">Success! <a href="' + url + '" target="_blank">Open Sheet</a></div>');
+        })
+        .withFailureHandler(function (err) {
+          $('#btn-export').prop('disabled', false).text('Export All');
+          $('#export-result').html('<div class="error">Error: ' + err.message + '</div>');
+        })
+        .exportFormToSheet();
+    }
+
+    function runExportMCQ() {
+      runExportByType('btn-mcq', 'exportMCQToSheet', 'template-result');
+    }
+
+    function runExportCheckbox() {
+      runExportByType('btn-checkbox', 'exportCheckboxToSheet', 'template-result');
+    }
+
+    function runExportDropdown() {
+      runExportByType('btn-dropdown', 'exportListToSheet', 'template-result');
+    }
+
+    function runExportText() {
+      runExportByType('btn-text', 'exportTextToSheet', 'template-result');
+    }
+
+    function runExportParagraph() {
+      runExportByType('btn-paragraph', 'exportParagraphToSheet', 'template-result');
+    }
+
+    function runExportByType(buttonId, functionName, resultId) {
+      $('#' + buttonId).prop('disabled', true).text('Exporting...');
+      $('#' + resultId).text('');
+
+      var func = google.script.run[functionName];
+      func
+        .withSuccessHandler(function (url) {
+          $('#' + buttonId).prop('disabled', false).text('Export');
+          $('#' + resultId).html('<div class="success">Success! <a href="' + url + '" target="_blank">Open Sheet</a></div>');
+        })
+        .withFailureHandler(function (err) {
+          $('#' + buttonId).prop('disabled', false).text('Export');
+          $('#' + resultId).html('<div class="error">Error: ' + err.message + '</div>');
+        });
+    }
+
+    function runImport() {
+      var url = $('#sheetUrl').val();
+      if (!url) {
+        $('#import-result').html('<div class="error">Please enter a valid Google Sheet URL.</div>');
+        return;
+      }
+
+      $('#btn-import').prop('disabled', true).text('Importing...');
+      $('#import-result').text('');
+
+      google.script.run
+        .withSuccessHandler(function (msg) {
+          $('#btn-import').prop('disabled', false).text('Import Questions');
+          $('#import-result').html('<div class="success">' + msg + '</div>');
+        })
+        .withFailureHandler(function (err) {
+          $('#btn-import').prop('disabled', false).text('Import Questions');
+          $('#import-result').html('<div class="error">Error: ' + err.message + '</div>');
+        })
+        .importQuestionsFromSheet(url);
+    }
+
+    function getTemplate() {
+      $('#btn-template').prop('disabled', true).text('Creating...');
+      $('#template-result').text('');
+
+      google.script.run
+        .withSuccessHandler(function (url) {
+          $('#btn-template').prop('disabled', false).text('Get Sample Spreadsheet');
+          $('#template-result').html('<div class="success">Template created! <a href="' + url + '" target="_blank">Open Template</a></div>');
+        })
+        .withFailureHandler(function (err) {
+          $('#btn-template').prop('disabled', false).text('Get Sample Spreadsheet');
+          $('#template-result').html('<div class="error">Error: ' + err.message + '</div>');
+        })
+        .createTemplate();
+    }
+
+    function openAdmin() {
+      google.script.run.openAdminAuth();
+    }
+  </script>
+</body>
+
+</html>
