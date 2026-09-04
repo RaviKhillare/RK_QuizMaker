@@ -2769,23 +2769,35 @@ Answer: H2O
       var title = q ? q.title : 'Quiz';
 
       var scriptUrl = 'https://ravikhillare.github.io/RK_QuizMaker/embed.js';
-      var webAppUrl = document.getElementById('cloud-api-url').value.trim() || 'https://script.google.com/macros/s/SAMPLE_WEB_APP/exec';
+      var rawCloudUrl = document.getElementById('cloud-api-url').value.trim();
+      var hasRealCloud = rawCloudUrl && rawCloudUrl.indexOf('http') === 0 && rawCloudUrl.indexOf('SAMPLE_') === -1;
+      var serverAttr = hasRealCloud ? ' data-server-url="' + rawCloudUrl + '"' : '';
+
+      var isBuiltin = (quizId === 'quiz_maha_gk' || quizId === 'quiz_web_dev');
 
       // 1. Popup Snippet
       var popupCode = '<!-- RK QuizMaker 1-Click Popup Button -->\n' +
         '<button class="rk-quiz-btn" onclick="RKQuiz.open(\'' + quizId + '\')">\n' +
         '  🎯 Take Quiz: ' + escapeHtml(title) + '\n' +
         '</button>\n' +
-        '<' + 'script src="' + scriptUrl + '" data-server-url="' + webAppUrl + '"><' + '/script>';
+        '<' + 'script src="' + scriptUrl + '"' + serverAttr + '><' + '/script>';
+
+      if (!isBuiltin && q) {
+        popupCode += '\n<' + 'script>\nRKQuiz.register(' + JSON.stringify(q, null, 2) + ');\n<' + '/script>';
+      }
       document.getElementById('code-popup').textContent = popupCode;
 
       // 2. Iframe Snippet
-      var iframeUrl = webAppUrl + '?quizId=' + quizId + '&embed=1';
-      var iframeCode = '<iframe src="' + iframeUrl + '" width="100%" height="650" frameborder="0" style="border:none; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08);" allowfullscreen></iframe>';
+      var playerBaseUrl = hasRealCloud
+        ? rawCloudUrl + (rawCloudUrl.indexOf('?') > -1 ? '&' : '?') + 'quizId=' + quizId + '&embed=1'
+        : 'https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + quizId;
+      var iframeCode = '<iframe src="' + playerBaseUrl + '" width="100%" height="650" frameborder="0" style="border:none; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08);" allowfullscreen></iframe>';
       document.getElementById('code-iframe').textContent = iframeCode;
 
       // 3. Direct Link Snippet
-      var directLink = webAppUrl + '?quizId=' + quizId;
+      var directLink = hasRealCloud
+        ? rawCloudUrl + (rawCloudUrl.indexOf('?') > -1 ? '&' : '?') + 'quizId=' + quizId
+        : 'https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + quizId;
       document.getElementById('code-direct').textContent = directLink;
 
       // WhatsApp Share Link

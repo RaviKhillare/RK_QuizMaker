@@ -1,6 +1,8 @@
 /**
- * RK_QuizMaker Embed Widget v1.0.0
+ * RK_QuizMaker Embed Widget & Standalone Player v2.0.0
  * Enables 1-click popup and inline quizzes on Blogger, WordPress, and any website.
+ * Works 100% standalone (zero server required) AND supports Google Sheets/Apps Script sync.
+ * 
  * Author: Ravindra Khillare
  * Website: https://timepasstimewithravi.blogspot.com/
  * GitHub: https://github.com/RaviKhillare/RK_QuizMaker
@@ -9,68 +11,208 @@
 (function (window, document) {
   'use strict';
 
-  // Find the current script tag to detect configured server URL
+  // Find the current script tag to detect configured server URL or settings
   var currentScript = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
     return scripts[scripts.length - 1];
   })();
 
-  // Default web app server URL (can be customized via data-server-url or RKQuiz.setServerUrl)
-  var defaultServerUrl = currentScript && currentScript.getAttribute('data-server-url')
-    ? currentScript.getAttribute('data-server-url')
-    : 'https://script.google.com/macros/s/AKfycbz_SAMPLE_APP_URL/exec';
+  var rawServerUrl = currentScript && currentScript.getAttribute('data-server-url')
+    ? currentScript.getAttribute('data-server-url').trim()
+    : '';
+
+  // Filter out placeholder dummy URLs
+  var isSampleUrl = !rawServerUrl ||
+    rawServerUrl.indexOf('SAMPLE_') > -1 ||
+    rawServerUrl.indexOf('AKfycbz_SAMPLE') > -1;
+
+  var configuredServerUrl = isSampleUrl ? '' : rawServerUrl;
+
+  // Built-in Default Quizzes (Ready out-of-the-box for instant embedding)
+  var DEFAULT_BUILTIN_QUIZZES = {
+    'quiz_maha_gk': {
+      id: 'quiz_maha_gk',
+      title: 'Maharashtra General Knowledge & History 2026',
+      description: 'Test your knowledge on Maharashtra geography, culture, historical forts, and current affairs.',
+      timeLimitMinutes: 10,
+      passingScore: 50,
+      allowRetake: true,
+      showAnswers: true,
+      shuffleQuestions: false,
+      questions: [
+        {
+          questionId: 'q1',
+          type: 'MCQ',
+          question: 'What is the capital city of Maharashtra?',
+          options: ['Pune', 'Mumbai', 'Nagpur', 'Nashik'],
+          correctAnswer: 'Mumbai',
+          points: 1,
+          explanation: 'Mumbai is the financial and state capital of Maharashtra.'
+        },
+        {
+          questionId: 'q2',
+          type: 'MCQ',
+          question: 'Which of the following forts was the birthplace of Chhatrapati Shivaji Maharaj?',
+          options: ['Raigad Fort', 'Shivneri Fort', 'Sinhagad Fort', 'Torna Fort'],
+          correctAnswer: 'Shivneri Fort',
+          points: 1,
+          explanation: 'Chhatrapati Shivaji Maharaj was born at Shivneri Fort near Junnar, Pune district.'
+        },
+        {
+          questionId: 'q3',
+          type: 'CHECKBOX',
+          question: 'Which of these rivers flow through Maharashtra? (Select all that apply)',
+          options: ['Godavari', 'Krishna', 'Ganga', 'Tapi'],
+          correctAnswer: 'Godavari, Krishna, Tapi',
+          points: 2,
+          explanation: 'Godavari, Krishna, and Tapi flow through Maharashtra, while Ganga flows across North India.'
+        },
+        {
+          questionId: 'q4',
+          type: 'SHORT_ANSWER',
+          question: 'Which city in Maharashtra is known as the "Wine Capital of India"?',
+          options: [],
+          correctAnswer: 'Nashik',
+          points: 1,
+          explanation: 'Nashik produces over half of India’s wine and is renowned as the Wine Capital.'
+        },
+        {
+          questionId: 'q5',
+          type: 'POLL',
+          question: 'Which mode of study do you find most effective?',
+          options: ['Online Quizzes & Videos', 'Printed Books', 'Group Discussions', 'Hybrid (Both)'],
+          correctAnswer: '',
+          points: 0,
+          explanation: 'Thank you for your valuable feedback!'
+        }
+      ]
+    },
+    'quiz_web_dev': {
+      id: 'quiz_web_dev',
+      title: 'Modern Web Development Essentials',
+      description: 'Comprehensive quiz covering HTML5, CSS3, JavaScript, and Web APIs.',
+      timeLimitMinutes: 15,
+      passingScore: 60,
+      allowRetake: true,
+      showAnswers: true,
+      shuffleQuestions: false,
+      questions: [
+        {
+          questionId: 'qw1',
+          type: 'MCQ',
+          question: 'Which HTML tag is used to link an external JavaScript file?',
+          options: ['<js>', '<javascript>', '<script>', '<link>'],
+          correctAnswer: '<script>',
+          points: 1,
+          explanation: 'The <script src="..."> tag is the standard HTML tag for loading JavaScript.'
+        },
+        {
+          questionId: 'qw2',
+          type: 'CHECKBOX',
+          question: 'Which of the following are valid CSS display properties?',
+          options: ['flex', 'grid', 'float-left', 'inline-block'],
+          correctAnswer: 'flex, grid, inline-block',
+          points: 2,
+          explanation: 'flex, grid, and inline-block are valid CSS display properties; float-left is invalid.'
+        },
+        {
+          questionId: 'qw3',
+          type: 'SHORT_ANSWER',
+          question: 'What does CSS stand for?',
+          options: [],
+          correctAnswer: 'Cascading Style Sheets',
+          points: 1,
+          explanation: 'CSS stands for Cascading Style Sheets.'
+        },
+        {
+          questionId: 'qw4',
+          type: 'POLL',
+          question: 'Which JavaScript frontend framework do you prefer?',
+          options: ['React', 'Vue.js', 'Angular', 'Vanilla JS'],
+          correctAnswer: '',
+          points: 0,
+          explanation: 'Thank you for sharing your preference!'
+        }
+      ]
+    }
+  };
+
+  // State
+  var quizzesRegistry = {};
+  for (var k in DEFAULT_BUILTIN_QUIZZES) {
+    quizzesRegistry[k] = DEFAULT_BUILTIN_QUIZZES[k];
+  }
+
+  var activeQuiz = null;
+  var userAnswers = {};
+  var pollVotes = {};
+  var timerInterval = null;
+  var timeLeftSeconds = 0;
 
   var RKQuiz = {
-    serverUrl: defaultServerUrl,
+    serverUrl: configuredServerUrl,
+    quizzes: quizzesRegistry,
 
     /**
-     * Set the Apps Script Web App URL
+     * Register a quiz dynamically from the host page/blog
+     * @param {object} quizObj 
+     */
+    register: function (quizObj) {
+      if (quizObj && quizObj.id) {
+        this.quizzes[quizObj.id] = quizObj;
+      }
+    },
+
+    /**
+     * Set cloud server URL
      */
     setServerUrl: function (url) {
-      if (url) this.serverUrl = url;
+      if (url && url.indexOf('SAMPLE_') === -1) {
+        this.serverUrl = url.trim();
+      }
     },
 
     /**
      * Open quiz in a clean, responsive modal popup
-     * @param {string} quizId 
+     * @param {string|object} quizOrId 
      * @param {object} options 
      */
-    open: function (quizId, options) {
+    open: function (quizOrId, options) {
+      injectStyles();
       options = options || {};
+
+      var quiz = null;
+      if (typeof quizOrId === 'object' && quizOrId !== null) {
+        quiz = quizOrId;
+        if (quiz.id) this.quizzes[quiz.id] = quiz;
+      } else if (typeof quizOrId === 'string') {
+        quiz = this.quizzes[quizOrId] || null;
+      }
+
+      // Check if user has an explicit real external server URL and requested iframe mode
       var server = options.serverUrl || this.serverUrl;
-      var quizUrl = server + (server.indexOf('?') > -1 ? '&' : '?') + 'quizId=' + encodeURIComponent(quizId) + '&embed=1';
+      var hasRealServer = server && server.indexOf('http') === 0 && server.indexOf('SAMPLE_') === -1;
 
-      // Check if modal already exists, else create
-      var modal = document.getElementById('rk-quiz-modal');
-      if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'rk-quiz-modal';
-        modal.className = 'rk-modal-overlay';
-        modal.innerHTML = [
-          '<div class="rk-modal-backdrop" onclick="RKQuiz.close()"></div>',
-          '<div class="rk-modal-dialog">',
-          '  <button type="button" class="rk-modal-close" onclick="RKQuiz.close()" aria-label="Close Quiz">&times;</button>',
-          '  <div class="rk-modal-body">',
-          '    <iframe id="rk-quiz-iframe" src="about:blank" allow="autoplay; fullscreen" allowfullscreen frameborder="0"></iframe>',
-          '  </div>',
-          '</div>'
-        ].join('\n');
-        document.body.appendChild(modal);
+      var modal = getOrCreateModal();
+
+      if (quiz) {
+        // Render standalone native player directly (Fast, 100% reliable, no Google Drive 404)
+        renderNativePlayer(quiz, modal);
+      } else if (hasRealServer && typeof quizOrId === 'string') {
+        // Fallback to real Apps Script iframe if quiz data is on the server
+        renderIframePlayer(quizOrId, server, modal);
+      } else {
+        // Not found error with helpful recovery instructions
+        renderNotFoundError(quizOrId, modal);
       }
 
-      var iframe = document.getElementById('rk-quiz-iframe');
-      if (iframe) {
-        iframe.src = quizUrl;
-      }
-
-      // Show modal with animation
+      // Display modal
       modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Lock background scroll
+      document.body.style.overflow = 'hidden';
       setTimeout(function () {
         modal.classList.add('rk-modal-active');
       }, 10);
 
-      // Listen for Escape key
       document.addEventListener('keydown', handleEscKey);
     },
 
@@ -83,9 +225,11 @@
         modal.classList.remove('rk-modal-active');
         setTimeout(function () {
           modal.style.display = 'none';
-          var iframe = document.getElementById('rk-quiz-iframe');
-          if (iframe) iframe.src = 'about:blank';
           document.body.style.overflow = '';
+          if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+          }
         }, 250);
       }
       document.removeEventListener('keydown', handleEscKey);
@@ -97,18 +241,16 @@
     init: function () {
       injectStyles();
 
-      // Find any element with data-rk-quiz attribute
       var inlineContainers = document.querySelectorAll('[data-rk-quiz]');
       for (var i = 0; i < inlineContainers.length; i++) {
         var container = inlineContainers[i];
         var qId = container.getAttribute('data-rk-quiz');
         if (qId && !container.hasAttribute('data-rk-initialized')) {
           container.setAttribute('data-rk-initialized', 'true');
-          var height = container.getAttribute('data-height') || '650px';
-          var server = container.getAttribute('data-server-url') || RKQuiz.serverUrl;
-          var url = server + (server.indexOf('?') > -1 ? '&' : '?') + 'quizId=' + encodeURIComponent(qId) + '&embed=1';
-
-          container.innerHTML = '<iframe src="' + url + '" width="100%" height="' + height + '" frameborder="0" style="border:none; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08);" allowfullscreen></iframe>';
+          var quiz = this.quizzes[qId];
+          if (quiz) {
+            renderInlinePlayer(quiz, container);
+          }
         }
       }
     }
@@ -120,11 +262,524 @@
     }
   }
 
+  function getOrCreateModal() {
+    var modal = document.getElementById('rk-quiz-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'rk-quiz-modal';
+      modal.className = 'rk-modal-overlay';
+      modal.innerHTML = [
+        '<div class="rk-modal-backdrop" onclick="RKQuiz.close()"></div>',
+        '<div class="rk-modal-dialog">',
+        '  <button type="button" class="rk-modal-close" onclick="RKQuiz.close()" aria-label="Close Quiz">&times;</button>',
+        '  <div class="rk-modal-body" id="rk-modal-body-content"></div>',
+        '</div>'
+      ].join('\n');
+      document.body.appendChild(modal);
+    }
+    return modal;
+  }
+
+  // ==========================================================================
+  // NATIVE STANDALONE PLAYER RENDERING (ZERO BACKEND DEPENDENCY)
+  // ==========================================================================
+  function renderNativePlayer(quiz, modal) {
+    activeQuiz = quiz;
+    userAnswers = {};
+    if (timerInterval) clearInterval(timerInterval);
+
+    var bodyContent = document.getElementById('rk-modal-body-content');
+    if (!bodyContent) return;
+
+    var questions = (quiz.questions || []).slice();
+    if (quiz.shuffleQuestions) {
+      questions = shuffleArray(questions);
+    }
+
+    var totalPoints = 0;
+    questions.forEach(function (q) {
+      if (q.type !== 'POLL') totalPoints += (Number(q.points) || 1);
+    });
+
+    var timeBadgeHtml = '';
+    if (quiz.timeLimitMinutes > 0) {
+      timeLeftSeconds = quiz.timeLimitMinutes * 60;
+      timeBadgeHtml = '<div class="rk-timer-badge" id="rk-live-timer"><i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds) + '</div>';
+    } else {
+      timeBadgeHtml = '<div class="rk-meta-chip"><i class="fas fa-infinity"></i> No Limit</div>';
+    }
+
+    var html = [
+      '<div class="rk-player-wrapper">',
+      '  <div class="rk-player-header">',
+      '    <div class="rk-header-top">',
+      '      <h2>' + escapeHtml(quiz.title) + '</h2>',
+      '      ' + timeBadgeHtml,
+      '    </div>',
+      (quiz.description ? '    <p class="rk-header-desc">' + escapeHtml(quiz.description) + '</p>' : ''),
+      '    <div class="rk-meta-row">',
+      '      <span class="rk-meta-chip"><i class="fas fa-question-circle"></i> ' + questions.length + ' Questions</span>',
+      '      <span class="rk-meta-chip"><i class="fas fa-award"></i> ' + totalPoints + ' Total Points</span>',
+      '      <span class="rk-meta-chip"><i class="fas fa-percentage"></i> Pass: ' + (quiz.passingScore || 50) + '%</span>',
+      '    </div>',
+      '    <div class="rk-progress-container">',
+      '      <div class="rk-progress-bar" id="rk-quiz-progress" style="width: 0%"></div>',
+      '    </div>',
+      '  </div>',
+      '  <div class="rk-player-body">',
+      '    <div class="rk-user-card">',
+      '      <div class="rk-user-title"><i class="fas fa-user-edit"></i> Participant Details</div>',
+      '      <div class="rk-user-inputs">',
+      '        <input type="text" id="rk-player-name" class="rk-input" placeholder="Your Name" value="Guest Learner">',
+      '        <input type="email" id="rk-player-email" class="rk-input" placeholder="Your Email (Optional)">',
+      '      </div>',
+      '    </div>',
+      '    <div id="rk-questions-list">'
+    ];
+
+    questions.forEach(function (q, idx) {
+      var typeLabel = q.type.replace('_', ' ');
+      var ptsLabel = q.type === 'POLL' ? 'Opinion Poll' : ((q.points || 1) + ' Point' + ((q.points || 1) > 1 ? 's' : ''));
+
+      html.push('      <div class="rk-q-card" data-qid="' + q.questionId + '">');
+      html.push('        <div class="rk-q-header">');
+      html.push('          <span class="rk-q-badge">Q' + (idx + 1) + ' • ' + typeLabel + '</span>');
+      html.push('          <span class="rk-q-pts">' + ptsLabel + '</span>');
+      html.push('        </div>');
+      html.push('        <div class="rk-q-text">' + escapeHtml(q.question) + '</div>');
+
+      if (q.type === 'MCQ') {
+        html.push('        <div class="rk-options-group">');
+        (q.options || []).forEach(function (opt) {
+          html.push('          <div class="rk-opt-item" onclick="window.RKQuizInternal.selectMCQ(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\', this)">');
+          html.push('            <i class="far fa-circle rk-opt-icon"></i>');
+          html.push('            <span class="rk-opt-label">' + escapeHtml(opt) + '</span>');
+          html.push('          </div>');
+        });
+        html.push('        </div>');
+      } else if (q.type === 'CHECKBOX') {
+        html.push('        <div class="rk-options-group">');
+        (q.options || []).forEach(function (opt) {
+          html.push('          <div class="rk-opt-item" onclick="window.RKQuizInternal.selectCheckbox(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\', this)">');
+          html.push('            <i class="far fa-square rk-opt-icon"></i>');
+          html.push('            <span class="rk-opt-label">' + escapeHtml(opt) + '</span>');
+          html.push('          </div>');
+        });
+        html.push('        </div>');
+      } else if (q.type === 'SHORT_ANSWER') {
+        html.push('        <div class="rk-text-answer">');
+        html.push('          <input type="text" class="rk-input" placeholder="Type your short answer..." oninput="window.RKQuizInternal.recordText(\'' + q.questionId + '\', this.value)">');
+        html.push('        </div>');
+      } else if (q.type === 'LONG_ANSWER') {
+        html.push('        <div class="rk-text-answer">');
+        html.push('          <textarea class="rk-input" rows="3" placeholder="Write your detailed answer..." oninput="window.RKQuizInternal.recordText(\'' + q.questionId + '\', this.value)"></textarea>');
+        html.push('        </div>');
+      } else if (q.type === 'POLL') {
+        html.push('        <div class="rk-poll-group" id="rk-poll-group-' + q.questionId + '">');
+        (q.options || []).forEach(function (opt) {
+          var sId = sanitizeId(opt);
+          html.push('          <div class="rk-poll-item" id="rk-pbar-' + q.questionId + '-' + sId + '" onclick="window.RKQuizInternal.votePoll(\'' + q.questionId + '\', \'' + escapeQuotes(opt) + '\')">');
+          html.push('            <div class="rk-poll-fill" style="width: 0%"></div>');
+          html.push('            <div class="rk-poll-text">');
+          html.push('              <span>' + escapeHtml(opt) + '</span>');
+          html.push('              <span class="rk-poll-pct">0%</span>');
+          html.push('            </div>');
+          html.push('          </div>');
+        });
+        html.push('        </div>');
+      }
+
+      html.push('      </div>');
+    });
+
+    html.push('    </div>'); // end rk-questions-list
+
+    // Action button
+    html.push('    <div class="rk-submit-wrap">');
+    html.push('      <button type="button" class="rk-submit-btn" id="rk-btn-submit" onclick="window.RKQuizInternal.submit()">');
+    html.push('        Submit Quiz & View Results <i class="fas fa-arrow-right"></i>');
+    html.push('      </button>');
+    html.push('    </div>');
+
+    // Result Card (hidden by default)
+    html.push('    <div id="rk-result-card" class="rk-result-card" style="display:none;"></div>');
+    html.push('  </div>'); // end rk-player-body
+    html.push('</div>'); // end rk-player-wrapper
+
+    bodyContent.innerHTML = html.join('\n');
+
+    // Start timer if applicable
+    if (quiz.timeLimitMinutes > 0) {
+      startTimer();
+    }
+  }
+
+  function renderInlinePlayer(quiz, container) {
+    var wrapper = document.createElement('div');
+    wrapper.id = 'rk-inline-' + quiz.id;
+    wrapper.style.cssText = 'width:100%; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; box-shadow:0 10px 25px -5px rgba(0,0,0,0.08); background:#ffffff;';
+    container.innerHTML = '';
+    container.appendChild(wrapper);
+
+    var dummyModal = {
+      querySelector: function (s) { return wrapper.querySelector(s); }
+    };
+    var bodyWrap = document.createElement('div');
+    bodyWrap.id = 'rk-modal-body-content';
+    wrapper.appendChild(bodyWrap);
+    renderNativePlayer(quiz, dummyModal);
+  }
+
+  function renderIframePlayer(quizId, serverUrl, modal) {
+    var bodyContent = document.getElementById('rk-modal-body-content');
+    if (!bodyContent) return;
+    var quizUrl = serverUrl + (serverUrl.indexOf('?') > -1 ? '&' : '?') + 'quizId=' + encodeURIComponent(quizId) + '&embed=1';
+    bodyContent.innerHTML = '<iframe src="' + quizUrl + '" width="100%" height="100%" style="border:none; width:100%; height:85vh; border-radius:12px;" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+  }
+
+  function renderNotFoundError(quizId, modal) {
+    var bodyContent = document.getElementById('rk-modal-body-content');
+    if (!bodyContent) return;
+    bodyContent.innerHTML = [
+      '<div style="padding: 40px 20px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">',
+      '  <div style="font-size: 52px; margin-bottom: 16px;">⚠️</div>',
+      '  <h2 style="font-size: 22px; color: #1e293b; margin-bottom: 12px; font-weight: 700;">Quiz Not Found</h2>',
+      '  <p style="color: #64748b; font-size: 15px; max-width: 500px; margin: 0 auto 24px; line-height: 1.6;">',
+      '    Could not load quiz: <code>' + escapeHtml(quizId || 'Unknown') + '</code>.<br>',
+      '    If this is a newly created custom quiz, please ensure you have pasted the full embed snippet containing <code>RKQuiz.register(...)</code> on your blog post.',
+      '  </p>',
+      '  <button type="button" class="rk-quiz-btn" onclick="RKQuiz.close()">Close</button>',
+      '</div>'
+    ].join('\n');
+  }
+
+  // ==========================================================================
+  // QUIZ LOGIC & EVENT HANDLERS
+  // ==========================================================================
+  window.RKQuizInternal = {
+    selectMCQ: function (qId, optVal, element) {
+      userAnswers[qId] = optVal;
+      var parent = element.parentElement;
+      var items = parent.querySelectorAll('.rk-opt-item');
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.remove('selected');
+        var icon = items[i].querySelector('.rk-opt-icon');
+        if (icon) { icon.className = 'far fa-circle rk-opt-icon'; }
+      }
+      element.classList.add('selected');
+      var selIcon = element.querySelector('.rk-opt-icon');
+      if (selIcon) { selIcon.className = 'fas fa-check-circle rk-opt-icon'; }
+      updateProgressBar();
+    },
+
+    selectCheckbox: function (qId, optVal, element) {
+      if (!Array.isArray(userAnswers[qId])) userAnswers[qId] = [];
+      var idx = userAnswers[qId].indexOf(optVal);
+      var icon = element.querySelector('.rk-opt-icon');
+
+      if (idx === -1) {
+        userAnswers[qId].push(optVal);
+        element.classList.add('selected');
+        if (icon) icon.className = 'fas fa-check-square rk-opt-icon';
+      } else {
+        userAnswers[qId].splice(idx, 1);
+        element.classList.remove('selected');
+        if (icon) icon.className = 'far fa-square rk-opt-icon';
+      }
+      updateProgressBar();
+    },
+
+    recordText: function (qId, val) {
+      userAnswers[qId] = val.trim();
+      updateProgressBar();
+    },
+
+    votePoll: function (qId, optVal) {
+      userAnswers[qId] = optVal;
+      if (!pollVotes[qId]) pollVotes[qId] = {};
+      pollVotes[qId][optVal] = (pollVotes[qId][optVal] || 0) + 1;
+
+      var total = 0;
+      for (var k in pollVotes[qId]) total += pollVotes[qId][k];
+
+      var group = document.getElementById('rk-poll-group-' + qId);
+      if (group) {
+        var items = group.querySelectorAll('.rk-poll-item');
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i];
+          item.classList.add('voted');
+        }
+      }
+
+      // Update vote percentage fills
+      for (var opt in pollVotes[qId]) {
+        var sId = sanitizeId(opt);
+        var el = document.getElementById('rk-pbar-' + qId + '-' + sId);
+        if (el) {
+          var count = pollVotes[qId][opt];
+          var pct = Math.round((count / total) * 100);
+          var fill = el.querySelector('.rk-poll-fill');
+          var pctText = el.querySelector('.rk-poll-pct');
+          if (fill) fill.style.width = pct + '%';
+          if (pctText) pctText.textContent = pct + '%';
+        }
+      }
+
+      updateProgressBar();
+    },
+
+    submit: function () {
+      if (!activeQuiz) return;
+
+      var nameInput = document.getElementById('rk-player-name');
+      var name = (nameInput ? nameInput.value.trim() : '') || 'Anonymous';
+      var emailInput = document.getElementById('rk-player-email');
+      var email = (emailInput ? emailInput.value.trim() : '');
+
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+
+      var totalPoints = 0;
+      var earnedPoints = 0;
+      var reviewItems = [];
+
+      (activeQuiz.questions || []).forEach(function (q) {
+        if (q.type === 'POLL') {
+          reviewItems.push({
+            question: q.question,
+            type: q.type,
+            userAnswer: userAnswers[q.questionId] || '(No vote)',
+            isCorrect: null,
+            points: 0,
+            explanation: q.explanation
+          });
+          return;
+        }
+
+        var pts = Number(q.points) || 1;
+        totalPoints += pts;
+        var userAns = userAnswers[q.questionId];
+        var isCorrect = false;
+
+        if (q.type === 'MCQ') {
+          isCorrect = userAns && String(userAns).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+        } else if (q.type === 'CHECKBOX') {
+          var correctList = (q.correctAnswer || '').split(',').map(function (s) { return s.trim().toLowerCase(); }).filter(Boolean);
+          var userList = (userAns || []).map(function (s) { return s.trim().toLowerCase(); });
+          isCorrect = correctList.length > 0 &&
+            correctList.length === userList.length &&
+            correctList.every(function (val) { return userList.indexOf(val) > -1; });
+        } else if (q.type === 'SHORT_ANSWER') {
+          isCorrect = userAns && String(userAns).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+        } else if (q.type === 'LONG_ANSWER') {
+          isCorrect = userAns && String(userAns).trim().length > 10;
+        }
+
+        if (isCorrect) earnedPoints += pts;
+
+        reviewItems.push({
+          question: q.question,
+          type: q.type,
+          userAnswer: userAns || '(No Answer)',
+          correctAnswer: q.correctAnswer,
+          isCorrect: isCorrect,
+          points: isCorrect ? pts : 0,
+          maxPoints: pts,
+          explanation: q.explanation
+        });
+      });
+
+      var percentage = totalPoints > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 100;
+      var passingScore = activeQuiz.passingScore || 50;
+      var passed = percentage >= passingScore;
+
+      // Render Result Card
+      var questionsList = document.getElementById('rk-questions-list');
+      var submitWrap = document.querySelector('.rk-submit-wrap');
+      var userCard = document.querySelector('.rk-user-card');
+
+      if (questionsList) questionsList.style.display = 'none';
+      if (submitWrap) submitWrap.style.display = 'none';
+      if (userCard) userCard.style.display = 'none';
+
+      var resultCard = document.getElementById('rk-result-card');
+      if (resultCard) {
+        var resHtml = [
+          '<div class="rk-score-banner ' + (passed ? 'pass' : 'fail') + '">',
+          '  <div class="rk-score-circle">',
+          '    <span class="rk-score-pct">' + percentage + '%</span>',
+          '    <span class="rk-score-lbl">' + (passed ? 'PASSED' : 'FAILED') + '</span>',
+          '  </div>',
+          '  <h3 class="rk-score-greet">' + (passed ? '🎉 Congratulations, ' + escapeHtml(name) + '!' : 'Keep practicing, ' + escapeHtml(name) + '!') + '</h3>',
+          '  <p class="rk-score-sub">' + (passed ? 'You cleared the quiz requirements.' : 'You scored below the required passing percentage.') + '</p>',
+          '  <div class="rk-score-stats">',
+          '    <div class="rk-stat-box"><strong>' + earnedPoints + ' / ' + totalPoints + '</strong><span>Score</span></div>',
+          '    <div class="rk-stat-box"><strong>' + percentage + '%</strong><span>Percentage</span></div>',
+          '    <div class="rk-stat-box"><strong>' + passingScore + '%</strong><span>Passing Mark</span></div>',
+          '  </div>',
+          '</div>'
+        ];
+
+        // Detailed review
+        if (activeQuiz.showAnswers !== false && reviewItems.length > 0) {
+          resHtml.push('<div class="rk-review-wrap">');
+          resHtml.push('  <h4 style="font-size:16px; font-weight:700; margin-bottom:14px; color:#1e293b;"><i class="fas fa-list-check"></i> Answer Review & Explanations:</h4>');
+
+          reviewItems.forEach(function (item, idx) {
+            var badgeClass = item.isCorrect === true ? 'correct' : (item.isCorrect === false ? 'incorrect' : 'poll');
+            var badgeText = item.isCorrect === true ? '✓ Correct (+' + item.points + ' pts)' : (item.isCorrect === false ? '✗ Incorrect (0 pts)' : 'Recorded');
+
+            resHtml.push('  <div class="rk-review-card ' + badgeClass + '">');
+            resHtml.push('    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">');
+            resHtml.push('      <span class="rk-review-badge ' + badgeClass + '">' + badgeText + '</span>');
+            resHtml.push('    </div>');
+            resHtml.push('    <div style="font-weight:700; font-size:15px; margin-bottom:8px; color:#0f172a;">Q' + (idx + 1) + ': ' + escapeHtml(item.question) + '</div>');
+            resHtml.push('    <div class="rk-review-line"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(item.userAnswer)) + '</div>');
+
+            if (item.isCorrect === false && item.correctAnswer) {
+              resHtml.push('    <div class="rk-review-line correct-line"><strong>Correct Answer:</strong> ' + escapeHtml(item.correctAnswer) + '</div>');
+            }
+            if (item.explanation) {
+              resHtml.push('    <div class="rk-review-exp"><i class="fas fa-lightbulb"></i> ' + escapeHtml(item.explanation) + '</div>');
+            }
+            resHtml.push('  </div>');
+          });
+
+          resHtml.push('</div>');
+        }
+
+        // Action buttons
+        resHtml.push('<div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;">');
+        if (activeQuiz.allowRetake !== false) {
+          resHtml.push('  <button type="button" class="rk-quiz-btn" style="background:#4f46e5;" onclick="window.RKQuizInternal.retake()"><i class="fas fa-redo"></i> Retake Quiz</button>');
+        }
+        resHtml.push('  <button type="button" class="rk-quiz-btn" style="background:#64748b;" onclick="RKQuiz.close()"><i class="fas fa-times"></i> Close</button>');
+        resHtml.push('</div>');
+
+        resultCard.innerHTML = resHtml.join('\n');
+        resultCard.style.display = 'block';
+
+        var bodyContent = document.getElementById('rk-modal-body-content');
+        if (bodyContent) bodyContent.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Sync submission to server in background if configured
+      if (RKQuiz.serverUrl && RKQuiz.serverUrl.indexOf('http') === 0 && RKQuiz.serverUrl.indexOf('SAMPLE_') === -1) {
+        try {
+          var payload = {
+            action: 'submitResponse',
+            quizId: activeQuiz.id,
+            userName: name,
+            userEmail: email,
+            score: earnedPoints,
+            totalPoints: totalPoints,
+            percentage: percentage,
+            passed: passed,
+            answers: userAnswers
+          };
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(RKQuiz.serverUrl, JSON.stringify(payload));
+          } else {
+            fetch(RKQuiz.serverUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            }).catch(function () {});
+          }
+        } catch (ex) {}
+      }
+    },
+
+    retake: function () {
+      if (activeQuiz) {
+        renderNativePlayer(activeQuiz, getOrCreateModal());
+      }
+    }
+  };
+
+  function updateProgressBar() {
+    if (!activeQuiz || !activeQuiz.questions) return;
+    var total = activeQuiz.questions.length;
+    var answered = 0;
+    activeQuiz.questions.forEach(function (q) {
+      var a = userAnswers[q.questionId];
+      if (a !== undefined && a !== null && (Array.isArray(a) ? a.length > 0 : String(a).trim() !== '')) {
+        answered++;
+      }
+    });
+    var pct = Math.round((answered / total) * 100);
+    var pBar = document.getElementById('rk-quiz-progress');
+    if (pBar) pBar.style.width = pct + '%';
+  }
+
+  function startTimer() {
+    var timerEl = document.getElementById('rk-live-timer');
+    timerInterval = setInterval(function () {
+      timeLeftSeconds--;
+      if (timerEl) timerEl.innerHTML = '<i class="fas fa-stopwatch"></i> ' + formatTimer(timeLeftSeconds);
+
+      if (timeLeftSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        alert('Time limit reached! Submitting your answers.');
+        window.RKQuizInternal.submit();
+      }
+    }, 1000);
+  }
+
+  function formatTimer(sec) {
+    if (sec <= 0) return '00:00';
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function shuffleArray(arr) {
+    var copy = arr.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = temp;
+    }
+    return copy;
+  }
+
+  function formatAns(ans) {
+    if (ans === undefined || ans === null || ans === '') return '(No Answer)';
+    if (Array.isArray(ans)) return ans.join(', ');
+    return String(ans);
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escapeQuotes(str) {
+    if (!str) return '';
+    return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
+
+  function sanitizeId(str) {
+    return String(str).replace(/[^a-zA-Z0-9]/g, '_');
+  }
+
+  // ==========================================================================
+  // INJECT CSS STYLES
+  // ==========================================================================
   function injectStyles() {
     if (document.getElementById('rk-quiz-styles')) return;
 
     var css = [
-      '/* RK QuizMaker Embed Styles */',
+      '/* RK QuizMaker Universal Styles */',
       '.rk-quiz-btn {',
       '  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);',
       '  color: #ffffff !important;',
@@ -139,7 +794,7 @@
       '  align-items: center;',
       '  justify-content: center;',
       '  gap: 8px;',
-      '  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);',
+      '  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);',
       '  transition: all 0.25s ease;',
       '  text-decoration: none !important;',
       '  outline: none;',
@@ -149,23 +804,22 @@
       '  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45);',
       '  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);',
       '}',
-      '.rk-quiz-btn:active {',
-      '  transform: translateY(0);',
-      '}',
+      '.rk-quiz-btn:active { transform: translateY(0); }',
       '.rk-modal-overlay {',
       '  position: fixed;',
       '  top: 0; left: 0; right: 0; bottom: 0;',
       '  display: none;',
       '  align-items: center;',
       '  justify-content: center;',
-      '  z-index: 999999;',
+      '  z-index: 9999999;',
       '  padding: 16px;',
+      '  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;',
       '}',
       '.rk-modal-backdrop {',
       '  position: absolute;',
       '  top: 0; left: 0; right: 0; bottom: 0;',
-      '  background: rgba(15, 23, 42, 0.7);',
-      '  backdrop-filter: blur(5px);',
+      '  background: rgba(15, 23, 42, 0.75);',
+      '  backdrop-filter: blur(6px);',
       '  opacity: 0;',
       '  transition: opacity 0.25s ease;',
       '}',
@@ -185,74 +839,133 @@
       '  opacity: 0;',
       '  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);',
       '}',
-      '.rk-modal-active .rk-modal-backdrop {',
-      '  opacity: 1;',
-      '}',
-      '.rk-modal-active .rk-modal-dialog {',
-      '  transform: scale(1) translateY(0);',
-      '  opacity: 1;',
-      '}',
+      '.rk-modal-active .rk-modal-backdrop { opacity: 1; }',
+      '.rk-modal-active .rk-modal-dialog { transform: scale(1) translateY(0); opacity: 1; }',
       '.rk-modal-close {',
       '  position: absolute;',
       '  top: 14px;',
       '  right: 14px;',
       '  width: 36px;',
       '  height: 36px;',
-      '  border-radius: 50%;',
-      '  background: rgba(0, 0, 0, 0.08);',
+      '  background: rgba(255, 255, 255, 0.85);',
       '  border: none;',
-      '  font-size: 22px;',
-      '  line-height: 1;',
-      '  color: #333333;',
-      '  cursor: pointer;',
+      '  border-radius: 50%;',
       '  display: flex;',
       '  align-items: center;',
       '  justify-content: center;',
-      '  z-index: 10;',
-      '  transition: all 0.2s;',
+      '  font-size: 20px;',
+      '  color: #1e293b;',
+      '  cursor: pointer;',
+      '  z-index: 20;',
+      '  transition: all 0.2s ease;',
+      '  box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
       '}',
-      '.rk-modal-close:hover {',
-      '  background: #ef4444;',
-      '  color: #ffffff;',
-      '  transform: rotate(90deg);',
-      '}',
+      '.rk-modal-close:hover { background: #fee2e2; color: #ef4444; transform: scale(1.08); }',
       '.rk-modal-body {',
       '  flex: 1;',
-      '  width: 100%;',
-      '  height: 100%;',
-      '  overflow: hidden;',
+      '  overflow-y: auto;',
+      '  -webkit-overflow-scrolling: touch;',
+      '  display: flex;',
+      '  flex-direction: column;',
       '}',
-      '#rk-quiz-iframe {',
-      '  width: 100%;',
-      '  height: 100%;',
-      '  border: none;',
-      '  display: block;',
+      '/* Player UI Elements */',
+      '.rk-player-wrapper { display: flex; flex-direction: column; min-height: 100%; }',
+      '.rk-player-header {',
+      '  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);',
+      '  color: #ffffff;',
+      '  padding: 24px 28px 20px;',
+      '  position: relative;',
       '}',
+      '.rk-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; padding-right: 36px; }',
+      '.rk-header-top h2 { font-size: 20px; font-weight: 700; margin: 0; line-height: 1.3; }',
+      '.rk-header-desc { font-size: 13.5px; opacity: 0.9; margin: 0 0 14px; line-height: 1.5; }',
+      '.rk-meta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }',
+      '.rk-meta-chip { font-size: 12px; background: rgba(255, 255, 255, 0.2); padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }',
+      '.rk-timer-badge { background: #fef08a; color: #854d0e; font-weight: 700; padding: 4px 12px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); flex-shrink: 0; }',
+      '.rk-progress-container { height: 6px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; margin-top: 6px; }',
+      '.rk-progress-bar { height: 100%; background: #38bdf8; transition: width 0.3s ease; }',
+      '.rk-player-body { padding: 24px 28px; background: #f8fafc; flex: 1; }',
+      '.rk-user-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }',
+      '.rk-user-title { font-weight: 600; font-size: 13px; color: #64748b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }',
+      '.rk-user-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }',
+      '.rk-input { width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14px; font-family: inherit; box-sizing: border-box; transition: all 0.2s; background: #ffffff; color: #1e293b; }',
+      '.rk-input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }',
+      '.rk-q-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.04); }',
+      '.rk-q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }',
+      '.rk-q-badge { font-size: 11px; font-weight: 700; color: #4f46e5; background: #e0e7ff; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }',
+      '.rk-q-pts { font-size: 12px; font-weight: 600; color: #64748b; }',
+      '.rk-q-text { font-size: 15.5px; font-weight: 700; color: #0f172a; margin-bottom: 14px; line-height: 1.45; }',
+      '.rk-options-group { display: flex; flex-direction: column; gap: 10px; }',
+      '.rk-opt-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; background: #ffffff; min-height: 48px; box-sizing: border-box; }',
+      '.rk-opt-item:hover { border-color: #cbd5e1; background: #f8fafc; }',
+      '.rk-opt-item.selected { border-color: #4f46e5; background: #eef2ff; color: #4338ca; }',
+      '.rk-opt-item.selected .rk-opt-icon { color: #4f46e5; }',
+      '.rk-opt-icon { font-size: 16px; color: #94a3b8; flex-shrink: 0; }',
+      '.rk-opt-label { font-size: 14.5px; font-weight: 500; }',
+      '.rk-poll-group { display: flex; flex-direction: column; gap: 10px; }',
+      '.rk-poll-item { position: relative; border: 1.5px solid #e2e8f0; border-radius: 10px; overflow: hidden; cursor: pointer; background: #ffffff; min-height: 48px; display: flex; align-items: center; transition: border-color 0.2s; }',
+      '.rk-poll-item:hover { border-color: #cbd5e1; }',
+      '.rk-poll-fill { position: absolute; top: 0; left: 0; bottom: 0; background: #e0e7ff; transition: width 0.4s ease; z-index: 1; }',
+      '.rk-poll-text { position: relative; z-index: 2; display: flex; justify-content: space-between; width: 100%; padding: 12px 16px; font-weight: 600; font-size: 14px; color: #1e293b; }',
+      '.rk-poll-pct { font-weight: 700; color: #4f46e5; }',
+      '.rk-submit-wrap { margin-top: 24px; }',
+      '.rk-submit-btn { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3); }',
+      '.rk-submit-btn:hover { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); transform: translateY(-1px); }',
+      '/* Result View */',
+      '.rk-result-card { background: #ffffff; border-radius: 14px; padding: 24px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }',
+      '.rk-score-banner { text-align: center; padding: 24px 16px; border-radius: 12px; margin-bottom: 24px; }',
+      '.rk-score-banner.pass { background: #f0fdf4; border: 1px solid #bbf7d0; }',
+      '.rk-score-banner.fail { background: #fef2f2; border: 1px solid #fecaca; }',
+      '.rk-score-circle { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }',
+      '.rk-score-banner.pass .rk-score-circle { background: #dcfce7; color: #15803d; border: 3px solid #86efac; }',
+      '.rk-score-banner.fail .rk-score-circle { background: #fee2e2; color: #b91c1c; border: 3px solid #fca5a5; }',
+      '.rk-score-pct { font-size: 22px; font-weight: 800; line-height: 1; }',
+      '.rk-score-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; margin-top: 3px; }',
+      '.rk-score-greet { font-size: 19px; font-weight: 700; margin: 0 0 6px; color: #0f172a; }',
+      '.rk-score-sub { font-size: 13.5px; color: #64748b; margin: 0 0 16px; }',
+      '.rk-score-stats { display: flex; justify-content: center; gap: 16px; }',
+      '.rk-stat-box { background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; }',
+      '.rk-stat-box strong { font-size: 16px; color: #0f172a; font-weight: 700; }',
+      '.rk-stat-box span { font-size: 11px; color: #64748b; }',
+      '.rk-review-card { background: #ffffff; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; border-left: 4px solid #cbd5e1; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }',
+      '.rk-review-card.correct { border-left-color: #10b981; }',
+      '.rk-review-card.incorrect { border-left-color: #ef4444; }',
+      '.rk-review-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }',
+      '.rk-review-badge.correct { background: #dcfce7; color: #166534; }',
+      '.rk-review-badge.incorrect { background: #fee2e2; color: #991b1b; }',
+      '.rk-review-badge.poll { background: #e0e7ff; color: #3730a3; }',
+      '.rk-review-line { font-size: 13.5px; color: #334155; margin-bottom: 4px; }',
+      '.rk-review-line.correct-line { color: #15803d; font-weight: 600; }',
+      '.rk-review-exp { font-size: 12.5px; color: #64748b; background: #f8fafc; padding: 8px 12px; border-radius: 6px; margin-top: 6px; border-left: 2px solid #f59e0b; }',
+      '/* Mobile Responsiveness */',
       '@media (max-width: 640px) {',
       '  .rk-modal-overlay { padding: 0 !important; }',
       '  .rk-modal-dialog {',
       '    width: 100% !important;',
       '    height: 100% !important;',
-      '    max-width: 100% !important;',
-      '    max-height: 100% !important;',
+      '    max-height: 100vh !important;',
       '    border-radius: 0 !important;',
+      '    transform: none !important;',
       '  }',
-      '  .rk-modal-close { top: 10px !important; right: 10px !important; }',
+      '  .rk-player-header { padding: 18px 16px 14px !important; }',
+      '  .rk-player-body { padding: 16px 14px !important; }',
+      '  .rk-user-inputs { grid-template-columns: 1fr !important; }',
+      '  .rk-score-stats { gap: 8px !important; }',
+      '  .rk-stat-box { padding: 6px 10px !important; }',
       '}'
-    ].join('\n');
+    ];
 
-    var styleEl = document.createElement('style');
-    styleEl.id = 'rk-quiz-styles';
-    styleEl.type = 'text/css';
-    styleEl.innerHTML = css;
-    document.head.appendChild(styleEl);
+    var style = document.createElement('style');
+    style.id = 'rk-quiz-styles';
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css.join('\n')));
+    document.head.appendChild(style);
   }
 
-  // Auto-init on DOM ready
+  // Self-initialize on script load
+  injectStyles();
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      RKQuiz.init();
-    });
+    document.addEventListener('DOMContentLoaded', function () { RKQuiz.init(); });
   } else {
     RKQuiz.init();
   }
