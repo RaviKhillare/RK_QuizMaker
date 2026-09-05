@@ -1791,58 +1791,26 @@
            ==================================================================== -->
       <section id="view-bulk" class="tab-view">
         <div class="flex flex-col w-full">
-          <!-- Top Context Ribbon & Target Selector -->
-          <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md mb-space-lg" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+          <!-- Top Title Bar (Shifted to Top, Pills & Target Destination Removed) -->
+          <div class="flex items-center justify-between gap-space-md mb-space-sm" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <div>
-              <div class="flex items-center gap-2 mb-1" style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-container/10 text-primary-container font-semibold" style="display:inline-flex; align-items:center; gap:6px; background:#4f46e515; color:#3525cd; padding:4px 12px; border-radius:20px; font-size:12px;">
-                  <span class="material-symbols-outlined text-[14px]">table_chart</span>
-                  Sheets &amp; CSV
-                </span>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-text-secondary" style="background:#e2e7ff; color:#334155; padding:4px 10px; border-radius:20px; font-size:12px;">
-                  <span>AI Prompt v3.2</span>
-                </span>
-              </div>
-              <h2 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold" style="font-size:26px; font-weight:800; color:#0f172a; margin:0;">
+              <h2 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold" style="font-size:24px; font-weight:800; color:#0f172a; margin:0;">
                 Bulk Question Import Hub
               </h2>
             </div>
-            <!-- Target Quiz Switcher -->
-            <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="background:#fff; border: 1.5px solid #cbd5e1; padding:10px 16px; border-radius:14px; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 12px -2px; display:flex; align-items:center; gap:10px;">
-              <div class="flex flex-col">
-                <label class="font-label-sm text-label-sm text-text-muted flex items-center gap-1" for="bulk-target-select" style="font-size:11px; color:#64748b; font-weight:600; display:flex; align-items:center; gap:4px;">
-                  <span class="material-symbols-outlined text-[14px] text-primary" style="color:#3525cd;">target</span>
-                  Target Destination
-                </label>
-                <div class="relative mt-1" style="margin-top:2px;">
-                  <select id="bulk-target-select" class="w-full sm:w-72 bg-surface-container-low text-text-primary font-title-sm text-title-sm py-2 pl-3 pr-8 rounded-lg outline-none" style="padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1; background:#f8fafc; font-size:13px; font-weight:600; color:#0f172a; min-width:260px;">
-                    <option value="">Target Quiz: -- Create Brand New Quiz --</option>
-                  </select>
-                </div>
-              </div>
-              <button onclick="openQuizBuilder()" class="h-10 px-3 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" style="height:36px; padding:0 12px; border-radius:8px; background:#eaedff; color:#3525cd; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; margin-top:14px;" title="Create Quiz">
-                <span class="material-symbols-outlined text-[18px]">add</span>
-                <span>New</span>
-              </button>
-            </div>
           </div>
 
-          <!-- Three-Tab Segmented Controller -->
-          <div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl w-full max-w-3xl mb-space-lg shadow-sm" style="background:#f1f5f9; border: 1.5px solid #cbd5e1; padding:4px; border-radius:12px; display:flex; gap:6px; max-width:760px; margin-bottom:20px;">
-            <button class="bulk-subtab-btn active flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all" id="btn-subtab-sheets" onclick="switchBulkSubtab('sheets')" style="flex:1; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:700; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <!-- Two-Tab Segmented Controller (ChatGPT Prompt tab removed) -->
+          <div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl w-full max-w-xl mb-space-md shadow-sm" style="background:#f1f5f9; border: 1.5px solid #cbd5e1; padding:4px; border-radius:12px; display:flex; gap:6px; max-width:540px; margin-bottom:16px;">
+            <button class="bulk-subtab-btn active flex-1 py-2 px-4 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all" id="btn-subtab-sheets" onclick="switchBulkSubtab('sheets')" style="flex:1; padding:8px 14px; border-radius:8px; font-size:13px; font-weight:700; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
               <span class="material-symbols-outlined text-[18px]">table_chart</span>
               <span>Google Sheets &amp; CSV</span>
               <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-primary-container text-on-primary font-label-sm" style="background:#3525cd; color:#fff; font-size:10px; padding:2px 6px; border-radius:10px;">Active</span>
             </button>
-            <button class="bulk-subtab-btn flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary flex items-center justify-center gap-2 transition-all" id="btn-subtab-text" onclick="switchBulkSubtab('text')" style="flex:1; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <button class="bulk-subtab-btn flex-1 py-2 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary flex items-center justify-center gap-2 transition-all" id="btn-subtab-text" onclick="switchBulkSubtab('text')" style="flex:1; padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
               <span class="material-symbols-outlined text-[18px]">text_snippet</span>
               <span>Plain Text Parser</span>
               <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container text-text-muted font-label-sm" style="background:#e2e8f0; color:#64748b; font-size:10px; padding:2px 6px; border-radius:10px;">Smart</span>
-            </button>
-            <button class="bulk-subtab-btn flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary flex items-center justify-center gap-2 transition-all" id="btn-subtab-chatgpt" onclick="switchBulkSubtab('chatgpt')" style="flex:1; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span class="material-symbols-outlined text-[18px] text-tertiary" style="color:#5c00ca;">smart_toy</span>
-              <span>ChatGPT AI Prompt Generator</span>
-              <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-tertiary-container text-on-tertiary font-label-sm" style="background:#7531e6; color:#fff; font-size:10px; padding:2px 6px; border-radius:10px;">AI 1-Click</span>
             </button>
           </div>
 
@@ -1906,48 +1874,90 @@
                   </div>
                 </div>
 
-                <!-- Option B: Paste Table Cells (Excel / Sheets / CSV) -->
+                <!-- Option B: Interactive Google Spreadsheet Question Editor -->
                 <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background:#fff; border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(79, 70, 229); border-radius:16px; padding:20px; box-shadow: rgba(79, 70, 229, 0.12) 0px 8px 24px -4px;">
-                  <div class="flex items-center justify-between mb-space-sm" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  <div class="flex items-center justify-between mb-space-sm" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                     <div class="flex items-center gap-space-xs" style="display:flex; align-items:center; gap:8px;">
                       <div class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center font-bold font-title-sm" style="width:32px; height:32px; border-radius:8px; background:#4f46e520; color:#3525cd; display:flex; align-items:center; justify-content:center;">
                         B
                       </div>
                       <div>
                         <h3 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:16px; font-weight:700; color:#0f172a; margin:0;">
-                          Option B: Copy &amp; Paste Table Cells
+                          Option B: Google Spreadsheet Editor (थेट रो आणि कॉलममध्ये पेस्ट करा)
                         </h3>
+                        <p class="font-body-sm text-[12px] text-text-muted mt-0.5" style="font-size:12px; color:#64748b; margin:2px 0 0 0;">
+                          ChatGPT किंवा Google Sheets वरून कॉपी केलेले प्रश्न थेट खालील रो आणि कॉलममध्ये पेस्ट (Ctrl+V) करा.
+                        </p>
                       </div>
                     </div>
-                    <button class="font-label-sm text-label-sm text-text-muted hover:text-status-danger transition-colors flex items-center gap-0.5" onclick="document.getElementById('sheet-tsv-paste-area').value=''; document.getElementById('detectedCount').textContent='0';" style="background:transparent; border:none; color:#64748b; cursor:pointer; font-size:12px; display:inline-flex; align-items:center;">
-                      <span class="material-symbols-outlined text-[14px]">delete</span>
-                      <span>Clear</span>
-                    </button>
                   </div>
-                  <div class="relative">
-                    <textarea oninput="autoUpdateTsvCount()" class="w-full bg-surface-container-low text-text-primary font-mono text-body-sm p-space-sm rounded-xl outline-none" id="sheet-tsv-paste-area" rows="7" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:12px; font-family:monospace; font-size:12.5px; line-height:1.5;">Question	Type	Options	Correct Answer	Points	Explanation
-Who was the first President of India?	MCQ	Dr. Rajendra Prasad, Dr. S. Radhakrishnan, Jawaharlal Nehru, Sardar Patel	Dr. Rajendra Prasad	1	Served from 1950 to 1962.
-Which planet is known as the Red Planet?	MCQ	Venus, Mars, Jupiter, Saturn	Mars	1	Mars has iron oxide on its surface.
-What is the longest river in India?	MCQ	Ganga, Godavari, Krishna, Yamuna	Ganga	1	The Ganga flows over 2,525 km across India.
-Which gas do plants absorb during photosynthesis?	MCQ	Carbon Dioxide, Oxygen, Nitrogen, Hydrogen	Carbon Dioxide	1	Plants absorb CO2 and release Oxygen.</textarea>
+
+                  <!-- Question Type Selector & Toolbar Above Spreadsheet -->
+                  <div class="flex flex-wrap items-center justify-between gap-2.5 p-2.5 bg-surface-container-low rounded-xl border border-border-subtle mb-3" style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px 12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                    <div class="flex items-center gap-2 flex-wrap" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                      <span class="material-symbols-outlined text-primary text-[20px]" style="color:#3525cd;">category</span>
+                      <label for="indexSheetQuestionTypeSelect" class="font-title-sm text-[13px] text-text-primary font-bold" style="font-size:13px; font-weight:700; color:#0f172a;">
+                        Question Type:
+                      </label>
+                      <select id="indexSheetQuestionTypeSelect" onchange="changeSpreadsheetQuestionType(this.value)" class="bg-surface-card text-text-primary font-title-sm text-[13px] py-1 px-3 rounded-lg border border-border-medium outline-none cursor-pointer font-semibold shadow-xs" style="background:#fff; border:1.5px solid #cbd5e1; border-radius:6px; padding:4px 10px; font-size:13px; font-weight:700; color:#0f172a;">
+                        <option value="MCQ" selected>Multiple Choice (MCQ - Single Correct)</option>
+                        <option value="CHECKBOX">Checkbox (Multiple Correct Answers)</option>
+                        <option value="TRUE_FALSE">True / False (खरे / खोटे)</option>
+                        <option value="SHORT_ANSWER">Fill in the Blanks / Short Answer</option>
+                        <option value="POLL">Live Poll / Opinion Poll</option>
+                        <option value="STANDARD_6COL">Standard Full Schema (6 Columns)</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-wrap" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                      <button type="button" onclick="pasteClipboardToSpreadsheet()" class="px-2.5 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-[12px] font-bold flex items-center gap-1 transition-colors" style="background:#eaedff; color:#3525cd; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Paste clipboard rows from ChatGPT/Excel">
+                        <span class="material-symbols-outlined text-[16px]">content_paste</span>
+                        <span>Paste Clipboard</span>
+                      </button>
+                      <button type="button" onclick="addSpreadsheetRow()" class="px-2.5 py-1.5 bg-surface-card hover:bg-surface-container text-text-primary rounded-lg text-[12px] font-semibold border border-border-subtle flex items-center gap-1 transition-colors shadow-xs" style="background:#fff; border:1px solid #cbd5e1; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:700; color:#0f172a; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Add blank row">
+                        <span class="material-symbols-outlined text-[16px]">add</span>
+                        <span>Add Row</span>
+                      </button>
+                      <button type="button" onclick="resetSpreadsheetSample()" class="px-2.5 py-1.5 bg-surface-card hover:bg-surface-container text-text-secondary rounded-lg text-[12px] font-medium border border-border-subtle flex items-center gap-1 transition-colors shadow-xs" style="background:#fff; border:1px solid #cbd5e1; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:600; color:#475569; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Reset to sample row">
+                        <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                        <span>Reset Sample</span>
+                      </button>
+                      <button type="button" onclick="clearSpreadsheetTable()" class="px-2 py-1.5 text-status-danger hover:bg-status-danger/10 rounded-lg text-[12px] font-medium flex items-center gap-0.5 transition-colors" style="background:transparent; border:none; color:#ef4444; padding:5px 8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:2px;" title="Clear table">
+                        <span class="material-symbols-outlined text-[15px]">delete</span>
+                        <span>Clear</span>
+                      </button>
+                    </div>
                   </div>
-                  <div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm mt-space-md pt-space-sm bg-surface-container-low/40 p-space-sm rounded-xl" style="margin-top:12px; padding:10px 14px; background:#f8fafc; border-radius:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+
+                  <!-- Interactive Spreadsheet Table -->
+                  <div id="indexSpreadsheetGridContainer" class="w-full overflow-x-auto rounded-xl border border-border-medium bg-surface-card shadow-xs my-2 custom-designer-scroll" style="max-height: 400px; overflow-y: auto; border:1px solid #cbd5e1; border-radius:10px; background:#fff;">
+                    <table class="w-full text-left font-body-sm text-body-sm border-collapse min-w-[760px]" id="indexBulkSpreadsheetTable" style="width:100%; border-collapse:collapse; min-width:760px;">
+                      <thead class="bg-surface-container sticky top-0 z-10 text-text-primary text-[12px] font-bold border-b border-border-medium shadow-xs" style="position:sticky; top:0; background:#f1f5f9; z-index:5;">
+                        <!-- Populated dynamically by JS -->
+                      </thead>
+                      <tbody class="divide-y divide-border-subtle" id="indexBulkSpreadsheetBody">
+                        <!-- Populated dynamically by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Spreadsheet Bottom Action Bar -->
+                  <div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm mt-3 pt-space-xs bg-surface-container-low/50 p-space-sm rounded-xl" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:12px; padding:10px 14px; border-radius:10px; background:#f8fafc;">
                     <div class="flex items-center gap-2" style="display:flex; align-items:center; gap:6px;">
-                      <span class="w-2 h-2 rounded-full bg-status-success animate-pulse" style="width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-status-success animate-pulse" style="width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
                       <span class="font-label-md text-label-md text-text-secondary" style="font-size:13px; color:#334155;">
-                        <span class="font-bold text-text-primary" id="detectedCount" style="font-weight:800; color:#0f172a;">4</span> questions detected
+                        <span class="font-bold text-text-primary" id="indexDetectedCount" style="font-weight:800; color:#0f172a;">1</span> question(s) in spreadsheet
                       </span>
                     </div>
                     <div class="flex items-center gap-space-xs flex-wrap" style="display:flex; gap:8px;">
-                      <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors" onclick="downloadGoogleSheetTemplate()" style="padding:6px 12px; border-radius:6px; background:#eaedff; color:#3525cd; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
+                      <button type="button" class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors font-bold" onclick="triggerTemplateDownload()" style="padding:6px 12px; border-radius:6px; background:#eaedff; color:#3525cd; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
                         <span class="material-symbols-outlined text-[16px]">file_download</span>
-                        <span>Download Template</span>
+                        <span>Download CSV Template</span>
                       </button>
-                      <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors" onclick="previewSheetTable()" style="padding:6px 12px; border-radius:6px; background:#eaedff; color:#0f172a; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
+                      <button type="button" class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors font-bold" onclick="parseAndPreviewSpreadsheet()" style="padding:6px 12px; border-radius:6px; background:#eaedff; color:#0f172a; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
                         <span class="material-symbols-outlined text-[16px]">pageview</span>
                         <span>Parse Table</span>
                       </button>
-                      <button class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm" onclick="executeSheetImport()" style="padding:6px 14px; border-radius:6px; background:#10b981; color:#fff; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
+                      <button type="button" class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm font-bold" onclick="commitSpreadsheetImport()" style="padding:6px 14px; border-radius:6px; background:#10b981; color:#fff; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:12px;">
                         <span class="material-symbols-outlined text-[16px]">check_circle</span>
                         <span>Import to Quiz</span>
                       </button>
@@ -2010,30 +2020,7 @@ Answer: A, B</pre>
                 </div>
               </div>
 
-              <!-- TAB PANEL 3: ChatGPT AI Prompt Generator -->
-              <div class="bulk-subtab-pane space-y-space-md" id="subtab-chatgpt-content" style="display:none; flex-direction:column; gap:16px;">
-                <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background:#fff; border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(117, 49, 230); border-radius:16px; padding:20px;">
-                  <div class="flex items-center gap-space-xs mb-space-sm" style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                    <div class="w-8 h-8 rounded-lg bg-tertiary-container text-on-tertiary flex items-center justify-center font-bold font-title-sm" style="width:32px; height:32px; border-radius:8px; background:#7531e6; color:#fff; display:flex; align-items:center; justify-content:center;">
-                      <span class="material-symbols-outlined text-[18px]">psychology</span>
-                    </div>
-                    <div>
-                      <h3 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:16px; font-weight:700; color:#0f172a; margin:0;">
-                        ChatGPT 1-Click Prompt (Sheets Compatible)
-                      </h3>
-                      <p class="font-body-sm text-body-sm text-text-muted" style="font-size:12px; color:#64748b; margin:0;">
-                        Feed this structured prompt to ChatGPT/Gemini and paste the resulting table into Option B!
-                      </p>
-                    </div>
-                  </div>
-                  <div class="p-space-md bg-surface-container-low rounded-xl text-body-sm text-text-secondary leading-relaxed" style="background:#f8fafc; padding:14px; border-radius:10px; font-size:13px; color:#334155; line-height:1.6; border:1px solid #e2e8f0;">
-                    Use the <strong>AI Question Generator</strong> card on the right panel to customize your topic, count, difficulty, and language. Copy with 1-click and paste into ChatGPT or Google Gemini!
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Column: AI 1-Click Generator & Workflow Guide (4 Cols) -->
+              <!-- Right Column: AI 1-Click Generator & Workflow Guide (4 Cols) -->
             <div class="xl:col-span-4 space-y-space-md" style="grid-column: span 4 / span 4; display:flex; flex-direction:column; gap:16px;">
               <!-- ChatGPT 1-Click Generator Feature Card -->
               <div class="bg-surface-card rounded-2xl p-space-md shadow-md relative overflow-hidden" style="background:#fff; border: 2px solid #c7c4d8; border-radius:16px; padding:18px; box-shadow: rgba(92, 0, 202, 0.12) 0px 12px 28px -4px;">
@@ -2058,12 +2045,14 @@ Answer: A, B</pre>
                     <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm px-3 py-2 rounded-lg outline-none" id="gpt-topic-input" oninput="updateChatGptPrompt()" type="text" value="Maharashtra History &amp; Geography" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px 10px; font-size:12.5px;"/>
                   </div>
                   <div>
-                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" style="font-size:12px; font-weight:600; color:#334155;">Language:</label>
-                    <input type="hidden" id="gpt-lang-select" value="English">
-                    <div class="grid grid-cols-3 gap-1.5" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
-                      <button class="ai-lang-pill py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-primary text-on-primary font-semibold transition-colors" onclick="setGptLang('English', this)" type="button" style="padding:4px; border-radius:6px; background:#3525cd; color:#fff; font-size:11px; font-weight:700; border:none; cursor:pointer;">English ✓</button>
-                      <button class="ai-lang-pill py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-surface-container-low text-text-secondary transition-colors" onclick="setGptLang('Marathi', this)" type="button" style="padding:4px; border-radius:6px; background:#f1f5f9; color:#334155; font-size:11px; font-weight:600; border:1px solid #cbd5e1; cursor:pointer;">Marathi</button>
-                      <button class="ai-lang-pill py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-surface-container-low text-text-secondary transition-colors" onclick="setGptLang('Hindi', this)" type="button" style="padding:4px; border-radius:6px; background:#f1f5f9; color:#334155; font-size:11px; font-weight:600; border:1px solid #cbd5e1; cursor:pointer;">Hindi</button>
+                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="gpt-lang-input" style="font-size:12px; font-weight:600; color:#334155;">Language (कोणतीही भाषा टाईप करा):</label>
+                    <input type="text" id="gpt-lang-input" oninput="updateChatGptPrompt()" value="Marathi" placeholder="Type language (e.g. Marathi, Hindi, English, Sanskrit...)" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:6px 10px; font-size:12.5px;"/>
+                    <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin-top:6px;">
+                      <span style="font-size:10.5px; color:#64748b;">Quick:</span>
+                      <button type="button" onclick="setGptLangCustom('Marathi')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">मराठी</button>
+                      <button type="button" onclick="setGptLangCustom('English')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">English</button>
+                      <button type="button" onclick="setGptLangCustom('Hindi')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">हिन्दी</button>
+                      <button type="button" onclick="setGptLangCustom('Sanskrit')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">संस्कृत</button>
                     </div>
                   </div>
                   <div class="grid grid-cols-2 gap-2" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
@@ -4064,6 +4053,10 @@ Answer: A, B</pre>
       } else if (viewId === 'blog-designer') {
         if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
         if (typeof setupBlockInserters === 'function') setupBlockInserters();
+      } else if (viewId === 'bulk') {
+        if (typeof renderIndexSpreadsheetTable === 'function') renderIndexSpreadsheetTable();
+        if (typeof attachIndexSpreadsheetPasteListener === 'function') attachIndexSpreadsheetPasteListener();
+        if (typeof updateChatGptPrompt === 'function') updateChatGptPrompt();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4508,6 +4501,287 @@ Answer: A, B</pre>
     // ==========================================================================
     // BULK IMPORT LOGIC & SUBTABS
     // ==========================================================================
+    // ─── SPREADSHEET CONFIG (6 Question Types) ───────────────────────────────
+    var SPREADSHEET_CONFIGS = {
+      MCQ: {
+        headers: ['Question', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answer (A/B/C/D)', 'Points', 'Explanation'],
+        sampleRow: ['What is the capital of Maharashtra?', 'Pune', 'Mumbai', 'Nagpur', 'Nashik', 'B', '1', 'Mumbai is the capital of Maharashtra.'],
+        toQuestion: function(row) {
+          var opts = [row[1], row[2], row[3], row[4]].filter(Boolean);
+          var letter = (row[5] || 'A').trim().toUpperCase();
+          var ansMap = { A: row[1], B: row[2], C: row[3], D: row[4] };
+          return { type: 'MCQ', question: row[0], options: opts, correctAnswer: ansMap[letter] || row[5], points: Number(row[6]) || 1, explanation: row[7] || '' };
+        }
+      },
+      CHECKBOX: {
+        headers: ['Question', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answers (e.g. A,C)', 'Points', 'Explanation'],
+        sampleRow: ['Select all prime numbers:', '2', '4', '7', '9', 'A,C', '2', '2 and 7 are prime numbers.'],
+        toQuestion: function(row) {
+          var opts = [row[1], row[2], row[3], row[4]].filter(Boolean);
+          var letters = (row[5] || '').split(',').map(function(l) { return l.trim().toUpperCase(); });
+          var letterMap = { A: row[1], B: row[2], C: row[3], D: row[4] };
+          var correct = letters.map(function(l) { return letterMap[l] || l; }).filter(Boolean).join(', ');
+          return { type: 'CHECKBOX', question: row[0], options: opts, correctAnswer: correct, points: Number(row[6]) || 2, explanation: row[7] || '' };
+        }
+      },
+      TRUE_FALSE: {
+        headers: ['Question (Statement)', 'Correct Answer (True/False)', 'Points', 'Explanation'],
+        sampleRow: ['The Earth revolves around the Sun.', 'True', '1', 'Earth orbits the Sun, completing one revolution per year.'],
+        toQuestion: function(row) {
+          return { type: 'MCQ', question: row[0], options: ['True', 'False'], correctAnswer: row[1] || 'True', points: Number(row[2]) || 1, explanation: row[3] || '' };
+        }
+      },
+      SHORT_ANSWER: {
+        headers: ['Question / Fill in the Blank (__)', 'Correct Answer', 'Points', 'Explanation'],
+        sampleRow: ['The chemical formula of water is __.', 'H2O', '1', 'Water molecule consists of 2 Hydrogen and 1 Oxygen atom.'],
+        toQuestion: function(row) {
+          return { type: 'SHORT_ANSWER', question: row[0], options: [], correctAnswer: row[1] || '', points: Number(row[2]) || 1, explanation: row[3] || '' };
+        }
+      },
+      POLL: {
+        headers: ['Poll Question', 'Option A', 'Option B', 'Option C', 'Option D'],
+        sampleRow: ['How would you rate this session?', 'Excellent', 'Good', 'Average', 'Poor'],
+        toQuestion: function(row) {
+          var opts = [row[1], row[2], row[3], row[4]].filter(Boolean);
+          return { type: 'POLL', question: row[0], options: opts, correctAnswer: '', points: 0, explanation: '' };
+        }
+      },
+      STANDARD_6COL: {
+        headers: ['Question', 'Type', 'Options (comma-sep)', 'Correct Answer', 'Points', 'Explanation', 'Image URL'],
+        sampleRow: ['What is the capital of India?', 'MCQ', 'Mumbai, Delhi, Chennai, Kolkata', 'Delhi', '1', 'New Delhi is the capital of India.', ''],
+        toQuestion: function(row) {
+          var type = (row[1] || 'MCQ').toUpperCase();
+          var opts = row[2] ? row[2].split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
+          return { type: type, question: row[0], options: opts, correctAnswer: row[3] || '', points: Number(row[4]) || 1, explanation: row[5] || '', imageUrl: row[6] || '' };
+        }
+      }
+    };
+
+    var currentQuestionType = 'MCQ';
+    var spreadsheetRows = [];
+
+    function changeSpreadsheetQuestionType(val) {
+      currentQuestionType = val || 'MCQ';
+      // Sync both selects if present
+      var sel1 = document.getElementById('indexSheetQuestionTypeSelect');
+      if (sel1) sel1.value = currentQuestionType;
+      renderIndexSpreadsheetTable();
+    }
+
+    function renderIndexSpreadsheetTable() {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      if (!cfg) return;
+      var tbl = document.getElementById('indexBulkSpreadsheetTable');
+      var tbody = document.getElementById('indexBulkSpreadsheetBody');
+      if (!tbl || !tbody) return;
+
+      // Render header
+      var thead = tbl.querySelector('thead');
+      if (thead) {
+        thead.innerHTML = '<tr>' +
+          cfg.headers.map(function(h) {
+            return '<th style="padding:8px 10px; font-size:12px; font-weight:700; color:#334155; border-right:1px solid #e2e8f0; white-space:nowrap;">' + h + '</th>';
+          }).join('') +
+          '<th style="padding:8px 6px; font-size:11px; color:#94a3b8; width:32px;"></th>' +
+          '</tr>';
+      }
+
+      // If no rows, init with sample
+      if (spreadsheetRows.length === 0) {
+        spreadsheetRows = [cfg.sampleRow.slice()];
+      }
+
+      renderIndexSpreadsheetBody(cfg, tbody);
+      updateIndexDetectedCount();
+    }
+
+    function renderIndexSpreadsheetBody(cfg, tbody) {
+      if (!tbody) tbody = document.getElementById('indexBulkSpreadsheetBody');
+      if (!tbody) return;
+      var cfg2 = cfg || SPREADSHEET_CONFIGS[currentQuestionType];
+      tbody.innerHTML = '';
+      spreadsheetRows.forEach(function(row, rIdx) {
+        var tr = document.createElement('tr');
+        tr.style.cssText = rIdx % 2 === 0 ? 'background:#fff;' : 'background:#f8fafc;';
+        var cells = cfg2.headers.map(function(h, cIdx) {
+          var val = row[cIdx] !== undefined ? row[cIdx] : '';
+          return '<td style="padding:4px 6px; border-right:1px solid #f1f5f9;">' +
+            '<input type="text" value="' + escapeQuotesAttr(val) + '" ' +
+            'oninput="updateIndexSpreadsheetCell(' + rIdx + ',' + cIdx + ',this.value)" ' +
+            'style="width:100%; border:none; background:transparent; font-size:12.5px; color:#0f172a; outline:none; padding:3px 4px; min-width:80px;" ' +
+            'placeholder="' + h + '">' +
+            '</td>';
+        });
+        var delBtn = '<td style="padding:4px 3px; text-align:center;">' +
+          '<button type="button" onclick="deleteIndexSpreadsheetRow(' + rIdx + ')" ' +
+          'style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:14px; line-height:1;" title="Delete row">×</button>' +
+          '</td>';
+        tr.innerHTML = cells.join('') + delBtn;
+        tbody.appendChild(tr);
+      });
+      updateIndexDetectedCount();
+    }
+
+    function escapeQuotesAttr(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function updateIndexSpreadsheetCell(rIdx, cIdx, val) {
+      if (!spreadsheetRows[rIdx]) spreadsheetRows[rIdx] = [];
+      spreadsheetRows[rIdx][cIdx] = val;
+      updateIndexDetectedCount();
+    }
+
+    function addIndexSpreadsheetRow() {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      var emptyRow = cfg.headers.map(function() { return ''; });
+      spreadsheetRows.push(emptyRow);
+      renderIndexSpreadsheetBody(cfg, null);
+    }
+
+    function deleteIndexSpreadsheetRow(rIdx) {
+      spreadsheetRows.splice(rIdx, 1);
+      renderIndexSpreadsheetBody(SPREADSHEET_CONFIGS[currentQuestionType], null);
+    }
+
+    function resetIndexSpreadsheetSample() {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      spreadsheetRows = [cfg.sampleRow.slice()];
+      renderIndexSpreadsheetBody(cfg, null);
+    }
+
+    function clearIndexSpreadsheetTable() {
+      spreadsheetRows = [];
+      renderIndexSpreadsheetBody(SPREADSHEET_CONFIGS[currentQuestionType], null);
+    }
+
+    function updateIndexDetectedCount() {
+      var el = document.getElementById('indexDetectedCount');
+      if (el) el.textContent = spreadsheetRows.filter(function(r) { return r && r[0] && r[0].trim(); }).length;
+    }
+
+    function parsePastedTextToRows(text) {
+      text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+      var lines = text.split('\n').filter(function(l) { return l.trim(); });
+      var isTsv = text.indexOf('\t') > -1;
+      return lines.map(function(line) {
+        if (isTsv) return line.split('\t').map(function(c) { return c.trim().replace(/^["\'\']|["\'\']$/g, ''); });
+        // CSV with quoted fields
+        var cols = [], inQ = false, cur = '';
+        for (var i = 0; i < line.length; i++) {
+          var ch = line[i];
+          if (ch === '"') { inQ = !inQ; }
+          else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+          else cur += ch;
+        }
+        cols.push(cur.trim());
+        return cols.map(function(c) { return c.replace(/^["\'\']|["\'\']$/g, ''); });
+      });
+    }
+
+    function applyPastedDataToIndexSpreadsheet(rows) {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      var headerCount = cfg.headers.length;
+      var dataRows = rows;
+      // Skip header if first cell matches known header names
+      if (rows.length > 0) {
+        var firstCell = (rows[0][0] || '').toLowerCase();
+        if (firstCell === 'question' || firstCell === 'poll question' || firstCell === 'question (statement)' || firstCell.includes('statement')) {
+          dataRows = rows.slice(1);
+        }
+      }
+      if (dataRows.length === 0) { showToast('No data rows found to paste!'); return; }
+      var newRows = dataRows.map(function(r) {
+        var padded = [];
+        for (var i = 0; i < headerCount; i++) { padded.push(r[i] !== undefined ? r[i] : ''); }
+        return padded;
+      });
+      spreadsheetRows = newRows;
+      renderIndexSpreadsheetBody(cfg, null);
+      showToast('Pasted ' + newRows.length + ' rows into spreadsheet!');
+    }
+
+    function pasteClipboardToIndexSpreadsheet() {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText().then(function(text) {
+          if (!text.trim()) { showToast('Clipboard is empty.'); return; }
+          var rows = parsePastedTextToRows(text);
+          applyPastedDataToIndexSpreadsheet(rows);
+        }).catch(function() {
+          promptManualPasteToIndex();
+        });
+      } else {
+        promptManualPasteToIndex();
+      }
+    }
+
+    function promptManualPasteToIndex() {
+      var text = prompt('Clipboard access denied. Please paste your data here (Ctrl+V):');
+      if (!text || !text.trim()) return;
+      var rows = parsePastedTextToRows(text);
+      applyPastedDataToIndexSpreadsheet(rows);
+    }
+
+    function attachIndexSpreadsheetPasteListener() {
+      var container = document.getElementById('indexSpreadsheetGridContainer');
+      if (!container) return;
+      container.addEventListener('paste', function(e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text');
+        if (!text) return;
+        var rows = parsePastedTextToRows(text);
+        applyPastedDataToIndexSpreadsheet(rows);
+      });
+    }
+
+    function parseAndPreviewIndexSpreadsheet() {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      var validRows = spreadsheetRows.filter(function(r) { return r && r[0] && r[0].trim(); });
+      if (validRows.length === 0) { showToast('Spreadsheet is empty. Add some questions first.'); return; }
+      var questions = validRows.map(function(row) {
+        var q = cfg.toQuestion(row);
+        q.questionId = 'q_sheet_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 4);
+        return q;
+      });
+      renderBulkPreviewCards(questions);
+      showToast('Parsed ' + questions.length + ' questions from spreadsheet!');
+    }
+
+    function commitIndexSpreadsheetImport() {
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType];
+      var validRows = spreadsheetRows.filter(function(r) { return r && r[0] && r[0].trim(); });
+      if (validRows.length === 0) { showToast('Spreadsheet is empty!'); return; }
+      var questions = validRows.map(function(row) {
+        var q = cfg.toQuestion(row);
+        q.questionId = 'q_idx_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 4);
+        return q;
+      });
+      var title = prompt('New Quiz title for imported questions:', 'Spreadsheet Quiz ' + new Date().toLocaleDateString());
+      if (!title) return;
+      var newQ = {
+        id: 'quiz_' + Date.now().toString(36),
+        title: title,
+        description: 'Imported from Spreadsheet Editor.',
+        timeLimitMinutes: 10,
+        passingScore: 50,
+        allowRetake: true,
+        showAnswers: true,
+        shuffleQuestions: false,
+        questions: questions
+      };
+      quizzes.unshift(newQ);
+      showToast('Created quiz with ' + questions.length + ' questions!');
+      document.getElementById('importSuccessToast') && (document.getElementById('importSuccessToast').style.display = 'flex');
+      setTimeout(function() {
+        var t = document.getElementById('importSuccessToast');
+        if (t) t.style.display = 'none';
+      }, 3500);
+      saveState();
+      renderAllViews();
+      switchView('quizzes');
+    }
+
+    // ─── SWITCH BULK SUBTAB (2 tabs now, no chatgpt) ──────────────────────────
     function switchBulkSubtab(tabName) {
       document.querySelectorAll('.bulk-subtab-btn').forEach(function (btn) {
         btn.classList.remove('active');
@@ -4520,177 +4794,97 @@ Answer: A, B</pre>
       var activePane = document.getElementById('subtab-' + tabName + '-content');
       if (activeBtn) activeBtn.classList.add('active');
       if (activePane) activePane.style.display = 'block';
-
-      if (tabName === 'chatgpt') {
-        updateChatGptPrompt();
-      }
     }
 
-    // Download CSV Template for Google Sheets
+    // ─── TYPE-SPECIFIC CSV TEMPLATE DOWNLOAD ──────────────────────────────────
     function downloadGoogleSheetTemplate() {
-      var headers = 'Question,Type,Options,Correct Answer,Points,Explanation,Image_URL\n';
-      var sampleRows = [
-        '"What is the capital of Maharashtra?","MCQ","Pune, Mumbai, Nagpur, Nashik","Mumbai",1,"Mumbai is the capital city.","https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Shivneri_Fort_Entrance.jpg/640px-Shivneri_Fort_Entrance.jpg"',
-        '"Select official languages of Maharashtra:","CHECKBOX","Marathi, Hindi, English","Marathi",2,"Marathi is the official language.",""',
-        '"Chemical formula of water?","SHORT_ANSWER","","H2O",1,"Water is H2O.",""',
-        '"How would you rate this test?","POLL","Excellent, Good, Average","",0,"Feedback poll",""'
-      ].join('\n');
+      var cfg = SPREADSHEET_CONFIGS[currentQuestionType] || SPREADSHEET_CONFIGS['STANDARD_6COL'];
+      var headerLine = cfg.headers.map(function(h) { return '"' + h + '"'; }).join(',');
+      var sampleLine = cfg.sampleRow.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
+      var csvContent = headerLine + '\n' + sampleLine + '\n';
 
-      var blob = new Blob([headers + sampleRows], { type: 'text/csv;charset=utf-8;' });
+      var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'RK_Quiz_GoogleSheet_Template.csv';
+      a.download = 'RK_Quiz_' + currentQuestionType + '_Template.csv';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      showToast('Google Sheet CSV Template downloaded!');
+      URL.revokeObjectURL(url);
+      showToast('CSV Template downloaded for: ' + currentQuestionType);
     }
 
-    // Parse Google Sheet URL (Public export or gviz endpoint)
+    // ─── GOOGLE SHEET URL FETCH (Option A) ────────────────────────────────────
     function fetchAndParseGoogleSheet() {
       var inputUrl = document.getElementById('google-sheet-url-input').value.trim();
-      if (!inputUrl) {
-        showToast('Please enter a Google Sheet URL.');
-        return;
-      }
-
+      if (!inputUrl) { showToast('Please enter a Google Sheet URL.'); return; }
       var idMatch = inputUrl.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-      if (!idMatch) {
-        alert('Invalid Google Sheet URL. Please ensure it looks like:\nhttps://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit');
-        return;
-      }
-
+      if (!idMatch) { alert('Invalid Google Sheet URL.'); return; }
       var sheetId = idMatch[1];
       var csvExportUrl = 'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv';
-
       showToast('Fetching Google Sheet...');
       fetch(csvExportUrl)
-        .then(function (res) {
-          if (!res.ok) throw new Error('Could not access Google Sheet. Check sharing permissions (Anyone with link can view).');
+        .then(function(res) {
+          if (!res.ok) throw new Error('Could not access Google Sheet. Check sharing settings.');
           return res.text();
         })
-        .then(function (csvText) {
-          var questions = parseSheetCsvOrTsv(csvText);
-          if (questions.length === 0) {
-            alert('No questions found. Make sure Row 1 has headers: Question, Type, Options, Correct Answer, Points, Explanation');
-            return;
-          }
-          document.getElementById('sheet-tsv-paste-area').value = csvText;
-          renderBulkPreviewCards(questions);
-          showToast('Successfully fetched ' + questions.length + ' questions from Google Sheet!');
+        .then(function(csvText) {
+          var rows = parsePastedTextToRows(csvText);
+          applyPastedDataToIndexSpreadsheet(rows);
+          showToast('Fetched and loaded into spreadsheet!');
         })
-        .catch(function (err) {
-          alert('Error: ' + err.message + '\n\nTip: You can also open the Google Sheet, select all rows (Ctrl+A, Ctrl+C), and paste them into Option B below!');
+        .catch(function(err) {
+          alert('Error: ' + err.message + '\n\nTip: You can also open the Sheet, copy rows (Ctrl+A, Ctrl+C), and paste into Option B spreadsheet!');
         });
     }
 
-    // Preview / Parse Table Paste from Google Sheets or Excel
+    // Keep previewSheetTable & executeSheetImport as aliases for plain text tab
     function previewSheetTable() {
-      var text = document.getElementById('sheet-tsv-paste-area').value.trim();
-      if (!text) {
-        showToast('Please paste table cells from Google Sheet or Excel.');
-        return;
-      }
-
+      var text = document.getElementById('sheet-tsv-paste-area') ? document.getElementById('sheet-tsv-paste-area').value.trim() : '';
+      if (!text) { showToast('Please paste table cells from Google Sheet or Excel.'); return; }
       var questions = parseSheetCsvOrTsv(text);
-      if (questions.length === 0) {
-        showToast('No valid questions found. Check columns order.');
-        return;
-      }
-
+      if (questions.length === 0) { showToast('No valid questions found. Check columns order.'); return; }
       renderBulkPreviewCards(questions);
     }
 
     function executeSheetImport() {
-      var text = document.getElementById('sheet-tsv-paste-area').value.trim();
-      if (!text) {
-        showToast('Please paste table cells or fetch from Google Sheet first.');
-        return;
-      }
-
+      var text = document.getElementById('sheet-tsv-paste-area') ? document.getElementById('sheet-tsv-paste-area').value.trim() : '';
+      if (!text) { commitIndexSpreadsheetImport(); return; }
       var questions = parseSheetCsvOrTsv(text);
-      if (questions.length === 0) {
-        showToast('No valid questions parsed.');
-        return;
-      }
-
-      var targetQuizId = document.getElementById('bulk-target-select').value;
-      if (targetQuizId) {
-        var quiz = quizzes.find(function (q) { return q.id === targetQuizId; });
-        if (quiz) {
-          quiz.questions = (quiz.questions || []).concat(questions);
-          showToast('Added ' + questions.length + ' questions to ' + quiz.title);
-        }
-      } else {
-        var title = prompt('Enter a title for this new quiz:', 'Google Sheet Quiz ' + new Date().toLocaleDateString());
-        if (!title) return;
-
-        var newQ = {
-          id: 'quiz_' + Date.now().toString(36),
-          title: title,
-          description: 'Imported from Google Sheet.',
-          timeLimitMinutes: 10,
-          passingScore: 50,
-          allowRetake: true,
-          showAnswers: true,
-          shuffleQuestions: false,
-          questions: questions
-        };
-        quizzes.unshift(newQ);
-        showToast('Created quiz with ' + questions.length + ' questions from Google Sheet!');
-      }
-
-      document.getElementById('sheet-tsv-paste-area').value = '';
-      document.getElementById('bulk-preview-container').style.display = 'none';
+      if (questions.length === 0) { showToast('No valid questions parsed.'); return; }
+      var title = prompt('Enter a title for this new quiz:', 'Google Sheet Quiz ' + new Date().toLocaleDateString());
+      if (!title) return;
+      var newQ = {
+        id: 'quiz_' + Date.now().toString(36),
+        title: title,
+        description: 'Imported from Google Sheet.',
+        timeLimitMinutes: 10,
+        passingScore: 50,
+        allowRetake: true,
+        showAnswers: true,
+        shuffleQuestions: false,
+        questions: questions
+      };
+      quizzes.unshift(newQ);
+      showToast('Created quiz with ' + questions.length + ' questions from Google Sheet!');
       saveState();
       renderAllViews();
       switchView('quizzes');
     }
 
-    // Universal Table Parser (Supports TSV copied from Google Sheet and CSV)
+    // ─── UNIVERSAL TABLE PARSER ────────────────────────────────────────────────
     function parseSheetCsvOrTsv(text) {
       if (!text) return [];
-      text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
-      var rawLines = text.split('\n');
-      var isTsv = text.indexOf('\t') > -1;
-      var rows = [];
-
-      for (var i = 0; i < rawLines.length; i++) {
-        var line = rawLines[i].trim();
-        if (!line) continue;
-        if (isTsv) {
-          rows.push(line.split('\t').map(function (c) { return c.trim().replace(/^["']|["']$/g, ''); }));
-        } else {
-          // CSV line splitter respecting quotes
-          var cols = [];
-          var inQuotes = false;
-          var cur = '';
-          for (var c = 0; c < line.length; c++) {
-            var ch = line[c];
-            if (ch === '"') inQuotes = !inQuotes;
-            else if (ch === ',' && !inQuotes) { cols.push(cur.trim().replace(/^["']|["']$/g, '')); cur = ''; }
-            else cur += ch;
-          }
-          cols.push(cur.trim().replace(/^["']|["']$/g, ''));
-          rows.push(cols);
-        }
-      }
-
+      var rows = parsePastedTextToRows(text);
       if (rows.length === 0) return [];
-
-      // Check if Row 0 is header
       var startIndex = 0;
       var firstCell = (rows[0][0] || '').toLowerCase();
-      if (firstCell === 'question' || firstCell === 'प्रश्न' || firstCell.indexOf('title') > -1) {
-        startIndex = 1;
-      }
-
+      if (firstCell === 'question' || firstCell === 'प्रश्न' || firstCell.indexOf('title') > -1) startIndex = 1;
       var parsed = [];
       for (var r = startIndex; r < rows.length; r++) {
         var row = rows[r];
         if (!row || !row[0]) continue;
-
         var qText = row[0];
         var type = (row[1] || 'MCQ').toUpperCase();
         var optsRaw = row[2] || '';
@@ -4698,53 +4892,37 @@ Answer: A, B</pre>
         var points = Number(row[4]) || 1;
         var explanation = row[5] || '';
         var imageUrl = (row[6] || '').trim();
-
-        var opts = optsRaw ? optsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
-
+        var opts = optsRaw ? optsRaw.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
         if (type.indexOf('CHECKBOX') > -1 || type.indexOf('MULTI') > -1) type = 'CHECKBOX';
         else if (type.indexOf('SHORT') > -1) type = 'SHORT_ANSWER';
-        else if (type.indexOf('LONG') > -1 || type.indexOf('PARA') > -1) type = 'LONG_ANSWER';
         else if (type.indexOf('POLL') > -1) type = 'POLL';
         else type = 'MCQ';
-
         parsed.push({
           questionId: 'q_sheet_' + (r + 1) + '_' + Math.random().toString(36).substr(2, 4),
-          type: type,
-          question: qText,
-          imageUrl: imageUrl,
-          options: opts,
-          correctAnswer: ansRaw,
-          points: type === 'POLL' ? 0 : points,
-          explanation: explanation
+          type: type, question: qText, imageUrl: imageUrl,
+          options: opts, correctAnswer: ansRaw,
+          points: type === 'POLL' ? 0 : points, explanation: explanation
         });
       }
-
       return parsed;
     }
 
+    // ─── RENDER PREVIEW CARDS ─────────────────────────────────────────────────
     function renderBulkPreviewCards(questions) {
       var container = document.getElementById('bulk-preview-cards');
       if (container) container.innerHTML = '';
-
       var tbody = document.getElementById('previewTableBody');
       if (tbody) tbody.innerHTML = '';
-
       var badge = document.getElementById('previewCountBadge');
       if (badge) badge.textContent = (questions ? questions.length : 0) + ' Questions';
-
       if (!questions || questions.length === 0) {
-        if (tbody) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:#ef4444;">No valid questions recognized. Please verify format.</td></tr>';
-        }
-        if (container) {
-          container.innerHTML = '<p style="color:var(--danger); padding:10px;">No valid questions recognized. Please verify format.</p>';
-        }
+        if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:#ef4444;">No valid questions recognized. Please verify format.</td></tr>';
+        if (container) container.innerHTML = '<p style="color:var(--danger); padding:10px;">No valid questions recognized. Please verify format.</p>';
         var previewCont = document.getElementById('bulk-preview-container');
         if (previewCont) previewCont.style.display = 'block';
         return;
       }
-
-      questions.forEach(function (q, i) {
+      questions.forEach(function(q, i) {
         if (tbody) {
           var tr = document.createElement('tr');
           tr.style.cssText = 'border-bottom:1px solid #f1f5f9; ' + (i % 2 === 1 ? 'background:#fbfbfe;' : 'background:#fff;');
@@ -4758,42 +4936,37 @@ Answer: A, B</pre>
           ].join('');
           tbody.appendChild(tr);
         }
-
         if (container) {
           var div = document.createElement('div');
-          div.style.background = '#ffffff';
-          div.style.border = '1px solid var(--border)';
-          div.style.borderRadius = '8px';
-          div.style.padding = '12px 16px';
-          div.style.marginBottom = '10px';
-
-          var imgPreview = q.imageUrl
-            ? '<div style="margin:6px 0;"><img src="' + escapeQuotes(q.imageUrl) + '" style="max-height:90px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>'
-            : '';
-
+          div.style.cssText = 'background:#fff; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:10px;';
+          var imgPreview = q.imageUrl ? '<div style="margin:6px 0;"><img src="' + escapeQuotesAttr(q.imageUrl) + '" style="max-height:90px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>' : '';
           div.innerHTML = '<strong>' + (i + 1) + '. [' + q.type + ']</strong> ' + escapeHtml(q.question) + '<br>' +
             imgPreview +
-            (q.options.length > 0 ? '<span style="font-size:12.5px; color:var(--text-muted);">Options: ' + escapeHtml(q.options.join(', ')) + '</span><br>' : '') +
+            (q.options && q.options.length > 0 ? '<span style="font-size:12.5px; color:var(--text-muted);">Options: ' + escapeHtml(q.options.join(', ')) + '</span><br>' : '') +
             (q.correctAnswer ? '<span style="font-size:12.5px; color:var(--success);">Answer: ' + escapeHtml(q.correctAnswer) + '</span><br>' : '') +
             (q.explanation ? '<span style="font-size:12px; color:var(--text-muted);">Explanation: ' + escapeHtml(q.explanation) + '</span>' : '');
-
           container.appendChild(div);
         }
       });
-
       var previewCont = document.getElementById('bulk-preview-container');
       if (previewCont) previewCont.style.display = 'block';
     }
 
-    // Universal Dual-Format AI Prompt Generator (ChatGPT / Google Gemini / Claude / DeepSeek)
+    // ─── AI PROMPT GENERATOR (Language from text input) ───────────────────────
+    function setGptLangCustom(lang) {
+      var inp = document.getElementById('gpt-lang-input');
+      if (inp) { inp.value = lang; updateChatGptPrompt(); }
+    }
+
     function updateChatGptPrompt() {
       var topicInput = document.getElementById('gpt-topic-input');
       if (!topicInput) return;
       var topic = topicInput.value.trim() || 'General Knowledge';
-      var lang = document.getElementById('gpt-lang-select').value;
-      var count = document.getElementById('gpt-count-select').value;
-      var type = document.getElementById('gpt-type-select').value;
-      var diff = document.getElementById('gpt-diff-select').value;
+      var langEl = document.getElementById('gpt-lang-input');
+      var lang = langEl ? (langEl.value.trim() || 'Marathi') : 'Marathi';
+      var count = document.getElementById('gpt-count-select') ? document.getElementById('gpt-count-select').value : '10';
+      var type = document.getElementById('gpt-type-select') ? document.getElementById('gpt-type-select').value : 'MCQ';
+      var diff = document.getElementById('gpt-diff-select') ? document.getElementById('gpt-diff-select').value : 'Medium';
 
       var modeRadio = document.querySelector('input[name="gpt-format-mode"]:checked');
       var mode = modeRadio ? modeRadio.value : 'table';
@@ -4806,7 +4979,6 @@ Answer: A, B</pre>
       if (mode === 'table') {
         if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Google Sheets & Table Format):';
         if (step3El) step3El.textContent = "AI ने तयार केलेले टेबल कॉपी करा आणि 'Google Sheets & CSV' टॅबमधील Option B मध्ये पेस्ट करा.";
-
         promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
           'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
           'Difficulty Level: ' + diff + '.\n' +
@@ -4814,16 +4986,15 @@ Answer: A, B</pre>
           'Format your response strictly as a clean, copyable TABLE with these exact ' + (includeImage ? '7' : '6') + ' COLUMNS:\n' +
           '1. Question: The full question prompt.\n' +
           '2. Type: Must be exactly one of: MCQ, CHECKBOX, SHORT_ANSWER, LONG_ANSWER, or POLL.\n' +
-          '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma (e.g., Option 1, Option 2, Option 3, Option 4). Leave blank for SHORT_ANSWER and LONG_ANSWER.\n' +
-          '4. Correct Answer: Exact text of the correct choice. For CHECKBOX, comma-separated choices. For POLL/LONG_ANSWER, leave blank.\n' +
+          '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma. Leave blank for SHORT_ANSWER.\n' +
+          '4. Correct Answer: Exact text of the correct choice.\n' +
           '5. Points: Marks (e.g., 1 or 2). For POLL, 0.\n' +
-          '6. Explanation: Brief 1-2 sentence explanation of why the answer is correct.\n' +
-          (includeImage ? '7. Image_URL: Direct URL to a relevant diagram or photo (e.g. from Wikimedia or Unsplash), or leave blank if no image is needed.\n\n' : '\n') +
-          'Important: Output ONLY the table directly, with no greeting or conversational text, so I can copy and paste directly into Google Sheets.';
+          '6. Explanation: Brief 1-2 sentence explanation.\n' +
+          (includeImage ? '7. Image_URL: Direct URL to relevant image, or blank.\n\n' : '\n') +
+          'Important: Output ONLY the table directly, with no greeting or conversational text.';
       } else {
         if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Plain Text Format):';
         if (step3El) step3El.textContent = "AI चे उत्तर कॉपी करा आणि 'Plain Text Paste' टॅबमध्ये पेस्ट करा.";
-
         promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
           'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
           'Difficulty Level: ' + diff + '.\n' +
@@ -4831,46 +5002,39 @@ Answer: A, B</pre>
           'Format your response strictly in the following clean Plain Text format for every question:\n\n' +
           '1. [Question Prompt text here]\n' +
           (includeImage ? '[Image: https://example.com/diagram.jpg] (Optional direct image URL)\n' : '') +
-          'A) Option 1\n' +
-          'B) Option 2\n' +
-          'C) Option 3\n' +
-          'D) Option 4\n' +
+          'A) Option 1\nB) Option 2\nC) Option 3\nD) Option 4\n' +
           'Answer: [Correct Option Letter or Text]\n' +
           'Explanation: [Brief 1-2 sentence explanation]\n\n' +
-          'For Checkbox questions, append [CHECKBOX] to the question and provide comma-separated answers (e.g., Answer: A, B).\n' +
-          'For Short Answer, append [SHORT] and write Answer: [Text].\n' +
-          'For Poll questions, append [POLL] and list choices with bullet points.\n\n' +
           'Important: Output ONLY the questions directly with no introductory or conversational remarks.';
       }
-
-      document.getElementById('gpt-prompt-display').textContent = promptText;
+      var promptDisplay = document.getElementById('gpt-prompt-display');
+      if (promptDisplay) promptDisplay.textContent = promptText;
     }
 
     function copyChatGptPrompt(btn) {
       var text = document.getElementById('gpt-prompt-display').textContent;
-      navigator.clipboard.writeText(text).then(function () {
+      navigator.clipboard.writeText(text).then(function() {
         var orig = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
         showToast('AI prompt copied to clipboard!');
-        setTimeout(function () { btn.innerHTML = orig; }, 2000);
+        setTimeout(function() { btn.innerHTML = orig; }, 2000);
       });
     }
 
-    function setGptLang(lang, btn) {
-      var sel = document.getElementById('gpt-lang-select');
-      if (sel) sel.value = lang;
-      document.querySelectorAll('.lang-pill').forEach(function (b) {
-        b.classList.remove('bg-surface-card', 'text-primary', 'font-semibold', 'shadow-xs');
-        b.classList.add('text-text-muted');
-      });
-      if (btn) {
-        btn.classList.add('bg-surface-card', 'text-primary', 'font-semibold', 'shadow-xs');
-        btn.classList.remove('text-text-muted');
-      }
-      updateChatGptPrompt();
-    }
+    // Legacy alias kept for compatibility
+    function setGptLang(lang, btn) { setGptLangCustom(lang); }
 
-    function autoUpdateTsvCount() {
+    // ─── ALIASES: HTML buttons use non-prefixed names ──────────────────────────
+    function addSpreadsheetRow() { addIndexSpreadsheetRow(); }
+    function deleteSpreadsheetRow(i) { deleteIndexSpreadsheetRow(i); }
+    function resetSpreadsheetSample() { resetIndexSpreadsheetSample(); }
+    function clearSpreadsheetTable() { clearIndexSpreadsheetTable(); }
+    function pasteClipboardToSpreadsheet() { pasteClipboardToIndexSpreadsheet(); }
+    function parseAndPreviewSpreadsheet() { parseAndPreviewIndexSpreadsheet(); }
+    function commitSpreadsheetImport() { commitIndexSpreadsheetImport(); }
+    function updateDetectedCount() { updateIndexDetectedCount(); }
+
+        function autoUpdateTsvCount() {
       var area = document.getElementById('sheet-tsv-paste-area');
       var pill = document.getElementById('tsv-detected-pill');
       if (!area || !pill) return;
