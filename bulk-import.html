@@ -236,401 +236,327 @@
     <!-- Main Content -->
     <main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-sm">
       <div class="flex flex-col w-full">
-        <!-- Top Title Bar (Shifted to Top, Pills & Target Destination Removed) -->
-        <div class="flex items-center justify-between gap-space-md mb-space-sm">
-          <div>
-            <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold">
-              Bulk Import Hub
-            </h1>
+
+        <!-- Title + Tab Row -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold" style="font-size:22px; font-weight:800; color:#0f172a; margin:0;">
+            Bulk Import Hub
+          </h1>
+          <!-- Two-Tab Controller -->
+          <div class="flex items-center gap-1.5 p-1 bg-surface-container-low rounded-xl shadow-sm" style="background:#f1f5f9; border:1.5px solid #cbd5e1; padding:4px; border-radius:12px; display:inline-flex; gap:6px;">
+            <button class="tab-trigger flex-1 py-2 px-4 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all bg-surface-card text-primary shadow-sm" id="tabBtn1" onclick="switchBulkTab('sheetsTab', this)" style="padding:7px 14px; border-radius:8px; font-size:13px; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; background:#fff; color:#3525cd; box-shadow:0 1px 3px rgba(0,0,0,.12);">
+              <span class="material-symbols-outlined text-[18px]">table_chart</span>
+              <span>Google Sheets &amp; CSV</span>
+              <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full font-label-sm" style="background:#3525cd; color:#fff; font-size:10px; padding:2px 6px; border-radius:10px;">Active</span>
+            </button>
+            <button class="tab-trigger py-2 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary flex items-center justify-center gap-2 transition-all" id="tabBtn2" onclick="switchBulkTab('plainTextTab', this)" style="padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; color:#475569; background:transparent;">
+              <span class="material-symbols-outlined text-[18px]">text_snippet</span>
+              <span>Plain Text Parser</span>
+              <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full font-label-sm" style="background:#e2e8f0; color:#64748b; font-size:10px; padding:2px 6px; border-radius:10px;">Smart</span>
+            </button>
           </div>
         </div>
 
-        <!-- Two-Tab Segmented Controller (ChatGPT Prompt tab removed) -->
-        <div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl w-full max-w-xl mb-space-md shadow-sm" style="background-color: rgb(241, 245, 249); border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 12px -2px;">
-          <button class="tab-trigger flex-1 py-2 px-4 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all bg-surface-card text-primary shadow-sm" id="tabBtn1" onclick="switchBulkTab('sheetsTab', this)">
-            <span class="material-symbols-outlined text-[18px]">table_chart</span>
-            <span>Google Sheets &amp; CSV</span>
-            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-primary-container text-on-primary font-label-sm">Active</span>
-          </button>
-          <button class="tab-trigger flex-1 py-2 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary hover:bg-surface-card/60 flex items-center justify-center gap-2 transition-all" id="tabBtn2" onclick="switchBulkTab('plainTextTab', this)">
-            <span class="material-symbols-outlined text-[18px]">text_snippet</span>
-            <span>Plain Text Parser</span>
-            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container text-text-muted font-label-sm">Smart</span>
-          </button>
-        </div>
+        <!-- Main Grid: Left (import panels) + Right (AI Generator) -->
+        <div style="display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start;">
 
-        <!-- Schema Bar -->
-        <div class="mb-space-lg flex flex-wrap items-center justify-between gap-2 p-3 bg-surface-card rounded-xl border border-border-medium shadow-xs">
-          <div class="flex items-center gap-2 flex-wrap text-[12px]">
-            <span class="font-bold text-text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">view_column</span> Schema:</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono font-bold text-primary">1. Question</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">2. Type</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">3. Options</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">4. Correct Answer</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">5. Points</span>
-            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">6. Explanation</span>
-          </div>
-          <button onclick="triggerTemplateDownload()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary text-[12px] font-semibold transition-colors" data-tooltip="Download CSV Template (.csv)">
-            <span class="material-symbols-outlined text-[16px]">file_download</span>
-            <span>CSV Template</span>
-          </button>
-        </div>
+          <!-- ═══ LEFT COLUMN ═══ -->
+          <div style="display:flex; flex-direction:column; gap:16px; min-width:0;">
 
-        <!-- Primary Tab Panels: Sheets & Plain Text & ChatGPT -->
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg mb-space-xl">
-          <!-- Left Column: Primary Import Methods (8 Cols) -->
-          <div class="xl:col-span-8 space-y-space-lg">
-            <!-- TAB PANEL 1: Google Sheets & CSV (Default Visible) -->
-            <div class="tab-content block space-y-space-lg" id="sheetsTab">
-              <!-- Option A: Direct Google Sheet URL Fetch -->
-              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(0, 108, 73); box-shadow: rgba(0, 108, 73, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
-                <div class="flex items-center justify-between mb-space-sm">
-                  <div class="flex items-center gap-space-xs">
-                    <div class="w-8 h-8 rounded-lg bg-secondary-container/30 text-secondary flex items-center justify-center font-bold font-title-sm">
-                      A
-                    </div>
-                    <h2 class="font-title-md text-title-md text-text-primary font-bold">
-                      Option A: Import from Google Sheet Link
-                    </h2>
+            <!-- TAB 1: Google Sheets & CSV -->
+            <div class="tab-content block" id="sheetsTab">
+
+              <!-- Option A: Google Sheet URL -->
+              <div class="bg-surface-card rounded-2xl shadow-sm" style="background:#fff; border-width:1.5px 1.5px 1.5px 5px; border-style:solid; border-color:#94a3b8 #94a3b8 #94a3b8 #006c49; padding:18px 20px; border-radius:16px; box-shadow:rgba(0,108,73,.1) 0 8px 24px -4px; margin-bottom:14px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:28px; height:28px; border-radius:8px; background:#d1fae5; color:#006c49; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px;">A</div>
+                    <span style="font-size:15px; font-weight:700; color:#0f172a;">Option A: Import from Google Sheet Link</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary bg-secondary-container/20 px-2 py-0.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>
-                    Live Sync Ready
+                  <span style="font-size:11px; color:#10b981; display:flex; align-items:center; gap:4px; font-weight:600;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span> Live Sync Ready
                   </span>
                 </div>
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs mt-2">
-                  <div class="relative flex-1">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">link</span>
-                    <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm pl-9 pr-4 py-2.5 rounded-lg outline-none focus:bg-surface-card focus:shadow-sm transition-all placeholder:text-text-muted" id="sheetUrlInput" placeholder="Google Sheet URL (Public link or view permission)" type="url" value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit"/>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <div style="position:relative; flex:1;">
+                    <span class="material-symbols-outlined" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:17px; color:#94a3b8;">link</span>
+                    <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm" id="sheetUrlInput" placeholder="Google Sheet URL (Public link or view permission)" type="url" value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit"
+                      style="width:100%; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:8px 12px 8px 34px; font-size:13px; outline:none; box-sizing:border-box;"/>
                   </div>
-                  <button class="px-space-md py-2.5 bg-primary hover:bg-primary-dark text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-1.5 transition-colors shrink-0 shadow-sm" id="fetchBtn" onclick="handleFetchQuestions()">
+                  <button class="px-space-md bg-primary hover:bg-primary-dark text-on-primary rounded-lg flex items-center gap-1.5 transition-colors shrink-0 shadow-sm" id="fetchBtn" onclick="handleFetchQuestions()"
+                    style="padding:8px 16px; background:#3525cd; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;">
                     <span class="material-symbols-outlined text-[18px]">sync</span>
                     <span>Fetch Questions</span>
                   </button>
                 </div>
-                <div class="mt-space-sm flex items-center justify-between text-text-muted font-body-sm text-body-sm bg-surface-container-low/50 px-3 py-2 rounded-lg">
-                  <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[16px] text-primary">info</span>
-                    <span>First sheet tab parsed automatically.</span>
-                  </div>
-                  <span class="font-mono text-label-sm text-primary cursor-pointer hover:underline" onclick="document.getElementById('sheetUrlInput').value='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit'">
-                    Use Sample URL
-                  </span>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px; padding:6px 10px; background:#f8fafc; border-radius:8px; font-size:12px; color:#64748b;">
+                  <span style="display:flex; align-items:center; gap:5px;"><span class="material-symbols-outlined" style="font-size:15px; color:#3525cd;">info</span> First sheet tab parsed automatically.</span>
+                  <span style="color:#3525cd; cursor:pointer; font-weight:600;" onclick="document.getElementById('sheetUrlInput').value='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit'">Use Sample URL</span>
                 </div>
               </div>
 
-              <!-- Option B: Interactive Google Spreadsheet Question Editor -->
-              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(79, 70, 229); box-shadow: rgba(79, 70, 229, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
-                <div class="flex items-center justify-between mb-space-sm">
-                  <div class="flex items-center gap-space-xs">
-                    <div class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center font-bold font-title-sm">
-                      B
-                    </div>
-                    <div>
-                      <h2 class="font-title-md text-title-md text-text-primary font-bold">
-                        Option B: Google Spreadsheet Editor (थेट रो आणि कॉलममध्ये पेस्ट करा)
-                      </h2>
-                      <p class="font-body-sm text-[12px] text-text-muted mt-0.5">
-                        ChatGPT किंवा Google Sheets वरून कॉपी केलेले प्रश्न थेट खालील रो आणि कॉलममध्ये पेस्ट (Ctrl+V) करा.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              <!-- Option B: Pure Google Sheets-style Spreadsheet -->
+              <div class="bg-surface-card rounded-2xl shadow-sm" style="background:#fff; border-width:1.5px 1.5px 1.5px 5px; border-style:solid; border-color:#94a3b8 #94a3b8 #94a3b8 #4f46e5; border-radius:16px; box-shadow:rgba(79,70,229,.1) 0 8px 24px -4px; overflow:hidden;">
 
-                <!-- Question Type Selector & Toolbar Above Spreadsheet -->
-                <div class="flex flex-wrap items-center justify-between gap-2.5 p-2.5 bg-surface-container-low rounded-xl border border-border-subtle mb-3">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="material-symbols-outlined text-primary text-[20px]">category</span>
-                    <label for="sheetQuestionTypeSelect" class="font-title-sm text-[13px] text-text-primary font-bold">
-                      Question Type:
-                    </label>
-                    <select id="sheetQuestionTypeSelect" onchange="changeSpreadsheetQuestionType(this.value)" class="bg-surface-card text-text-primary font-title-sm text-[13px] py-1 px-3 rounded-lg border border-border-medium outline-none focus:border-primary cursor-pointer font-semibold shadow-xs">
-                      <option value="MCQ" selected>Multiple Choice (MCQ - Single Correct)</option>
-                      <option value="CHECKBOX">Checkbox (Multiple Correct Answers)</option>
-                      <option value="TRUE_FALSE">True / False (खरे / खोटे)</option>
-                      <option value="SHORT_ANSWER">Fill in the Blanks / Short Answer</option>
-                      <option value="POLL">Live Poll / Opinion Poll</option>
-                      <option value="STANDARD_6COL">Standard Full Schema (6 Columns)</option>
+                <!-- Compact toolbar bar (Google Sheets-style) -->
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; padding:8px 14px; background:#f8fafc; border-bottom:1.5px solid #e2e8f0;">
+                  <!-- Left: B label + Question Type -->
+                  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <div style="width:26px; height:26px; border-radius:7px; background:#eaedff; color:#3525cd; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">B</div>
+                    <select id="sheetQuestionTypeSelect" onchange="changeSpreadsheetQuestionType(this.value)"
+                      style="background:#fff; border:1.5px solid #cbd5e1; border-radius:6px; padding:4px 10px; font-size:12.5px; font-weight:700; color:#0f172a; outline:none; cursor:pointer; max-width:220px;">
+                      <option value="MCQ" selected>MCQ (Single Correct)</option>
+                      <option value="CHECKBOX">Checkbox (Multi Answer)</option>
+                      <option value="TRUE_FALSE">True / False</option>
+                      <option value="SHORT_ANSWER">Short Answer / Fill Blank</option>
+                      <option value="POLL">Live Poll</option>
+                      <option value="STANDARD_6COL">Standard 6-Column Schema</option>
                     </select>
                   </div>
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <button type="button" onclick="pasteClipboardToSpreadsheet()" class="px-2.5 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-[12px] font-bold flex items-center gap-1 transition-colors" title="Paste clipboard rows from ChatGPT/Excel">
-                      <span class="material-symbols-outlined text-[16px]">content_paste</span>
-                      <span>Paste Clipboard</span>
+                  <!-- Right: Action Buttons -->
+                  <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                    <button type="button" onclick="pasteClipboardToSpreadsheet()"
+                      style="background:#4f46e5; color:#fff; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                      <span class="material-symbols-outlined" style="font-size:15px;">content_paste</span> Paste
                     </button>
-                    <button type="button" onclick="addSpreadsheetRow()" class="px-2.5 py-1.5 bg-surface-card hover:bg-surface-container text-text-primary rounded-lg text-[12px] font-semibold border border-border-subtle flex items-center gap-1 transition-colors shadow-xs" title="Add blank row">
-                      <span class="material-symbols-outlined text-[16px]">add</span>
-                      <span>Add Row</span>
+                    <button type="button" onclick="addSpreadsheetRow()"
+                      style="background:#fff; border:1px solid #cbd5e1; color:#0f172a; padding:5px 9px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">add</span> Row
                     </button>
-                    <button type="button" onclick="resetSpreadsheetSample()" class="px-2.5 py-1.5 bg-surface-card hover:bg-surface-container text-text-secondary rounded-lg text-[12px] font-medium border border-border-subtle flex items-center gap-1 transition-colors shadow-xs" title="Reset to sample row">
-                      <span class="material-symbols-outlined text-[16px]">restart_alt</span>
-                      <span>Reset Sample</span>
+                    <button type="button" onclick="resetSpreadsheetSample()"
+                      style="background:#fff; border:1px solid #cbd5e1; color:#475569; padding:5px 9px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">restart_alt</span>
                     </button>
-                    <button type="button" onclick="clearSpreadsheetTable()" class="px-2 py-1.5 text-status-danger hover:bg-status-danger/10 rounded-lg text-[12px] font-medium flex items-center gap-0.5 transition-colors" title="Clear table">
-                      <span class="material-symbols-outlined text-[15px]">delete</span>
-                      <span>Clear</span>
+                    <button type="button" onclick="clearSpreadsheetTable()"
+                      style="background:transparent; border:none; color:#ef4444; padding:5px 7px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:2px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">delete</span>
                     </button>
                   </div>
                 </div>
 
-                <!-- Interactive Spreadsheet Table -->
-                <div id="spreadsheetGridContainer" class="w-full overflow-x-auto rounded-xl border border-border-medium bg-surface-card shadow-xs my-2 custom-designer-scroll" style="max-height: 400px; overflow-y: auto;">
-                  <table class="w-full text-left font-body-sm text-body-sm border-collapse min-w-[760px]" id="bulkSpreadsheetTable">
-                    <thead class="bg-surface-container sticky top-0 z-10 text-text-primary text-[12px] font-bold border-b border-border-medium shadow-xs">
-                      <!-- Populated dynamically by JS based on Question Type -->
+                <!-- PURE SPREADSHEET TABLE (Google Sheets feel) -->
+                <div id="spreadsheetGridContainer" style="height:420px; overflow:auto; background:#fff; border-bottom:1.5px solid #e2e8f0;">
+                  <table id="bulkSpreadsheetTable" style="width:100%; border-collapse:collapse; font-size:13px; table-layout:auto;">
+                    <thead id="bulkSpreadsheetHead" style="position:sticky; top:0; z-index:5; background:#f1f5f9;">
+                      <!-- JS fills this -->
                     </thead>
-                    <tbody class="divide-y divide-border-subtle" id="bulkSpreadsheetBody">
-                      <!-- Populated dynamically by JS -->
+                    <tbody id="bulkSpreadsheetBody">
+                      <!-- JS fills this -->
                     </tbody>
                   </table>
                 </div>
 
-                <!-- Spreadsheet Bottom Action Bar -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm mt-3 pt-space-xs bg-surface-container-low/50 p-space-sm rounded-xl">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-status-success animate-pulse"></span>
-                    <span class="font-label-md text-label-md text-text-secondary">
-                      <span class="font-bold text-text-primary" id="detectedCount">1</span> question(s) in spreadsheet
-                    </span>
-                  </div>
-                  <div class="flex items-center gap-space-xs flex-wrap">
-                    <button type="button" class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors font-bold" onclick="triggerTemplateDownload()">
-                      <span class="material-symbols-outlined text-[16px]">file_download</span>
-                      <span>Download CSV Template</span>
+                <!-- Bottom micro bar -->
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding:8px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
+                  <span style="font-size:12px; color:#475569;">
+                    <span style="font-weight:700; color:#0f172a;" id="detectedCount">1</span> question(s) ready
+                  </span>
+                  <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                    <button type="button" onclick="triggerTemplateDownload()"
+                      style="background:#eaedff; color:#3525cd; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">file_download</span> CSV Template
                     </button>
-                    <button type="button" class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors font-bold" onclick="parseAndPreviewSpreadsheet()">
-                      <span class="material-symbols-outlined text-[16px]">pageview</span>
-                      <span>Parse Table</span>
+                    <button type="button" onclick="parseAndPreviewSpreadsheet()"
+                      style="background:#e2e8f0; color:#0f172a; border:none; padding:5px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">pageview</span> Preview
                     </button>
-                    <button type="button" class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm font-bold" onclick="commitSpreadsheetImport()">
-                      <span class="material-symbols-outlined text-[16px]">check_circle</span>
-                      <span>Import to Quiz</span>
+                    <button type="button" onclick="commitSpreadsheetImport()"
+                      style="background:#10b981; color:#fff; border:none; padding:5px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                      <span class="material-symbols-outlined" style="font-size:14px;">check_circle</span> Import to Quiz
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- TAB PANEL 2: Plain Text Parser -->
-            <div class="tab-content hidden space-y-space-md" id="plainTextTab">
-              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(53, 37, 205); box-shadow: rgba(15, 23, 42, 0.1) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
-                <div class="flex items-center justify-between mb-space-sm">
-                  <div class="flex items-center gap-space-xs">
-                    <div class="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center font-bold font-title-sm">
-                      <span class="material-symbols-outlined text-[18px]">format_align_left</span>
-                    </div>
-                    <div>
-                      <h2 class="font-title-md text-title-md text-text-primary font-bold">
-                        Plain Text Parser
-                      </h2>
-                    </div>
+            </div><!-- end sheetsTab -->
+
+            <!-- TAB 2: Plain Text Parser -->
+            <div class="tab-content hidden" id="plainTextTab">
+              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background:#fff; border-width:1.5px 1.5px 1.5px 5px; border-style:solid; border-color:#94a3b8 #94a3b8 #94a3b8 #3525cd; padding:18px 20px; border-radius:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                  <div style="width:28px; height:28px; border-radius:8px; background:#f1f5f9; color:#3525cd; display:flex; align-items:center; justify-content:center;">
+                    <span class="material-symbols-outlined" style="font-size:17px;">format_align_left</span>
                   </div>
+                  <span style="font-size:15px; font-weight:700; color:#0f172a;">Plain Text Parser</span>
                 </div>
-                <!-- Format Guide Box -->
-                <div class="bg-surface-container-low p-space-sm rounded-xl mb-space-sm">
-                  <div class="flex items-center justify-between text-label-sm font-label-sm text-text-muted mb-1">
+                <div style="background:#f8fafc; border-radius:10px; padding:10px 14px; margin-bottom:10px; font-size:12px;">
+                  <div style="display:flex; justify-content:space-between; color:#64748b; margin-bottom:4px;">
                     <span>Example Format:</span>
-                    <span class="text-primary cursor-pointer hover:underline" onclick="insertSampleText()">Insert Example</span>
+                    <span style="color:#3525cd; cursor:pointer; font-weight:600;" onclick="insertSampleText()">Insert Example</span>
                   </div>
-                  <pre class="font-mono text-body-sm text-text-secondary overflow-x-auto whitespace-pre leading-relaxed">1. What is the chemical formula of water? [MCQ]
-A) H2O
-B) CO2
-C) O2
-D) NaCl
+                  <pre style="font-family:monospace; font-size:11.5px; color:#475569; white-space:pre-wrap; margin:0;">1. What is the chemical formula of water? [MCQ]
+A) H2O   B) CO2   C) O2   D) NaCl
 Answer: A
-Explanation: Dihydrogen monoxide is the systematic name for water.</pre>
+Explanation: Dihydrogen monoxide.</pre>
                 </div>
-                <textarea class="w-full bg-surface-container-low text-text-primary font-body-md text-body-md p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted font-mono" id="plainTextTextarea" placeholder="Paste unformatted questions here..." rows="7"></textarea>
-                <div class="flex items-center justify-between mt-space-sm">
-                  <span class="font-body-sm text-body-sm text-text-muted">
-                    Supports: MCQ, [CHECKBOX], [SHORT], [POLL]
-                  </span>
-                  <div class="flex gap-2">
-                    <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="parsePlainText()">
-                      <span class="material-symbols-outlined text-[16px]">auto_fix_high</span>
-                      <span>Parse Text</span>
+                <textarea class="w-full bg-surface-container-low text-text-primary font-body-md text-body-md p-space-sm rounded-xl outline-none focus:bg-surface-card transition-all resize-y placeholder:text-text-muted font-mono"
+                  id="plainTextTextarea" placeholder="Paste unformatted questions here..." rows="7"
+                  style="width:100%; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 12px; font-size:13px; font-family:monospace; resize:vertical; box-sizing:border-box; outline:none;"></textarea>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+                  <span style="font-size:12px; color:#64748b;">Supports: MCQ, [CHECKBOX], [SHORT], [POLL]</span>
+                  <div style="display:flex; gap:8px;">
+                    <button onclick="parsePlainText()" style="background:#f1f5f9; color:#0f172a; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+                      <span class="material-symbols-outlined" style="font-size:16px;">auto_fix_high</span> Parse Text
                     </button>
-                    <button class="px-space-md py-2 bg-primary hover:bg-primary-dark text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors shadow-sm" onclick="commitImport()">
-                      <span class="material-symbols-outlined text-[16px]">playlist_add</span>
-                      <span>Import</span>
+                    <button onclick="commitImport()" style="background:#3525cd; color:#fff; border:none; padding:7px 16px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+                      <span class="material-symbols-outlined" style="font-size:16px;">playlist_add</span> Import
                     </button>
                   </div>
                 </div>
               </div>
+            </div><!-- end plainTextTab -->
+
+            <!-- Parsed Questions Preview Table -->
+            <div class="bg-surface-card rounded-2xl shadow-sm" style="background:#fff; border-width:4px 1.5px 1.5px; border-style:solid; border-color:#10b981 #94a3b8 #94a3b8; padding:20px; border-radius:16px; box-shadow:rgba(15,23,42,.1) 0 12px 28px -4px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div style="display:flex; align-items:center; gap:7px;">
+                  <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+                  <h2 style="font-size:16px; font-weight:800; color:#0f172a; margin:0;">Parsed Questions Preview (<span id="previewCountBadge">4 Questions Detected</span>)</h2>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button onclick="discardParsedQuestions()" style="background:#f1f5f9; color:#64748b; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                    <span class="material-symbols-outlined" style="font-size:15px;">close</span> Clear All
+                  </button>
+                  <button onclick="commitImport()" style="background:#10b981; color:#fff; border:none; padding:6px 16px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(16,185,129,.3);">
+                    <span class="material-symbols-outlined" style="font-size:16px;">playlist_add_check</span>
+                    <span id="btnConfirmText">Confirm &amp; Import All (4)</span>
+                  </button>
+                </div>
+              </div>
+              <div style="overflow-x:auto; border:1.5px solid #e2e8f0; border-radius:10px;">
+                <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+                  <thead>
+                    <tr style="background:#f8fafc; color:#475569; font-size:12px; font-weight:700;">
+                      <th style="padding:10px 12px; width:40px; text-align:center;">#</th>
+                      <th style="padding:10px 12px; min-width:280px;">Question Text</th>
+                      <th style="padding:10px 12px; width:100px;">Type</th>
+                      <th style="padding:10px 12px; width:110px; text-align:center;">Options</th>
+                      <th style="padding:10px 12px; min-width:180px;">Answer</th>
+                      <th style="padding:10px 12px; width:80px; text-align:center;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="previewTableBody"></tbody>
+                </table>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:12px; padding:10px 14px; background:#f8fafc; border-radius:10px;">
+                <span style="font-size:13px; color:#334155; display:flex; align-items:center; gap:5px;">
+                  <span class="material-symbols-outlined" style="color:#3525cd; font-size:18px;">tune</span>
+                  <strong id="summaryCountText">1</strong>&nbsp;questions ready to import
+                </span>
+                <button onclick="commitImport()" style="background:#3525cd; color:#fff; border:none; padding:8px 20px; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; box-shadow:0 2px 8px rgba(53,37,205,.25);">
+                  <span class="material-symbols-outlined" style="font-size:18px;">upload</span> Confirm &amp; Import All
+                </button>
+              </div>
             </div>
 
-            <!-- Right Column: AI 1-Click Generator & Workflow Guide (4 Cols) -->
-          <div class="xl:col-span-4 space-y-space-md">
-            <!-- ChatGPT 1-Click Generator Feature Card -->
-            <div class="bg-surface-card rounded-2xl p-space-md shadow-md relative overflow-hidden" style="background-color: rgb(255, 255, 255); border: 2px solid rgb(199, 196, 216); box-shadow: rgba(92, 0, 202, 0.15) 0px 16px 32px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -4px;">
-              <!-- AI Gradient Accent Glow -->
-              <div class="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-primary-container/20 blur-2xl pointer-events-none"></div>
-              <div class="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-tertiary-container/20 blur-2xl pointer-events-none"></div>
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-space-sm">
-                  <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-tertiary text-on-primary flex items-center justify-center shadow-sm">
-                      <span class="material-symbols-outlined text-[18px]">smart_toy</span>
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-title-sm text-title-sm text-text-primary font-bold leading-tight">AI Question Generator</span>
-                      <span class="font-label-sm text-label-sm text-text-muted">Sheets Format Ready</span>
-                    </div>
-                  </div>
-                  <span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-tertiary-container/30 text-tertiary font-medium">
-                    1-Click
-                  </span>
+          </div><!-- end LEFT COLUMN -->
+
+          <!-- ═══ RIGHT COLUMN: AI Generator ═══ -->
+          <div style="position:sticky; top:76px; display:flex; flex-direction:column; gap:12px;">
+
+            <!-- AI Question Generator Card -->
+            <div style="background:#fff; border:2px solid #c7c4d8; border-radius:18px; padding:16px; box-shadow:rgba(92,0,202,.12) 0 12px 28px -4px; position:relative; overflow:hidden;">
+              <!-- glow accents -->
+              <div style="position:absolute; top:-30px; right:-30px; width:100px; height:100px; border-radius:50%; background:rgba(79,70,229,.1); filter:blur(20px); pointer-events:none;"></div>
+
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <div style="width:30px; height:30px; border-radius:10px; background:linear-gradient(135deg,#3525cd,#7c3aed); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <span class="material-symbols-outlined" style="font-size:17px; color:#fff;">smart_toy</span>
                 </div>
-                <!-- Interactive Form Controls -->
-                <div class="space-y-space-xs mt-space-sm">
-                  <!-- Quiz Topic -->
-                  <div>
-                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiTopicInput">
-                      Topic *
-                    </label>
-                    <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm px-3 py-2 rounded-lg outline-none focus:bg-surface-card transition-all" id="aiTopicInput" oninput="updateAiPrompt()" placeholder="e.g. World Geography, Python Basics" type="text" value="Modern Indian History & MPSC Syllabus"/>
+                <div>
+                  <div style="font-size:13px; font-weight:800; color:#0f172a; line-height:1.2;">AI Question Generator</div>
+                  <div style="font-size:11px; color:#64748b;">Sheets Format Ready</div>
+                </div>
+                <span style="margin-left:auto; font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; background:#f3e8ff; color:#7c3aed;">1-Click</span>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <!-- Topic -->
+                <div>
+                  <label style="font-size:11.5px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Topic *</label>
+                  <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm" id="aiTopicInput" oninput="updateAiPrompt()" placeholder="e.g. World Geography, Python Basics" type="text" value="Modern Indian History &amp; MPSC Syllabus"
+                    style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:6px 9px; font-size:12px; box-sizing:border-box; outline:none;"/>
+                </div>
+                <!-- Language -->
+                <div>
+                  <label style="font-size:11.5px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Language</label>
+                  <input class="w-full" id="aiLangInput" oninput="updateAiPrompt()" placeholder="Type any language..." type="text" value="Marathi"
+                    style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:6px 9px; font-size:12px; box-sizing:border-box; outline:none;"/>
+                  <div style="display:flex; gap:3px; flex-wrap:wrap; margin-top:4px;">
+                    <button type="button" onclick="setAiLangCustom('Marathi')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 7px; border-radius:10px; font-size:10.5px; font-weight:600; cursor:pointer;">मराठी</button>
+                    <button type="button" onclick="setAiLangCustom('English')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 7px; border-radius:10px; font-size:10.5px; font-weight:600; cursor:pointer;">English</button>
+                    <button type="button" onclick="setAiLangCustom('Hindi')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 7px; border-radius:10px; font-size:10.5px; font-weight:600; cursor:pointer;">हिन्दी</button>
+                    <button type="button" onclick="setAiLangCustom('Sanskrit')" style="background:#eaedff; color:#3525cd; border:none; padding:2px 7px; border-radius:10px; font-size:10.5px; font-weight:600; cursor:pointer;">संस्कृत</button>
                   </div>
-                  <!-- Custom Language Type Input -->
+                </div>
+                <!-- Count + Type -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
                   <div>
-                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiLangInput">
-                      Language (कोणतीही भाषा टाईप करा):
-                    </label>
-                    <div class="relative">
-                      <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm px-3 py-2 rounded-lg outline-none border border-border-medium focus:border-primary focus:bg-surface-card transition-all" id="aiLangInput" oninput="updateAiPrompt()" placeholder="Type any language (e.g. Marathi, Hindi, English, Sanskrit...)" type="text" value="Marathi"/>
-                    </div>
-                    <div class="flex items-center gap-1 mt-1.5 flex-wrap">
-                      <span class="text-[11px] text-text-muted">Quick:</span>
-                      <button type="button" class="px-2 py-0.5 rounded text-[11px] bg-surface-container hover:bg-primary hover:text-white transition-colors font-medium" onclick="setAiLangCustom('Marathi')">मराठी</button>
-                      <button type="button" class="px-2 py-0.5 rounded text-[11px] bg-surface-container hover:bg-primary hover:text-white transition-colors font-medium" onclick="setAiLangCustom('English')">English</button>
-                      <button type="button" class="px-2 py-0.5 rounded text-[11px] bg-surface-container hover:bg-primary hover:text-white transition-colors font-medium" onclick="setAiLangCustom('Hindi')">हिन्दी</button>
-                      <button type="button" class="px-2 py-0.5 rounded text-[11px] bg-surface-container hover:bg-primary hover:text-white transition-colors font-medium" onclick="setAiLangCustom('Sanskrit')">संस्कृत</button>
-                    </div>
-                  </div>
-                  <!-- Number of Questions + Question Type (2 Cols) -->
-                  <div class="grid grid-cols-2 gap-2">
-                    <div>
-                      <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiCountSelect">Count</label>
-                      <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiCountSelect" onchange="updateAiPrompt()">
-                        <option value="5 Questions">5 Questions</option>
-                        <option value="10 Questions">10 Questions</option>
-                        <option selected value="20 Questions">20 Questions</option>
-                        <option value="30 Questions">30 Questions</option>
-                        <option value="50 Questions">50 Questions</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiTypeSelect">Type</label>
-                      <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiTypeSelect" onchange="updateAiPrompt()">
-                        <option selected value="Mixed (MCQ, Checkbox, Poll)">Mixed</option>
-                        <option value="MCQ Only">MCQ Only</option>
-                        <option value="Live Polls Only">Live Polls</option>
-                      </select>
-                    </div>
-                  </div>
-                  <!-- Difficulty Level -->
-                  <div>
-                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiDiffSelect">Difficulty</label>
-                    <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiDiffSelect" onchange="updateAiPrompt()">
-                      <option selected value="Competitive Exam">Competitive Exam</option>
-                      <option value="School / College Level">School / College</option>
-                      <option value="General Public / Easy">General / Easy</option>
+                    <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Count</label>
+                    <select id="aiCountSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
+                      <option value="5 Questions">5</option>
+                      <option value="10 Questions">10</option>
+                      <option selected value="20 Questions">20</option>
+                      <option value="30 Questions">30</option>
+                      <option value="50 Questions">50</option>
                     </select>
                   </div>
-                  <!-- Generated Prompt Box -->
-                  <div class="mt-space-sm pt-space-xs">
-                    <div class="flex items-center justify-between mb-1">
-                      <span class="font-label-sm text-label-sm text-text-muted">Ready-to-use Prompt:</span>
-                      <span class="font-label-sm text-label-sm text-status-success hidden flex items-center gap-1" id="copySuccessMsg">
-                        <span class="material-symbols-outlined text-[14px]">check</span> Copied!
-                      </span>
-                    </div>
-                    <div class="bg-surface-container-low p-2.5 rounded-xl font-mono text-[12px] leading-relaxed text-text-secondary max-h-32 overflow-y-auto whitespace-pre-wrap select-all" id="promptDisplay">Create a table of 20 Competitive Exam questions on "Modern Indian History & MPSC Syllabus" in English language.
+                  <div>
+                    <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Type</label>
+                    <select id="aiTypeSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
+                      <option selected value="Mixed (MCQ, Checkbox, Poll)">Mixed</option>
+                      <option value="MCQ Only">MCQ Only</option>
+                      <option value="Live Polls Only">Live Polls</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Difficulty -->
+                <div>
+                  <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Difficulty</label>
+                  <select id="aiDiffSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
+                    <option selected value="Competitive Exam">Competitive Exam</option>
+                    <option value="School / College Level">School / College</option>
+                    <option value="General Public / Easy">General / Easy</option>
+                  </select>
+                </div>
+                <!-- Generated Prompt Box -->
+                <div style="margin-top:4px;">
+                  <div style="font-size:11px; color:#64748b; margin-bottom:4px; font-weight:600;">Ready-to-use Prompt:</div>
+                  <div id="promptDisplay"
+                    style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px 10px; font-family:monospace; font-size:11px; line-height:1.5; color:#475569; max-height:110px; overflow-y:auto; white-space:pre-wrap; word-break:break-word; user-select:all;">Create a table of 20 Competitive Exam questions on "Modern Indian History &amp; MPSC Syllabus" in Marathi language.
 Question types required: Mixed (MCQ, Checkbox, Poll).
 Format as a clean markdown table with these exact columns:
 Question | Type | Options | Correct Answer | Points | Explanation
 Ensure Options are comma-separated. Do not add markdown backticks around cell values.</div>
-                  </div>
-                  <!-- Copy Action Button -->
-                  <button class="w-full mt-2 py-2.5 px-4 bg-primary hover:bg-primary-dark text-on-primary rounded-xl font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all shadow-sm" onclick="copyGeneratedPrompt()">
-                    <span class="material-symbols-outlined text-[18px]">content_copy</span>
-                    <span>Copy ChatGPT Prompt</span>
-                  </button>
                 </div>
+                <button onclick="copyGeneratedPrompt()"
+                  style="width:100%; background:#3525cd; color:#fff; border:none; padding:9px 12px; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; margin-top:2px; box-shadow:0 2px 8px rgba(53,37,205,.25);">
+                  <span class="material-symbols-outlined" style="font-size:17px;">content_copy</span>
+                  Copy ChatGPT Prompt
+                </button>
               </div>
             </div>
-            <!-- Quick Metrics Mini-Card -->
-            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm flex items-center justify-between" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 4px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(203, 213, 225) rgb(16, 185, 129); box-shadow: rgba(16, 185, 129, 0.12) 0px 8px 20px -2px, rgba(15, 23, 42, 0.06) 0px 4px 8px -2px;">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-status-success/10 text-status-success flex items-center justify-center">
-                  <span class="material-symbols-outlined text-[24px]">verified</span>
-                </div>
-                <div>
-                  <div class="font-title-sm text-title-sm text-text-primary font-bold">Auto-Validation Active</div>
-                </div>
-              </div>
-              <span class="text-status-success font-bold font-mono text-[14px]">100% OK</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Parsed Questions Live Preview Table -->
-        <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(16, 185, 129) rgb(148, 163, 184) rgb(148, 163, 184); box-shadow: rgba(15, 23, 42, 0.12) 0px 16px 36px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -4px;">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-status-success animate-pulse"></span>
-                <h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">
-                  Parsed Questions Preview (<span id="previewCountBadge">4 Questions Detected</span>)
-                </h2>
+            <!-- Validation mini card -->
+            <div style="background:#fff; border-width:1.5px 1.5px 1.5px 4px; border-style:solid; border-color:#cbd5e1 #cbd5e1 #cbd5e1 #10b981; border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; box-shadow:rgba(16,185,129,.1) 0 6px 16px -2px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:36px; height:36px; border-radius:10px; background:rgba(16,185,129,.1); display:flex; align-items:center; justify-content:center;">
+                  <span class="material-symbols-outlined" style="font-size:22px; color:#10b981;">verified</span>
+                </div>
+                <span style="font-size:13px; font-weight:700; color:#0f172a;">Auto-Validation Active</span>
               </div>
+              <span style="font-size:14px; font-weight:800; color:#10b981; font-family:monospace;">100% OK</span>
             </div>
-            <!-- Table Action Buttons -->
-            <div class="flex items-center gap-space-xs">
-              <button class="px-3 py-2 bg-surface-container-low hover:bg-surface-container text-text-secondary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="discardParsedQuestions()">
-                <span class="material-symbols-outlined text-[16px]">close</span>
-                <span>Clear All</span>
-              </button>
-              <button class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-lg text-label-lg flex items-center gap-1.5 shadow-sm transition-all" onclick="commitImport()">
-                <span class="material-symbols-outlined text-[18px]">playlist_add_check</span>
-                <span id="btnConfirmText">Confirm &amp; Import All (4)</span>
-              </button>
-            </div>
-          </div>
-          <!-- Table Responsive Container -->
-          <div class="overflow-x-auto rounded-xl" style="border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(0, 0, 0, 0.03) 0px 1px 2px inset;">
-            <table class="w-full text-left font-body-sm text-body-sm">
-              <thead>
-                <tr class="bg-surface-container-low text-text-secondary font-title-sm text-title-sm">
-                  <th class="py-3 px-4 w-12 text-center">#</th>
-                  <th class="py-3 px-4 min-w-[280px]">Question Text</th>
-                  <th class="py-3 px-3 w-28">Type</th>
-                  <th class="py-3 px-4 w-32 text-center">Options Count</th>
-                  <th class="py-3 px-4 min-w-[200px]">Answer</th>
-                  <th class="py-3 px-3 w-24 text-center">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y-0" id="previewTableBody">
-                <!-- Rows loaded dynamically -->
-              </tbody>
-            </table>
-          </div>
-          <!-- Bottom Action Summary bar -->
-          <div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">tune</span>
-              <span class="font-body-sm text-body-sm text-text-secondary" id="bottomSummaryText">
-                <strong id="summaryCountText">1</strong> questions ready to import
-              </span>
-            </div>
-            <button class="w-full sm:w-auto px-space-xl py-2.5 bg-primary hover:bg-primary-dark text-on-primary rounded-xl font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 transition-all" onclick="commitImport()">
-              <span class="material-symbols-outlined text-[20px]">upload</span>
-              <span>Confirm &amp; Import All</span>
-            </button>
-          </div>
-        </div>
+
+          </div><!-- end RIGHT COLUMN -->
+
+        </div><!-- end grid -->
+
       </div>
     </main>
   </div>
+
+    </div>
 
   <!-- Success Notification Toast -->
   <div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface py-3 px-5 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50" id="importSuccessToast">
