@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RK QuizMaker - Quiz Builder Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#e4d4ff",
+            "surface-tint": "#4d44e3",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-primary-container": "#dad7ff",
+            "on-secondary-fixed": "#002113",
+            "secondary": "#006c49",
+            "on-tertiary-fixed": "#25005a",
+            "border-subtle": "#E2E8F0",
+            "on-surface": "#131b2e",
+            "surface-variant": "#dae2fd",
+            "status-warning": "#F59E0B",
+            "text-secondary": "#334155",
+            "surface-container-highest": "#dae2fd",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d2d9f4",
+            "surface-card": "#FFFFFF",
+            "status-success": "#10B981",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-fixed-variant": "#3323cc",
+            "text-muted": "#64748B",
+            "outline-variant": "#c7c4d8",
+            "surface-canvas": "#F8FAFC",
+            "text-primary": "#0F172A",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#464555",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed-dim": "#c3c0ff",
+            "status-danger": "#EF4444",
+            "tertiary-fixed-dim": "#d2bbff",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "primary-dark": "#3730A3",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#0f0069",
+            "border-medium": "#CBD5E1",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#00714d",
+            "secondary-fixed": "#6ffbbe",
+            "tertiary-fixed": "#eaddff",
+            "primary": "#3525cd",
+            "primary-fixed": "#e2dfff",
+            "tertiary-container": "#7531e6",
+            "surface-container-high": "#e2e7ff",
+            "status-info": "#3B82F6",
+            "background": "#faf8ff",
+            "secondary-container": "#6cf8bb",
+            "surface": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#5c00ca",
+            "surface-container-low": "#f2f3ff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xl": "2rem",
+            "gutter-md": "1.5rem",
+            "space-md": "1rem",
+            "space-2xl": "2.5rem",
+            "space-3xl": "3rem",
+            "space-lg": "1.5rem",
+            "sidebar-width": "260px",
+            "space-2xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-xs": "0.5rem",
+            "gutter-lg": "2rem",
+            "space-sm": "0.75rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Outfit"],
+            "title-sm": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Noto Sans"],
+            "label-md": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "label-lg": ["Outfit"],
+            "body-md": ["Noto Sans"],
+            "body-lg": ["Noto Sans"],
+            "display-lg": ["Outfit"],
+            "label-sm": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "display-lg-mobile": ["Outfit"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-canvas font-body-md text-on-surface antialiased">
+
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest border-b border-border-subtle">
+        <img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
+        <div class="flex flex-col">
+          <span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span>
+          <span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span>
+        </div>
+      </div>
+      <nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm">
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="blog-designer" href="blog-designer.html">
+          <span class="material-symbols-outlined text-[20px]">design_services</span>
+          <span>Blog Designer</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="dashboard.html">
+          <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="quiz-builder" href="quiz-builder.html">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span>Quiz Builder</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="bulk-import.html">
+          <span class="material-symbols-outlined text-[20px]">upload_file</span>
+          <span>Bulk Import</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+          <span>Embed &amp; Share</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="results-polls.html">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span>Results &amp; Polls</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="results-polls.html#database">
+          <span class="material-symbols-outlined text-[20px]">table_chart</span>
+          <span>Sheets Cloud DB</span>
+        </a>
+      </nav>
+    </div>
+    <div class="p-space-sm bg-surface-container-lowest border-t border-border-subtle">
+      <div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs border border-border-subtle">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary border border-emerald-200/60">
+            <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Active Sync
+          </span>
+          <a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank">
+            <span>Blog</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-space-sm mt-1">
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p>
+            <p class="font-body-sm text-body-sm text-text-muted truncate">Admin / Creator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Layout -->
+  <div class="pl-[260px]">
+    <!-- Top Header Bar -->
+    <header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between border-b border-border-subtle">
+      <div class="flex items-center gap-space-md flex-1 max-w-lg">
+        <div class="relative w-full max-w-sm">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card focus:ring-1 focus:ring-primary transition-all placeholder:text-text-muted border border-border-subtle" placeholder="Search quizzes, questions..." type="search"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full border border-border-subtle">
+          <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span>
+        </div>
+        <button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle">
+          <span class="material-symbols-outlined text-[16px]">translate</span>
+          <span>EN</span>
+        </button>
+        <button onclick="resetBuilderNew()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          <span>+ New Quiz</span>
+        </button>
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-lg">
+      <div class="flex flex-col w-full">
+        <!-- Sticky Context Header -->
+        <div class="sticky top-16 z-30 bg-surface-card/95 backdrop-blur-md px-gutter-md py-space-sm mb-space-lg -mx-gutter-md shadow-sm" style="background-color: rgb(255, 255, 255); border-bottom: 1px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 12px -2px;">
+          <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+                <span class="material-symbols-outlined text-primary text-[24px]">tune</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h1 class="font-headline-sm text-headline-sm text-text-primary tracking-tight">Quiz Builder</h1>
+                  <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">Studio Mode</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-text-muted">Configure settings, add questions, and sync directly with Google Sheets.</p>
+              </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-space-xs shrink-0">
+              <button onclick="window.location.href='dashboard.html'" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-text-secondary bg-surface-container-low hover:bg-surface-container transition-all border border-border-subtle" type="button">
+                Cancel
+              </button>
+              <button onclick="saveDraftLocally()" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-primary bg-primary-fixed hover:bg-primary-fixed-dim transition-all flex items-center gap-1.5 shadow-sm border border-primary/20" type="button">
+                <span class="material-symbols-outlined text-[18px]">save</span>
+                <span>Save Draft</span>
+              </button>
+              <button onclick="saveQuizToDB()" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-on-primary bg-primary-container hover:bg-primary-dark transition-all flex items-center gap-1.5 shadow-md" type="button">
+                <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+                <span>Save to Cloud DB</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full space-y-space-xl pb-space-3xl">
+          <!-- Section 1: Basic Quiz Configuration -->
+          <div class="bg-surface-card rounded-xl p-space-lg shadow-sm space-y-space-lg" style="background-color: rgb(255, 255, 255); border-width: 4px 1px 1px; border-style: solid; border-color: rgb(53, 37, 205) rgb(203, 213, 225) rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;">
+            <input type="hidden" id="quizIdInput" value="">
+            <div class="flex items-center justify-between pb-space-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-6 rounded-full bg-primary inline-block"></span>
+                <h2 class="font-title-md text-title-md text-text-primary font-bold">1. Quiz Settings</h2>
+              </div>
+              <div class="flex items-center gap-2 text-text-muted font-body-sm text-body-sm">
+                <span class="material-symbols-outlined text-[18px] text-secondary">verified</span>
+                <span>Google Sheets Schema Synced</span>
+              </div>
+            </div>
+
+            <!-- Form Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-space-lg">
+              <!-- Title Input -->
+              <div class="md:col-span-8 flex flex-col gap-1.5">
+                <label class="font-title-sm text-title-sm text-text-primary flex items-center justify-between">
+                  <span>Quiz Title <span class="text-status-danger">*</span></span>
+                  <span class="font-label-sm text-label-sm text-text-muted" id="charCountLabel">48/100 chars</span>
+                </label>
+                <div class="relative">
+                  <input id="quizTitleInput" oninput="updateCharCount()" class="w-full bg-surface-container-low focus:bg-surface-card text-on-surface font-body-md text-body-md px-4 py-2.5 rounded-lg outline-none transition-all placeholder:text-text-muted border border-border-subtle focus:border-primary" type="text" value="MPSC General Studies & Current Affairs Mock 2025"/>
+                  <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">edit_note</span>
+                </div>
+              </div>
+
+              <!-- Category Dropdown -->
+              <div class="md:col-span-4 flex flex-col gap-1.5">
+                <label class="font-title-sm text-title-sm text-text-primary">Category</label>
+                <div class="relative">
+                  <select id="quizCategorySelect" class="w-full appearance-none bg-surface-container-low focus:bg-surface-card text-on-surface font-body-md text-body-md px-4 py-2.5 rounded-lg outline-none transition-all cursor-pointer border border-border-subtle focus:border-primary">
+                    <option selected>Competitive Exam (MPSC / Govt)</option>
+                    <option>School / College</option>
+                    <option>General Knowledge</option>
+                    <option>Technology & Coding</option>
+                    <option>Live Poll / Survey</option>
+                  </select>
+                  <span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">expand_more</span>
+                </div>
+              </div>
+
+              <!-- Description / Instructions -->
+              <div class="md:col-span-12 flex flex-col gap-1.5">
+                <label class="font-title-sm text-title-sm text-text-primary">Description / Instructions</label>
+                <textarea id="quizDescInput" class="w-full bg-surface-container-low focus:bg-surface-card text-on-surface font-body-md text-body-md px-4 py-2.5 rounded-lg outline-none transition-all placeholder:text-text-muted resize-y border border-border-subtle focus:border-primary" rows="2">This test contains multiple-choice questions. Timed exam rules apply. Automatic rank leaderboard generated upon completion.</textarea>
+              </div>
+
+              <!-- Timer & Passing -->
+              <div class="md:col-span-6 flex flex-col gap-2 p-space-md bg-surface-container-low/50 rounded-xl border border-border-subtle">
+                <label class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+                  <span>Time Limit</span>
+                </label>
+                <div class="flex items-center gap-3">
+                  <div class="relative w-36 shrink-0">
+                    <input id="timerInput" class="w-full bg-surface-card text-on-surface font-title-sm text-title-sm px-3 py-2 rounded-lg outline-none text-center border border-border-subtle focus:border-primary" type="number" value="20" min="0"/>
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-text-muted">Mins</span>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input id="untimedCheckbox" onchange="toggleUntimed(this.checked)" class="w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+                    <span class="font-body-sm text-body-sm text-text-secondary">Untimed practice</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Passing Percentage -->
+              <div class="md:col-span-6 flex flex-col gap-2 p-space-md bg-surface-container-low/50 rounded-xl border border-border-subtle">
+                <label class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">military_tech</span>
+                  <span>Passing Mark</span>
+                </label>
+                <div class="flex items-center gap-4">
+                  <div class="relative w-32 shrink-0">
+                    <input id="passingInput" oninput="updatePassingProgress()" class="w-full bg-surface-card text-on-surface font-title-sm text-title-sm px-3 py-2 rounded-lg outline-none text-center border border-border-subtle focus:border-primary" max="100" min="0" type="number" value="60"/>
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 font-title-sm text-title-sm text-text-muted">%</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+                      <div id="passingProgressBar" class="h-full bg-secondary rounded-full transition-all duration-300" style="width: 60%;"></div>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-text-muted mt-1" id="passingHintText">Passing standard: 60% correct answers required</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Toggles (2x2 Grid) -->
+              <div class="md:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm pt-space-xs">
+                <!-- Toggle 1: Retake -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between gap-2 hover:bg-surface-container transition-colors border border-border-subtle">
+                  <div class="flex flex-col">
+                    <span class="font-title-sm text-title-sm text-text-primary font-semibold">Allow Retake</span>
+                    <span class="font-body-sm text-body-sm text-text-muted">Allow repeat attempts</span>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input id="toggleRetake" checked class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+                  </label>
+                </div>
+                <!-- Toggle 2: Show Explanations -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between gap-2 hover:bg-surface-container transition-colors border border-border-subtle">
+                  <div class="flex flex-col">
+                    <span class="font-title-sm text-title-sm text-text-primary font-semibold">Show Explanations</span>
+                    <span class="font-body-sm text-body-sm text-text-muted">Display solution details</span>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input id="toggleExplanations" checked class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+                  </label>
+                </div>
+                <!-- Toggle 3: Shuffle Questions -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between gap-2 hover:bg-surface-container transition-colors border border-border-subtle">
+                  <div class="flex flex-col">
+                    <span class="font-title-sm text-title-sm text-text-primary font-semibold">Shuffle Questions</span>
+                    <span class="font-body-sm text-body-sm text-text-muted">Randomize order & choices</span>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input id="toggleShuffle" checked class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+                  </label>
+                </div>
+                <!-- Toggle 4: Live Leaderboard -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between gap-2 hover:bg-surface-container transition-colors border border-border-subtle">
+                  <div class="flex flex-col">
+                    <span class="font-title-sm text-title-sm text-text-primary font-semibold">Live Leaderboard</span>
+                    <span class="font-body-sm text-body-sm text-text-muted">Instant rank & certificate</span>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input id="toggleLeaderboard" checked class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Questions Management Studio -->
+          <div class="space-y-space-md">
+            <!-- Section Action Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-card p-space-md rounded-xl shadow-sm border border-border-subtle" style="border-left: 5px solid rgb(0, 108, 73); box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 14px -2px;">
+              <div class="flex items-center gap-3">
+                <span class="w-2.5 h-6 rounded-full bg-secondary inline-block"></span>
+                <div>
+                  <h2 class="font-title-md text-title-md text-text-primary flex items-center gap-2 font-bold">
+                    <span>2. Questions (<span id="qCountText">3</span> Added)</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-primary-fixed text-primary font-label-md text-label-md font-semibold" id="qCountBadge">3 Items</span>
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-text-muted">MCQ, Checkbox, Polls or import directly from Google Sheets</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-space-xs flex-wrap">
+                <a class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-text-secondary bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-1.5 border border-border-subtle" href="bulk-import.html">
+                  <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                  <span>Bulk Import</span>
+                </a>
+                <div class="relative">
+                  <button onclick="toggleAddMenu()" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-on-primary bg-primary hover:bg-primary-dark transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+                    <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                    <span>+ Add Question</span>
+                    <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                  </button>
+                  <!-- Add Question Type Menu -->
+                  <div id="addTypeMenu" class="hidden absolute right-0 mt-2 w-56 bg-surface-card rounded-xl shadow-xl border border-border-subtle py-1.5 z-40">
+                    <button onclick="addQuestion('MCQ')" class="w-full px-4 py-2.5 text-left font-body-sm text-body-sm text-text-primary hover:bg-surface-container-low flex items-center gap-2.5 transition-colors">
+                      <span class="material-symbols-outlined text-primary text-[18px]">radio_button_checked</span>
+                      <div>
+                        <div class="font-semibold">MCQ (Single Choice)</div>
+                        <div class="text-[11px] text-text-muted">One correct answer</div>
+                      </div>
+                    </button>
+                    <button onclick="addQuestion('CHECKBOX')" class="w-full px-4 py-2.5 text-left font-body-sm text-body-sm text-text-primary hover:bg-surface-container-low flex items-center gap-2.5 transition-colors">
+                      <span class="material-symbols-outlined text-status-warning text-[18px]">check_box</span>
+                      <div>
+                        <div class="font-semibold">Checkbox (Multi-Select)</div>
+                        <div class="text-[11px] text-text-muted">Multiple correct answers</div>
+                      </div>
+                    </button>
+                    <button onclick="addQuestion('POLL')" class="w-full px-4 py-2.5 text-left font-body-sm text-body-sm text-text-primary hover:bg-surface-container-low flex items-center gap-2.5 transition-colors">
+                      <span class="material-symbols-outlined text-tertiary text-[18px]">poll</span>
+                      <div>
+                        <div class="font-semibold">Live Poll (Survey)</div>
+                        <div class="text-[11px] text-text-muted">Unscored live feedback</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questionsContainer" class="space-y-space-md">
+              <!-- Dynamically populated question cards -->
+            </div>
+          </div>
+
+          <!-- Bottom Sticky-Action Sub Bar -->
+          <div class="p-space-md bg-surface-card rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md" style="background-color: rgb(255, 255, 255); border-width: 3px 1px 1px; border-style: solid; border-color: rgb(53, 37, 205) rgb(203, 213, 225) rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.05) 0px 4px 10px -2px;">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+                <span class="material-symbols-outlined text-[28px]">format_list_bulleted_add</span>
+              </div>
+              <div>
+                <h4 class="font-title-sm text-title-sm text-text-primary font-bold">Finished creating questions?</h4>
+                <p class="font-body-sm text-body-sm text-text-muted">Changes auto-sync to local storage and Google Sheets.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-sm w-full sm:w-auto">
+              <button onclick="addQuestion('MCQ')" class="flex-1 sm:flex-initial px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg text-primary bg-primary/10 hover:bg-primary/15 transition-colors flex items-center justify-center gap-2" type="button">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                <span>+ Add Another Question</span>
+              </button>
+              <button onclick="saveQuizToDB()" class="flex-1 sm:flex-initial px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg text-on-primary bg-primary-container hover:bg-primary-dark transition-all flex items-center justify-center gap-2 shadow-md" type="button">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                <span>Save Quiz to DB</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-inverse-surface text-inverse-on-surface px-space-md py-space-sm rounded-xl shadow-xl flex items-center gap-3 border border-border-subtle" id="toastNotification">
+          <span class="material-symbols-outlined text-secondary-fixed-dim text-[24px]" id="toastIcon">cloud_done</span>
+          <div>
+            <p class="font-title-sm text-title-sm font-semibold" id="toastTitle">Quiz saved successfully!</p>
+            <p class="font-body-sm text-body-sm text-inverse-on-surface/80" id="toastDesc">Questions synced with Google Sheets DB & Local Storage.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // State
+    let currentQuestions = [];
+    const STORAGE_KEY = 'rk_quizzes_v2';
+
+    // Sample default questions
+    const DEFAULT_QUESTIONS = [
+      {
+        id: 'q_1',
+        type: 'MCQ',
+        question: 'What is the administrative capital of Maharashtra?',
+        imageUrl: '',
+        points: 1,
+        options: ['Pune', 'Mumbai', 'Chhatrapati Sambhajinagar', 'Nashik'],
+        correctAnswer: 'Mumbai',
+        explanation: 'Mumbai is the official state capital and financial center of Maharashtra.'
+      },
+      {
+        id: 'q_2',
+        type: 'CHECKBOX',
+        question: 'Which of the following are core web development technologies?',
+        imageUrl: '',
+        points: 2,
+        options: ['HTML', 'CSS', 'JavaScript', 'C++ Kernel Architecture'],
+        correctAnswer: 'HTML, CSS, JavaScript',
+        explanation: 'HTML, CSS, and JavaScript constitute the foundational languages of web frontends.'
+      },
+      {
+        id: 'q_3',
+        type: 'POLL',
+        question: 'How many hours do you dedicate daily to competitive exam preparation?',
+        imageUrl: '',
+        points: 0,
+        options: [
+          { text: '2 to 4 Hours', votes: 84, percent: 42 },
+          { text: '4 to 6 Hours', votes: 70, percent: 35 },
+          { text: '6+ Hours', votes: 30, percent: 15 },
+          { text: 'Less than 2 Hours', votes: 16, percent: 8 }
+        ],
+        correctAnswer: '',
+        explanation: ''
+      }
+    ];
+
+    function initBuilder() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const quizId = urlParams.get('quizId');
+
+      let quizzes = [];
+      try {
+        quizzes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (e) {
+        quizzes = [];
+      }
+
+      if (quizId) {
+        const found = quizzes.find(q => q.id === quizId);
+        if (found) {
+          loadQuizData(found);
+          return;
+        }
+      }
+
+      // Default sample quiz
+      currentQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+      renderQuestions();
+      updateCharCount();
+      updatePassingProgress();
+    }
+
+    function loadQuizData(quiz) {
+      document.getElementById('quizIdInput').value = quiz.id || '';
+      document.getElementById('quizTitleInput').value = quiz.title || '';
+      document.getElementById('quizCategorySelect').value = quiz.category || 'Competitive Exam (MPSC / Govt)';
+      document.getElementById('quizDescInput').value = quiz.description || '';
+      document.getElementById('timerInput').value = quiz.timeLimitMinutes || 20;
+      document.getElementById('untimedCheckbox').checked = (quiz.timeLimitMinutes === 0);
+      toggleUntimed(quiz.timeLimitMinutes === 0);
+      document.getElementById('passingInput').value = quiz.passingScore || 60;
+      document.getElementById('toggleRetake').checked = quiz.allowRetake !== false;
+      document.getElementById('toggleExplanations').checked = quiz.showAnswers !== false;
+      document.getElementById('toggleShuffle').checked = !!quiz.shuffleQuestions;
+
+      currentQuestions = (quiz.questions && quiz.questions.length > 0)
+        ? JSON.parse(JSON.stringify(quiz.questions))
+        : JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+
+      renderQuestions();
+      updateCharCount();
+      updatePassingProgress();
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      document.getElementById('qCountText').textContent = currentQuestions.length;
+      document.getElementById('qCountBadge').textContent = currentQuestions.length + ' Items';
+
+      currentQuestions.forEach((q, idx) => {
+        const qNum = idx + 1;
+        const card = document.createElement('div');
+        card.id = 'question-card-' + idx;
+
+        if (q.type === 'MCQ') {
+          card.className = "bg-surface-card rounded-xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md border border-border-subtle";
+          card.style.cssText = "border-left: 5px solid rgb(53, 37, 205); box-shadow: rgba(53, 37, 205, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;";
+          card.innerHTML = renderMCQCard(q, idx, qNum);
+        } else if (q.type === 'CHECKBOX') {
+          card.className = "bg-surface-card rounded-xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md border border-border-subtle";
+          card.style.cssText = "border-left: 5px solid rgb(245, 158, 11); box-shadow: rgba(245, 158, 11, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;";
+          card.innerHTML = renderCheckboxCard(q, idx, qNum);
+        } else {
+          // Poll
+          card.className = "bg-surface-card rounded-xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md border border-border-subtle";
+          card.style.cssText = "border-left: 5px solid rgb(92, 0, 202); box-shadow: rgba(92, 0, 202, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;";
+          card.innerHTML = renderPollCard(q, idx, qNum);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderMCQCard(q, idx, qNum) {
+      const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+      const rawOptions = Array.isArray(q.options) ? q.options : ['Option A', 'Option B', 'Option C', 'Option D'];
+
+      let optionsHTML = '';
+      rawOptions.forEach((opt, optIdx) => {
+        const letter = letters[optIdx] || String(optIdx + 1);
+        const isCorrect = (q.correctAnswer && (q.correctAnswer.trim().toLowerCase() === opt.trim().toLowerCase() || q.correctAnswer.trim().toUpperCase() === letter));
+
+        if (isCorrect) {
+          optionsHTML += `
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-50 text-secondary transition-colors shadow-2xs border border-emerald-200/60">
+              <input checked class="w-4 h-4 text-secondary accent-secondary cursor-pointer" name="mcq_ans_${idx}" onchange="setMCQAnswer(${idx}, ${optIdx})" type="radio"/>
+              <span class="w-6 font-title-sm text-title-sm text-secondary font-bold">${letter}</span>
+              <input class="flex-1 bg-surface-card px-3 py-1.5 rounded text-on-surface font-body-md text-body-md outline-none font-medium border border-emerald-200" oninput="updateOptionText(${idx}, ${optIdx}, this.value)" type="text" value="${escapeHtml(opt)}"/>
+              <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm">
+                <span class="material-symbols-outlined text-[14px]">check</span>
+                <span>Correct Answer</span>
+              </div>
+            </div>
+          `;
+        } else {
+          optionsHTML += `
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-surface-container-low/40 hover:bg-surface-container-low transition-colors border border-border-subtle/50">
+              <input class="w-4 h-4 text-primary accent-primary cursor-pointer" name="mcq_ans_${idx}" onchange="setMCQAnswer(${idx}, ${optIdx})" type="radio"/>
+              <span class="w-6 font-title-sm text-title-sm text-text-muted">${letter}</span>
+              <input class="flex-1 bg-surface-card px-3 py-1.5 rounded text-on-surface font-body-md text-body-md outline-none border border-border-subtle focus:border-primary" oninput="updateOptionText(${idx}, ${optIdx}, this.value)" type="text" value="${escapeHtml(opt)}"/>
+              <span class="font-label-sm text-label-sm text-text-muted px-2">Incorrect</span>
+            </div>
+          `;
+        }
+      });
+
+      return `
+        <div class="bg-surface-container-low/80 px-space-md py-2.5 flex items-center justify-between border-b border-border-subtle" style="background-color: rgb(242, 243, 255);">
+          <div class="flex items-center gap-2.5">
+            <button class="cursor-grab text-text-muted hover:text-text-primary" title="Question index" type="button">
+              <span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+            </button>
+            <span class="w-6 h-6 rounded-full bg-primary text-on-primary font-title-sm text-title-sm flex items-center justify-center font-bold">${qNum}</span>
+            <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-primary font-label-sm text-label-sm font-semibold tracking-wider border border-primary/20">
+              MCQ (Single Choice)
+            </span>
+            <span class="font-body-sm text-body-sm text-text-muted hidden sm:inline">Single Answer</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1 mr-2 px-2 py-1 bg-surface-card rounded-lg shadow-2xs border border-border-subtle">
+              <span class="font-label-sm text-label-sm text-text-muted">Points:</span>
+              <input class="w-8 text-center font-title-sm text-title-sm text-primary bg-transparent outline-none font-bold" onchange="updatePoints(${idx}, this.value)" type="number" value="${q.points || 1}" min="1"/>
+            </div>
+            <button onclick="duplicateQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors" title="Duplicate" type="button">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, -1)" ${idx === 0 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Up" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, 1)" ${idx === currentQuestions.length - 1 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Down" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+            </button>
+            <button onclick="deleteQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-status-danger hover:bg-error-container/30 transition-colors" title="Delete" type="button">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-space-lg space-y-space-md">
+          <div class="flex flex-col gap-1">
+            <label class="font-title-sm text-title-sm text-text-primary font-semibold">Question Text:</label>
+            <input class="w-full bg-surface-container-low focus:bg-surface-card text-on-surface font-title-md text-title-md px-4 py-2.5 rounded-lg outline-none transition-all border border-border-subtle focus:border-primary" oninput="updateQuestionText(${idx}, this.value)" type="text" value="${escapeHtml(q.question)}"/>
+          </div>
+
+          <div class="space-y-2" style="background-color: rgb(248, 250, 252); border: 1px solid rgb(226, 232, 240); border-radius: 0.75rem; padding: 1rem; box-shadow: rgba(0, 0, 0, 0.03) 0px 1px 3px;">
+            <label class="font-label-md text-label-md text-text-muted uppercase tracking-wider font-semibold">
+              Options (Select Radio for Correct Answer):
+            </label>
+            ${optionsHTML}
+          </div>
+
+          <div class="bg-surface-container-low/60 rounded-lg p-3 flex flex-col gap-1.5" style="background-color: rgb(242, 243, 255); border-left: 3px solid rgb(53, 37, 205);">
+            <label class="font-title-sm text-title-sm text-text-secondary flex items-center gap-1.5 font-semibold">
+              <span class="material-symbols-outlined text-primary text-[18px]">lightbulb</span>
+              <span>Explanation:</span>
+            </label>
+            <input class="w-full bg-surface-card px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface outline-none border border-border-subtle focus:border-primary" oninput="updateExplanation(${idx}, this.value)" type="text" placeholder="Why this is correct..." value="${escapeHtml(q.explanation || '')}"/>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCheckboxCard(q, idx, qNum) {
+      const rawOptions = Array.isArray(q.options) ? q.options : ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+      const correctArr = (q.correctAnswer || '').split(',').map(s => s.trim().toLowerCase());
+
+      let optionsHTML = '';
+      rawOptions.forEach((opt, optIdx) => {
+        const isSelected = correctArr.includes(opt.trim().toLowerCase());
+
+        if (isSelected) {
+          optionsHTML += `
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-50 text-secondary transition-colors border border-emerald-200/60">
+              <input checked class="w-4 h-4 text-secondary accent-secondary cursor-pointer rounded" onchange="toggleCheckboxCorrect(${idx}, ${optIdx})" type="checkbox"/>
+              <input class="flex-1 bg-surface-card px-3 py-1.5 rounded text-on-surface font-body-md text-body-md outline-none border border-emerald-200" oninput="updateOptionText(${idx}, ${optIdx}, this.value)" type="text" value="${escapeHtml(opt)}"/>
+              <div class="flex items-center gap-1 px-2 py-0.5 rounded bg-secondary/15 text-secondary font-label-sm text-label-sm font-semibold">
+                <span>Correct Option</span>
+              </div>
+            </div>
+          `;
+        } else {
+          optionsHTML += `
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-surface-container-low/40 hover:bg-surface-container-low transition-colors border border-border-subtle/50">
+              <input class="w-4 h-4 text-secondary accent-secondary cursor-pointer rounded" onchange="toggleCheckboxCorrect(${idx}, ${optIdx})" type="checkbox"/>
+              <input class="flex-1 bg-surface-card px-3 py-1.5 rounded text-on-surface font-body-md text-body-md outline-none border border-border-subtle focus:border-primary" oninput="updateOptionText(${idx}, ${optIdx}, this.value)" type="text" value="${escapeHtml(opt)}"/>
+              <span class="font-label-sm text-label-sm text-text-muted px-2">Incorrect</span>
+            </div>
+          `;
+        }
+      });
+
+      return `
+        <div class="bg-surface-container-low/80 px-space-md py-2.5 flex items-center justify-between border-b border-border-subtle" style="background-color: rgb(255, 251, 235);">
+          <div class="flex items-center gap-2.5">
+            <button class="cursor-grab text-text-muted hover:text-text-primary" title="Question index" type="button">
+              <span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+            </button>
+            <span class="w-6 h-6 rounded-full bg-status-warning text-on-primary font-title-sm text-title-sm flex items-center justify-center font-bold">${qNum}</span>
+            <span class="px-2 py-0.5 rounded-md bg-amber-100 text-status-warning font-label-sm text-label-sm font-semibold tracking-wider border border-amber-300">
+              Checkbox (Multi-Select)
+            </span>
+            <span class="font-body-sm text-body-sm text-text-muted hidden sm:inline">Multi-Select</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1 mr-2 px-2 py-1 bg-surface-card rounded-lg shadow-2xs border border-border-subtle">
+              <span class="font-label-sm text-label-sm text-text-muted">Points:</span>
+              <input class="w-8 text-center font-title-sm text-title-sm text-status-warning bg-transparent outline-none font-bold" onchange="updatePoints(${idx}, this.value)" type="number" value="${q.points || 2}" min="1"/>
+            </div>
+            <button onclick="duplicateQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors" title="Duplicate" type="button">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, -1)" ${idx === 0 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Up" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, 1)" ${idx === currentQuestions.length - 1 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Down" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+            </button>
+            <button onclick="deleteQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-status-danger hover:bg-error-container/30 transition-colors" title="Delete" type="button">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-space-lg space-y-space-md">
+          <div class="flex flex-col gap-1">
+            <label class="font-title-sm text-title-sm text-text-primary font-semibold">Question Text:</label>
+            <input class="w-full bg-surface-container-low focus:bg-surface-card text-on-surface font-title-md text-title-md px-4 py-2.5 rounded-lg outline-none transition-all border border-border-subtle focus:border-primary" oninput="updateQuestionText(${idx}, this.value)" type="text" value="${escapeHtml(q.question)}"/>
+          </div>
+
+          <div class="space-y-2" style="background-color: rgb(248, 250, 252); border: 1px solid rgb(226, 232, 240); border-radius: 0.75rem; padding: 1rem; box-shadow: rgba(0, 0, 0, 0.03) 0px 1px 3px;">
+            <label class="font-label-md text-label-md text-text-muted uppercase tracking-wider font-semibold">
+              Select All Applicable Correct Answers:
+            </label>
+            ${optionsHTML}
+          </div>
+
+          <div class="bg-surface-container-low/60 rounded-lg p-3 flex flex-col gap-1.5" style="background-color: rgb(254, 252, 232); border-left: 3px solid rgb(245, 158, 11);">
+            <label class="font-title-sm text-title-sm text-text-secondary flex items-center gap-1.5 font-semibold">
+              <span class="material-symbols-outlined text-status-warning text-[18px]">lightbulb</span>
+              <span>Explanation:</span>
+            </label>
+            <input class="w-full bg-surface-card px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface outline-none border border-border-subtle focus:border-primary" oninput="updateExplanation(${idx}, this.value)" type="text" placeholder="Explain the multi-choice answers..." value="${escapeHtml(q.explanation || '')}"/>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPollCard(q, idx, qNum) {
+      const opts = (Array.isArray(q.options) && q.options.length > 0)
+        ? q.options.map(o => typeof o === 'object' ? o : { text: String(o), votes: 20, percent: 25 })
+        : [
+            { text: 'Option 1', votes: 50, percent: 50 },
+            { text: 'Option 2', votes: 50, percent: 50 }
+          ];
+
+      let pollBarsHTML = '';
+      opts.forEach((o, optIdx) => {
+        pollBarsHTML += `
+          <div class="p-3 bg-surface-container-low/50 rounded-xl flex flex-col gap-2 border border-border-subtle">
+            <div class="flex items-center justify-between">
+              <input class="font-title-sm text-title-sm bg-transparent outline-none flex-1 font-semibold text-text-primary" oninput="updatePollOptionText(${idx}, ${optIdx}, this.value)" type="text" value="${escapeHtml(o.text)}"/>
+              <span class="font-label-sm text-label-sm text-primary font-bold">${o.percent || 25}% (${o.votes || 0} votes)</span>
+            </div>
+            <div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: ${o.percent || 25}%;"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      return `
+        <div class="bg-surface-container-low/80 px-space-md py-2.5 flex items-center justify-between border-b border-border-subtle" style="background-color: rgb(250, 245, 255);">
+          <div class="flex items-center gap-2.5">
+            <button class="cursor-grab text-text-muted hover:text-text-primary" title="Question index" type="button">
+              <span class="material-symbols-outlined text-[20px]">drag_indicator</span>
+            </button>
+            <span class="w-6 h-6 rounded-full bg-tertiary text-on-primary font-title-sm text-title-sm flex items-center justify-center font-bold">${qNum}</span>
+            <span class="px-2 py-0.5 rounded-md bg-purple-100 text-tertiary font-label-sm text-label-sm font-semibold tracking-wider border border-purple-200">
+              Live Poll (Survey)
+            </span>
+            <span class="font-body-sm text-body-sm text-text-muted hidden sm:inline">Unscored Survey Item</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="px-2 py-1 rounded bg-surface-container font-label-sm text-label-sm text-text-muted mr-2 font-semibold">Unscored</span>
+            <button onclick="duplicateQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors" title="Duplicate" type="button">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, -1)" ${idx === 0 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Up" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+            <button onclick="moveQuestion(${idx}, 1)" ${idx === currentQuestions.length - 1 ? 'disabled class="p-1.5 rounded-lg text-text-muted/40 cursor-not-allowed"' : 'class="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container transition-colors"'} title="Move Down" type="button">
+              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+            </button>
+            <button onclick="deleteQuestion(${idx})" class="p-1.5 rounded-lg text-text-muted hover:text-status-danger hover:bg-error-container/30 transition-colors" title="Delete" type="button">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-space-lg space-y-space-md">
+          <div class="flex flex-col gap-1">
+            <label class="font-title-sm text-title-sm text-text-primary font-semibold">Poll Question:</label>
+            <input class="w-full bg-surface-container-low focus:bg-surface-card text-on-surface font-title-md text-title-md px-4 py-2.5 rounded-lg outline-none transition-all border border-border-subtle focus:border-primary" oninput="updateQuestionText(${idx}, this.value)" type="text" value="${escapeHtml(q.question)}"/>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm" style="background-color: rgb(248, 250, 252); border: 1px solid rgb(226, 232, 240); border-radius: 0.75rem; padding: 1rem; box-shadow: rgba(0, 0, 0, 0.03) 0px 1px 3px;">
+            ${pollBarsHTML}
+          </div>
+
+          <div class="flex items-center justify-between pt-1 border-t border-border-subtle">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-status-success animate-ping"></span>
+              <span class="font-label-sm text-label-sm text-text-muted">Real-time Vote Sync Enabled (Google Sheets Tab: PollVotes)</span>
+            </div>
+            <button onclick="addPollOption(${idx})" class="text-primary hover:text-primary-dark font-label-md text-label-md flex items-center gap-1 font-semibold" type="button">
+              <span class="material-symbols-outlined text-[16px]">add</span>
+              <span>+ Add Option</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Helper functions
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function toggleAddMenu() {
+      const menu = document.getElementById('addTypeMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function (e) {
+      const menu = document.getElementById('addTypeMenu');
+      if (!menu) return;
+      if (!e.target.closest('#addTypeMenu') && !e.target.closest('button[onclick="toggleAddMenu()"]')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function addQuestion(type) {
+      document.getElementById('addTypeMenu').classList.add('hidden');
+      const newId = 'q_' + Date.now().toString(36);
+
+      if (type === 'MCQ') {
+        currentQuestions.push({
+          id: newId,
+          type: 'MCQ',
+          question: 'New Multiple Choice Question',
+          points: 1,
+          options: ['Option A', 'Option B', 'Option C', 'Option D'],
+          correctAnswer: 'Option A',
+          explanation: ''
+        });
+      } else if (type === 'CHECKBOX') {
+        currentQuestions.push({
+          id: newId,
+          type: 'CHECKBOX',
+          question: 'New Checkbox Multi-Select Question',
+          points: 2,
+          options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+          correctAnswer: 'Option 1, Option 2',
+          explanation: ''
+        });
+      } else {
+        currentQuestions.push({
+          id: newId,
+          type: 'POLL',
+          question: 'New Survey / Poll Question',
+          points: 0,
+          options: [
+            { text: 'Option 1', votes: 10, percent: 50 },
+            { text: 'Option 2', votes: 10, percent: 50 }
+          ],
+          correctAnswer: '',
+          explanation: ''
+        });
+      }
+
+      renderQuestions();
+      showToast('Question added successfully!', 'add_circle');
+
+      // Scroll to bottom
+      setTimeout(() => {
+        const lastCard = document.getElementById('question-card-' + (currentQuestions.length - 1));
+        if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+
+    function updateQuestionText(idx, val) {
+      if (currentQuestions[idx]) currentQuestions[idx].question = val;
+    }
+
+    function updateExplanation(idx, val) {
+      if (currentQuestions[idx]) currentQuestions[idx].explanation = val;
+    }
+
+    function updatePoints(idx, val) {
+      if (currentQuestions[idx]) currentQuestions[idx].points = Math.max(1, Number(val) || 1);
+    }
+
+    function updateOptionText(qIdx, optIdx, val) {
+      const q = currentQuestions[qIdx];
+      if (!q || !q.options) return;
+      q.options[optIdx] = val;
+    }
+
+    function setMCQAnswer(qIdx, optIdx) {
+      const q = currentQuestions[qIdx];
+      if (!q) return;
+      q.correctAnswer = q.options[optIdx];
+      renderQuestions();
+    }
+
+    function toggleCheckboxCorrect(qIdx, optIdx) {
+      const q = currentQuestions[qIdx];
+      if (!q) return;
+      const opt = q.options[optIdx];
+      let correctArr = (q.correctAnswer || '').split(',').map(s => s.trim()).filter(Boolean);
+
+      const existsIdx = correctArr.findIndex(c => c.toLowerCase() === opt.toLowerCase());
+      if (existsIdx > -1) {
+        correctArr.splice(existsIdx, 1);
+      } else {
+        correctArr.push(opt);
+      }
+
+      q.correctAnswer = correctArr.join(', ');
+      renderQuestions();
+    }
+
+    function updatePollOptionText(qIdx, optIdx, val) {
+      const q = currentQuestions[qIdx];
+      if (!q || !q.options || !q.options[optIdx]) return;
+      if (typeof q.options[optIdx] === 'object') {
+        q.options[optIdx].text = val;
+      } else {
+        q.options[optIdx] = val;
+      }
+    }
+
+    function addPollOption(qIdx) {
+      const q = currentQuestions[qIdx];
+      if (!q) return;
+      if (!Array.isArray(q.options)) q.options = [];
+      q.options.push({ text: 'New Option ' + (q.options.length + 1), votes: 0, percent: 0 });
+      renderQuestions();
+    }
+
+    function duplicateQuestion(idx) {
+      const copy = JSON.parse(JSON.stringify(currentQuestions[idx]));
+      copy.id = 'q_' + Date.now().toString(36);
+      copy.question = copy.question + ' (Copy)';
+      currentQuestions.splice(idx + 1, 0, copy);
+      renderQuestions();
+      showToast('Question duplicated!', 'content_copy');
+    }
+
+    function moveQuestion(idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= currentQuestions.length) return;
+      const temp = currentQuestions[idx];
+      currentQuestions[idx] = currentQuestions[targetIdx];
+      currentQuestions[targetIdx] = temp;
+      renderQuestions();
+    }
+
+    function deleteQuestion(idx) {
+      if (currentQuestions.length <= 1) {
+        showToast('A quiz must contain at least 1 question!', 'warning');
+        return;
+      }
+      currentQuestions.splice(idx, 1);
+      renderQuestions();
+      showToast('Question deleted', 'delete');
+    }
+
+    function updateCharCount() {
+      const title = document.getElementById('quizTitleInput').value;
+      document.getElementById('charCountLabel').textContent = title.length + '/100 chars';
+    }
+
+    function toggleUntimed(isUntimed) {
+      const input = document.getElementById('timerInput');
+      input.disabled = isUntimed;
+      if (isUntimed) {
+        input.classList.add('opacity-50', 'bg-surface-container-low');
+      } else {
+        input.classList.remove('opacity-50', 'bg-surface-container-low');
+      }
+    }
+
+    function updatePassingProgress() {
+      const val = Math.min(100, Math.max(0, Number(document.getElementById('passingInput').value) || 0));
+      document.getElementById('passingProgressBar').style.width = val + '%';
+      document.getElementById('passingHintText').textContent = 'Passing standard: ' + val + '% correct answers required';
+    }
+
+    function resetBuilderNew() {
+      document.getElementById('quizIdInput').value = '';
+      document.getElementById('quizTitleInput').value = 'New Quiz Title';
+      document.getElementById('quizDescInput').value = '';
+      document.getElementById('timerInput').value = 15;
+      document.getElementById('untimedCheckbox').checked = false;
+      toggleUntimed(false);
+      document.getElementById('passingInput').value = 50;
+      updatePassingProgress();
+      currentQuestions = [
+        {
+          id: 'q_' + Date.now().toString(36),
+          type: 'MCQ',
+          question: 'Sample Question 1',
+          points: 1,
+          options: ['Option A', 'Option B', 'Option C', 'Option D'],
+          correctAnswer: 'Option A',
+          explanation: ''
+        }
+      ];
+      renderQuestions();
+      showToast('New blank quiz created!', 'add');
+    }
+
+    function saveQuizToDB() {
+      const title = document.getElementById('quizTitleInput').value.trim();
+      if (!title) {
+        showToast('Please enter a Quiz Title!', 'warning');
+        document.getElementById('quizTitleInput').focus();
+        return;
+      }
+
+      if (currentQuestions.length === 0) {
+        showToast('Please add at least one question!', 'warning');
+        return;
+      }
+
+      let quizzes = [];
+      try {
+        quizzes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (e) {
+        quizzes = [];
+      }
+
+      let existingId = document.getElementById('quizIdInput').value;
+      const quizId = existingId || ('quiz_' + Date.now().toString(36));
+
+      const isUntimed = document.getElementById('untimedCheckbox').checked;
+      const timeLimit = isUntimed ? 0 : (Number(document.getElementById('timerInput').value) || 0);
+
+      const quizData = {
+        id: quizId,
+        title: title,
+        category: document.getElementById('quizCategorySelect').value,
+        description: document.getElementById('quizDescInput').value.trim(),
+        timeLimitMinutes: timeLimit,
+        passingScore: Number(document.getElementById('passingInput').value) || 50,
+        allowRetake: document.getElementById('toggleRetake').checked,
+        showAnswers: document.getElementById('toggleExplanations').checked,
+        shuffleQuestions: document.getElementById('toggleShuffle').checked,
+        liveLeaderboard: document.getElementById('toggleLeaderboard').checked,
+        questions: currentQuestions,
+        updatedAt: new Date().toISOString()
+      };
+
+      const existingIndex = quizzes.findIndex(q => q.id === quizId);
+      if (existingIndex > -1) {
+        quizzes[existingIndex] = quizData;
+      } else {
+        quizzes.unshift(quizData);
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(quizzes));
+      document.getElementById('quizIdInput').value = quizId;
+
+      showToast(`Quiz "${title}" saved to Cloud DB & Local Storage!`, 'cloud_done');
+    }
+
+    function saveDraftLocally() {
+      saveQuizToDB();
+    }
+
+    function showToast(title, icon = 'check_circle', desc = '') {
+      const toast = document.getElementById('toastNotification');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastDesc = document.getElementById('toastDesc');
+      const toastIcon = document.getElementById('toastIcon');
+
+      if (!toast) return;
+
+      toastTitle.textContent = title;
+      toastIcon.textContent = icon;
+      toastDesc.textContent = desc || `${currentQuestions.length} questions synced with Google Sheets DB & Local Storage.`;
+
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', initBuilder);
+  </script>
+</body>
+</html>

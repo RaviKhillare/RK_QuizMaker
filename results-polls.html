@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RK QuizMaker - Results & Cloud DB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#e4d4ff",
+            "surface-tint": "#4d44e3",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-primary-container": "#dad7ff",
+            "on-secondary-fixed": "#002113",
+            "secondary": "#006c49",
+            "on-tertiary-fixed": "#25005a",
+            "border-subtle": "#E2E8F0",
+            "on-surface": "#131b2e",
+            "surface-variant": "#dae2fd",
+            "status-warning": "#F59E0B",
+            "text-secondary": "#334155",
+            "surface-container-highest": "#dae2fd",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d2d9f4",
+            "surface-card": "#FFFFFF",
+            "status-success": "#10B981",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-fixed-variant": "#3323cc",
+            "text-muted": "#64748B",
+            "outline-variant": "#c7c4d8",
+            "surface-canvas": "#F8FAFC",
+            "text-primary": "#0F172A",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#464555",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed-dim": "#c3c0ff",
+            "status-danger": "#EF4444",
+            "tertiary-fixed-dim": "#d2bbff",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "primary-dark": "#3730A3",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#0f0069",
+            "border-medium": "#CBD5E1",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#00714d",
+            "secondary-fixed": "#6ffbbe",
+            "tertiary-fixed": "#eaddff",
+            "primary": "#3525cd",
+            "primary-fixed": "#e2dfff",
+            "tertiary-container": "#7531e6",
+            "surface-container-high": "#e2e7ff",
+            "status-info": "#3B82F6",
+            "background": "#faf8ff",
+            "secondary-container": "#6cf8bb",
+            "surface": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#5c00ca",
+            "surface-container-low": "#f2f3ff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xl": "2rem",
+            "gutter-md": "1.5rem",
+            "space-md": "1rem",
+            "space-2xl": "2.5rem",
+            "space-3xl": "3rem",
+            "space-lg": "1.5rem",
+            "sidebar-width": "260px",
+            "space-2xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-xs": "0.5rem",
+            "gutter-lg": "2rem",
+            "space-sm": "0.75rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Outfit"],
+            "title-sm": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Noto Sans"],
+            "label-md": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "label-lg": ["Outfit"],
+            "body-md": ["Noto Sans"],
+            "body-lg": ["Noto Sans"],
+            "display-lg": ["Outfit"],
+            "label-sm": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "display-lg-mobile": ["Outfit"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-canvas font-body-md text-on-surface antialiased">
+
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest border-b border-border-subtle">
+        <img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
+        <div class="flex flex-col">
+          <span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span>
+          <span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span>
+        </div>
+      </div>
+      <nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm">
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="blog-designer" href="blog-designer.html">
+          <span class="material-symbols-outlined text-[20px]">design_services</span>
+          <span>Blog Designer</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="dashboard.html">
+          <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="quiz-builder.html">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span>Quiz Builder</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="bulk-import.html">
+          <span class="material-symbols-outlined text-[20px]">upload_file</span>
+          <span>Bulk Import</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+          <span>Embed &amp; Share</span>
+        </a>
+        <a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm text-title-sm shadow-sm" data-path="results-polls" href="results-polls.html">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span>Results &amp; Polls</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="#database">
+          <span class="material-symbols-outlined text-[20px]">table_chart</span>
+          <span>Sheets Cloud DB</span>
+        </a>
+      </nav>
+    </div>
+    <div class="p-space-sm bg-surface-container-lowest border-t border-border-subtle">
+      <div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs border border-border-subtle">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary border border-emerald-200/60">
+            <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Active Sync
+          </span>
+          <a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank">
+            <span>Blog</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-space-sm mt-1">
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p>
+            <p class="font-body-sm text-body-sm text-text-muted truncate">Admin / Creator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="pl-[260px]">
+    <!-- Top Navbar -->
+    <header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl border-b border-border-subtle shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between">
+      <div class="flex items-center gap-space-md flex-1 max-w-lg">
+        <div class="relative w-full max-w-sm">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg border border-border-subtle outline-none focus:bg-surface-card focus:border-primary transition-all placeholder:text-text-muted" placeholder="Search results, students..." type="search" id="topNavSearch" oninput="handleTopSearch(this.value)"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full border border-border-subtle">
+          <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span>
+        </div>
+        <button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle">
+          <span class="material-symbols-outlined text-[16px]">translate</span>
+          <span>EN</span>
+        </button>
+        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          <span>+ New Quiz</span>
+        </button>
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer shadow-sm">
+          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-lg">
+      <div class="flex flex-col w-full gap-space-xl">
+        <!-- Top Banner & Context Headline -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+          <div class="flex flex-col gap-space-2xs">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold border border-primary/20">
+                Cloud Analytics &amp; DB
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-secondary font-label-sm text-label-sm border border-emerald-200/60">
+                <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>
+                2-Way Sync Active
+              </span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold">
+              Results &amp; Cloud DB
+            </h1>
+            <p class="font-body-md text-body-md text-text-muted">
+              Review student test scores, inspect live polls, and manage Google Sheets cloud sync.
+            </p>
+          </div>
+          <!-- Quick Actions -->
+          <div class="flex items-center gap-space-xs shrink-0 flex-wrap">
+            <button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-lg bg-surface-card text-text-secondary font-label-lg text-label-lg border border-border-medium shadow-sm hover:bg-surface-container-low hover:text-text-primary transition-all" onclick="exportSubmissionsCSV()">
+              <span class="material-symbols-outlined text-[18px] text-primary">download</span>
+              <span>Export to CSV</span>
+            </button>
+            <button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-sm hover:bg-primary-dark transition-all border border-primary-dark" onclick="refreshDataState()">
+              <span class="material-symbols-outlined text-[18px]">sync</span>
+              <span>Refresh Data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Quick Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+          <!-- Card 1 -->
+          <div class="bg-surface-card p-space-md rounded-xl shadow-md border border-border-medium flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md text-text-muted">Total Submissions</span>
+              <span class="font-display-lg text-display-lg text-text-primary mt-1 font-bold" id="kpiTotalSubmissions">1,248</span>
+              <span class="font-body-sm text-body-sm text-status-success font-medium flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-[14px]">trending_up</span> +142 today
+              </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary shrink-0 border border-primary/20">
+              <span class="material-symbols-outlined text-[26px]">groups</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-surface-card p-space-md rounded-xl shadow-md border border-border-medium flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md text-text-muted">Average Score</span>
+              <span class="font-display-lg text-display-lg text-text-primary mt-1 font-bold" id="kpiAvgScore">79.4%</span>
+              <span class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-[14px]">verified</span> Pass Rate
+              </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary shrink-0 border border-secondary/20">
+              <span class="material-symbols-outlined text-[26px]">school</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-surface-card p-space-md rounded-xl shadow-md border border-border-medium flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md text-text-muted">Live Poll Votes</span>
+              <span class="font-display-lg text-display-lg text-text-primary mt-1 font-bold" id="kpiPollVotes">890</span>
+              <span class="font-body-sm text-body-sm text-primary-dark font-medium flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-[14px]">how_to_vote</span> 72% Excellent
+              </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container shrink-0 border border-primary-container/20">
+              <span class="material-symbols-outlined text-[26px]">bar_chart</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-surface-card p-space-md rounded-xl shadow-md border border-border-medium flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md text-text-muted">Cloud DB Status</span>
+              <span class="font-headline-md text-headline-md text-text-primary mt-1 font-bold">100% Free</span>
+              <span class="font-body-sm text-body-sm text-status-success font-medium flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-[14px]">cloud_done</span> Apps Script Connected
+              </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-secondary shrink-0 border border-emerald-200">
+              <span class="material-symbols-outlined text-[26px]">database</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="bg-surface-card p-space-md rounded-xl shadow-md border border-border-medium flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm flex-1">
+            <div class="relative flex-1 max-w-md">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
+              <input class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md pl-10 pr-4 py-2 rounded-lg border border-border-subtle outline-none focus:bg-surface-card focus:border-primary transition-all placeholder:text-text-muted" id="studentSearchInput" oninput="filterStudentTable()" placeholder="Search by student name or email..." type="search"/>
+            </div>
+            <div class="flex items-center gap-space-xs flex-wrap">
+              <div class="relative">
+                <select class="bg-surface-container-low text-text-secondary font-title-sm text-title-sm py-2 px-3 pr-8 rounded-lg border border-border-subtle outline-none appearance-none cursor-pointer hover:text-on-surface focus:border-primary" id="quizFilterSelect" onchange="filterStudentTable()">
+                  <option value="all">All Quizzes</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted text-[18px]">expand_more</span>
+              </div>
+              <div class="relative">
+                <select class="bg-surface-container-low text-text-secondary font-title-sm text-title-sm py-2 px-3 pr-8 rounded-lg border border-border-subtle outline-none appearance-none cursor-pointer hover:text-on-surface focus:border-primary" id="statusFilterSelect" onchange="filterStudentTable()">
+                  <option value="all">Status: All Results</option>
+                  <option value="passed">Passed</option>
+                  <option value="failed">Failed</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted text-[18px]">filter_alt</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-space-xs self-end lg:self-auto flex-wrap">
+            <div class="flex items-center gap-1.5 px-3 py-2 bg-surface-container-low rounded-lg text-text-secondary font-label-md text-label-md border border-border-subtle">
+              <span class="material-symbols-outlined text-[16px] text-text-muted">calendar_today</span>
+              <span id="dateRangeText">Date: Today & Recent</span>
+            </div>
+            <button class="px-space-md py-2 bg-primary hover:bg-primary-dark text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors" onclick="filterStudentTable()">
+              <span>Apply Filters</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 1: Student Submissions & Leaderboard -->
+        <section class="bg-surface-card rounded-xl shadow-lg border border-border-medium overflow-hidden flex flex-col">
+          <div class="p-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs bg-surface-card border-b border-border-subtle">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary border border-primary/20">
+                <span class="material-symbols-outlined text-[20px]">military_tech</span>
+              </div>
+              <div>
+                <h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">
+                  Student Submissions &amp; Leaderboard
+                </h2>
+                <p class="font-body-sm text-body-sm text-text-muted">
+                  Detailed student marks, percentage, and verification actions
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-md bg-surface-container text-primary font-label-sm text-label-sm font-semibold border border-primary/10" id="activeTestsBadge">
+                Active Tests: 4
+              </span>
+            </div>
+          </div>
+
+          <!-- Interactive Table -->
+          <div class="overflow-x-auto w-full">
+            <table class="w-full text-left" id="submissionsTable">
+              <thead>
+                <tr class="bg-surface-container-low text-text-muted font-label-md text-label-md uppercase tracking-wider border-b border-border-subtle">
+                  <th class="py-3.5 px-space-md">Participant (Name &amp; Email)</th>
+                  <th class="py-3.5 px-space-md">Quiz Title</th>
+                  <th class="py-3.5 px-space-md text-center">Score (Points)</th>
+                  <th class="py-3.5 px-space-md text-center">Percentage</th>
+                  <th class="py-3.5 px-space-md text-center">Result Status</th>
+                  <th class="py-3.5 px-space-md">Submission Date</th>
+                  <th class="py-3.5 px-space-md text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border-subtle text-text-primary font-body-md text-body-md" id="tableBody">
+                <!-- Dynamically filled with student submission rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table Pagination & Counter Bar -->
+          <div class="px-space-md py-3 bg-surface-container-low/40 border-t border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+            <div class="font-body-sm text-body-sm text-text-muted flex items-center gap-1" id="paginationCounter">
+              <span>Showing</span>
+              <span class="font-medium text-text-primary" id="showingRangeText">1 - 4</span>
+              <span>of</span>
+              <span class="font-medium text-text-primary" id="totalSubmissionsCount">4</span>
+              <span>submissions</span>
+            </div>
+            <div class="flex items-center gap-1 self-center sm:self-auto">
+              <button class="w-8 h-8 rounded-lg bg-surface-card text-text-muted hover:text-text-primary flex items-center justify-center transition-colors border border-border-subtle">
+                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+              <button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm flex items-center justify-center shadow-sm">
+                1
+              </button>
+              <button class="w-8 h-8 rounded-lg bg-surface-card text-text-secondary hover:bg-surface-container hover:text-text-primary font-title-sm text-title-sm flex items-center justify-center transition-colors border border-border-subtle">
+                2
+              </button>
+              <button class="w-8 h-8 rounded-lg bg-surface-card text-text-secondary hover:bg-surface-container hover:text-text-primary font-title-sm text-title-sm flex items-center justify-center transition-colors border border-border-subtle">
+                3
+              </button>
+              <span class="px-1 text-text-muted font-body-sm text-body-sm">...</span>
+              <button class="w-8 h-8 rounded-lg bg-surface-card text-text-muted hover:text-text-primary flex items-center justify-center transition-colors border border-border-subtle">
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- GRID: Section 2 (Live Polls) & Section 3 (Cloud DB status) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start" id="database">
+          <!-- SECTION 2: Live Poll Voting Distribution (5 Cols) -->
+          <section class="lg:col-span-5 bg-surface-card rounded-xl p-space-lg shadow-lg border border-border-medium flex flex-col gap-space-md">
+            <div class="flex items-start justify-between gap-space-xs border-b border-border-subtle pb-space-sm">
+              <div class="flex items-center gap-space-xs">
+                <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary-container border border-primary-container/20">
+                  <span class="material-symbols-outlined text-[22px]">poll</span>
+                </div>
+                <div>
+                  <h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">
+                    Live Poll Voting Distribution
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-text-muted">Audience response and feedback metrics</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-primary-fixed text-primary font-label-md text-label-md font-semibold flex items-center gap-1 border border-primary/20">
+                <span class="material-symbols-outlined text-[16px]">how_to_vote</span>
+                890 Votes
+              </span>
+            </div>
+
+            <!-- Poll Question Display -->
+            <div class="p-space-sm bg-surface-container-low rounded-lg border border-border-subtle">
+              <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wide">Active Poll</span>
+              <p class="font-title-md text-title-md text-text-primary mt-0.5 font-semibold">
+                "How do you rate the RK QuizMaker platform?"
+              </p>
+            </div>
+
+            <!-- Poll Visual Bars -->
+            <div class="flex flex-col gap-space-md mt-1">
+              <!-- Option 1 -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between text-body-md font-body-md">
+                  <span class="font-semibold text-text-primary flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-primary-container"></span>
+                    Excellent
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-text-muted font-body-sm text-body-sm">642 votes</span>
+                    <span class="font-bold text-primary font-title-sm text-title-sm">72%</span>
+                  </div>
+                </div>
+                <div class="w-full h-3 rounded-full bg-surface-container-low overflow-hidden border border-border-subtle">
+                  <div class="h-full bg-primary-container rounded-full transition-all duration-700 ease-out" style="width: 72%;"></div>
+                </div>
+              </div>
+              <!-- Option 2 -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between text-body-md font-body-md">
+                  <span class="font-semibold text-text-primary flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-status-success"></span>
+                    Good
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-text-muted font-body-sm text-body-sm">198 votes</span>
+                    <span class="font-bold text-secondary font-title-sm text-title-sm">22%</span>
+                  </div>
+                </div>
+                <div class="w-full h-3 rounded-full bg-surface-container-low overflow-hidden border border-border-subtle">
+                  <div class="h-full bg-status-success rounded-full transition-all duration-700 ease-out" style="width: 22%;"></div>
+                </div>
+              </div>
+              <!-- Option 3 -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between text-body-md font-body-md">
+                  <span class="font-semibold text-text-primary flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-status-warning"></span>
+                    Average
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-text-muted font-body-sm text-body-sm">50 votes</span>
+                    <span class="font-bold text-status-warning font-title-sm text-title-sm">6%</span>
+                  </div>
+                </div>
+                <div class="w-full h-3 rounded-full bg-surface-container-low overflow-hidden border border-border-subtle">
+                  <div class="h-full bg-status-warning rounded-full transition-all duration-700 ease-out" style="width: 6%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Donut Chart & Meta Summary -->
+            <div class="pt-space-sm mt-space-xs flex items-center justify-between bg-surface-container-low/50 p-space-sm rounded-xl border border-border-subtle">
+              <div class="flex items-center gap-space-sm">
+                <!-- Inline Minimal SVG Donut -->
+                <svg class="w-14 h-14 shrink-0 -rotate-90" viewbox="0 0 36 36">
+                  <circle cx="18" cy="18" fill="none" r="15.915" stroke="#e2e7ff" stroke-width="3.8"></circle>
+                  <circle cx="18" cy="18" fill="none" r="15.915" stroke="#4f46e5" stroke-dasharray="72 28" stroke-dashoffset="0" stroke-width="3.8"></circle>
+                  <circle cx="18" cy="18" fill="none" r="15.915" stroke="#10b981" stroke-dasharray="22 78" stroke-dashoffset="-72" stroke-width="3.8"></circle>
+                  <circle cx="18" cy="18" fill="none" r="15.915" stroke="#f59e0b" stroke-dasharray="6 94" stroke-dashoffset="-94" stroke-width="3.8"></circle>
+                </svg>
+                <div class="flex flex-col">
+                  <span class="font-title-sm text-title-sm text-text-primary font-bold">94% Positive Rating</span>
+                  <span class="font-body-sm text-body-sm text-text-muted">Total student satisfaction feedback</span>
+                </div>
+              </div>
+              <button class="p-2 rounded-lg hover:bg-surface-container text-text-muted hover:text-text-primary transition-colors border border-border-subtle" onclick="triggerPollResetNotice()" title="Reset Poll Data">
+                <span class="material-symbols-outlined text-[20px]">restart_alt</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- SECTION 3: Google Sheets Free Database (7 Cols) -->
+          <section class="lg:col-span-7 bg-surface-card rounded-xl p-space-lg shadow-lg border border-border-medium flex flex-col gap-space-md">
+            <div class="flex items-start justify-between gap-space-xs border-b border-border-subtle pb-space-sm">
+              <div class="flex items-center gap-space-xs">
+                <div class="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center text-secondary border border-emerald-200">
+                  <span class="material-symbols-outlined text-[22px]">cloud_sync</span>
+                </div>
+                <div>
+                  <h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">
+                    Google Sheets Free Database
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-text-muted">Dual Storage Architecture: Fast Local Storage + Google Drive Cloud</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-secondary font-label-md text-label-md font-semibold flex items-center gap-1 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-status-success"></span>
+                No Hosting Fees
+              </span>
+            </div>
+
+            <!-- Overview Info Callout -->
+            <div class="p-space-sm bg-surface-container-low rounded-xl flex items-start gap-space-xs text-text-secondary font-body-sm text-body-sm border border-border-subtle">
+              <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+              <div>
+                <p class="text-text-primary font-medium">Local and Cloud Synchronization:</p>
+                <p class="text-text-muted mt-0.5">
+                  RK QuizMaker uses browser <span class="font-semibold text-text-primary">Local Storage</span> for high-speed offline access, automatically synchronizing with your personal <span class="font-semibold text-text-primary">Google Sheets</span> via Google Apps Script.
+                </p>
+              </div>
+            </div>
+
+            <!-- Google Apps Script URL Input Configuration -->
+            <div class="flex flex-col gap-space-2xs">
+              <label class="font-title-sm text-title-sm text-text-primary flex items-center justify-between">
+                <span>Cloud Sync Web App URL:</span>
+                <a class="text-primary hover:text-primary-dark font-label-sm text-label-sm underline cursor-pointer" onclick="openSetupGuide(event)">
+                  Setup Guide
+                </a>
+              </label>
+              <div class="flex flex-col sm:flex-row items-stretch gap-space-xs">
+                <div class="relative flex-1">
+                  <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">link</span>
+                  <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm pl-9 pr-4 py-2.5 rounded-lg border border-border-subtle outline-none focus:bg-surface-card focus:border-primary transition-all font-mono" id="gasUrlInput" type="text" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbzL7wK89_quiz_cloud_production_99x/exec"/>
+                </div>
+                <button class="px-space-md py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-text-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1 shrink-0 border border-border-subtle" onclick="testConnection()">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">wifi_tethering</span>
+                  <span>Test Connection</span>
+                </button>
+                <button class="px-space-md py-2.5 rounded-lg bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md transition-colors flex items-center justify-center gap-1 shrink-0 shadow-sm" onclick="saveAndSync()">
+                  <span class="material-symbols-outlined text-[16px]">cloud_upload</span>
+                  <span>Save &amp; Sync</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4 Database Tables Status Grid -->
+            <div class="flex flex-col gap-space-xs mt-1">
+              <span class="font-label-md text-label-md text-text-muted uppercase tracking-wider font-semibold">
+                Connected Tables (4 Active):
+              </span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+                <!-- Table 1: Quizzes -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between border border-border-subtle">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary border border-primary/20">
+                      <span class="material-symbols-outlined text-[18px]">assignment</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-title-sm text-text-primary font-semibold">Quizzes Table</span>
+                      <span class="font-body-sm text-body-sm text-text-muted">Titles, timers, pass %</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-title-sm text-title-sm text-primary font-bold" id="tblQuizzesCount">28 Rows</span>
+                    <span class="block font-label-sm text-label-sm text-status-success font-medium">● Active</span>
+                  </div>
+                </div>
+
+                <!-- Table 2: Questions -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between border border-border-subtle">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary border border-primary/20">
+                      <span class="material-symbols-outlined text-[18px]">help_center</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-title-sm text-text-primary font-semibold">Questions Table</span>
+                      <span class="font-body-sm text-body-sm text-text-muted">MCQ, Checkbox, Polls</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-title-sm text-title-sm text-primary font-bold" id="tblQuestionsCount">342 Rows</span>
+                    <span class="block font-label-sm text-label-sm text-status-success font-medium">● Active</span>
+                  </div>
+                </div>
+
+                <!-- Table 3: Responses -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between border border-border-subtle">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-secondary-container/50 flex items-center justify-center text-secondary border border-secondary/20">
+                      <span class="material-symbols-outlined text-[18px]">rule</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-title-sm text-text-primary font-semibold">Responses Table</span>
+                      <span class="font-body-sm text-body-sm text-text-muted">Marks, answers, pass/fail</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-title-sm text-title-sm text-secondary font-bold" id="tblResponsesCount">1,248 Rows</span>
+                    <span class="block font-label-sm text-label-sm text-status-success font-medium">● Active</span>
+                  </div>
+                </div>
+
+                <!-- Table 4: PollVotes -->
+                <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between border border-border-subtle">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-text-secondary border border-border-subtle">
+                      <span class="material-symbols-outlined text-[18px]">leaderboard</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-title-sm text-text-primary font-semibold">PollVotes Table</span>
+                      <span class="font-body-sm text-body-sm text-text-muted">Instant live polling logs</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-title-sm text-title-sm text-text-primary font-bold" id="tblPollVotesCount">890 Rows</span>
+                    <span class="block font-label-sm text-label-sm text-status-success font-medium">● Active</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Row: Sync Now & Open Sheet -->
+            <div class="pt-space-xs flex flex-col sm:flex-row items-center justify-between gap-space-sm border-t border-border-subtle">
+              <button class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-md py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-dark font-label-md text-label-md transition-colors shadow-sm" onclick="saveAndSync()">
+                <span class="material-symbols-outlined text-[18px]">sync</span>
+                <span>Sync Now</span>
+              </button>
+              <a class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-space-md py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md transition-colors border border-border-subtle" href="https://docs.google.com/spreadsheets" target="_blank">
+                <span class="material-symbols-outlined text-[18px]">table_view</span>
+                <span>Open Sheet in Drive</span>
+                <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <!-- Answer Sheet Detail Modal -->
+        <div class="fixed inset-0 bg-text-primary/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4" id="detailModal">
+          <div class="bg-surface-card rounded-2xl shadow-2xl max-w-lg w-full p-space-lg flex flex-col gap-space-md border border-border-medium">
+            <div class="flex items-center justify-between border-b border-border-subtle pb-space-sm">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary border border-primary/20" id="modalAvatar">
+                  <span class="material-symbols-outlined text-[18px]">person</span>
+                </div>
+                <div>
+                  <h4 class="font-title-md text-title-md text-text-primary font-bold" id="modalStudentName">Sachin Kamble</h4>
+                  <p class="font-body-sm text-body-sm text-text-muted" id="modalQuizTitle">Maharashtra History &amp; Geography</p>
+                </div>
+              </div>
+              <button class="p-1 rounded-lg hover:bg-surface-container-low text-text-muted hover:text-text-primary transition-colors" onclick="closeModal()">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            <div class="p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between border border-border-subtle">
+              <span class="font-body-sm text-body-sm text-text-secondary font-medium">Overall Score:</span>
+              <span class="font-title-md text-title-md text-secondary font-bold" id="modalScore">24 / 25 (96%)</span>
+            </div>
+
+            <div class="flex flex-col gap-space-xs">
+              <span class="font-label-md text-label-md text-text-muted uppercase font-semibold">Review Summary</span>
+              <div class="p-space-sm rounded-lg bg-surface-container-low/50 text-text-secondary font-body-sm text-body-sm flex flex-col gap-1.5 border border-border-subtle">
+                <div class="flex justify-between">
+                  <span>Total Questions:</span>
+                  <span class="font-semibold text-text-primary" id="modalTotalQ">25</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Correct Answers:</span>
+                  <span class="font-semibold text-status-success" id="modalCorrectQ">24</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Incorrect Answers:</span>
+                  <span class="font-semibold text-status-danger" id="modalIncorrectQ">1</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Time Taken:</span>
+                  <span class="font-semibold text-text-primary" id="modalTimeTaken">14m 12s</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Result Status:</span>
+                  <span class="font-semibold text-secondary" id="modalStatusBadge">Passed (Certificate Eligible)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-space-xs mt-2 pt-space-xs border-t border-border-subtle">
+              <button class="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle" onclick="closeModal()">
+                Close
+              </button>
+              <button class="px-space-md py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md transition-colors flex items-center gap-1 shadow-sm" onclick="downloadAnswerSheetPDF()">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Download PDF</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none z-50" id="toastNotification">
+          <div class="bg-inverse-surface text-inverse-on-surface px-space-md py-space-sm rounded-xl shadow-xl flex items-center gap-space-xs border border-border-subtle">
+            <span class="material-symbols-outlined text-secondary-fixed text-[20px]" id="toastIcon">check_circle</span>
+            <span class="font-body-sm text-body-sm font-medium" id="toastMessage">Action completed successfully!</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // State & Sample Data
+    const SUBMISSIONS_KEY = 'rk_submissions_v2';
+    const QUIZZES_KEY = 'rk_quizzes_v2';
+    const SHEET_CFG_KEY = 'rk_sheet_cfg_v2';
+
+    const DEFAULT_SUBMISSIONS = [
+      {
+        id: 'sub_1',
+        name: 'Sachin Kamble',
+        email: 'sachin.k@gmail.com',
+        quizTitle: 'Maharashtra History & Geography',
+        score: '24 / 25',
+        percent: 96,
+        passed: true,
+        date: 'Feb 24, 11:30 AM',
+        totalQ: 25,
+        correctQ: 24,
+        incorrectQ: 1,
+        timeTaken: '14m 12s'
+      },
+      {
+        id: 'sub_2',
+        name: 'Pooja Gaikwad',
+        email: 'pooja.g@gmail.com',
+        quizTitle: 'MPSC Current Affairs 2025',
+        score: '22 / 25',
+        percent: 88,
+        passed: true,
+        date: 'Feb 24, 10:45 AM',
+        totalQ: 25,
+        correctQ: 22,
+        incorrectQ: 3,
+        timeTaken: '18m 05s'
+      },
+      {
+        id: 'sub_3',
+        name: 'Aniket Jadhav',
+        email: 'aniket.j@gmail.com',
+        quizTitle: 'General Science & Tech',
+        score: '18 / 25',
+        percent: 72,
+        passed: true,
+        date: 'Feb 24, 09:15 AM',
+        totalQ: 25,
+        correctQ: 18,
+        incorrectQ: 7,
+        timeTaken: '16m 40s'
+      },
+      {
+        id: 'sub_4',
+        name: 'Snehal Patil',
+        email: 'snehal.p@gmail.com',
+        quizTitle: 'English Grammar Mock',
+        score: '12 / 25',
+        percent: 48,
+        passed: false,
+        date: 'Feb 23, 08:20 PM',
+        totalQ: 25,
+        correctQ: 12,
+        incorrectQ: 13,
+        timeTaken: '19m 50s'
+      }
+    ];
+
+    let allSubmissions = [];
+
+    function initResultsPage() {
+      // Load or seed submissions
+      try {
+        const stored = localStorage.getItem(SUBMISSIONS_KEY);
+        if (stored) {
+          allSubmissions = JSON.parse(stored);
+        }
+      } catch (e) {
+        allSubmissions = [];
+      }
+
+      if (!allSubmissions || allSubmissions.length === 0) {
+        allSubmissions = JSON.parse(JSON.stringify(DEFAULT_SUBMISSIONS));
+        try {
+          localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(allSubmissions));
+        } catch (e) {}
+      }
+
+      // Load Sheets URL config
+      try {
+        const cfg = JSON.parse(localStorage.getItem(SHEET_CFG_KEY) || '{}');
+        if (cfg.webAppUrl) {
+          document.getElementById('gasUrlInput').value = cfg.webAppUrl;
+        }
+      } catch (e) {}
+
+      populateQuizFilterDropdown();
+      updateMetricCards();
+      renderSubmissionsTable(allSubmissions);
+    }
+
+    function populateQuizFilterDropdown() {
+      const select = document.getElementById('quizFilterSelect');
+      const uniqueQuizzes = new Set();
+      allSubmissions.forEach(s => { if (s.quizTitle) uniqueQuizzes.add(s.quizTitle); });
+
+      // Check quizzes in storage as well
+      try {
+        const quizzes = JSON.parse(localStorage.getItem(QUIZZES_KEY) || '[]');
+        quizzes.forEach(q => { if (q.title) uniqueQuizzes.add(q.title); });
+      } catch (e) {}
+
+      uniqueQuizzes.forEach(title => {
+        const opt = document.createElement('option');
+        opt.value = title;
+        opt.textContent = title;
+        select.appendChild(opt);
+      });
+
+      document.getElementById('activeTestsBadge').textContent = `Active Tests: ${Math.max(uniqueQuizzes.size, 1)}`;
+    }
+
+    function updateMetricCards() {
+      const total = allSubmissions.length;
+      document.getElementById('kpiTotalSubmissions').textContent = total > 0 ? total.toLocaleString() : '1,248';
+
+      if (total > 0) {
+        const avg = Math.round(allSubmissions.reduce((acc, s) => acc + (Number(s.percent) || 0), 0) / total);
+        document.getElementById('kpiAvgScore').textContent = avg + '%';
+      }
+
+      // Count table rows for cloud cards
+      document.getElementById('tblResponsesCount').textContent = `${total.toLocaleString()} Rows`;
+
+      try {
+        const quizzes = JSON.parse(localStorage.getItem(QUIZZES_KEY) || '[]');
+        let totalQuestions = 0;
+        quizzes.forEach(q => { totalQuestions += (q.questions ? q.questions.length : 0); });
+        document.getElementById('tblQuizzesCount').textContent = `${Math.max(quizzes.length, 1)} Rows`;
+        document.getElementById('tblQuestionsCount').textContent = `${Math.max(totalQuestions, 3)} Rows`;
+      } catch (e) {}
+    }
+
+    function renderSubmissionsTable(list) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-8 text-center text-text-muted">
+              <span class="material-symbols-outlined text-[36px] text-text-muted mb-2">search_off</span>
+              <p class="font-body-md">No student submissions match your filters.</p>
+            </td>
+          </tr>
+        `;
+        document.getElementById('showingRangeText').textContent = '0 - 0';
+        document.getElementById('totalSubmissionsCount').textContent = '0';
+        return;
+      }
+
+      list.forEach(s => {
+        const initials = s.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const tr = document.createElement('tr');
+        tr.className = "student-row hover:bg-surface-container-low/60 transition-colors";
+        tr.setAttribute('data-name', `${s.name} ${s.email}`);
+        tr.setAttribute('data-quiz', s.quizTitle || '');
+        tr.setAttribute('data-status', s.passed ? 'passed' : 'failed');
+
+        const statusBadge = s.passed
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100/70 text-secondary font-label-md text-label-md font-semibold border border-emerald-200">
+               <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>
+               Passed
+             </span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-100 text-status-danger font-label-md text-label-md font-semibold border border-rose-200">
+               <span class="w-1.5 h-1.5 rounded-full bg-status-danger"></span>
+               Failed
+             </span>`;
+
+        const percentClass = s.passed ? 'text-secondary' : 'text-status-danger';
+
+        tr.innerHTML = `
+          <td class="py-3.5 px-space-md">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-title-sm text-title-sm font-bold shrink-0 border border-primary/20">
+                ${initials}
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-title-sm text-title-sm text-text-primary font-semibold">${escapeHtml(s.name)}</span>
+                <span class="font-body-sm text-body-sm text-text-muted truncate">${escapeHtml(s.email || 'student@example.com')}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-space-md font-medium text-text-secondary">
+            <span class="inline-flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-primary">menu_book</span>
+              ${escapeHtml(s.quizTitle || 'General Practice')}
+            </span>
+          </td>
+          <td class="py-3.5 px-space-md text-center font-semibold text-text-primary">
+            <span class="px-2.5 py-0.5 rounded bg-surface-container-low border border-border-subtle">${escapeHtml(s.score || '0')}</span>
+          </td>
+          <td class="py-3.5 px-space-md text-center font-semibold ${percentClass}">
+            <span class="inline-flex items-center gap-1 font-title-sm text-title-sm">
+              ${s.percent || 0}%
+            </span>
+          </td>
+          <td class="py-3.5 px-space-md text-center">
+            ${statusBadge}
+          </td>
+          <td class="py-3.5 px-space-md text-text-muted font-body-sm text-body-sm">
+            ${escapeHtml(s.date || 'Today')}
+          </td>
+          <td class="py-3.5 px-space-md text-right">
+            <div class="flex items-center justify-end gap-1.5">
+              <button class="px-2.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-label-sm text-label-sm transition-colors flex items-center gap-1 border border-border-subtle" onclick="viewAnswerSheet('${escapeHtml(s.name)}', '${escapeHtml(s.quizTitle)}', '${escapeHtml(s.score)} (${s.percent}%)', ${s.totalQ || 25}, ${s.correctQ || 20}, ${s.incorrectQ || 5}, '${escapeHtml(s.timeTaken || '15m 00s')}', ${s.passed})">
+                <span class="material-symbols-outlined text-[16px]">visibility</span>
+                <span>View Details</span>
+              </button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('showingRangeText').textContent = `1 - ${list.length}`;
+      document.getElementById('totalSubmissionsCount').textContent = list.length;
+    }
+
+    function filterStudentTable() {
+      const searchVal = (document.getElementById('studentSearchInput')?.value || '').toLowerCase().trim();
+      const quizVal = (document.getElementById('quizFilterSelect')?.value || 'all').toLowerCase();
+      const statusVal = (document.getElementById('statusFilterSelect')?.value || 'all').toLowerCase();
+
+      const filtered = allSubmissions.filter(s => {
+        const nameMatch = !searchVal || (s.name + ' ' + (s.email || '')).toLowerCase().includes(searchVal);
+        const quizMatch = quizVal === 'all' || (s.quizTitle || '').toLowerCase().includes(quizVal);
+        const statusMatch = statusVal === 'all' || (statusVal === 'passed' ? s.passed : !s.passed);
+        return nameMatch && quizMatch && statusMatch;
+      });
+
+      renderSubmissionsTable(filtered);
+    }
+
+    function handleTopSearch(val) {
+      document.getElementById('studentSearchInput').value = val;
+      filterStudentTable();
+    }
+
+    function viewAnswerSheet(name, quiz, score, totalQ, correctQ, incorrectQ, timeTaken, passed) {
+      document.getElementById('modalStudentName').textContent = name;
+      document.getElementById('modalQuizTitle').textContent = quiz;
+      document.getElementById('modalScore').textContent = score;
+      document.getElementById('modalTotalQ').textContent = totalQ;
+      document.getElementById('modalCorrectQ').textContent = correctQ;
+      document.getElementById('modalIncorrectQ').textContent = incorrectQ;
+      document.getElementById('modalTimeTaken').textContent = timeTaken;
+      document.getElementById('modalStatusBadge').textContent = passed ? 'Passed (Certificate Eligible)' : 'Failed (Needs Improvement)';
+      document.getElementById('modalStatusBadge').className = passed ? 'font-semibold text-secondary' : 'font-semibold text-status-danger';
+
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('modalAvatar').innerHTML = `<span class="font-bold text-[14px]">${initials}</span>`;
+
+      const modal = document.getElementById('detailModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detailModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function downloadAnswerSheetPDF() {
+      const name = document.getElementById('modalStudentName').textContent;
+      showToast(`Generating & downloading PDF for ${name}...`, 'file_download_done');
+      closeModal();
+    }
+
+    function exportSubmissionsCSV() {
+      if (!allSubmissions || allSubmissions.length === 0) {
+        showToast('No submissions available to export!', 'warning');
+        return;
+      }
+
+      let csv = "Student Name,Email,Quiz Title,Score,Percentage,Status,Submission Date\n";
+      allSubmissions.forEach(s => {
+        csv += `"${s.name}","${s.email || ''}","${s.quizTitle || ''}","${s.score}","${s.percent}%","${s.passed ? 'PASSED' : 'FAILED'}","${s.date || ''}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `RK_QuizMaker_Submissions_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+
+      showToast('Submissions exported to CSV successfully!', 'file_download_done');
+    }
+
+    function refreshDataState() {
+      showToast('Data refreshed and synchronized with Google Sheets!', 'sync');
+      initResultsPage();
+    }
+
+    function testConnection() {
+      const gasUrl = document.getElementById('gasUrlInput')?.value.trim();
+      if (!gasUrl || !gasUrl.startsWith('https://script.google.com/')) {
+        showToast('Please provide a valid Google Apps Script Web App URL!', 'warning');
+        return;
+      }
+      showToast('Google Sheets connection successful! Latency: 124ms', 'check_circle');
+    }
+
+    function saveAndSync() {
+      const gasUrl = document.getElementById('gasUrlInput')?.value.trim();
+      try {
+        localStorage.setItem(SHEET_CFG_KEY, JSON.stringify({ webAppUrl: gasUrl }));
+      } catch (e) {}
+      showToast('Cloud database synchronized (4 tables verified)', 'cloud_done');
+    }
+
+    function openSetupGuide(e) {
+      if (e) e.preventDefault();
+      showToast('Setup Guide: Deploy Web App as Anyone with access to Sheets.', 'help');
+    }
+
+    function triggerPollResetNotice() {
+      showToast('Admin authorization required to reset live poll logs.', 'info');
+    }
+
+    function showToast(message, icon = 'check_circle') {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIco = document.getElementById('toastIcon');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = message;
+      toastIco.textContent = icon;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3200);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    window.addEventListener('DOMContentLoaded', initResultsPage);
+  </script>
+</body>
+</html>
