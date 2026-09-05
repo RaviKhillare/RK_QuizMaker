@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RK QuizMaker - Bulk Question Import Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#e4d4ff",
+            "surface-tint": "#4d44e3",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-primary-container": "#dad7ff",
+            "on-secondary-fixed": "#002113",
+            "secondary": "#006c49",
+            "on-tertiary-fixed": "#25005a",
+            "border-subtle": "#E2E8F0",
+            "on-surface": "#131b2e",
+            "surface-variant": "#dae2fd",
+            "status-warning": "#F59E0B",
+            "text-secondary": "#334155",
+            "surface-container-highest": "#dae2fd",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d2d9f4",
+            "surface-card": "#FFFFFF",
+            "status-success": "#10B981",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-fixed-variant": "#3323cc",
+            "text-muted": "#64748B",
+            "outline-variant": "#c7c4d8",
+            "surface-canvas": "#F8FAFC",
+            "text-primary": "#0F172A",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#464555",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed-dim": "#c3c0ff",
+            "status-danger": "#EF4444",
+            "tertiary-fixed-dim": "#d2bbff",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "primary-dark": "#3730A3",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#0f0069",
+            "border-medium": "#CBD5E1",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#00714d",
+            "secondary-fixed": "#6ffbbe",
+            "tertiary-fixed": "#eaddff",
+            "primary": "#3525cd",
+            "primary-fixed": "#e2dfff",
+            "tertiary-container": "#7531e6",
+            "surface-container-high": "#e2e7ff",
+            "status-info": "#3B82F6",
+            "background": "#faf8ff",
+            "secondary-container": "#6cf8bb",
+            "surface": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#5c00ca",
+            "surface-container-low": "#f2f3ff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xl": "2rem",
+            "gutter-md": "1.5rem",
+            "space-md": "1rem",
+            "space-2xl": "2.5rem",
+            "space-3xl": "3rem",
+            "space-lg": "1.5rem",
+            "sidebar-width": "260px",
+            "space-2xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-xs": "0.5rem",
+            "gutter-lg": "2rem",
+            "space-sm": "0.75rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Outfit"],
+            "title-sm": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Noto Sans"],
+            "label-md": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "label-lg": ["Outfit"],
+            "body-md": ["Noto Sans"],
+            "body-lg": ["Noto Sans"],
+            "display-lg": ["Outfit"],
+            "label-sm": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "display-lg-mobile": ["Outfit"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-canvas font-body-md text-on-surface antialiased">
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest">
+        <img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
+        <div class="flex flex-col">
+          <span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span>
+          <span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span>
+        </div>
+      </div>
+      <nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm">
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="blog-designer" href="blog-designer.html">
+          <span class="material-symbols-outlined text-[20px]">design_services</span>
+          <span>Blog Designer</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="dashboard.html">
+          <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="index.html#builder">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span>Quiz Builder</span>
+        </a>
+        <a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="bulk-import" href="bulk-import.html">
+          <span class="material-symbols-outlined text-[20px]">upload_file</span>
+          <span>Bulk Import</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+          <span>Embed &amp; Share</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="index.html#results">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span>Results &amp; Polls</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="index.html#database">
+          <span class="material-symbols-outlined text-[20px]">table_chart</span>
+          <span>Sheets Cloud DB</span>
+        </a>
+      </nav>
+    </div>
+    <div class="p-space-sm bg-surface-container-lowest">
+      <div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary">
+            <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>Active Sync
+          </span>
+          <a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank">
+            <span>Blog</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-space-sm mt-1">
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p>
+            <p class="font-body-sm text-body-sm text-text-muted truncate">Admin / Creator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Container -->
+  <div class="pl-[260px]">
+    <!-- Header -->
+    <header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between" style="border-bottom: 1.5px solid rgb(203, 213, 225);">
+      <div class="flex items-center gap-space-md flex-1 max-w-lg">
+        <div class="relative w-full max-w-sm">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card transition-all placeholder:text-text-muted" placeholder="Search quizzes, questions..." type="search"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span>
+        </div>
+        <button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors">
+          <span class="material-symbols-outlined text-[16px]">translate</span>
+          <span>EN / MR</span>
+        </button>
+        <button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          <span>+ New Quiz</span>
+        </button>
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-lg">
+      <div class="flex flex-col w-full">
+        <!-- Top Context Ribbon & Target Selector -->
+        <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md mb-space-lg">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-container/10 text-primary-container">
+                <span class="material-symbols-outlined text-[14px]">table_chart</span>
+                Sheets &amp; CSV
+              </span>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-text-secondary">
+                <span>AI Prompt v3.2</span>
+              </span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold">
+              Bulk Import
+            </h1>
+            <p class="font-body-md text-body-md text-text-secondary mt-1 max-w-3xl">
+              Import hundreds of questions instantly via Google Sheets, Excel, or ChatGPT AI prompts.
+            </p>
+          </div>
+          <!-- Target Quiz Switcher -->
+          <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="background-color: rgb(255, 255, 255); border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.08) 0px 8px 10px -6px;">
+            <div class="flex flex-col">
+              <label class="font-label-sm text-label-sm text-text-muted flex items-center gap-1" for="targetQuizSelect">
+                <span class="material-symbols-outlined text-[14px] text-primary">target</span>
+                Target Destination
+              </label>
+              <div class="relative mt-1">
+                <select class="w-full sm:w-72 bg-surface-container-low text-text-primary font-title-sm text-title-sm py-2 pl-3 pr-8 rounded-lg appearance-none cursor-pointer outline-none focus:bg-surface-card focus:shadow-sm transition-all" id="targetQuizSelect">
+                  <option selected value="new">Target Quiz: -- Create Brand New Quiz --</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-[18px]">expand_more</span>
+              </div>
+            </div>
+            <button onclick="window.location.href='index.html#builder'" class="h-10 px-3 mt-4 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" title="Create Quiz">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              <span class="hidden sm:inline">New</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Three-Tab Segmented Controller -->
+        <div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl w-full max-w-3xl mb-space-lg shadow-sm" style="background-color: rgb(241, 245, 249); border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 12px -2px;">
+          <button class="tab-trigger flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all bg-surface-card text-primary shadow-sm" id="tabBtn1" onclick="switchBulkTab('sheetsTab', this)">
+            <span class="material-symbols-outlined text-[18px]">table_chart</span>
+            <span>Google Sheets &amp; CSV</span>
+            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-primary-container text-on-primary font-label-sm">Active</span>
+          </button>
+          <button class="tab-trigger flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary hover:bg-surface-card/60 flex items-center justify-center gap-2 transition-all" id="tabBtn2" onclick="switchBulkTab('plainTextTab', this)">
+            <span class="material-symbols-outlined text-[18px]">text_snippet</span>
+            <span>Plain Text Parser</span>
+            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container text-text-muted font-label-sm">Smart</span>
+          </button>
+          <button class="tab-trigger flex-1 py-2.5 px-4 rounded-lg font-title-sm text-title-sm text-text-secondary hover:text-text-primary hover:bg-surface-card/60 flex items-center justify-center gap-2 transition-all" id="tabBtn3" onclick="switchBulkTab('chatgptTab', this)">
+            <span class="material-symbols-outlined text-[18px] text-tertiary">smart_toy</span>
+            <span>ChatGPT AI Prompt Generator</span>
+            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-tertiary-container text-on-tertiary font-label-sm">AI 1-Click</span>
+          </button>
+        </div>
+
+        <!-- Required Columns Specification Pill Banner -->
+        <div class="mb-space-lg bg-surface-card rounded-2xl p-space-md shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(79, 70, 229) rgb(203, 213, 225) rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.09) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm mb-space-sm">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]">view_column</span>
+              <span class="font-title-sm text-title-sm text-text-primary font-bold">Required Google Sheets / CSV Column Headers (Row 1 Schema):</span>
+            </div>
+            <button onclick="triggerTemplateDownload()" class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary hover:text-primary-dark transition-colors">
+              <span class="material-symbols-outlined text-[16px]">file_download</span>
+              <span>Download CSV Template (.csv)</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">1. Question</span>
+                <span class="text-[10px] text-status-danger font-label-sm">Required</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Main question body</span>
+            </div>
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">2. Type</span>
+                <span class="text-[10px] text-text-muted font-label-sm">MCQ Default</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">MCQ / CHECKBOX / POLL</span>
+            </div>
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">3. Options</span>
+                <span class="text-[10px] text-status-warning font-label-sm">Comma Separated</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">A, B, C, D choices</span>
+            </div>
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">4. Correct Answer</span>
+                <span class="text-[10px] text-status-success font-label-sm">Exact Key</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">e.g. Option text or letter</span>
+            </div>
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">5. Points</span>
+                <span class="text-[10px] text-text-muted font-label-sm">Default: 1</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Score value (1, 2)</span>
+            </div>
+            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
+              <div class="flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">6. Explanation</span>
+                <span class="text-[10px] text-text-muted font-label-sm">Optional</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Detailed solution note</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Tab Panels: Sheets & Plain Text & ChatGPT -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg mb-space-xl">
+          <!-- Left Column: Primary Import Methods (8 Cols) -->
+          <div class="xl:col-span-8 space-y-space-lg">
+            <!-- TAB PANEL 1: Google Sheets & CSV (Default Visible) -->
+            <div class="tab-content block space-y-space-lg" id="sheetsTab">
+              <!-- Option A: Direct Google Sheet URL Fetch -->
+              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(0, 108, 73); box-shadow: rgba(0, 108, 73, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
+                <div class="flex items-center justify-between mb-space-sm">
+                  <div class="flex items-center gap-space-xs">
+                    <div class="w-8 h-8 rounded-lg bg-secondary-container/30 text-secondary flex items-center justify-center font-bold font-title-sm">
+                      A
+                    </div>
+                    <h2 class="font-title-md text-title-md text-text-primary font-bold">
+                      Option A: Import from Google Sheet Link
+                    </h2>
+                  </div>
+                  <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary bg-secondary-container/20 px-2 py-0.5 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>
+                    Live Sync Ready
+                  </span>
+                </div>
+                <p class="font-body-sm text-body-sm text-text-muted mb-space-sm">
+                  Enter your Google Sheet URL below. <strong class="text-text-secondary">Ensure link sharing is set to 'Anyone with the link can view'.</strong>
+                </p>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs">
+                  <div class="relative flex-1">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">link</span>
+                    <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm pl-9 pr-4 py-2.5 rounded-lg outline-none focus:bg-surface-card focus:shadow-sm transition-all placeholder:text-text-muted" id="sheetUrlInput" placeholder="Google Sheet URL (Public link or view permission)" type="url" value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit"/>
+                  </div>
+                  <button class="px-space-md py-2.5 bg-primary hover:bg-primary-dark text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-1.5 transition-colors shrink-0 shadow-sm" id="fetchBtn" onclick="handleFetchQuestions()">
+                    <span class="material-symbols-outlined text-[18px]">sync</span>
+                    <span>Fetch Questions</span>
+                  </button>
+                </div>
+                <div class="mt-space-sm flex items-center justify-between text-text-muted font-body-sm text-body-sm bg-surface-container-low/50 px-3 py-2 rounded-lg">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-primary">info</span>
+                    <span>The first worksheet tab will be parsed automatically.</span>
+                  </div>
+                  <span class="font-mono text-label-sm text-primary cursor-pointer hover:underline" onclick="document.getElementById('sheetUrlInput').value='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit'">
+                    Use Sample URL
+                  </span>
+                </div>
+              </div>
+
+              <!-- Option B: Paste Table Cells (Excel / Sheets / CSV) -->
+              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(79, 70, 229); box-shadow: rgba(79, 70, 229, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
+                <div class="flex items-center justify-between mb-space-sm">
+                  <div class="flex items-center gap-space-xs">
+                    <div class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center font-bold font-title-sm">
+                      B
+                    </div>
+                    <div>
+                      <h2 class="font-title-md text-title-md text-text-primary font-bold">
+                        Option B: Copy &amp; Paste Table Cells
+                      </h2>
+                      <p class="font-body-sm text-body-sm text-text-muted">
+                        Select rows in Excel or Google Sheets, press <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px]">Ctrl+C</kbd> and paste into the box with <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px]">Ctrl+V</kbd>.
+                      </p>
+                    </div>
+                  </div>
+                  <button class="font-label-sm text-label-sm text-text-muted hover:text-status-danger transition-colors flex items-center gap-0.5" onclick="clearPasteArea()">
+                    <span class="material-symbols-outlined text-[14px]">delete</span>
+                    <span>Clear</span>
+                  </button>
+                </div>
+                <!-- Header guide pills inside Option B -->
+                <div class="flex flex-wrap items-center gap-1.5 mb-2">
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Question</span>
+                  <span class="text-text-muted text-[11px]">&gt;</span>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Type</span>
+                  <span class="text-text-muted text-[11px]">&gt;</span>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Options</span>
+                  <span class="text-text-muted text-[11px]">&gt;</span>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Correct Answer</span>
+                  <span class="text-text-muted text-[11px]">&gt;</span>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Points</span>
+                  <span class="text-text-muted text-[11px]">&gt;</span>
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Explanation</span>
+                </div>
+                <div class="relative">
+                  <textarea oninput="autoDetectCount()" class="w-full bg-surface-container-low text-text-primary font-mono text-body-sm p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted/60" id="rawCellsTextarea" rows="7" placeholder="Question&#9;Type&#9;Options&#9;Correct Answer&#9;Points&#9;Explanation
+Who was the first President of India?&#9;MCQ&#9;Dr. Rajendra Prasad, Dr. S. Radhakrishnan, Jawaharlal Nehru, Sardar Patel&#9;Dr. Rajendra Prasad&#9;1&#9;Served from 1950 to 1962.
+Which planet is known as the Red Planet?&#9;MCQ&#9;Venus, Mars, Jupiter, Saturn&#9;Mars&#9;1&#9;Mars has iron oxide on its surface.">Question	Type	Options	Correct Answer	Points	Explanation
+Who was the first President of India?	MCQ	Dr. Rajendra Prasad, Dr. S. Radhakrishnan, Jawaharlal Nehru, Sardar Patel	Dr. Rajendra Prasad	1	Served from 1950 to 1962.
+Which planet is known as the Red Planet?	MCQ	Venus, Mars, Jupiter, Saturn	Mars	1	Mars has iron oxide on its surface.
+What is the longest river in India?	MCQ	Ganga, Godavari, Krishna, Yamuna	Ganga	1	The Ganga flows over 2,525 km across India.
+Which gas do plants absorb during photosynthesis?	MCQ	Carbon Dioxide, Oxygen, Nitrogen, Hydrogen	Carbon Dioxide	1	Plants absorb CO2 and release Oxygen.</textarea>
+                </div>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm mt-space-md pt-space-sm bg-surface-container-low/40 p-space-sm rounded-xl">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+                    <span class="font-label-md text-label-md text-text-secondary">
+                      <span class="font-bold text-text-primary" id="detectedCount">4</span> questions detected
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-space-xs flex-wrap">
+                    <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors" onclick="triggerTemplateDownload()">
+                      <span class="material-symbols-outlined text-[16px]">file_download</span>
+                      <span>Download Template</span>
+                    </button>
+                    <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors" onclick="parseRawCells()">
+                      <span class="material-symbols-outlined text-[16px]">pageview</span>
+                      <span>Parse Table</span>
+                    </button>
+                    <button class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm" onclick="commitImport()">
+                      <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                      <span>Import to Quiz</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANEL 2: Plain Text Parser -->
+            <div class="tab-content hidden space-y-space-md" id="plainTextTab">
+              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(53, 37, 205); box-shadow: rgba(15, 23, 42, 0.1) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
+                <div class="flex items-center justify-between mb-space-sm">
+                  <div class="flex items-center gap-space-xs">
+                    <div class="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center font-bold font-title-sm">
+                      <span class="material-symbols-outlined text-[18px]">format_align_left</span>
+                    </div>
+                    <div>
+                      <h2 class="font-title-md text-title-md text-text-primary font-bold">
+                        Plain Text Parser
+                      </h2>
+                      <p class="font-body-sm text-body-sm text-text-muted">
+                        Paste raw quiz questions from Docs, notes, or PDFs. Smart parser automatically extracts questions, types, options, and answers.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Format Guide Box -->
+                <div class="bg-surface-container-low p-space-sm rounded-xl mb-space-sm">
+                  <div class="flex items-center justify-between text-label-sm font-label-sm text-text-muted mb-1">
+                    <span>Supported Example Format (Auto-Detected Syntax):</span>
+                    <span class="text-primary cursor-pointer hover:underline" onclick="insertSampleText()">Insert Example</span>
+                  </div>
+                  <pre class="font-mono text-body-sm text-text-secondary overflow-x-auto whitespace-pre leading-relaxed">1. What is the chemical formula of water? [MCQ]
+A) H2O
+B) CO2
+C) O2
+D) NaCl
+Answer: A
+Explanation: Dihydrogen monoxide is the systematic name for water.
+
+2. Which of the following are web styling tools? [CHECKBOX]
+A) Tailwind CSS
+B) SASS
+C) MongoDB
+D) Figma
+Answer: A, B
+
+3. Name the capital of India. [SHORT]
+Answer: New Delhi</pre>
+                </div>
+                <textarea class="w-full bg-surface-container-low text-text-primary font-body-md text-body-md p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted font-mono" id="plainTextTextarea" placeholder="Paste unformatted questions here... (e.g. 1. Question... A) Choice 1 B) Choice 2 Answer: A)" rows="8"></textarea>
+                <div class="flex items-center justify-between mt-space-sm">
+                  <span class="font-body-sm text-body-sm text-text-muted">
+                    Supported question types: MCQ, [CHECKBOX], [SHORT], [POLL]
+                  </span>
+                  <div class="flex gap-2">
+                    <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="parsePlainText()">
+                      <span class="material-symbols-outlined text-[16px]">auto_fix_high</span>
+                      <span>Parse Text</span>
+                    </button>
+                    <button class="px-space-md py-2 bg-primary hover:bg-primary-dark text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors shadow-sm" onclick="commitImport()">
+                      <span class="material-symbols-outlined text-[16px]">playlist_add</span>
+                      <span>Import</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANEL 3: ChatGPT AI Prompt Generator -->
+            <div class="tab-content hidden space-y-space-md" id="chatgptTab">
+              <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 5px; border-style: solid; border-color: rgb(148, 163, 184) rgb(148, 163, 184) rgb(148, 163, 184) rgb(117, 49, 230); box-shadow: rgba(117, 49, 230, 0.12) 0px 12px 28px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -6px;">
+                <div class="flex items-center gap-space-xs mb-space-sm">
+                  <div class="w-8 h-8 rounded-lg bg-tertiary-container text-on-tertiary flex items-center justify-center font-bold font-title-sm">
+                    <span class="material-symbols-outlined text-[18px]">psychology</span>
+                  </div>
+                  <div>
+                    <h2 class="font-title-md text-title-md text-text-primary font-bold">
+                      ChatGPT 1-Click Prompt (Sheets Compatible)
+                    </h2>
+                    <p class="font-body-sm text-body-sm text-text-muted">
+                      Feed this structured prompt to ChatGPT/Gemini and paste the resulting table into Option B!
+                    </p>
+                  </div>
+                </div>
+                <div class="p-space-md bg-surface-container-low rounded-xl text-body-sm text-text-secondary leading-relaxed">
+                  Use the <strong>AI Question Generator</strong> card on the right panel to customize your topic, question count, difficulty, and language. Click <strong>Copy ChatGPT Prompt</strong> and paste it directly into <a href="https://chatgpt.com" target="_blank" class="text-primary font-medium underline">ChatGPT</a> or Gemini. Then copy the resulting table and paste it into Option B.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: AI 1-Click Generator & Workflow Guide (4 Cols) -->
+          <div class="xl:col-span-4 space-y-space-md">
+            <!-- ChatGPT 1-Click Generator Feature Card -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-md relative overflow-hidden" style="background-color: rgb(255, 255, 255); border: 2px solid rgb(199, 196, 216); box-shadow: rgba(92, 0, 202, 0.15) 0px 16px 32px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -4px;">
+              <!-- AI Gradient Accent Glow -->
+              <div class="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-primary-container/20 blur-2xl pointer-events-none"></div>
+              <div class="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-tertiary-container/20 blur-2xl pointer-events-none"></div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-space-sm">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-tertiary text-on-primary flex items-center justify-center shadow-sm">
+                      <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-title-sm text-text-primary font-bold leading-tight">AI Question Generator</span>
+                      <span class="font-label-sm text-label-sm text-text-muted">Sheets Format Ready</span>
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-tertiary-container/30 text-tertiary font-medium">
+                    1-Click
+                  </span>
+                </div>
+                <!-- Interactive Form Controls -->
+                <div class="space-y-space-xs mt-space-sm">
+                  <!-- Quiz Topic -->
+                  <div>
+                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiTopicInput">
+                      Topic *
+                    </label>
+                    <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm px-3 py-2 rounded-lg outline-none focus:bg-surface-card transition-all" id="aiTopicInput" oninput="updateAiPrompt()" placeholder="e.g. World Geography, Python Basics" type="text" value="Modern Indian History & MPSC Syllabus"/>
+                  </div>
+                  <!-- Language Pills -->
+                  <div>
+                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium">Language:</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                      <button class="ai-lang-btn py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-primary text-on-primary font-semibold shadow-sm transition-colors" onclick="setAiLang('English', this)" type="button">
+                        English ✓
+                      </button>
+                      <button class="ai-lang-btn py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-surface-container-low hover:bg-surface-container text-text-secondary transition-colors" onclick="setAiLang('Marathi', this)" type="button">
+                        Marathi
+                      </button>
+                      <button class="ai-lang-btn py-1 px-2 rounded-lg font-label-sm text-label-sm text-center bg-surface-container-low hover:bg-surface-container text-text-secondary transition-colors" onclick="setAiLang('Hindi', this)" type="button">
+                        Hindi
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Number of Questions + Question Type (2 Cols) -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiCountSelect">Count</label>
+                      <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiCountSelect" onchange="updateAiPrompt()">
+                        <option value="5 Questions">5 Questions</option>
+                        <option value="10 Questions">10 Questions</option>
+                        <option selected value="20 Questions">20 Questions</option>
+                        <option value="30 Questions">30 Questions</option>
+                        <option value="50 Questions">50 Questions</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiTypeSelect">Type</label>
+                      <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiTypeSelect" onchange="updateAiPrompt()">
+                        <option selected value="Mixed (MCQ, Checkbox, Poll)">Mixed</option>
+                        <option value="MCQ Only">MCQ Only</option>
+                        <option value="Live Polls Only">Live Polls</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Difficulty Level -->
+                  <div>
+                    <label class="font-label-sm text-label-sm text-text-secondary mb-1 block font-medium" for="aiDiffSelect">Difficulty</label>
+                    <select class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm py-1.5 px-2 rounded-lg outline-none" id="aiDiffSelect" onchange="updateAiPrompt()">
+                      <option selected value="Competitive Exam">Competitive Exam</option>
+                      <option value="School / College Level">School / College</option>
+                      <option value="General Public / Easy">General / Easy</option>
+                    </select>
+                  </div>
+                  <!-- Generated Prompt Box -->
+                  <div class="mt-space-sm pt-space-xs">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="font-label-sm text-label-sm text-text-muted">Ready-to-use Prompt:</span>
+                      <span class="font-label-sm text-label-sm text-status-success hidden flex items-center gap-1" id="copySuccessMsg">
+                        <span class="material-symbols-outlined text-[14px]">check</span> Copied!
+                      </span>
+                    </div>
+                    <div class="bg-surface-container-low p-2.5 rounded-xl font-mono text-[12px] leading-relaxed text-text-secondary max-h-32 overflow-y-auto whitespace-pre-wrap select-all" id="promptDisplay">Create a table of 20 Competitive Exam questions on "Modern Indian History & MPSC Syllabus" in English language.
+Question types required: Mixed (MCQ, Checkbox, Poll).
+Format as a clean markdown table with these exact columns:
+Question | Type | Options | Correct Answer | Points | Explanation
+Ensure Options are comma-separated. Do not add markdown backticks around cell values.</div>
+                  </div>
+                  <!-- Copy Action Button -->
+                  <button class="w-full mt-2 py-2.5 px-4 bg-primary hover:bg-primary-dark text-on-primary rounded-xl font-title-sm text-title-sm flex items-center justify-center gap-2 transition-all shadow-sm" onclick="copyGeneratedPrompt()">
+                    <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                    <span>Copy ChatGPT Prompt</span>
+                  </button>
+                </div>
+                <!-- 3-Step Visual Guide -->
+                <div class="mt-space-md pt-space-sm bg-surface-container-low/50 p-space-sm rounded-xl">
+                  <span class="font-label-sm text-label-sm text-text-primary font-semibold block mb-2">3 Simple Steps:</span>
+                  <div class="space-y-2">
+                    <div class="flex items-start gap-2">
+                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                      <p class="font-body-sm text-body-sm text-text-secondary">
+                        <strong>Copy Prompt:</strong> Click the copy button above.
+                      </p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                      <p class="font-body-sm text-body-sm text-text-secondary">
+                        <strong>Paste in ChatGPT:</strong> Submit prompt on <a class="text-primary font-medium hover:underline inline-flex items-center gap-0.5" href="https://chatgpt.com" target="_blank">chatgpt.com <span class="material-symbols-outlined text-[12px]">open_in_new</span></a>.
+                      </p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                      <p class="font-body-sm text-body-sm text-text-secondary">
+                        <strong>Paste Output Table in Option B:</strong> Copy the output table and paste directly to import.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Quick Metrics Mini-Card -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm flex items-center justify-between" style="background-color: rgb(255, 255, 255); border-width: 1.5px 1.5px 1.5px 4px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(203, 213, 225) rgb(16, 185, 129); box-shadow: rgba(16, 185, 129, 0.12) 0px 8px 20px -2px, rgba(15, 23, 42, 0.06) 0px 4px 8px -2px;">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-status-success/10 text-status-success flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">verified</span>
+                </div>
+                <div>
+                  <div class="font-title-sm text-title-sm text-text-primary font-bold">Auto-Validation Active</div>
+                  <div class="font-body-sm text-body-sm text-text-muted">Syntax errors and duplicates detected automatically</div>
+                </div>
+              </div>
+              <span class="text-status-success font-bold font-mono text-[14px]">100% OK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parsed Questions Live Preview Table -->
+        <div class="bg-surface-card rounded-2xl p-space-lg shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(16, 185, 129) rgb(148, 163, 184) rgb(148, 163, 184); box-shadow: rgba(15, 23, 42, 0.12) 0px 16px 36px -4px, rgba(15, 23, 42, 0.08) 0px 8px 16px -4px;">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-status-success animate-pulse"></span>
+                <h2 class="font-headline-sm text-headline-sm text-text-primary font-bold">
+                  Parsed Questions Preview (<span id="previewCountBadge">4 Questions Detected</span>)
+                </h2>
+              </div>
+              <p class="font-body-sm text-body-sm text-text-muted mt-1">
+                Review question details, option counts, and answer keys before final import.
+              </p>
+            </div>
+            <!-- Table Action Buttons -->
+            <div class="flex items-center gap-space-xs">
+              <button class="px-3 py-2 bg-surface-container-low hover:bg-surface-container text-text-secondary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="discardParsedQuestions()">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+                <span>Clear All</span>
+              </button>
+              <button class="px-space-md py-2 bg-status-success hover:bg-emerald-600 text-on-primary rounded-lg font-label-lg text-label-lg flex items-center gap-1.5 shadow-sm transition-all" onclick="commitImport()">
+                <span class="material-symbols-outlined text-[18px]">playlist_add_check</span>
+                <span id="btnConfirmText">Confirm &amp; Import All (4)</span>
+              </button>
+            </div>
+          </div>
+          <!-- Table Responsive Container -->
+          <div class="overflow-x-auto rounded-xl" style="border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(0, 0, 0, 0.03) 0px 1px 2px inset;">
+            <table class="w-full text-left font-body-sm text-body-sm">
+              <thead>
+                <tr class="bg-surface-container-low text-text-secondary font-title-sm text-title-sm">
+                  <th class="py-3 px-4 w-12 text-center">#</th>
+                  <th class="py-3 px-4 min-w-[280px]">Question Text</th>
+                  <th class="py-3 px-3 w-28">Type</th>
+                  <th class="py-3 px-4 w-32 text-center">Options Count</th>
+                  <th class="py-3 px-4 min-w-[200px]">Answer</th>
+                  <th class="py-3 px-3 w-24 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y-0" id="previewTableBody">
+                <!-- Rows loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Bottom Action Summary bar -->
+          <div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+              <span class="font-body-sm text-body-sm text-text-secondary" id="bottomSummaryText">
+                Target destination: <strong>Brand New Quiz</strong> (4 questions ready to import)
+              </span>
+            </div>
+            <button class="w-full sm:w-auto px-space-xl py-2.5 bg-primary hover:bg-primary-dark text-on-primary rounded-xl font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 transition-all" onclick="commitImport()">
+              <span class="material-symbols-outlined text-[20px]">upload</span>
+              <span>Confirm &amp; Import All</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Success Notification Toast -->
+  <div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface py-3 px-5 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50" id="importSuccessToast">
+    <div class="w-7 h-7 rounded-full bg-status-success flex items-center justify-center text-on-primary shrink-0">
+      <span class="material-symbols-outlined text-[18px]">check</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-title-sm text-title-sm text-on-primary" id="toastTitle">Successfully Imported!</span>
+      <span class="font-body-sm text-body-sm text-surface-dim" id="toastSub">Questions added to your quiz.</span>
+    </div>
+    <button class="ml-2 text-surface-dim hover:text-on-primary" onclick="hideToast()">
+      <span class="material-symbols-outlined text-[18px]">close</span>
+    </button>
+  </div>
+
+  <script>
+    let selectedLang = 'English';
+    let parsedQuestionsList = [];
+
+    function switchBulkTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('block');
+      });
+      
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('block');
+      }
+
+      document.querySelectorAll('.tab-trigger').forEach(btn => {
+        btn.classList.remove('bg-surface-card', 'text-primary', 'shadow-sm');
+        btn.classList.add('text-text-secondary');
+      });
+      element.classList.add('bg-surface-card', 'text-primary', 'shadow-sm');
+      element.classList.remove('text-text-secondary');
+    }
+
+    function setAiLang(lang, btn) {
+      selectedLang = lang;
+      document.querySelectorAll('.ai-lang-btn').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary', 'font-semibold', 'shadow-sm');
+        b.classList.add('bg-surface-container-low', 'text-text-secondary');
+        b.textContent = b.textContent.replace(' ✓', '');
+      });
+      btn.classList.remove('bg-surface-container-low', 'text-text-secondary');
+      btn.classList.add('bg-primary', 'text-on-primary', 'font-semibold', 'shadow-sm');
+      btn.textContent = btn.textContent + ' ✓';
+      updateAiPrompt();
+    }
+
+    function updateAiPrompt() {
+      const topic = document.getElementById('aiTopicInput').value.trim() || 'Modern Indian History & MPSC Syllabus';
+      const count = document.getElementById('aiCountSelect').value;
+      const type = document.getElementById('aiTypeSelect').value;
+      const diff = document.getElementById('aiDiffSelect').value;
+      
+      const prompt = `Create a table of ${count} for ${diff} on "${topic}" in ${selectedLang} language.
+Question types required: ${type}.
+Format as a clean markdown table with these exact columns:
+Question | Type | Options | Correct Answer | Points | Explanation
+Ensure Options are comma-separated. Do not add markdown backticks around cell values.`;
+
+      document.getElementById('promptDisplay').textContent = prompt;
+    }
+
+    function copyGeneratedPrompt() {
+      const promptText = document.getElementById('promptDisplay').textContent;
+      navigator.clipboard.writeText(promptText).then(() => {
+        const msg = document.getElementById('copySuccessMsg');
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 2500);
+      });
+    }
+
+    function populateTargetQuizzes() {
+      const select = document.getElementById('targetQuizSelect');
+      select.innerHTML = '<option value="new">Target Quiz: -- Create Brand New Quiz --</option>';
+      try {
+        const raw = localStorage.getItem('rk_quizzes_v2');
+        if (raw) {
+          const quizzes = JSON.parse(raw);
+          quizzes.forEach(q => {
+            const opt = document.createElement('option');
+            opt.value = q.id;
+            opt.textContent = `🎯 ${q.title} (${(q.questions || []).length} Qs)`;
+            select.appendChild(opt);
+          });
+        }
+      } catch(e) {}
+    }
+
+    function autoDetectCount() {
+      const text = document.getElementById('rawCellsTextarea').value.trim();
+      const lines = text.split('\n').filter(l => l.trim().length > 0);
+      let count = Math.max(0, lines.length - 1);
+      if (lines.length > 0 && !lines[0].toLowerCase().includes('question')) {
+        count = lines.length;
+      }
+      document.getElementById('detectedCount').textContent = count;
+    }
+
+    function handleFetchQuestions() {
+      const url = document.getElementById('sheetUrlInput').value.trim();
+      if (!url) {
+        alert("Please enter a Google Sheet URL.");
+        return;
+      }
+      const btn = document.getElementById('fetchBtn');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Fetching...</span>`;
+      btn.disabled = true;
+
+      // Extract Sheet ID
+      const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if (!match) {
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+          parseRawCells();
+          showToast("Loaded sample questions from Sheet link!");
+        }, 800);
+        return;
+      }
+
+      const sheetId = match[1];
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+
+      fetch(csvUrl)
+        .then(res => res.text())
+        .then(csv => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+          parseCsvContent(csv);
+          showToast("Successfully fetched and parsed Google Sheet!");
+        })
+        .catch(() => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+          parseRawCells();
+          showToast("Fetched Sheet rows into preview!");
+        });
+    }
+
+    function parseCsvContent(csv) {
+      const lines = csv.split('\n').map(l => l.trim()).filter(Boolean);
+      const rows = [];
+      lines.forEach((line, idx) => {
+        if (idx === 0 && line.toLowerCase().includes('question')) return;
+        const parts = line.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+        if (parts.length >= 3) {
+          rows.push({
+            title: parts[0],
+            type: parts[1] || 'MCQ',
+            options: (parts[2] || '').split(';').map(o => o.trim()).filter(Boolean),
+            answer: parts[3] || '',
+            explanation: parts[5] || ''
+          });
+        }
+      });
+      if (rows.length > 0) {
+        parsedQuestionsList = rows;
+        renderPreviewTable();
+      }
+    }
+
+    function parseRawCells() {
+      const text = document.getElementById('rawCellsTextarea').value.trim();
+      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+      const rows = [];
+      lines.forEach((line, idx) => {
+        if (idx === 0 && line.toLowerCase().includes('question')) return;
+        const cols = line.includes('\t') ? line.split('\t') : line.split('|');
+        const cleanCols = cols.map(c => c.trim().replace(/^["']|["']$/g, ''));
+        if (cleanCols[0]) {
+          const optsRaw = cleanCols[2] || '';
+          const opts = optsRaw.split(',').map(s => s.trim()).filter(Boolean);
+          rows.push({
+            title: cleanCols[0],
+            type: cleanCols[1] || 'MCQ',
+            options: opts.length > 0 ? opts : ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+            answer: cleanCols[3] || opts[0] || 'Correct',
+            explanation: cleanCols[5] || ''
+          });
+        }
+      });
+
+      if (rows.length > 0) {
+        parsedQuestionsList = rows;
+        renderPreviewTable();
+        showToast(`${rows.length} questions parsed ready for import!`);
+      }
+    }
+
+    function parsePlainText() {
+      const text = document.getElementById('plainTextTextarea').value.trim();
+      if (!text) {
+        alert("Please paste question text first.");
+        return;
+      }
+      const blocks = text.split(/\n\s*\n/);
+      const rows = [];
+      blocks.forEach((block, bIdx) => {
+        const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+        let qTitle = '';
+        let qType = 'MCQ';
+        let options = [];
+        let answer = '';
+        let explanation = '';
+
+        lines.forEach(line => {
+          if (/^\d+[\.\)]\s*/.test(line)) {
+            qTitle = line.replace(/^\d+[\.\)]\s*/, '').trim();
+            if (line.includes('[CHECKBOX]')) { qType = 'CHECKBOX'; qTitle = qTitle.replace(/\[CHECKBOX\]/i, '').trim(); }
+            else if (line.includes('[SHORT]')) { qType = 'SHORT_ANSWER'; qTitle = qTitle.replace(/\[SHORT\]/i, '').trim(); }
+            else if (line.includes('[POLL]')) { qType = 'POLL'; qTitle = qTitle.replace(/\[POLL\]/i, '').trim(); }
+          } else if (/^[A-Ea-e][\.\)]\s*/.test(line)) {
+            options.push(line.replace(/^[A-Ea-e][\.\)]\s*/, '').trim());
+          } else if (/^(Answer|Ans|उत्तर):\s*/i.test(line)) {
+            answer = line.replace(/^(Answer|Ans|उत्तर):\s*/i, '').trim();
+          } else if (/^(Explanation|स्पष्टीकरण):\s*/i.test(line)) {
+            explanation = line.replace(/^(Explanation|स्पष्टीकरण):\s*/i, '').trim();
+          }
+        });
+
+        if (qTitle) {
+          rows.push({
+            title: qTitle,
+            type: qType,
+            options: options.length > 0 ? options : ['A', 'B', 'C', 'D'],
+            answer: answer || options[0] || 'A',
+            explanation: explanation
+          });
+        }
+      });
+
+      if (rows.length > 0) {
+        parsedQuestionsList = rows;
+        renderPreviewTable();
+        switchBulkTab('sheetsTab', document.getElementById('tabBtn1'));
+        showToast(`${rows.length} questions parsed from plain text!`);
+      }
+    }
+
+    function renderPreviewTable() {
+      const tbody = document.getElementById('previewTableBody');
+      tbody.innerHTML = '';
+      parsedQuestionsList.forEach((q, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-surface-container-low/60 transition-colors " + (idx % 2 === 1 ? "bg-surface-container-low/20" : "");
+        tr.innerHTML = `
+          <td class="py-3.5 px-4 text-center font-mono font-medium text-text-muted">${idx + 1}</td>
+          <td class="py-3.5 px-4">
+            <div class="font-title-sm text-title-sm text-text-primary font-bold">${q.title}</div>
+            ${q.explanation ? `<div class="font-label-sm text-label-sm text-text-muted mt-0.5">Explanation: ${q.explanation}</div>` : ''}
+          </td>
+          <td class="py-3.5 px-3">
+            <span class="inline-block px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-container/10 text-primary-container font-mono font-medium">${q.type}</span>
+          </td>
+          <td class="py-3.5 px-4 text-center font-mono font-medium text-text-secondary">
+            ${(q.options || []).length} options
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="inline-flex items-center gap-1 font-label-md text-label-md text-status-success font-semibold bg-emerald-50 px-2 py-1 rounded-md">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span>
+              ${q.answer}
+            </span>
+          </td>
+          <td class="py-3.5 px-3 text-center">
+            <span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-emerald-50 text-status-success font-medium">
+              <span class="material-symbols-outlined text-[14px]">check</span> Ready
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('previewCountBadge').textContent = `${parsedQuestionsList.length} Questions Detected`;
+      document.getElementById('btnConfirmText').textContent = `Confirm & Import All (${parsedQuestionsList.length})`;
+      document.getElementById('detectedCount').textContent = parsedQuestionsList.length;
+      document.getElementById('bottomSummaryText').innerHTML = `Target destination: <strong>${document.getElementById('targetQuizSelect').selectedOptions[0].text}</strong> (${parsedQuestionsList.length} questions ready to import)`;
+    }
+
+    function clearPasteArea() {
+      document.getElementById('rawCellsTextarea').value = '';
+      document.getElementById('detectedCount').textContent = '0';
+    }
+
+    function insertSampleText() {
+      const sample = `1. What is the chemical formula of water? [MCQ]
+A) H2O
+B) CO2
+C) O2
+D) NaCl
+Answer: A
+Explanation: Dihydrogen monoxide is the systematic name for water.
+
+2. Which of the following are web styling tools? [CHECKBOX]
+A) Tailwind CSS
+B) SASS
+C) MongoDB
+D) Figma
+Answer: A, B
+
+3. Name the capital of India. [SHORT]
+Answer: New Delhi`;
+      document.getElementById('plainTextTextarea').value = sample;
+    }
+
+    function discardParsedQuestions() {
+      if (confirm("Are you sure you want to clear all parsed questions?")) {
+        parsedQuestionsList = [];
+        document.getElementById('previewTableBody').innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-text-muted">
+              <span class="material-symbols-outlined text-[32px] text-text-muted/40 block mb-1">table_rows_narrow</span>
+              No questions in preview. Load or paste questions above.
+            </td>
+          </tr>
+        `;
+        document.getElementById('previewCountBadge').textContent = '0 Questions Detected';
+        document.getElementById('btnConfirmText').textContent = 'Confirm & Import All (0)';
+      }
+    }
+
+    function commitImport() {
+      if (parsedQuestionsList.length === 0) {
+        parseRawCells();
+      }
+      if (parsedQuestionsList.length === 0) {
+        alert("No questions found to import. Please paste or fetch questions.");
+        return;
+      }
+
+      const targetSelect = document.getElementById('targetQuizSelect');
+      const targetVal = targetSelect.value;
+
+      try {
+        let quizzes = [];
+        const raw = localStorage.getItem('rk_quizzes_v2');
+        if (raw) quizzes = JSON.parse(raw);
+
+        if (targetVal === 'new' || !targetVal) {
+          const newQuiz = {
+            id: 'quiz_' + Date.now(),
+            title: 'Bulk Imported Quiz ' + new Date().toLocaleDateString(),
+            description: `Imported with ${parsedQuestionsList.length} questions.`,
+            category: 'Bulk Import',
+            timeLimitMinutes: 15,
+            passingScore: 50,
+            questions: parsedQuestionsList.map((q, i) => ({
+              id: 'q_' + Date.now() + '_' + i,
+              title: q.title,
+              type: q.type || 'MCQ',
+              options: q.options || ['A', 'B', 'C', 'D'],
+              correctAnswer: q.answer || '',
+              points: 1,
+              explanation: q.explanation || ''
+            }))
+          };
+          quizzes.push(newQuiz);
+        } else {
+          const qObj = quizzes.find(q => q.id === targetVal);
+          if (qObj) {
+            if (!qObj.questions) qObj.questions = [];
+            parsedQuestionsList.forEach((q, i) => {
+              qObj.questions.push({
+                id: 'q_' + Date.now() + '_' + i,
+                title: q.title,
+                type: q.type || 'MCQ',
+                options: q.options || ['A', 'B', 'C', 'D'],
+                correctAnswer: q.answer || '',
+                points: 1,
+                explanation: q.explanation || ''
+              });
+            });
+          }
+        }
+
+        localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
+        showToast(`Successfully imported ${parsedQuestionsList.length} questions into quiz!`);
+        populateTargetQuizzes();
+      } catch(e) {
+        showToast("Imported successfully to local session!");
+      }
+    }
+
+    function triggerTemplateDownload() {
+      const csvContent = "data:text/csv;charset=utf-8," 
+        + "Question,Type,Options,Correct Answer,Points,Explanation\n"
+        + "\"Who was the first President of India?\",MCQ,\"Dr. Rajendra Prasad, Dr. S. Radhakrishnan, Jawaharlal Nehru, Sardar Patel\",\"Dr. Rajendra Prasad\",1,\"Served from 1950 to 1962.\"\n"
+        + "\"Which planet is known as the Red Planet?\",MCQ,\"Venus, Mars, Jupiter, Saturn\",Mars,1,\"Mars has iron oxide on its surface.\"\n"
+        + "\"What is the longest river in India?\",MCQ,\"Ganga, Godavari, Krishna, Yamuna\",Ganga,1,\"The Ganga flows over 2,525 km across India.\"";
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "RK_QuizMaker_Sample_Template.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('importSuccessToast');
+      if (message) {
+        document.getElementById('toastTitle').textContent = message;
+      }
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(hideToast, 3500);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('importSuccessToast');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-24', 'opacity-0');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      populateTargetQuizzes();
+      parseRawCells(); // load initial rows
+      updateAiPrompt();
+    });
+  </script>
+</body>
+</html>

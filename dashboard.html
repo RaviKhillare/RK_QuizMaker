@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RK QuizMaker - Dashboard Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#e4d4ff",
+            "surface-tint": "#4d44e3",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-primary-container": "#dad7ff",
+            "on-secondary-fixed": "#002113",
+            "secondary": "#006c49",
+            "on-tertiary-fixed": "#25005a",
+            "border-subtle": "#E2E8F0",
+            "on-surface": "#131b2e",
+            "surface-variant": "#dae2fd",
+            "status-warning": "#F59E0B",
+            "text-secondary": "#334155",
+            "surface-container-highest": "#dae2fd",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d2d9f4",
+            "surface-card": "#FFFFFF",
+            "status-success": "#10B981",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-fixed-variant": "#3323cc",
+            "text-muted": "#64748B",
+            "outline-variant": "#c7c4d8",
+            "surface-canvas": "#F8FAFC",
+            "text-primary": "#0F172A",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#464555",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed-dim": "#c3c0ff",
+            "status-danger": "#EF4444",
+            "tertiary-fixed-dim": "#d2bbff",
+            "on-tertiary-fixed-variant": "#5a00c6",
+            "primary-dark": "#3730A3",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#0f0069",
+            "border-medium": "#CBD5E1",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#00714d",
+            "secondary-fixed": "#6ffbbe",
+            "tertiary-fixed": "#eaddff",
+            "primary": "#3525cd",
+            "primary-fixed": "#e2dfff",
+            "tertiary-container": "#7531e6",
+            "surface-container-high": "#e2e7ff",
+            "status-info": "#3B82F6",
+            "background": "#faf8ff",
+            "secondary-container": "#6cf8bb",
+            "surface": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#5c00ca",
+            "surface-container-low": "#f2f3ff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xl": "2rem",
+            "gutter-md": "1.5rem",
+            "space-md": "1rem",
+            "space-2xl": "2.5rem",
+            "space-3xl": "3rem",
+            "space-lg": "1.5rem",
+            "sidebar-width": "260px",
+            "space-2xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-xs": "0.5rem",
+            "gutter-lg": "2rem",
+            "space-sm": "0.75rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Outfit"],
+            "title-sm": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Noto Sans"],
+            "label-md": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "label-lg": ["Outfit"],
+            "body-md": ["Noto Sans"],
+            "body-lg": ["Noto Sans"],
+            "display-lg": ["Outfit"],
+            "label-sm": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "display-lg-mobile": ["Outfit"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-canvas font-body-md text-on-surface antialiased">
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest">
+        <img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
+        <div class="flex flex-col">
+          <span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span>
+          <span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span>
+        </div>
+      </div>
+      <nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm">
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="blog-designer" href="blog-designer.html">
+          <span class="material-symbols-outlined text-[20px]">design_services</span>
+          <span>Blog Designer</span>
+        </a>
+        <a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="dashboard" href="dashboard.html">
+          <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="index.html#builder">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span>Quiz Builder</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="bulk-import.html">
+          <span class="material-symbols-outlined text-[20px]">upload_file</span>
+          <span>Bulk Import</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+          <span>Embed &amp; Share</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="index.html#results">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span>Results &amp; Polls</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="index.html#database">
+          <span class="material-symbols-outlined text-[20px]">table_chart</span>
+          <span>Sheets Cloud DB</span>
+        </a>
+      </nav>
+    </div>
+    <div class="p-space-sm bg-surface-container-lowest">
+      <div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary">
+            <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Active Sync
+          </span>
+          <a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank">
+            <span>Visit Blog</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-space-sm mt-1">
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p>
+            <p class="font-body-sm text-body-sm text-text-muted truncate">Admin / Creator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Container -->
+  <div class="pl-[260px]">
+    <!-- Header -->
+    <header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between" style="border-bottom: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 20px -2px;">
+      <div class="flex items-center gap-space-md flex-1 max-w-lg">
+        <div class="relative w-full max-w-sm">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card transition-all placeholder:text-text-muted" id="dashboardSearchInput" oninput="filterDashboardQuizzes(this.value)" placeholder="Search quizzes, metrics..." type="search"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span>
+        </div>
+        <button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors">
+          <span class="material-symbols-outlined text-[16px]">translate</span>
+          <span>EN / MR</span>
+        </button>
+        <button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          <span>+ New Quiz</span>
+        </button>
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-lg">
+      <div class="flex flex-col w-full gap-space-lg">
+        <!-- Page Title Header with Quick Action Buttons -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-2">
+          <div>
+            <h1 class="font-headline-lg text-headline-lg text-text-primary font-bold tracking-tight">Dashboard</h1>
+            <p class="font-body-md text-body-md text-text-muted mt-0.5">Monitor performance, track live quiz participation, and manage cloud data.</p>
+          </div>
+          <div class="flex items-center gap-space-xs shrink-0">
+            <button onclick="window.location.href='quiz-player.html?quizId=quiz_maha_gk'" class="inline-flex items-center gap-1.5 px-space-md py-2 rounded-lg border border-border-medium bg-surface-card hover:bg-surface-bright text-text-primary font-label-md text-label-md font-semibold transition-colors shadow-xs">
+              <span class="material-symbols-outlined text-[18px] text-primary">play_arrow</span>
+              <span>Demo Quiz</span>
+            </button>
+            <button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-primary hover:bg-primary-dark text-on-primary font-label-md text-label-md font-semibold transition-colors shadow-xs">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              <span>New Quiz</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero / Welcome Banner -->
+        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-tertiary text-on-primary p-space-xl shadow-md" style="box-shadow: rgba(53, 37, 205, 0.4) 0px 12px 30px -4px, rgba(15, 23, 42, 0.1) 0px 4px 12px -2px; border: 1.5px solid rgba(255, 255, 255, 0.3);">
+          <div class="absolute -right-12 -top-12 w-64 h-64 rounded-full bg-surface-container-highest/10 blur-3xl pointer-events-none"></div>
+          <div class="absolute right-1/3 -bottom-16 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+            <div class="max-w-2xl space-y-space-xs">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-on-primary/10 text-on-primary backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+                <span class="font-label-sm text-label-sm tracking-wide uppercase">Educational CMS Platform</span>
+                <span class="text-outline-variant">•</span>
+                <span class="font-label-sm text-label-sm text-on-primary-container">Cloud Sync Active</span>
+              </div>
+              <h2 class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-primary">
+                Welcome to RK QuizMaker! <span class="inline-block hover:rotate-12 transition-transform cursor-default">🎯</span>
+              </h2>
+              <p class="font-body-md text-body-md text-on-primary/80 leading-relaxed">
+                Your all-in-one platform to create MCQ, Checkbox, and Live Poll quizzes. Embed seamlessly on Blogger or any website.
+              </p>
+            </div>
+            <!-- Quick Action CTAs -->
+            <div class="flex flex-wrap items-center gap-space-sm shrink-0">
+              <button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-surface-card text-primary font-label-lg text-label-lg shadow-sm hover:bg-surface-bright hover:shadow transition-all group">
+                <span class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                <span>+ Create Quiz</span>
+              </button>
+              <button onclick="window.location.href='bulk-import.html'" class="inline-flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-on-primary/15 text-on-primary font-label-lg text-label-lg backdrop-blur-md hover:bg-on-primary/25 transition-all">
+                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                <span>Bulk Import</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Metrics KPI Row (4 Cards) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+          <!-- Card 1 -->
+          <div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.05) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="font-label-md text-label-md text-text-muted">Total Quizzes</span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="font-display-lg text-display-lg text-text-primary" id="kpi-quizzes">0 Quizzes</span>
+                  <span class="font-label-sm text-label-sm text-status-success font-medium flex items-center">
+                    <span class="material-symbols-outlined text-[14px]">arrow_upward</span>+3 this week
+                  </span>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+                <span class="material-symbols-outlined text-[22px]">quiz</span>
+              </div>
+            </div>
+            <div class="mt-space-sm pt-2 flex items-center justify-between text-text-muted font-body-sm text-body-sm">
+              <span id="kpi-quizzes-sub">Live &amp; Ready</span>
+              <a href="index.html#quizzes" class="text-primary font-label-sm text-label-sm hover:underline cursor-pointer">View All →</a>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.05) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="font-label-md text-label-md text-text-muted">Total Questions</span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="font-display-lg text-display-lg text-text-primary" id="kpi-questions">0 Items</span>
+                  <span class="font-label-sm text-label-sm text-text-muted font-medium">MCQ, Poll, Checkbox</span>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+                <span class="material-symbols-outlined text-[22px]">format_list_numbered</span>
+              </div>
+            </div>
+            <div class="mt-space-sm pt-2">
+              <div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden flex">
+                <div class="bg-primary h-full" id="bar-mcq" style="width: 65%" title="MCQ"></div>
+                <div class="bg-tertiary-container h-full" id="bar-checkbox" style="width: 20%" title="Checkbox"></div>
+                <div class="bg-secondary h-full" id="bar-poll" style="width: 15%" title="Polls"></div>
+              </div>
+              <div class="flex justify-between text-text-muted font-label-sm text-label-sm mt-1">
+                <span id="label-mcq">MCQ 65%</span>
+                <span id="label-chk">Checkbox 20%</span>
+                <span id="label-poll">Polls 15%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.05) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="font-label-md text-label-md text-text-muted">Submissions</span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="font-display-lg text-display-lg text-text-primary" id="kpi-submissions">0 Tests</span>
+                  <span class="font-label-sm text-label-sm text-status-success font-medium flex items-center">
+                    <span class="material-symbols-outlined text-[14px]">trending_up</span>+18.4%
+                  </span>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary shrink-0">
+                <span class="material-symbols-outlined text-[22px]">assignment_turned_in</span>
+              </div>
+            </div>
+            <div class="mt-space-sm pt-2 flex items-center justify-between text-text-muted font-body-sm text-body-sm">
+              <span class="text-status-success font-medium" id="kpi-pass-rate">85% Pass Rate</span>
+              <span class="text-text-muted">79.4% Avg Score</span>
+            </div>
+          </div>
+          <!-- Card 4 -->
+          <div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.05) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="font-label-md text-label-md text-text-muted">Live Poll Votes</span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="font-display-lg text-display-lg text-text-primary" id="kpi-votes">0 Votes</span>
+                  <span class="font-label-sm text-label-sm text-tertiary font-medium flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-status-info animate-ping"></span> Real-time
+                  </span>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
+                <span class="material-symbols-outlined text-[22px]">how_to_vote</span>
+              </div>
+            </div>
+            <div class="mt-space-sm pt-2 flex items-center justify-between text-text-muted font-body-sm text-body-sm">
+              <span class="text-status-success font-medium">94% Positive</span>
+              <a href="index.html#results" class="text-tertiary font-label-sm text-label-sm hover:underline cursor-pointer">All Results →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Two Column Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+          <!-- Left Column: Quizzes & Quick Action Center (8 Cols) -->
+          <div class="lg:col-span-8 flex flex-col gap-space-lg">
+            <!-- Active Quizzes Section -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-md" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 8px -2px; border: 1.5px solid rgb(203, 213, 225);">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+                <div>
+                  <h2 class="font-headline-sm text-headline-sm text-text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-[22px]">star</span>
+                    <span>Active Quizzes</span>
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-text-muted">List of live tests and quizzes running on Blogger and websites</p>
+                </div>
+                <!-- Category Filter Tabs -->
+                <div class="inline-flex p-1 bg-surface-container-low rounded-xl font-label-md text-label-md" id="quizCategoryTabs">
+                  <button class="cat-tab px-3 py-1.5 rounded-lg bg-surface-card text-primary font-semibold shadow-xs transition-all" onclick="filterByCategory('All', this)">All</button>
+                  <button class="cat-tab px-3 py-1.5 rounded-lg text-text-muted hover:text-text-primary transition-all" onclick="filterByCategory('MPSC', this)">MPSC / Competitive</button>
+                  <button class="cat-tab px-3 py-1.5 rounded-lg text-text-muted hover:text-text-primary transition-all" onclick="filterByCategory('School', this)">School</button>
+                  <button class="cat-tab px-3 py-1.5 rounded-lg text-text-muted hover:text-text-primary transition-all" onclick="filterByCategory('Polls', this)">Live Polls</button>
+                </div>
+              </div>
+
+              <!-- Quiz List / Cards Grid -->
+              <div class="grid grid-cols-1 gap-space-sm" id="activeQuizzesContainer">
+                <!-- Dynamically loaded -->
+              </div>
+
+              <div class="pt-2 flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-text-muted" id="showingQuizCountText">Showing active quizzes</span>
+                <a href="index.html#quizzes" class="font-title-sm text-title-sm text-primary hover:text-primary-dark flex items-center gap-1">
+                  <span>View All in Library</span>
+                  <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Quick Action Utilities Section (Bento Hub) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+              <!-- Action 1: ChatGPT Prompt Generator -->
+              <div class="p-space-md bg-surface-card rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between" style="box-shadow: rgba(15, 23, 42, 0.08) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+                <div class="space-y-space-xs">
+                  <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[24px]">smart_toy</span>
+                  </div>
+                  <h4 class="font-title-md text-title-md text-text-primary font-bold">
+                    ChatGPT Prompt Generator
+                  </h4>
+                  <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+                    Generate 1-click prompts to get formatted quiz questions directly ready for Google Sheets.
+                  </p>
+                </div>
+                <button onclick="window.location.href='bulk-import.html'" class="mt-space-md w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md font-semibold transition-colors">
+                  <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                  <span>AI Prompt Hub</span>
+                </button>
+              </div>
+              <!-- Action 2: Blogger OnClick Popup Embed -->
+              <div class="p-space-md bg-surface-card rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between" style="box-shadow: rgba(15, 23, 42, 0.08) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+                <div class="space-y-space-xs">
+                  <div class="w-10 h-10 rounded-xl bg-secondary-container/50 flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined text-[24px]">view_quilt</span>
+                  </div>
+                  <h4 class="font-title-md text-title-md text-text-primary font-bold">
+                    Blogger Card &amp; Popup Embed
+                  </h4>
+                  <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+                    Embed interactive quiz cards or seamless popup buttons inside your blog posts with a snippet.
+                  </p>
+                </div>
+                <button onclick="window.location.href='embed-share.html'" class="mt-space-md w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary font-label-md text-label-md font-semibold transition-colors">
+                  <span class="material-symbols-outlined text-[18px]">code</span>
+                  <span>Embed Hub</span>
+                </button>
+              </div>
+              <!-- Action 3: Google Sheets Direct Import -->
+              <div class="p-space-md bg-surface-card rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between" style="box-shadow: rgba(15, 23, 42, 0.08) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 6px -2px; border: 1.5px solid rgb(203, 213, 225);">
+                <div class="space-y-space-xs">
+                  <div class="w-10 h-10 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary">
+                    <span class="material-symbols-outlined text-[24px]">cloud_sync</span>
+                  </div>
+                  <h4 class="font-title-md text-title-md text-text-primary font-bold">
+                    Sheets Database Sync
+                  </h4>
+                  <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+                    Instantly sync questions, responses, and scores from your free Google Drive spreadsheet.
+                  </p>
+                </div>
+                <button onclick="window.location.href='index.html#database'" class="mt-space-md w-full inline-flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-tertiary font-label-md text-label-md font-semibold transition-colors">
+                  <span class="material-symbols-outlined text-[18px]">sync</span>
+                  <span>Sync Database</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Recent Submissions, Poll Widget & Database Status (4 Cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-space-lg">
+            <!-- Recent Student Submissions Feed -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-md" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 8px -2px; border: 1.5px solid rgb(203, 213, 225);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-secondary text-[22px]">history_edu</span>
+                  <h3 class="font-headline-sm text-headline-sm text-text-primary">Recent Submissions</h3>
+                </div>
+                <span class="font-label-sm text-label-sm text-text-muted" id="sub-live-indicator">Live feed</span>
+              </div>
+              <div class="space-y-space-sm" id="submissionsFeed">
+                <!-- Dynamically loaded -->
+              </div>
+              <div class="pt-2 flex items-center justify-between border-t border-transparent">
+                <button onclick="exportSubmissionsCSV()" class="font-label-sm text-label-sm text-text-muted hover:text-text-primary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">file_download</span>
+                  <span>Export CSV</span>
+                </button>
+                <a class="font-title-sm text-title-sm text-primary hover:underline" href="index.html#results">
+                  View All Submissions →
+                </a>
+              </div>
+            </div>
+
+            <!-- Live Poll Distribution Widget -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-sm" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 8px -2px; border: 1.5px solid rgb(203, 213, 225);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[22px]">poll</span>
+                  <h3 class="font-headline-sm text-headline-sm text-text-primary">Live Poll: User Feedback</h3>
+                </div>
+                <span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-status-success font-medium">
+                  <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>Active
+                </span>
+              </div>
+              <p class="font-title-sm text-title-sm text-text-primary font-medium" id="pollQuestionTitle">
+                "How do you rate RK QuizMaker?"
+              </p>
+              <div class="space-y-3 pt-2" id="pollBarsContainer">
+                <!-- Options -->
+              </div>
+              <div class="pt-2 flex items-center justify-between text-text-muted font-body-sm text-body-sm">
+                <span id="pollTotalVotesText">Total Votes: 890</span>
+                <button onclick="window.location.href='index.html#builder'" class="text-primary font-label-sm text-label-sm hover:underline">Create New Poll</button>
+              </div>
+            </div>
+
+            <!-- Cloud DB Status Widget -->
+            <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-sm" style="box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -3px, rgba(15, 23, 42, 0.04) 0px 4px 8px -2px; border: 1.5px solid rgb(203, 213, 225);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-secondary text-[22px]">table_chart</span>
+                  <h3 class="font-headline-sm text-headline-sm text-text-primary">Google Sheets Cloud DB</h3>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm font-semibold">
+                  100% Free Hosting
+                </span>
+              </div>
+              <p class="font-body-sm text-body-sm text-text-muted">
+                Connected seamlessly to your Google Drive. All quiz data remains secure, backed up, and accessible.
+              </p>
+              <!-- Sheets Tables Status Grid -->
+              <div class="grid grid-cols-2 gap-2 pt-1 font-label-md text-label-md">
+                <div class="p-2 rounded-lg bg-surface-bright flex items-center gap-2">
+                  <span class="material-symbols-outlined text-status-success text-[16px]">check_circle</span>
+                  <span class="truncate" id="db-stat-quizzes">Quizzes (0)</span>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-bright flex items-center gap-2">
+                  <span class="material-symbols-outlined text-status-success text-[16px]">check_circle</span>
+                  <span class="truncate" id="db-stat-questions">Questions (0)</span>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-bright flex items-center gap-2">
+                  <span class="material-symbols-outlined text-status-success text-[16px]">check_circle</span>
+                  <span class="truncate" id="db-stat-submissions">Responses (0)</span>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-bright flex items-center gap-2">
+                  <span class="material-symbols-outlined text-status-success text-[16px]">check_circle</span>
+                  <span class="truncate" id="db-stat-votes">PollVotes (0)</span>
+                </div>
+              </div>
+              <div class="pt-2 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-text-muted font-label-sm text-label-sm">
+                  <span class="w-2 h-2 rounded-full bg-status-success"></span>
+                  <span>Connected (Synced Live)</span>
+                </div>
+                <button onclick="window.location.href='index.html#database'" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary-dark text-on-primary font-label-sm text-label-sm font-medium transition-colors shadow-xs">
+                  <span class="material-symbols-outlined text-[14px]">refresh</span>
+                  <span>Sync Now</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Load data from localStorage
+    function getStoredQuizzes() {
+      try {
+        var raw = localStorage.getItem('rk_quizzes_v2');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [
+        {
+          id: 'quiz_mpsc_2025',
+          title: 'MPSC History & Geography Mock 2025',
+          description: 'High-yield practice test covering Geography, River Systems, History, and General Knowledge.',
+          category: 'MPSC',
+          timeLimitMinutes: 15,
+          passingScore: 60,
+          questions: Array(25).fill(0)
+        },
+        {
+          id: 'quiz_current_affairs',
+          title: 'Current Affairs 2025 Weekly Digest',
+          description: 'Comprehensive weekly current affairs and national policy updates for students.',
+          category: 'Competitive',
+          timeLimitMinutes: 0,
+          passingScore: 50,
+          questions: Array(20).fill(0)
+        },
+        {
+          id: 'quiz_general_science',
+          title: 'General Science & Technology Test',
+          description: 'Basic physics, chemistry and biology MCQs for school and competitive exam prep.',
+          category: 'School',
+          timeLimitMinutes: 10,
+          passingScore: 50,
+          questions: Array(15).fill(0)
+        },
+        {
+          id: 'quiz_english_prep',
+          title: 'English Grammar & Vocabulary Practice',
+          description: 'High school and college level grammar rules, synonyms, and idioms.',
+          category: 'School',
+          timeLimitMinutes: 20,
+          passingScore: 60,
+          questions: Array(30).fill(0)
+        }
+      ];
+    }
+
+    function getStoredSubmissions() {
+      try {
+        var raw = localStorage.getItem('rk_submissions_v2');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [
+        { name: 'Sachin K.', quizTitle: 'MPSC History', time: '2m ago', score: '24/25', percent: 96, passed: true },
+        { name: 'Pooja G.', quizTitle: 'General Science', time: '7m ago', score: '13/15', percent: 88, passed: true },
+        { name: 'Aniket J.', quizTitle: 'English Grammar', time: '12m ago', score: '26/30', percent: 88, passed: true },
+        { name: 'Rohan M.', quizTitle: 'Current Affairs', time: '25m ago', score: '17/20', percent: 85, passed: true }
+      ];
+    }
+
+    let currentCategory = 'All';
+    let allQuizzes = [];
+
+    function initDashboard() {
+      allQuizzes = getStoredQuizzes();
+      const submissions = getStoredSubmissions();
+
+      // Calc stats
+      let totalQuestions = 0;
+      allQuizzes.forEach(q => { totalQuestions += (q.questions || []).length; });
+
+      document.getElementById('kpi-quizzes').textContent = allQuizzes.length + ' Quizzes';
+      document.getElementById('kpi-quizzes-sub').textContent = allQuizzes.length + ' Published • 0 Drafts';
+      document.getElementById('kpi-questions').textContent = (totalQuestions || 90) + ' Items';
+      document.getElementById('kpi-submissions').textContent = submissions.length + ' Tests';
+      document.getElementById('kpi-votes').textContent = '890 Votes';
+
+      document.getElementById('db-stat-quizzes').textContent = 'Quizzes (' + allQuizzes.length + ')';
+      document.getElementById('db-stat-questions').textContent = 'Questions (' + (totalQuestions || 90) + ')';
+      document.getElementById('db-stat-submissions').textContent = 'Responses (' + submissions.length + ')';
+      document.getElementById('db-stat-votes').textContent = 'PollVotes (890)';
+
+      renderQuizzesList(allQuizzes);
+      renderSubmissionsList(submissions);
+      renderPollWidget();
+    }
+
+    function renderQuizzesList(quizzes) {
+      const container = document.getElementById('activeQuizzesContainer');
+      container.innerHTML = '';
+
+      if (quizzes.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-text-muted font-body-sm">No quizzes match this filter.</div>';
+        return;
+      }
+
+      quizzes.slice(0, 4).forEach(quiz => {
+        const qCount = (quiz.questions || []).length;
+        const timeLimit = quiz.timeLimitMinutes > 0 ? (quiz.timeLimitMinutes + ' Mins') : 'Untimed';
+        const card = document.createElement('div');
+        card.className = "p-space-md rounded-xl bg-surface-bright hover:bg-surface-container-low transition-colors shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-space-md group";
+        card.style = "box-shadow: rgba(15, 23, 42, 0.06) 0px 4px 12px -2px; border: 1.5px solid rgb(203, 213, 225);";
+        card.innerHTML = `
+          <div class="space-y-1.5 min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm font-semibold">
+                ${quiz.category || 'MPSC 2025'}
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-text-secondary font-label-sm text-label-sm">
+                Marathi + EN
+              </span>
+              <span class="inline-flex items-center gap-1 text-text-muted font-body-sm text-body-sm">
+                <span class="material-symbols-outlined text-[14px]">schedule</span> ${timeLimit}
+              </span>
+            </div>
+            <h3 class="font-title-md text-title-md text-text-primary font-bold group-hover:text-primary transition-colors truncate">
+              ${quiz.title}
+            </h3>
+            <div class="flex flex-wrap items-center gap-4 text-text-muted font-body-sm text-body-sm">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-text-muted">help_center</span> ${qCount} Qs</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-status-success">verified</span> ${quiz.passingScore || 50}% Passing</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-status-info">groups</span> 300+ Takes</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <a href="quiz-player.html?quizId=${quiz.id}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-on-primary font-label-md text-label-md font-medium shadow-xs transition-colors" title="Run Test">
+              <span class="material-symbols-outlined text-[16px]">play_arrow</span>
+              <span>Run Test</span>
+            </a>
+            <a href="embed-share.html?quizId=${quiz.id}" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" title="Blogger Embed Code">
+              <span class="material-symbols-outlined text-[18px]">code</span>
+            </a>
+            <a href="index.html#builder" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" title="Edit Quiz">
+              <span class="material-symbols-outlined text-[18px]">edit</span>
+            </a>
+            <a href="index.html#results" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" title="Results & Analytics">
+              <span class="material-symbols-outlined text-[18px]">bar_chart</span>
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('showingQuizCountText').textContent = `Showing ${Math.min(quizzes.length, 4)} of ${quizzes.length} quizzes`;
+    }
+
+    function renderSubmissionsList(subs) {
+      const container = document.getElementById('submissionsFeed');
+      container.innerHTML = '';
+      subs.slice(0, 3).forEach(s => {
+        const initials = s.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const item = document.createElement('div');
+        item.className = "p-space-sm rounded-xl bg-surface-bright flex items-center justify-between gap-space-sm";
+        item.innerHTML = `
+          <div class="flex items-center gap-space-sm min-w-0">
+            <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[13px] shrink-0">
+              ${initials}
+            </div>
+            <div class="min-w-0">
+              <p class="font-title-sm text-title-sm text-text-primary truncate">${s.name}</p>
+              <p class="font-body-sm text-body-sm text-text-muted truncate">${s.quizTitle || 'Practice Test'} • ${s.time || 'recent'}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm font-bold">
+              ${s.percent || 90}% Passed
+            </span>
+            <p class="font-label-sm text-label-sm text-status-success font-medium">${s.score || 'Full'}</p>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderPollWidget() {
+      const container = document.getElementById('pollBarsContainer');
+      container.innerHTML = `
+        <div>
+          <div class="flex justify-between font-label-md text-label-md text-text-secondary mb-1">
+            <span class="font-medium">Excellent 🔥</span>
+            <span class="font-bold text-primary">72% (640 votes)</span>
+          </div>
+          <div class="w-full h-2.5 bg-surface-container-low rounded-full overflow-hidden">
+            <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 72%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between font-label-md text-label-md text-text-secondary mb-1">
+            <span class="font-medium">Good 👍</span>
+            <span class="font-bold text-secondary">22% (196 votes)</span>
+          </div>
+          <div class="w-full h-2.5 bg-surface-container-low rounded-full overflow-hidden">
+            <div class="h-full bg-secondary rounded-full transition-all duration-500" style="width: 22%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between font-label-md text-label-md text-text-secondary mb-1">
+            <span class="font-medium">Average 🤔</span>
+            <span class="font-bold text-text-muted">6% (54 votes)</span>
+          </div>
+          <div class="w-full h-2.5 bg-surface-container-low rounded-full overflow-hidden">
+            <div class="h-full bg-outline-variant rounded-full transition-all duration-500" style="width: 6%"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterByCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('#quizCategoryTabs .cat-tab').forEach(b => {
+        b.classList.remove('bg-surface-card', 'text-primary', 'font-semibold', 'shadow-xs');
+        b.classList.add('text-text-muted');
+      });
+      btn.classList.add('bg-surface-card', 'text-primary', 'font-semibold', 'shadow-xs');
+      btn.classList.remove('text-text-muted');
+
+      if (cat === 'All') {
+        renderQuizzesList(allQuizzes);
+      } else {
+        const filtered = allQuizzes.filter(q => (q.category || '').toLowerCase().includes(cat.toLowerCase()) || q.title.toLowerCase().includes(cat.toLowerCase()));
+        renderQuizzesList(filtered);
+      }
+    }
+
+    function filterDashboardQuizzes(term) {
+      term = (term || '').toLowerCase().trim();
+      const filtered = allQuizzes.filter(q => q.title.toLowerCase().includes(term) || (q.description && q.description.toLowerCase().includes(term)));
+      renderQuizzesList(filtered);
+    }
+
+    function exportSubmissionsCSV() {
+      const subs = getStoredSubmissions();
+      let csv = "Student Name,Test,Score,Percentage,Status\n";
+      subs.forEach(s => {
+        csv += `"${s.name}","${s.quizTitle || 'Practice'}","${s.score}","${s.percent}%","${s.passed ? 'PASSED' : 'FAILED'}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'RK_QuizMaker_Submissions.csv';
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>
