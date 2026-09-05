@@ -220,15 +220,15 @@
           <span class="material-symbols-outlined text-[16px]">translate</span>
           <span id="topLangLabel">EN</span>
         </button>
-        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-sm">
-          <span class="material-symbols-outlined text-[18px]">add</span>
-          <span id="topNewQuizBtnText">+ New Quiz</span>
+        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-3 py-2 rounded-lg font-semibold transition-colors shadow-sm" data-tooltip="Create New Quiz (+ नवीन क्विझ)">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          <span id="topNewQuizBtnText" class="hidden sm:inline">+ New Quiz</span>
         </button>
-        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle">
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle" data-tooltip="Notifications">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
           <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer shadow-sm">
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer shadow-sm" data-tooltip="Admin Profile">
           <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
         </div>
       </div>
@@ -257,13 +257,13 @@
           </div>
           <!-- Quick Actions -->
           <div class="flex items-center gap-space-xs shrink-0 flex-wrap">
-            <button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-lg bg-surface-card text-text-secondary font-label-lg text-label-lg border border-border-medium shadow-sm hover:bg-surface-container-low hover:text-text-primary transition-all" onclick="exportSubmissionsCSV()">
+            <button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-card text-text-secondary font-semibold border border-border-medium shadow-sm hover:bg-surface-container-low hover:text-text-primary transition-all cursor-pointer" onclick="exportSubmissionsCSV()" data-tooltip="Export All Results to CSV (CSV डाउनलोड करा)">
               <span class="material-symbols-outlined text-[18px] text-primary">download</span>
-              <span>Export to CSV</span>
+              <span class="hidden sm:inline">Export to CSV</span>
             </button>
-            <button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-sm hover:bg-primary-dark transition-all border border-primary-dark" onclick="refreshDataState()">
+            <button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-on-primary font-semibold shadow-sm hover:bg-primary-dark transition-all border border-primary-dark cursor-pointer" onclick="refreshDataState()" data-tooltip="Sync & Reload Fresh Data (डेटा रिफ्रेश करा)">
               <span class="material-symbols-outlined text-[18px]">sync</span>
-              <span>Refresh Data</span>
+              <span class="hidden sm:inline">Refresh Data</span>
             </button>
           </div>
         </div>

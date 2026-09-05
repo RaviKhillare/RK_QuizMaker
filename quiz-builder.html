@@ -220,15 +220,15 @@
           <span class="material-symbols-outlined text-[16px]">translate</span>
           <span id="topLangLabel">EN</span>
         </button>
-        <button onclick="resetBuilderNew()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-sm">
+        <button onclick="resetBuilderNew()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-3 py-2 rounded-lg font-semibold transition-colors shadow-sm" data-tooltip="Create New Quiz (+ नवीन क्विझ)">
           <span class="material-symbols-outlined text-[18px]">add_circle</span>
-          <span id="topNewQuizBtnText">+ New Quiz</span>
+          <span id="topNewQuizBtnText" class="hidden sm:inline">+ New Quiz</span>
         </button>
-        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle">
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle" data-tooltip="Notifications">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
           <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-pointer" data-tooltip="Admin Profile">
           <span class="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>
@@ -245,7 +245,7 @@
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <h1 class="font-headline-sm text-headline-sm text-text-primary tracking-tight">Quiz Builder</h1>
+                  <h1 class="font-headline-sm text-headline-sm text-text-primary tracking-tight font-bold">Quiz Builder</h1>
                   <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">Studio Mode</span>
                 </div>
                 <p class="font-body-sm text-body-sm text-text-muted">Configure settings, add questions, and sync directly with Google Sheets.</p>
@@ -253,16 +253,17 @@
             </div>
             <!-- Action Buttons -->
             <div class="flex items-center gap-space-xs shrink-0">
-              <button onclick="window.location.href='dashboard.html'" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-text-secondary bg-surface-container-low hover:bg-surface-container transition-all border border-border-subtle" type="button">
-                Cancel
+              <button onclick="window.location.href='dashboard.html'" class="px-3 py-2 rounded-lg text-text-secondary bg-surface-container-low hover:bg-surface-container transition-all border border-border-subtle inline-flex items-center gap-1" type="button" data-tooltip="Cancel (रद्द करा)">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+                <span class="hidden sm:inline">Cancel</span>
               </button>
-              <button onclick="saveDraftLocally()" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-primary bg-primary-fixed hover:bg-primary-fixed-dim transition-all flex items-center gap-1.5 shadow-sm border border-primary/20" type="button">
+              <button onclick="saveDraftLocally()" class="px-3 py-2 rounded-lg text-primary bg-primary-fixed hover:bg-primary-fixed-dim transition-all inline-flex items-center gap-1.5 shadow-sm border border-primary/20" type="button" data-tooltip="Save Draft to Local Storage (स्थानिक ड्राफ्ट जतन करा)">
                 <span class="material-symbols-outlined text-[18px]">save</span>
-                <span>Save Draft</span>
+                <span class="hidden sm:inline">Save Draft</span>
               </button>
-              <button onclick="saveQuizToDB()" class="px-space-md py-2 rounded-lg font-label-lg text-label-lg text-on-primary bg-primary-container hover:bg-primary-dark transition-all flex items-center gap-1.5 shadow-md" type="button">
+              <button onclick="saveQuizToDB()" class="px-3 py-2 rounded-lg text-on-primary bg-primary-container hover:bg-primary-dark transition-all inline-flex items-center gap-1.5 shadow-md font-semibold" type="button" data-tooltip="Save and Sync with Google Sheets Cloud DB (क्लाउडवर जतन करा)">
                 <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
-                <span>Save to Cloud DB</span>
+                <span class="hidden sm:inline">Save to Cloud DB</span>
               </button>
             </div>
           </div>

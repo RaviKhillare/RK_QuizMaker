@@ -361,8 +361,213 @@
       .replace(/>/g, '&gt;');
   }
 
-  // --- 4. AUTO INIT ON LOAD ---
-  window.addEventListener('DOMContentLoaded', function () {
+  // --- 4. GLOBAL COMPACT TYPOGRAPHY & HINT SYSTEM ---
+  function injectGlobalTypography() {
+    if (document.getElementById('rk-global-engine-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'rk-global-engine-styles';
+    style.textContent = `
+      /* RK QuizMaker - Compact Pro Font Scaling & Bold Headings */
+      body {
+        font-size: 13px !important;
+        line-height: 1.45 !important;
+      }
+      p, .font-body-md, .text-body-md, td, li {
+        font-size: 13px !important;
+      }
+      .font-body-sm, .text-body-sm, .text-xs, small, .font-label-sm, .text-label-sm {
+        font-size: 11.5px !important;
+      }
+      input, select, textarea, button {
+        font-size: 12.5px !important;
+      }
+
+      /* Main Font Bold across all sections */
+      h1, h2, h3, h4, h5, h6,
+      .font-headline-lg, .font-headline-md, .font-headline-sm,
+      .font-title-md, .font-title-sm,
+      .card-title, .header-title-box h1,
+      .metric-val, .metric-value,
+      label, th, .nav-category, .nav-item {
+        font-weight: 700 !important;
+      }
+      h1, .font-headline-lg, .metric-val {
+        font-weight: 800 !important;
+      }
+
+      /* Textbox Helping Text Light Color */
+      ::placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.75 !important;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+      }
+      ::-webkit-input-placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.75 !important;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+      }
+      ::-moz-placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.75 !important;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+      }
+      :-ms-input-placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.75 !important;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+      }
+
+      .form-hint, .helper-text, .input-help, .help-text, small.text-muted, p.text-muted {
+        color: #94a3b8 !important;
+        font-weight: 400 !important;
+        font-size: 11px !important;
+      }
+
+      /* Hint Text on Hover Reveal */
+      .form-hint, .helper-text, .field-hint, .hint-on-hover, .input-help {
+        opacity: 0.65;
+        transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      }
+      *:hover > .form-hint,
+      *:hover > .helper-text,
+      *:hover > .field-hint,
+      *:hover > .hint-on-hover,
+      .form-group:hover .form-hint,
+      .form-group:hover .helper-text,
+      div:hover > .form-hint,
+      div:hover > .helper-text,
+      label:hover ~ .form-hint,
+      input:focus ~ .form-hint,
+      textarea:focus ~ .form-hint {
+        opacity: 1 !important;
+        color: #475569 !important;
+      }
+
+      /* Micro-Tooltip Floating Badge */
+      #rk-floating-tooltip {
+        position: fixed;
+        z-index: 999999;
+        pointer-events: none;
+        background: #0f172a;
+        color: #f8fafc;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateY(3px) scale(0.96);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        line-height: 1.2;
+      }
+      #rk-floating-tooltip.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      #rk-floating-tooltip::after {
+        content: '';
+        position: absolute;
+        border: 4px solid transparent;
+      }
+      #rk-floating-tooltip.pos-top::after {
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: #0f172a;
+      }
+      #rk-floating-tooltip.pos-bottom::after {
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom-color: #0f172a;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // --- 5. SLEEK MICRO-TOOLTIP ENGINE ---
+  let tooltipEl = null;
+  let activeTooltipTarget = null;
+
+  function initTooltipEngine() {
+    if (!tooltipEl) {
+      tooltipEl = document.createElement('div');
+      tooltipEl.id = 'rk-floating-tooltip';
+      document.body.appendChild(tooltipEl);
+    }
+
+    document.addEventListener('mouseover', function (e) {
+      const target = e.target.closest('[data-tooltip], [title]');
+      if (!target || target === tooltipEl) return;
+
+      let text = target.getAttribute('data-tooltip');
+      if (!text && target.hasAttribute('title')) {
+        text = target.getAttribute('title');
+        // Prevent ugly native browser tooltip clash
+        target.setAttribute('data-tooltip', text);
+        target.removeAttribute('title');
+      }
+
+      if (!text || !text.trim()) return;
+
+      activeTooltipTarget = target;
+      tooltipEl.textContent = text.trim();
+      tooltipEl.className = '';
+
+      const rect = target.getBoundingClientRect();
+      const tipWidth = tooltipEl.offsetWidth || 80;
+      const tipHeight = tooltipEl.offsetHeight || 22;
+
+      let left = rect.left + (rect.width / 2) - (tipWidth / 2);
+      let top = rect.top - tipHeight - 6;
+      let posClass = 'pos-top';
+
+      if (top < 8) {
+        top = rect.bottom + 6;
+        posClass = 'pos-bottom';
+      }
+
+      if (left < 8) left = 8;
+      if (left + tipWidth > window.innerWidth - 8) {
+        left = window.innerWidth - tipWidth - 8;
+      }
+
+      tooltipEl.style.left = Math.round(left) + 'px';
+      tooltipEl.style.top = Math.round(top) + 'px';
+      tooltipEl.classList.add(posClass, 'show');
+    }, true);
+
+    document.addEventListener('mouseout', function (e) {
+      const target = e.target.closest('[data-tooltip]');
+      if (target && target === activeTooltipTarget) {
+        if (tooltipEl) tooltipEl.classList.remove('show');
+        activeTooltipTarget = null;
+      }
+    }, true);
+
+    document.addEventListener('click', function () {
+      if (tooltipEl) tooltipEl.classList.remove('show');
+      activeTooltipTarget = null;
+    }, true);
+
+    document.addEventListener('scroll', function () {
+      if (tooltipEl) tooltipEl.classList.remove('show');
+      activeTooltipTarget = null;
+    }, true);
+  }
+
+  // --- 6. AUTO INIT ON LOAD ---
+  function initSharedUI() {
+    injectGlobalTypography();
+    initTooltipEngine();
     applyLanguage(currentLang);
 
     // Setup mobile drawer default state
@@ -385,5 +590,11 @@
         }
       }
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initSharedUI);
+  } else {
+    initSharedUI();
+  }
 })();

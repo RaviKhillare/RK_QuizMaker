@@ -26,27 +26,23 @@
       </button>
     </div>
     <!-- Secondary Action Buttons -->
-    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="openPasteModal()" title="Paste custom HTML">
-      <span class="material-symbols-outlined text-[16px]">content_paste</span>
-      <span>Paste Code</span>
+    <button class="p-2 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary shadow-sm transition-colors cursor-pointer" onclick="openPasteModal()" data-tooltip="Paste Custom HTML Code (HTML कोड पेस्ट करा)">
+      <span class="material-symbols-outlined text-[18px]">content_paste</span>
     </button>
-    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="toggleDevicePreview()">
-      <span class="material-symbols-outlined text-[16px]" id="previewDeviceIcon">smartphone</span>
-      <span id="previewDeviceLabel">Mobile View</span>
+    <button class="p-2 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary shadow-sm transition-colors cursor-pointer" onclick="toggleDevicePreview()" data-tooltip="Toggle Screen Preview (मोबाइल / डेस्कटॉप व्ह्यू)">
+      <span class="material-symbols-outlined text-[18px]" id="previewDeviceIcon">smartphone</span>
     </button>
-    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="previewInNewTab()" title="Preview in New Tab">
-      <span class="material-symbols-outlined text-[16px] text-primary">visibility</span>
-      <span>Preview</span>
+    <button class="p-2 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-primary shadow-sm transition-colors cursor-pointer" onclick="previewInNewTab()" data-tooltip="Preview in New Tab (नवीन टॅबमध्ये पहा)">
+      <span class="material-symbols-outlined text-[18px]">visibility</span>
     </button>
     <!-- Primary Gradient Copy Action -->
-    <button class="relative flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-primary via-primary-container to-tertiary text-on-primary font-label-sm text-[12px] font-semibold shadow hover:shadow-md transition-all border-[1.5px] border-primary-dark active:scale-[0.98]" onclick="copyBeautifiedHtml()">
-      <span class="material-symbols-outlined text-[16px]">content_copy</span>
-      <span>Copy HTML</span>
-      <span class="ml-1 px-1 py-0.2 rounded bg-surface-card/25 text-[9px] uppercase font-bold tracking-wider">1-Click</span>
+    <button class="relative flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-primary-container to-tertiary text-on-primary font-semibold shadow hover:shadow-md transition-all border-[1.5px] border-primary-dark active:scale-[0.98] cursor-pointer" onclick="copyBeautifiedHtml()" data-tooltip="Copy 100% Inline CSS HTML for Blogger/WP (HTML कॉपी करा)">
+      <span class="material-symbols-outlined text-[18px]">content_copy</span>
+      <span class="text-[12px] hidden sm:inline">Copy HTML</span>
     </button>
     <!-- Reset -->
-    <button class="p-1.5 rounded-lg border-[1.5px] border-border-medium text-text-muted hover:text-status-danger hover:border-status-danger bg-surface-card transition-colors" onclick="resetCanvas()" title="Reset Canvas">
-      <span class="material-symbols-outlined text-[16px]">refresh</span>
+    <button class="p-2 rounded-lg border-[1.5px] border-border-medium text-text-muted hover:text-status-danger hover:border-status-danger bg-surface-card transition-colors cursor-pointer" onclick="resetCanvas()" data-tooltip="Reset Canvas to Default (कॅनव्हास रीसेट करा)">
+      <span class="material-symbols-outlined text-[18px]">refresh</span>
     </button>
   </div>
 </div>

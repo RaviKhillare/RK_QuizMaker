@@ -219,16 +219,16 @@
           <span class="material-symbols-outlined text-[16px]">translate</span>
           <span id="topLangLabel">EN</span>
         </button>
-        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]">
+        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-3 py-2 rounded-lg font-semibold transition-colors shadow-sm" data-tooltip="Create New Quiz (+ नवीन क्विझ)">
           <span class="material-symbols-outlined text-[18px]">add_circle</span>
-          <span id="topNewQuizBtnText">+ New Quiz</span>
+          <span id="topNewQuizBtnText" class="hidden sm:inline">+ New Quiz</span>
         </button>
-        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors">
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors" data-tooltip="Notifications">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
           <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-pointer" data-tooltip="Admin Profile">
+          <span class="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>
     </header>
@@ -240,7 +240,7 @@
         <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md mb-space-lg">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-container/10 text-primary-container">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-container/10 text-primary-container font-semibold">
                 <span class="material-symbols-outlined text-[14px]">table_chart</span>
                 Sheets &amp; CSV
               </span>
@@ -258,7 +258,7 @@
           <!-- Target Quiz Switcher -->
           <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="background-color: rgb(255, 255, 255); border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.08) 0px 8px 10px -6px;">
             <div class="flex flex-col">
-              <label class="font-label-sm text-label-sm text-text-muted flex items-center gap-1" for="targetQuizSelect">
+              <label class="font-label-sm text-label-sm text-text-muted flex items-center gap-1 font-semibold" for="targetQuizSelect">
                 <span class="material-symbols-outlined text-[14px] text-primary">target</span>
                 Target Destination
               </label>
@@ -269,7 +269,7 @@
                 <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-[18px]">expand_more</span>
               </div>
             </div>
-            <button onclick="window.location.href='index.html#builder'" class="h-10 px-3 mt-4 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" title="Create Quiz">
+            <button onclick="window.location.href='index.html#builder'" class="h-10 px-3 mt-4 bg-surface-container hover:bg-surface-container-high text-primary rounded-lg font-semibold flex items-center gap-1 transition-colors" data-tooltip="Create Brand New Target Quiz (नवीन लक्ष्य क्विझ)">
               <span class="material-symbols-outlined text-[18px]">add</span>
               <span class="hidden sm:inline">New</span>
             </button>

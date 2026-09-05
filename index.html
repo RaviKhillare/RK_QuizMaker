@@ -155,13 +155,48 @@
     }
 
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Outfit', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.45;
       min-height: 100vh;
       display: flex;
       overflow-x: hidden;
+    }
+
+    /* Pro Compact Typography & Bold Main Headings */
+    h1, h2, h3, h4, h5, h6, .card-title, label, th, .nav-category, .nav-item {
+      font-weight: 700 !important;
+    }
+    h1, .header-title-box h1, .metric-val {
+      font-weight: 800 !important;
+    }
+    p, .font-body-md, .text-body-md, td, li {
+      font-size: 13px;
+    }
+    .text-muted, .font-body-sm, .text-body-sm, small {
+      font-size: 11.5px;
+    }
+    input, select, textarea, button {
+      font-size: 12.5px;
+    }
+    ::placeholder {
+      color: #94a3b8 !important;
+      opacity: 0.75 !important;
+      font-weight: 400 !important;
+      font-size: 12px !important;
+    }
+    .form-hint, .helper-text, .input-help, small.text-muted, p.text-muted {
+      color: #94a3b8 !important;
+      font-size: 11px !important;
+      font-weight: 400 !important;
+      opacity: 0.65;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+    *:hover > .form-hint, *:hover > .helper-text, div:hover > .form-hint, div:hover > .helper-text, label:hover ~ .form-hint, input:focus ~ .form-hint, textarea:focus ~ .form-hint {
+      opacity: 1 !important;
+      color: #475569 !important;
     }
 
     /* ==========================================================================
@@ -1263,17 +1298,17 @@
       </div>
 
       <div class="header-actions">
-        <div class="cloud-pill" id="db-status-pill">
+        <div class="cloud-pill" id="db-status-pill" data-tooltip="Local Storage + Google Sheets Synced">
           <i class="fas fa-check-circle"></i> Local + Sheets Ready
         </div>
-        <button class="btn btn-outline btn-sm" onclick="togglePlatformLanguage()" style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;" title="Toggle Language">
+        <button class="btn btn-outline btn-sm" onclick="togglePlatformLanguage()" style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;" data-tooltip="Switch Language / भाषा बदला">
           <i class="fas fa-language"></i> <span id="topLangLabel">EN</span>
         </button>
-        <button class="btn btn-outline btn-sm" onclick="startQuickDemoQuiz()">
-          <i class="fas fa-play"></i> Test Demo Quiz
+        <button class="btn btn-outline btn-sm" onclick="startQuickDemoQuiz()" data-tooltip="Test Demo Quiz (डेमो चाचणी)" style="display:inline-flex; align-items:center; gap:6px;">
+          <i class="fas fa-play"></i> <span class="hidden sm:inline">Demo</span>
         </button>
-        <button class="btn btn-primary btn-sm" onclick="openQuizBuilder()">
-          <i class="fas fa-plus"></i> New Quiz
+        <button class="btn btn-primary btn-sm" onclick="openQuizBuilder()" data-tooltip="Create New Quiz (+ नवीन क्विझ)" style="display:inline-flex; align-items:center; gap:6px;">
+          <i class="fas fa-plus"></i> <span class="hidden sm:inline">New Quiz</span>
         </button>
       </div>
     </header>
@@ -3994,17 +4029,16 @@ Answer: A, B</pre>
         '  </div>',
         '</div>',
         '<div class="flex items-center gap-1.5 shrink-0" style="display:flex; align-items:center; gap:6px; shrink:0;">',
-        '  <button type="button" onclick="startQuizPlayer(\'' + quiz.id + '\')" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-on-primary font-label-md text-label-md font-medium shadow-xs transition-colors" style="padding:8px 12px; border-radius:8px; background:#3525cd; color:#fff; border:none; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Run Test">',
-        '    <span class="material-symbols-outlined text-[16px]">play_arrow</span>',
-        '    <span>Run Test</span>',
+        '  <button type="button" onclick="startQuizPlayer(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-primary hover:bg-primary-dark text-on-primary shadow-xs transition-colors" style="padding:7px 10px; border-radius:8px; background:#3525cd; color:#fff; border:none; cursor:pointer;" data-tooltip="Run Test (चाचणी सुरू करा)">',
+        '    <span class="material-symbols-outlined text-[18px]">play_arrow</span>',
         '  </button>',
-        '  <button type="button" onclick="openEmbedForQuiz(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" title="Blogger Embed Code">',
+        '  <button type="button" onclick="openEmbedForQuiz(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Blogger Embed Code (एम्बेड कोड)">',
         '    <span class="material-symbols-outlined text-[18px]">code</span>',
         '  </button>',
-        '  <button type="button" onclick="editQuizInBuilder(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" title="Edit Quiz">',
+        '  <button type="button" onclick="editQuizInBuilder(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Edit Quiz (संपादित करा)">',
         '    <span class="material-symbols-outlined text-[18px]">edit</span>',
         '  </button>',
-        '  <button type="button" onclick="switchView(\'results\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" title="Results & Analytics">',
+        '  <button type="button" onclick="switchView(\'results\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Results & Analytics (निकाल पहा)">',
         '    <span class="material-symbols-outlined text-[18px]">bar_chart</span>',
         '  </button>',
         '</div>'
@@ -4072,11 +4106,11 @@ Answer: A, B</pre>
           '<span class="badge yellow" style="background:#fef3c7; color:#b45309; font-weight:700;"><i class="fas fa-users"></i> ' + solveCount + ' Solved (सोडवले)</span>' +
         '</div>' +
       '</div>' +
-      '<div class="quiz-actions">' +
-        '<button class="btn btn-primary btn-sm" onclick="startQuizPlayer(\'' + quiz.id + '\')"><i class="fas fa-play"></i> Take</button>' +
-        '<button class="btn btn-outline btn-sm" onclick="openEmbedForQuiz(\'' + quiz.id + '\')"><i class="fas fa-code"></i> Embed</button>' +
-        '<button class="btn btn-outline btn-sm" onclick="editQuizInBuilder(\'' + quiz.id + '\')"><i class="fas fa-edit"></i></button>' +
-        '<button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteQuiz(\'' + quiz.id + '\')"><i class="fas fa-trash"></i></button>' +
+      '<div class="quiz-actions" style="display:flex; align-items:center; gap:6px;">' +
+        '<button class="btn btn-primary btn-sm" onclick="startQuizPlayer(\'' + quiz.id + '\')" data-tooltip="Take Quiz (चाचणी द्या)"><i class="fas fa-play"></i></button>' +
+        '<button class="btn btn-outline btn-sm" onclick="openEmbedForQuiz(\'' + quiz.id + '\')" data-tooltip="Embed Code (एम्बेड कोड)"><i class="fas fa-code"></i></button>' +
+        '<button class="btn btn-outline btn-sm" onclick="editQuizInBuilder(\'' + quiz.id + '\')" data-tooltip="Edit Quiz (संपादित करा)"><i class="fas fa-edit"></i></button>' +
+        '<button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteQuiz(\'' + quiz.id + '\')" data-tooltip="Delete Quiz (हटवा)"><i class="fas fa-trash"></i></button>' +
       '</div>';
 
       return div;

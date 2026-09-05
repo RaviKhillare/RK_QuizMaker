@@ -219,16 +219,16 @@
           <span class="material-symbols-outlined text-[16px]">translate</span>
           <span id="topLangLabel">EN</span>
         </button>
-        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]">
+        <button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-3 py-2 rounded-lg font-semibold transition-colors shadow-sm" data-tooltip="Create New Quiz (+ नवीन क्विझ)">
           <span class="material-symbols-outlined text-[18px]">add_circle</span>
-          <span id="topNewQuizBtnText">+ New Quiz</span>
+          <span id="topNewQuizBtnText" class="hidden sm:inline">+ New Quiz</span>
         </button>
-        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors">
+        <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors" data-tooltip="Notifications">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
           <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span>
         </button>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-pointer" data-tooltip="Admin Profile">
+          <span class="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>
     </header>
@@ -352,9 +352,9 @@
                   </span>
                   <span class="ml-2 font-semibold">blogger-scene-card.html</span>
                 </div>
-                <button onclick="copySnippet('codeSceneCard', this)" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-primary hover:bg-primary-dark text-on-primary font-label-sm text-label-sm font-semibold transition-all">
-                  <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                  <span>Copy Card Code</span>
+                <button onclick="copySnippet('codeSceneCard', this)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary hover:bg-primary-dark text-on-primary text-[12px] font-semibold transition-all cursor-pointer" data-tooltip="Copy Blogger Interactive Card HTML (कार्ड कोड कॉपी करा)">
+                  <span class="material-symbols-outlined text-[15px]">content_copy</span>
+                  <span>Copy Code</span>
                 </button>
               </div>
               <pre class="p-4 text-[12px] font-mono text-cyan-300 overflow-x-auto whitespace-pre leading-relaxed flex-1" id="codeSceneCard"></pre>
@@ -450,9 +450,9 @@
             <div class="bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner">
               <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800 text-[12px] font-mono text-slate-300">
                 <span>compact-button.html</span>
-                <button onclick="copySnippet('codeCompactButton', this)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary hover:bg-primary-dark text-on-primary font-label-sm text-[11px] font-semibold transition-all">
-                  <span class="material-symbols-outlined text-[13px]">content_copy</span>
-                  <span>Copy Button Code</span>
+                <button onclick="copySnippet('codeCompactButton', this)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary hover:bg-primary-dark text-on-primary text-[11.5px] font-semibold transition-all cursor-pointer" data-tooltip="Copy 1-Click Popup Button Code (पॉपअप बटण कोड कॉपी करा)">
+                  <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                  <span>Copy Button</span>
                 </button>
               </div>
               <pre class="p-3 text-[12px] font-mono text-cyan-300 overflow-x-auto whitespace-pre leading-relaxed" id="codeCompactButton"></pre>
@@ -495,9 +495,9 @@
             <div class="bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner">
               <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800 text-[12px] font-mono text-slate-300">
                 <span>responsive-iframe.html</span>
-                <button onclick="copySnippet('codeIframe', this)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary hover:bg-primary-dark text-on-primary font-label-sm text-[11px] font-semibold transition-all">
-                  <span class="material-symbols-outlined text-[13px]">content_copy</span>
-                  <span>Copy Iframe Code</span>
+                <button onclick="copySnippet('codeIframe', this)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary hover:bg-primary-dark text-on-primary text-[11.5px] font-semibold transition-all cursor-pointer" data-tooltip="Copy Standard Iframe Code (आयफ्रेम कोड कॉपी करा)">
+                  <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                  <span>Copy Iframe</span>
                 </button>
               </div>
               <pre class="p-3 text-[12px] font-mono text-cyan-300 overflow-x-auto whitespace-pre leading-relaxed" id="codeIframe"></pre>
