@@ -4,17 +4,21 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>RK QuizMaker - Quiz Builder Studio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap" rel="stylesheet">
   <style>
     @layer base {
       html, body { margin: 0; padding: 0; }
       body { overscroll-behavior: none; }
       main > :first-child { margin-top: 0 !important; }
       main > :last-child { margin-bottom: 0 !important; }
+    }
+    body, input, button, textarea, select {
+      font-family: 'Noto Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
     }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #F1F5F9; }
@@ -109,20 +113,20 @@
             "space-sm": "0.75rem"
           },
           fontFamily: {
-            "headline-sm": ["Outfit"],
-            "title-sm": ["Outfit"],
-            "title-md": ["Outfit"],
-            "body-sm": ["Noto Sans"],
-            "label-md": ["Outfit"],
-            "headline-lg-mobile": ["Outfit"],
-            "headline-lg": ["Outfit"],
-            "label-lg": ["Outfit"],
-            "body-md": ["Noto Sans"],
-            "body-lg": ["Noto Sans"],
-            "display-lg": ["Outfit"],
-            "label-sm": ["Outfit"],
-            "headline-md": ["Outfit"],
-            "display-lg-mobile": ["Outfit"]
+            "headline-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "title-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "title-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "body-sm": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"],
+            "label-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "headline-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "headline-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "label-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "body-md": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"],
+            "body-lg": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"],
+            "display-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "label-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "headline-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"],
+            "display-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"]
           }
         }
       }
@@ -132,14 +136,10 @@
 <body class="bg-surface-canvas font-body-md text-on-surface antialiased">
 
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;">
+  <aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0" style="border-right: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.08) 4px 0px 24px -2px;" id="mainSidebar">
     <div class="flex flex-col flex-1 min-h-0">
-      <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest border-b border-border-subtle">
-        <img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
-        <div class="flex flex-col">
-          <span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span>
-          <span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span>
-        </div>
+      <div class="h-16 px-space-md flex items-center justify-center bg-surface-container-lowest border-b border-border-subtle">
+        <img alt="RK QuizMaker Logo" class="h-10 w-auto max-w-[220px] object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
       </div>
       <nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm">
         <a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="blog-designer" href="blog-designer.html">
@@ -197,27 +197,32 @@
   </aside>
 
   <!-- Main Content Layout -->
-  <div class="pl-[260px]">
+  <div class="pl-0 lg:pl-[260px] min-h-screen flex flex-col">
     <!-- Top Header Bar -->
-    <header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between border-b border-border-subtle">
-      <div class="flex items-center gap-space-md flex-1 max-w-lg">
-        <div class="relative w-full max-w-sm">
+    <header class="fixed top-0 left-0 lg:left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-4 flex items-center justify-between border-b border-border-subtle">
+      <div class="flex items-center gap-2.5 flex-1 max-w-lg">
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-lg text-text-secondary hover:bg-surface-container-low transition-colors" title="Toggle Navigation">
+          <span class="material-symbols-outlined text-[24px]">menu</span>
+        </button>
+        <div class="relative w-full max-w-sm omni-search-wrapper">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
-          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card focus:ring-1 focus:ring-primary transition-all placeholder:text-text-muted border border-border-subtle" placeholder="Search quizzes, questions..." type="search"/>
+          <input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-8 py-2 rounded-lg outline-none focus:bg-surface-card focus:ring-1 focus:ring-primary transition-all placeholder:text-text-muted border border-border-subtle" placeholder="Search quizzes, questions..." type="search" id="globalOmniSearch" oninput="handleOmniSearch(this.value)" autocomplete="off"/>
+          <button id="clearOmniSearchBtn" onclick="clearOmniSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary text-[14px]">✕</button>
+          <div id="omniSearchResults" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-card rounded-xl shadow-2xl border border-border-medium z-50 max-h-80 overflow-y-auto p-1.5 flex flex-col gap-1"></div>
         </div>
       </div>
       <div class="flex items-center gap-space-sm">
         <div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full border border-border-subtle">
           <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
-          <span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span>
+          <span class="font-label-sm text-label-sm text-text-secondary" id="sheetsLivePillText">Google Sheets: Live</span>
         </div>
-        <button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle">
+        <button onclick="togglePlatformLanguage()" class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle cursor-pointer select-none">
           <span class="material-symbols-outlined text-[16px]">translate</span>
-          <span>EN</span>
+          <span id="topLangLabel">EN</span>
         </button>
         <button onclick="resetBuilderNew()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-sm">
           <span class="material-symbols-outlined text-[18px]">add_circle</span>
-          <span>+ New Quiz</span>
+          <span id="topNewQuizBtnText">+ New Quiz</span>
         </button>
         <button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors border border-border-subtle">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
@@ -1156,5 +1161,6 @@
 
     window.addEventListener('DOMContentLoaded', initBuilder);
   </script>
+  <script src="shared-ui.js"></script>
 </body>
 </html>

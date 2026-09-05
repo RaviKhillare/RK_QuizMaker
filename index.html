@@ -8,7 +8,7 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -1192,45 +1192,41 @@
        SIDEBAR NAVIGATION
        ========================================================================== -->
   <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo"><i class="fas fa-graduation-cap"></i></div>
-      <div>
-        <div class="brand-name">RK QuizMaker</div>
-        <div class="brand-by">Web-Based Platform</div>
-      </div>
+    <div class="sidebar-brand" style="display:flex; align-items:center; justify-content:center; padding:12px 16px; border-bottom:1.5px solid #e2e8f0;">
+      <img alt="RK QuizMaker Logo" style="height:38px; width:auto; max-width:200px; object-fit:contain;" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/>
     </div>
 
     <div class="sidebar-nav">
       <div class="nav-category">Design &amp; CMS Studio</div>
-      <button class="nav-item" id="nav-item-blog-designer" onclick="switchView('blog-designer')">
+      <button class="nav-item" id="nav-item-blog-designer" onclick="switchView('blog-designer')" data-path="blog-designer">
         <i class="fas fa-magic" style="color:#4f46e5;"></i> Blog Designer
         <span style="font-size:10px; background:linear-gradient(135deg, #4f46e5, #7c3aed); color:white; padding:2px 7px; border-radius:10px; font-weight:700; margin-left:auto;">Studio</span>
       </button>
 
       <div class="nav-category">Main Menu</div>
-      <button class="nav-item active" onclick="switchView('overview')">
+      <button class="nav-item active" onclick="switchView('overview')" data-path="overview">
         <i class="fas fa-chart-pie"></i> Overview
       </button>
-      <button class="nav-item" onclick="switchView('quizzes')">
+      <button class="nav-item" onclick="switchView('quizzes')" data-path="quizzes">
         <i class="fas fa-th-list"></i> My Quizzes
       </button>
-      <button class="nav-item" onclick="openQuizBuilder()">
+      <button class="nav-item" onclick="openQuizBuilder()" data-path="create-quiz">
         <i class="fas fa-plus-circle"></i> Create Quiz
       </button>
 
       <div class="nav-category">Tools & Sharing</div>
-      <button class="nav-item" onclick="switchView('bulk')">
+      <button class="nav-item" onclick="switchView('bulk')" data-path="bulk">
         <i class="fas fa-file-import"></i> Bulk Import Hub
       </button>
-      <button class="nav-item" onclick="switchView('embed')">
+      <button class="nav-item" onclick="switchView('embed')" data-path="embed">
         <i class="fas fa-code"></i> Embed & Share
       </button>
-      <button class="nav-item" onclick="switchView('results')">
+      <button class="nav-item" onclick="switchView('results')" data-path="results">
         <i class="fas fa-poll-h"></i> Results & Polls
       </button>
 
       <div class="nav-category">Cloud Database</div>
-      <button class="nav-item" onclick="switchView('database')">
+      <button class="nav-item" onclick="switchView('database')" data-path="database">
         <i class="fab fa-google-drive"></i> Google Sheets DB
       </button>
     </div>
@@ -1270,6 +1266,9 @@
         <div class="cloud-pill" id="db-status-pill">
           <i class="fas fa-check-circle"></i> Local + Sheets Ready
         </div>
+        <button class="btn btn-outline btn-sm" onclick="togglePlatformLanguage()" style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;" title="Toggle Language">
+          <i class="fas fa-language"></i> <span id="topLangLabel">EN</span>
+        </button>
         <button class="btn btn-outline btn-sm" onclick="startQuickDemoQuiz()">
           <i class="fas fa-play"></i> Test Demo Quiz
         </button>
@@ -3542,6 +3541,16 @@ Answer: A, B</pre>
                 Paste any existing blog HTML snippet below. It will be converted into editable studio blocks:
               </p>
               <textarea class="w-full h-56 p-3 rounded-lg border-[1.5px] border-border-medium bg-surface-canvas font-mono text-[13px] text-text-primary outline-none focus:border-primary" id="importHtmlInput" placeholder="&lt;div class='blog-post'&gt;&lt;h1&gt;Your article...&lt;/h1&gt;&lt;/div&gt;"></textarea>
+              <div class="flex flex-wrap items-center gap-4 py-1 text-text-secondary font-body-sm text-[13px] bg-surface-container-low p-2 rounded-lg border border-border-subtle">
+                <label class="flex items-center gap-1.5 cursor-pointer font-medium text-text-primary">
+                  <input type="radio" name="indexImportMode" id="indexImportModeReplace" value="replace" checked class="text-primary accent-primary cursor-pointer"/>
+                  <span>Replace Entire Page (संपूर्ण नवीन डिझाइन लावा - Default)</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer font-medium text-text-secondary">
+                  <input type="radio" name="indexImportMode" id="indexImportModeAppend" value="append" class="text-primary accent-primary cursor-pointer"/>
+                  <span>Append to Bottom (खाली जोडा)</span>
+                </label>
+              </div>
               <div class="flex items-center justify-end gap-2 pt-2 border-t-[1.5px] border-border-subtle">
                 <button class="px-4 py-2 rounded-lg border-[1.5px] border-border-medium text-text-secondary font-label-md text-label-md hover:bg-surface-container" onclick="closePasteModal()">
                   Cancel
@@ -6336,30 +6345,98 @@ Answer: A, B</pre>
     function applyImportedHtml() {
       var rawEl = document.getElementById('importHtmlInput');
       var raw = rawEl ? rawEl.value : '';
-      if (raw.trim()) {
-        var container = document.getElementById('blocksContainer');
-        var newBlock = document.createElement('div');
-        newBlock.className = 'canvas-block group relative rounded-xl p-space-md bg-surface-card border-[1.5px] border-border-medium shadow-sm';
-        newBlock.innerHTML = '<div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-surface-card/90 backdrop-blur p-1 rounded-md shadow border-[1.5px] border-border-subtle z-10">' +
-          '<button onclick="moveBlockUp(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button>' +
-          '<button onclick="moveBlockDown(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_downward</span></button>' +
-          '<button onclick="deleteBlock(this)" class="p-1 hover:bg-status-danger hover:text-on-primary rounded text-status-danger"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
-        '</div>' +
-        '<div contenteditable="true">' + raw + '</div>';
-        if (container) container.appendChild(newBlock);
-        updateDesignerBlockCount();
-        closePasteModal();
-        if (rawEl) rawEl.value = '';
-        showToast('Imported HTML snippet onto canvas!');
-      }
+      if (!raw || !raw.trim()) return;
+
+      var isReplace = document.getElementById('indexImportModeReplace') ? document.getElementById('indexImportModeReplace').checked : true;
+      parseHtmlIntoCanvas(raw, isReplace);
+
+      if (rawEl) rawEl.value = '';
+      closePasteModal();
+      setMode('visual');
+      showToast('HTML imported successfully into visual canvas!');
     }
 
     function syncSourceToVisual() {
       var rawTa = document.getElementById('rawHtmlTextarea');
       if (rawTa && rawTa.value.trim()) {
-        showToast('Source code changes updated!');
+        parseHtmlIntoCanvas(rawTa.value, true);
+        showToast('Source code changes updated on canvas!');
       }
       setMode('visual');
+    }
+
+    function parseHtmlIntoCanvas(htmlString, replaceAll) {
+      var container = document.getElementById('blocksContainer');
+      if (!container) return;
+
+      if (replaceAll) {
+        container.innerHTML = '';
+      }
+
+      var temp = document.createElement('div');
+      temp.innerHTML = htmlString.trim();
+
+      var h1 = temp.querySelector('h1, h2, title');
+      if (h1 && h1.textContent.trim()) {
+        var titleInput = document.getElementById('postTitleInput');
+        if (titleInput) titleInput.value = h1.textContent.trim();
+      }
+
+      var directBlocks = temp.querySelectorAll('.canvas-block');
+      if (directBlocks.length > 0) {
+        directBlocks.forEach(function(b) {
+          ensureBlockControls(b);
+          container.appendChild(b);
+        });
+        updateDesignerBlockCount();
+        return;
+      }
+
+      var innerFlex = temp.querySelector('div[style*="flex-direction: column"]');
+      var root = innerFlex || temp;
+
+      var children = Array.from(root.children).filter(function(el) {
+        var tag = el.tagName.toUpperCase();
+        return tag !== 'SCRIPT' && tag !== 'STYLE' && tag !== 'H1';
+      });
+
+      if (children.length > 0) {
+        children.forEach(function(child) {
+          var block = createBlockWrapper(child.outerHTML);
+          container.appendChild(block);
+        });
+      } else {
+        var cleanHtml = temp.innerHTML.trim();
+        if (cleanHtml) {
+          var block = createBlockWrapper(cleanHtml);
+          container.appendChild(block);
+        }
+      }
+
+      updateDesignerBlockCount();
+    }
+
+    function createBlockWrapper(innerHtml) {
+      var newBlock = document.createElement('div');
+      newBlock.className = 'canvas-block group relative rounded-xl p-space-md bg-surface-card border-[1.5px] border-border-medium shadow-sm transition-all';
+      newBlock.innerHTML = '<div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-surface-card/90 backdrop-blur p-1 rounded-md shadow border-[1.5px] border-border-subtle z-10">' +
+        '<button onclick="moveBlockUp(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button>' +
+        '<button onclick="moveBlockDown(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_downward</span></button>' +
+        '<button onclick="deleteBlock(this)" class="p-1 hover:bg-status-danger hover:text-on-primary rounded text-status-danger"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+      '</div>' +
+      '<div contenteditable="true" class="outline-none">' + innerHtml + '</div>';
+      return newBlock;
+    }
+
+    function ensureBlockControls(block) {
+      if (!block.querySelector('.absolute')) {
+        var controls = document.createElement('div');
+        controls.className = 'absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-surface-card/90 backdrop-blur p-1 rounded-md shadow border-[1.5px] border-border-subtle z-10';
+        controls.innerHTML = '<button onclick="moveBlockUp(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button>' +
+          '<button onclick="moveBlockDown(this)" class="p-1 hover:bg-surface-container rounded text-text-secondary"><span class="material-symbols-outlined text-[16px]">arrow_downward</span></button>' +
+          '<button onclick="deleteBlock(this)" class="p-1 hover:bg-status-danger hover:text-on-primary rounded text-status-danger"><span class="material-symbols-outlined text-[16px]">delete</span></button>';
+        block.insertBefore(controls, block.firstChild);
+      }
     }
 
     function previewInNewTab() {
@@ -6442,5 +6519,6 @@ Answer: A, B</pre>
       }
     }
   </script>
+  <script src="shared-ui.js"></script>
 </body>
 </html>
