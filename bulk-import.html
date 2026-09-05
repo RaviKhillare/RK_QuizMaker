@@ -251,9 +251,6 @@
             <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold">
               Bulk Import
             </h1>
-            <p class="font-body-md text-body-md text-text-secondary mt-1 max-w-3xl">
-              Import hundreds of questions instantly via Google Sheets, Excel, or ChatGPT AI prompts.
-            </p>
           </div>
           <!-- Target Quiz Switcher -->
           <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="background-color: rgb(255, 255, 255); border: 1.5px solid rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.1) 0px 10px 25px -5px, rgba(15, 23, 42, 0.08) 0px 8px 10px -6px;">
@@ -295,62 +292,21 @@
           </button>
         </div>
 
-        <!-- Required Columns Specification Pill Banner -->
-        <div class="mb-space-lg bg-surface-card rounded-2xl p-space-md shadow-sm" style="background-color: rgb(255, 255, 255); border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(79, 70, 229) rgb(203, 213, 225) rgb(203, 213, 225); box-shadow: rgba(15, 23, 42, 0.09) 0px 10px 25px -5px, rgba(15, 23, 42, 0.06) 0px 8px 10px -6px;">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm mb-space-sm">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">view_column</span>
-              <span class="font-title-sm text-title-sm text-text-primary font-bold">Required Google Sheets / CSV Column Headers (Row 1 Schema):</span>
-            </div>
-            <button onclick="triggerTemplateDownload()" class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary hover:text-primary-dark transition-colors">
-              <span class="material-symbols-outlined text-[16px]">file_download</span>
-              <span>Download CSV Template (.csv)</span>
-            </button>
+        <!-- Schema Bar -->
+        <div class="mb-space-lg flex flex-wrap items-center justify-between gap-2 p-3 bg-surface-card rounded-xl border border-border-medium shadow-xs">
+          <div class="flex items-center gap-2 flex-wrap text-[12px]">
+            <span class="font-bold text-text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">view_column</span> Schema:</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono font-bold text-primary">1. Question</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">2. Type</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">3. Options</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">4. Correct Answer</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">5. Points</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary">6. Explanation</span>
           </div>
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">1. Question</span>
-                <span class="text-[10px] text-status-danger font-label-sm">Required</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Main question body</span>
-            </div>
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">2. Type</span>
-                <span class="text-[10px] text-text-muted font-label-sm">MCQ Default</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">MCQ / CHECKBOX / POLL</span>
-            </div>
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">3. Options</span>
-                <span class="text-[10px] text-status-warning font-label-sm">Comma Separated</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">A, B, C, D choices</span>
-            </div>
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">4. Correct Answer</span>
-                <span class="text-[10px] text-status-success font-label-sm">Exact Key</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">e.g. Option text or letter</span>
-            </div>
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">5. Points</span>
-                <span class="text-[10px] text-text-muted font-label-sm">Default: 1</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Score value (1, 2)</span>
-            </div>
-            <div class="bg-surface-container-low p-2 rounded-lg flex flex-col">
-              <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm text-primary font-mono font-semibold">6. Explanation</span>
-                <span class="text-[10px] text-text-muted font-label-sm">Optional</span>
-              </div>
-              <span class="font-body-sm text-body-sm text-text-muted mt-0.5">Detailed solution note</span>
-            </div>
-          </div>
+          <button onclick="triggerTemplateDownload()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary text-[12px] font-semibold transition-colors" data-tooltip="Download CSV Template (.csv)">
+            <span class="material-symbols-outlined text-[16px]">file_download</span>
+            <span>CSV Template</span>
+          </button>
         </div>
 
         <!-- Primary Tab Panels: Sheets & Plain Text & ChatGPT -->
@@ -375,10 +331,7 @@
                     Live Sync Ready
                   </span>
                 </div>
-                <p class="font-body-sm text-body-sm text-text-muted mb-space-sm">
-                  Enter your Google Sheet URL below. <strong class="text-text-secondary">Ensure link sharing is set to 'Anyone with the link can view'.</strong>
-                </p>
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs mt-2">
                   <div class="relative flex-1">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">link</span>
                     <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm pl-9 pr-4 py-2.5 rounded-lg outline-none focus:bg-surface-card focus:shadow-sm transition-all placeholder:text-text-muted" id="sheetUrlInput" placeholder="Google Sheet URL (Public link or view permission)" type="url" value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit"/>
@@ -391,7 +344,7 @@
                 <div class="mt-space-sm flex items-center justify-between text-text-muted font-body-sm text-body-sm bg-surface-container-low/50 px-3 py-2 rounded-lg">
                   <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-[16px] text-primary">info</span>
-                    <span>The first worksheet tab will be parsed automatically.</span>
+                    <span>First sheet tab parsed automatically.</span>
                   </div>
                   <span class="font-mono text-label-sm text-primary cursor-pointer hover:underline" onclick="document.getElementById('sheetUrlInput').value='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit'">
                     Use Sample URL
@@ -410,29 +363,12 @@
                       <h2 class="font-title-md text-title-md text-text-primary font-bold">
                         Option B: Copy &amp; Paste Table Cells
                       </h2>
-                      <p class="font-body-sm text-body-sm text-text-muted">
-                        Select rows in Excel or Google Sheets, press <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px]">Ctrl+C</kbd> and paste into the box with <kbd class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px]">Ctrl+V</kbd>.
-                      </p>
                     </div>
                   </div>
                   <button class="font-label-sm text-label-sm text-text-muted hover:text-status-danger transition-colors flex items-center gap-0.5" onclick="clearPasteArea()">
                     <span class="material-symbols-outlined text-[14px]">delete</span>
                     <span>Clear</span>
                   </button>
-                </div>
-                <!-- Header guide pills inside Option B -->
-                <div class="flex flex-wrap items-center gap-1.5 mb-2">
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Question</span>
-                  <span class="text-text-muted text-[11px]">&gt;</span>
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Type</span>
-                  <span class="text-text-muted text-[11px]">&gt;</span>
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Options</span>
-                  <span class="text-text-muted text-[11px]">&gt;</span>
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Correct Answer</span>
-                  <span class="text-text-muted text-[11px]">&gt;</span>
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Points</span>
-                  <span class="text-text-muted text-[11px]">&gt;</span>
-                  <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container font-semibold text-text-secondary">Explanation</span>
                 </div>
                 <div class="relative">
                   <textarea oninput="autoDetectCount()" class="w-full bg-surface-container-low text-text-primary font-mono text-body-sm p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted/60" id="rawCellsTextarea" rows="7" placeholder="Question&#9;Type&#9;Options&#9;Correct Answer&#9;Points&#9;Explanation
@@ -480,16 +416,13 @@ Which gas do plants absorb during photosynthesis?	MCQ	Carbon Dioxide, Oxygen, Ni
                       <h2 class="font-title-md text-title-md text-text-primary font-bold">
                         Plain Text Parser
                       </h2>
-                      <p class="font-body-sm text-body-sm text-text-muted">
-                        Paste raw quiz questions from Docs, notes, or PDFs. Smart parser automatically extracts questions, types, options, and answers.
-                      </p>
                     </div>
                   </div>
                 </div>
                 <!-- Format Guide Box -->
                 <div class="bg-surface-container-low p-space-sm rounded-xl mb-space-sm">
                   <div class="flex items-center justify-between text-label-sm font-label-sm text-text-muted mb-1">
-                    <span>Supported Example Format (Auto-Detected Syntax):</span>
+                    <span>Example Format:</span>
                     <span class="text-primary cursor-pointer hover:underline" onclick="insertSampleText()">Insert Example</span>
                   </div>
                   <pre class="font-mono text-body-sm text-text-secondary overflow-x-auto whitespace-pre leading-relaxed">1. What is the chemical formula of water? [MCQ]
@@ -498,22 +431,12 @@ B) CO2
 C) O2
 D) NaCl
 Answer: A
-Explanation: Dihydrogen monoxide is the systematic name for water.
-
-2. Which of the following are web styling tools? [CHECKBOX]
-A) Tailwind CSS
-B) SASS
-C) MongoDB
-D) Figma
-Answer: A, B
-
-3. Name the capital of India. [SHORT]
-Answer: New Delhi</pre>
+Explanation: Dihydrogen monoxide is the systematic name for water.</pre>
                 </div>
-                <textarea class="w-full bg-surface-container-low text-text-primary font-body-md text-body-md p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted font-mono" id="plainTextTextarea" placeholder="Paste unformatted questions here... (e.g. 1. Question... A) Choice 1 B) Choice 2 Answer: A)" rows="8"></textarea>
+                <textarea class="w-full bg-surface-container-low text-text-primary font-body-md text-body-md p-space-sm rounded-xl outline-none focus:bg-surface-card focus:shadow-inner transition-all resize-y placeholder:text-text-muted font-mono" id="plainTextTextarea" placeholder="Paste unformatted questions here..." rows="7"></textarea>
                 <div class="flex items-center justify-between mt-space-sm">
                   <span class="font-body-sm text-body-sm text-text-muted">
-                    Supported question types: MCQ, [CHECKBOX], [SHORT], [POLL]
+                    Supports: MCQ, [CHECKBOX], [SHORT], [POLL]
                   </span>
                   <div class="flex gap-2">
                     <button class="px-space-md py-2 bg-surface-container hover:bg-surface-container-high text-text-primary rounded-lg font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="parsePlainText()">
@@ -540,13 +463,10 @@ Answer: New Delhi</pre>
                     <h2 class="font-title-md text-title-md text-text-primary font-bold">
                       ChatGPT 1-Click Prompt (Sheets Compatible)
                     </h2>
-                    <p class="font-body-sm text-body-sm text-text-muted">
-                      Feed this structured prompt to ChatGPT/Gemini and paste the resulting table into Option B!
-                    </p>
                   </div>
                 </div>
                 <div class="p-space-md bg-surface-container-low rounded-xl text-body-sm text-text-secondary leading-relaxed">
-                  Use the <strong>AI Question Generator</strong> card on the right panel to customize your topic, question count, difficulty, and language. Click <strong>Copy ChatGPT Prompt</strong> and paste it directly into <a href="https://chatgpt.com" target="_blank" class="text-primary font-medium underline">ChatGPT</a> or Gemini. Then copy the resulting table and paste it into Option B.
+                  Customize prompt using the AI panel, click <strong>Copy Prompt</strong>, paste into <a href="https://chatgpt.com" target="_blank" class="text-primary font-medium underline">ChatGPT</a>, then paste the output table into Option B.
                 </div>
               </div>
             </div>
@@ -648,30 +568,6 @@ Ensure Options are comma-separated. Do not add markdown backticks around cell va
                     <span>Copy ChatGPT Prompt</span>
                   </button>
                 </div>
-                <!-- 3-Step Visual Guide -->
-                <div class="mt-space-md pt-space-sm bg-surface-container-low/50 p-space-sm rounded-xl">
-                  <span class="font-label-sm text-label-sm text-text-primary font-semibold block mb-2">3 Simple Steps:</span>
-                  <div class="space-y-2">
-                    <div class="flex items-start gap-2">
-                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
-                      <p class="font-body-sm text-body-sm text-text-secondary">
-                        <strong>Copy Prompt:</strong> Click the copy button above.
-                      </p>
-                    </div>
-                    <div class="flex items-start gap-2">
-                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
-                      <p class="font-body-sm text-body-sm text-text-secondary">
-                        <strong>Paste in ChatGPT:</strong> Submit prompt on <a class="text-primary font-medium hover:underline inline-flex items-center gap-0.5" href="https://chatgpt.com" target="_blank">chatgpt.com <span class="material-symbols-outlined text-[12px]">open_in_new</span></a>.
-                      </p>
-                    </div>
-                    <div class="flex items-start gap-2">
-                      <span class="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
-                      <p class="font-body-sm text-body-sm text-text-secondary">
-                        <strong>Paste Output Table in Option B:</strong> Copy the output table and paste directly to import.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <!-- Quick Metrics Mini-Card -->
@@ -682,7 +578,6 @@ Ensure Options are comma-separated. Do not add markdown backticks around cell va
                 </div>
                 <div>
                   <div class="font-title-sm text-title-sm text-text-primary font-bold">Auto-Validation Active</div>
-                  <div class="font-body-sm text-body-sm text-text-muted">Syntax errors and duplicates detected automatically</div>
                 </div>
               </div>
               <span class="text-status-success font-bold font-mono text-[14px]">100% OK</span>
@@ -700,9 +595,6 @@ Ensure Options are comma-separated. Do not add markdown backticks around cell va
                   Parsed Questions Preview (<span id="previewCountBadge">4 Questions Detected</span>)
                 </h2>
               </div>
-              <p class="font-body-sm text-body-sm text-text-muted mt-1">
-                Review question details, option counts, and answer keys before final import.
-              </p>
             </div>
             <!-- Table Action Buttons -->
             <div class="flex items-center gap-space-xs">

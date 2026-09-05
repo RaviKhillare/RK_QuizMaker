@@ -396,41 +396,47 @@
         font-weight: 800 !important;
       }
 
-      /* Textbox Helping Text Light Color */
+      /* Typed text MUST BE SOLID DARK */
+      input, select, textarea {
+        color: #0f172a !important;
+        font-weight: 500 !important;
+      }
+
+      /* Textbox Helping Text 50% Transparent */
       ::placeholder {
-        color: #94a3b8 !important;
-        opacity: 0.75 !important;
+        color: rgba(100, 116, 139, 0.5) !important;
+        opacity: 0.5 !important;
         font-weight: 400 !important;
         font-size: 12px !important;
       }
       ::-webkit-input-placeholder {
-        color: #94a3b8 !important;
-        opacity: 0.75 !important;
+        color: rgba(100, 116, 139, 0.5) !important;
+        opacity: 0.5 !important;
         font-weight: 400 !important;
         font-size: 12px !important;
       }
       ::-moz-placeholder {
-        color: #94a3b8 !important;
-        opacity: 0.75 !important;
+        color: rgba(100, 116, 139, 0.5) !important;
+        opacity: 0.5 !important;
         font-weight: 400 !important;
         font-size: 12px !important;
       }
       :-ms-input-placeholder {
-        color: #94a3b8 !important;
-        opacity: 0.75 !important;
+        color: rgba(100, 116, 139, 0.5) !important;
+        opacity: 0.5 !important;
         font-weight: 400 !important;
         font-size: 12px !important;
       }
 
       .form-hint, .helper-text, .input-help, .help-text, small.text-muted, p.text-muted {
-        color: #94a3b8 !important;
+        color: rgba(100, 116, 139, 0.5) !important;
         font-weight: 400 !important;
         font-size: 11px !important;
+        opacity: 0.5 !important;
       }
 
       /* Hint Text on Hover Reveal */
       .form-hint, .helper-text, .field-hint, .hint-on-hover, .input-help {
-        opacity: 0.65;
         transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
       }
       *:hover > .form-hint,

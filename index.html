@@ -181,21 +181,31 @@
     input, select, textarea, button {
       font-size: 12.5px;
     }
+    input, select, textarea {
+      color: #0f172a !important;
+      font-weight: 500 !important;
+    }
     ::placeholder {
-      color: #94a3b8 !important;
-      opacity: 0.75 !important;
+      color: rgba(100, 116, 139, 0.5) !important;
+      opacity: 0.5 !important;
+      font-weight: 400 !important;
+      font-size: 12px !important;
+    }
+    ::-webkit-input-placeholder {
+      color: rgba(100, 116, 139, 0.5) !important;
+      opacity: 0.5 !important;
       font-weight: 400 !important;
       font-size: 12px !important;
     }
     .form-hint, .helper-text, .input-help, small.text-muted, p.text-muted {
-      color: #94a3b8 !important;
+      color: rgba(100, 116, 139, 0.5) !important;
       font-size: 11px !important;
       font-weight: 400 !important;
-      opacity: 0.65;
+      opacity: 0.5 !important;
       transition: opacity 0.2s ease, color 0.2s ease;
     }
     *:hover > .form-hint, *:hover > .helper-text, div:hover > .form-hint, div:hover > .helper-text, label:hover ~ .form-hint, input:focus ~ .form-hint, textarea:focus ~ .form-hint {
-      opacity: 1 !important;
+      opacity: 0.85 !important;
       color: #475569 !important;
     }
 
@@ -1293,7 +1303,7 @@
         <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
         <div class="header-title-box">
           <h1 id="view-header-title">Dashboard Overview</h1>
-          <p id="view-header-desc">Manage quizzes, view real-time metrics, and generate embed codes.</p>
+          <p id="view-header-desc" style="display:none;"></p>
         </div>
       </div>
 
@@ -1335,9 +1345,6 @@
                 <h2 class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-primary" style="font-size:26px; font-weight:800; margin:4px 0 8px; color:#fff;">
                   Welcome to RK QuizMaker! <span class="inline-block hover:rotate-12 transition-transform cursor-default">🎯</span>
                 </h2>
-                <p class="font-body-md text-body-md text-on-primary/80 leading-relaxed" style="color:rgba(255,255,255,0.85); font-size:14px; margin:0; line-height:1.6;">
-                  Your all-in-one platform to create MCQ, Checkbox, and Live Poll quizzes. Embed seamlessly on Blogger or any website with 1-click OnClick popup buttons.
-                </p>
               </div>
               <div class="flex flex-wrap items-center gap-space-sm shrink-0" style="display:flex; gap:12px; align-items:center;">
                 <button onclick="openQuizBuilder()" class="inline-flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-surface-card text-primary font-label-lg text-label-lg shadow-sm hover:bg-surface-bright hover:shadow transition-all" style="background:#fff; color:#3525cd; font-weight:700; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
@@ -1799,9 +1806,6 @@
               <h2 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold" style="font-size:26px; font-weight:800; color:#0f172a; margin:0;">
                 Bulk Question Import Hub
               </h2>
-              <p class="font-body-md text-body-md text-text-secondary mt-1 max-w-3xl" style="font-size:14px; color:#64748b; margin:4px 0 0;">
-                Import hundreds of questions instantly via Google Sheets, Excel, or ChatGPT AI prompts.
-              </p>
             </div>
             <!-- Target Quiz Switcher -->
             <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="background:#fff; border: 1.5px solid #cbd5e1; padding:10px 16px; border-radius:14px; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 12px -2px; display:flex; align-items:center; gap:10px;">
@@ -1842,62 +1846,21 @@
             </button>
           </div>
 
-          <!-- Required Columns Specification Pill Banner -->
-          <div class="mb-space-lg bg-surface-card rounded-2xl p-space-md shadow-sm" style="background:#fff; border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(79, 70, 229) rgb(203, 213, 225) rgb(203, 213, 225); border-radius:16px; padding:18px; box-shadow: rgba(15, 23, 42, 0.08) 0px 8px 20px -2px; margin-bottom:20px;">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm mb-space-sm" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-              <div class="flex items-center gap-2" style="display:flex; align-items:center; gap:8px;">
-                <span class="material-symbols-outlined text-primary text-[20px]" style="color:#3525cd;">view_column</span>
-                <span class="font-title-sm text-title-sm text-text-primary font-bold" style="font-size:14px; color:#0f172a;">Required Google Sheets / CSV Column Headers (Row 1 Schema):</span>
-              </div>
-              <button onclick="downloadGoogleSheetTemplate()" class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary hover:text-primary-dark transition-colors" style="background:transparent; border:none; color:#3525cd; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:13px;">
-                <span class="material-symbols-outlined text-[16px]">file_download</span>
-                <span>Download CSV Template (.csv)</span>
-              </button>
+          <!-- Schema Bar -->
+          <div class="mb-space-lg flex flex-wrap items-center justify-between gap-2 p-3 bg-surface-card rounded-xl border border-border-medium shadow-xs" style="background:#fff; border:1.5px solid #cbd5e1; border-radius:12px; padding:10px 14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div class="flex items-center gap-2 flex-wrap text-[12px]" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12px;">
+              <span class="font-bold text-text-primary flex items-center gap-1" style="font-weight:700; color:#0f172a; display:inline-flex; align-items:center; gap:4px;"><span class="material-symbols-outlined text-[16px] text-primary" style="color:#3525cd;">view_column</span> Schema:</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono font-bold text-primary" style="background:#eaedff; color:#3525cd; padding:2px 6px; border-radius:4px; font-weight:700; font-family:monospace;">1. Question</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary" style="background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:4px; font-family:monospace;">2. Type</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary" style="background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:4px; font-family:monospace;">3. Options</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary" style="background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:4px; font-family:monospace;">4. Correct Answer</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary" style="background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:4px; font-family:monospace;">5. Points</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container font-mono text-text-secondary" style="background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:4px; font-family:monospace;">6. Explanation</span>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">1. Question</span>
-                  <span style="font-size:10px; color:#ef4444; font-weight:700;">Required</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">Main question body</span>
-              </div>
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">2. Type</span>
-                  <span style="font-size:10px; color:#64748b;">MCQ Default</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">MCQ/CHECKBOX/POLL</span>
-              </div>
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">3. Options</span>
-                  <span style="font-size:10px; color:#f59e0b; font-weight:600;">Comma Sep</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">A, B, C, D choices</span>
-              </div>
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">4. Correct Answer</span>
-                  <span style="font-size:10px; color:#10b981; font-weight:700;">Exact Key</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">Choice letter / text</span>
-              </div>
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">5. Points</span>
-                  <span style="font-size:10px; color:#64748b;">Default: 1</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">Score value</span>
-              </div>
-              <div class="bg-surface-container-low p-2 rounded-lg flex flex-col" style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div class="flex items-center justify-between" style="display:flex; justify-content:space-between;">
-                  <span class="font-label-sm text-label-sm text-primary font-mono font-semibold" style="color:#3525cd; font-size:11px;">6. Explanation</span>
-                  <span style="font-size:10px; color:#64748b;">Optional</span>
-                </div>
-                <span class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:11px; color:#64748b;">Detailed solution</span>
-              </div>
-            </div>
+            <button onclick="downloadGoogleSheetTemplate()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary text-[12px] font-semibold transition-colors" style="background:#eaedff; color:#3525cd; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" data-tooltip="Download CSV Template (.csv)">
+              <span class="material-symbols-outlined text-[16px]">file_download</span>
+              <span>CSV Template</span>
+            </button>
           </div>
 
           <!-- Primary Tab Panels: Sheets & Plain Text & ChatGPT -->
@@ -1922,10 +1885,7 @@
                       Live Sync Ready
                     </span>
                   </div>
-                  <p class="font-body-sm text-body-sm text-text-muted mb-space-sm" style="font-size:13px; color:#64748b; margin:0 0 12px;">
-                    Enter your Google Sheet URL below. <strong style="color:#334155;">Ensure link sharing is set to 'Anyone with the link can view'.</strong>
-                  </p>
-                  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs" style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-xs mt-2" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
                     <div class="relative flex-1" style="flex:1; min-width:260px; position:relative;">
                       <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#64748b;">link</span>
                       <input class="w-full bg-surface-container-low text-text-primary font-body-sm text-body-sm pl-9 pr-4 py-2.5 rounded-lg outline-none" id="google-sheet-url-input" placeholder="Google Sheet URL (Public link or view permission)" type="url" value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit" style="width:100%; background:#f8fafc; padding:10px 14px 10px 36px; border-radius:8px; border:1px solid #cbd5e1; font-size:13px;"/>
@@ -1938,7 +1898,7 @@
                   <div class="mt-space-sm flex items-center justify-between text-text-muted font-body-sm text-body-sm bg-surface-container-low/50 px-3 py-2 rounded-lg" style="margin-top:10px; padding:6px 10px; border-radius:6px; background:#f8fafc; display:flex; justify-content:space-between; font-size:12px; color:#64748b;">
                     <div class="flex items-center gap-2" style="display:flex; align-items:center; gap:6px;">
                       <span class="material-symbols-outlined text-[16px] text-primary" style="color:#3525cd;">info</span>
-                      <span>The first worksheet tab will be parsed automatically.</span>
+                      <span>First sheet tab parsed automatically.</span>
                     </div>
                     <span class="font-mono text-label-sm text-primary cursor-pointer hover:underline" onclick="document.getElementById('google-sheet-url-input').value='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdB7e_s1Qh7GvUe6L8xXm-Sample/edit'" style="color:#3525cd; cursor:pointer; font-weight:600;">
                       Use Sample URL
@@ -1957,29 +1917,12 @@
                         <h3 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:16px; font-weight:700; color:#0f172a; margin:0;">
                           Option B: Copy &amp; Paste Table Cells
                         </h3>
-                        <p class="font-body-sm text-body-sm text-text-muted" style="font-size:12px; color:#64748b; margin:0;">
-                          Select rows in Excel or Google Sheets, press Ctrl+C and paste into the box below.
-                        </p>
                       </div>
                     </div>
                     <button class="font-label-sm text-label-sm text-text-muted hover:text-status-danger transition-colors flex items-center gap-0.5" onclick="document.getElementById('sheet-tsv-paste-area').value=''; document.getElementById('detectedCount').textContent='0';" style="background:transparent; border:none; color:#64748b; cursor:pointer; font-size:12px; display:inline-flex; align-items:center;">
                       <span class="material-symbols-outlined text-[14px]">delete</span>
                       <span>Clear</span>
                     </button>
-                  </div>
-                  <!-- Header guide pills inside Option B -->
-                  <div class="flex flex-wrap items-center gap-1.5 mb-2" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; font-size:11px;">
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Question</span>
-                    <span style="color:#94a3b8;">&gt;</span>
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Type</span>
-                    <span style="color:#94a3b8;">&gt;</span>
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Options</span>
-                    <span style="color:#94a3b8;">&gt;</span>
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Correct Answer</span>
-                    <span style="color:#94a3b8;">&gt;</span>
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Points</span>
-                    <span style="color:#94a3b8;">&gt;</span>
-                    <span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-weight:700; color:#334155;">Explanation</span>
                   </div>
                   <div class="relative">
                     <textarea oninput="autoUpdateTsvCount()" class="w-full bg-surface-container-low text-text-primary font-mono text-body-sm p-space-sm rounded-xl outline-none" id="sheet-tsv-paste-area" rows="7" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:12px; font-family:monospace; font-size:12.5px; line-height:1.5;">Question	Type	Options	Correct Answer	Points	Explanation
@@ -2025,9 +1968,6 @@ Which gas do plants absorb during photosynthesis?	MCQ	Carbon Dioxide, Oxygen, Ni
                         <h3 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:16px; font-weight:700; color:#0f172a; margin:0;">
                           Plain Text Parser
                         </h3>
-                        <p class="font-body-sm text-body-sm text-text-muted" style="font-size:12px; color:#64748b; margin:0;">
-                          Paste raw questions. Smart parser automatically extracts titles, choices, and answers.
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -2192,9 +2132,6 @@ Answer: A, B</pre>
                     Parsed Questions Preview (<span id="previewCountBadge">0 Questions</span>)
                   </h3>
                 </div>
-                <p class="font-body-sm text-body-sm text-text-muted mt-1" style="font-size:12.5px; color:#64748b; margin:2px 0 0;">
-                  Review question details, option counts, and answer keys before final import.
-                </p>
               </div>
               <div class="flex items-center gap-space-xs" style="display:flex; gap:8px;">
                 <button onclick="document.getElementById('bulk-preview-container').style.display='none';" class="px-3 py-1.5 bg-surface-container-low hover:bg-surface-container text-text-secondary rounded-lg font-label-md text-label-md" style="padding:6px 12px; border-radius:6px; background:#f1f5f9; border:1px solid #cbd5e1; font-size:12px; cursor:pointer;">
@@ -2248,9 +2185,6 @@ Answer: A, B</pre>
               <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold" style="font-size:26px; font-weight:800; color:#0f172a; margin:0;">
                 Embed &amp; Share
               </h1>
-              <p class="font-body-md text-body-md text-text-secondary mt-1 max-w-3xl" style="font-size:14px; color:#475569; margin:4px 0 0;">
-                Easily embed quizzes into your Blogger blog, WordPress site, or share direct links with students.
-              </p>
             </div>
             <!-- Target Quiz Switcher -->
             <div class="flex items-center gap-space-sm bg-surface-card p-space-sm rounded-xl shadow-sm" style="display:flex; align-items:center; gap:12px; background:#fff; padding:12px 16px; border-radius:12px; border:1.5px solid #cbd5e1; box-shadow:rgba(15,23,42,0.08) 0 4px 12px -2px;">
@@ -2321,12 +2255,9 @@ Answer: A, B</pre>
                       1. Interactive Scene Card
                     </h2>
                     <span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary font-semibold border border-emerald-200" style="padding:2px 8px; border-radius:20px; background:#ecfdf5; color:#006c49; font-size:11px; font-weight:700; border:1px solid #a7f3d0;">
-                      ⭐ Best for Blogger - Recommended
+                      ⭐ Best for Blogger
                     </span>
                   </div>
-                  <p class="font-body-sm text-body-sm text-text-muted mt-0.5" style="font-size:13px; color:#64748b; margin:2px 0 0;">
-                    Paste in Blogger HTML view. Renders a full interactive card with title, timer, question count, and 1-click test launcher.
-                  </p>
                 </div>
               </div>
               <span class="font-label-sm text-label-sm text-text-muted font-mono bg-surface-container-low px-2.5 py-1 rounded-lg" style="font-size:12px; color:#64748b; font-family:monospace; background:#f1f5f9; padding:4px 10px; border-radius:6px;">
@@ -2352,7 +2283,7 @@ Answer: A, B</pre>
                     <span>Copy Card Code</span>
                   </button>
                 </div>
-                <pre class="p-4 text-[12px] font-mono text-cyan-300 overflow-x-auto whitespace-pre leading-relaxed flex-1" id="codeSceneCard" style="padding:16px; font-size:12px; font-family:monospace; color:#67e8f9; overflow-x:auto; margin:0; line-height:1.6; max-height:280px; flex:1;"></pre>
+                <pre class="p-4 text-[12px] font-mono text-cyan-300 overflow-x-auto whitespace-pre leading-relaxed flex-1" id="codeSceneCard" style="padding:16px; font-size:12px; font-family:monospace; color:#67e8f9; overflow-x:auto; margin:0; line-height:1.6; max-height:280px; flex-1;"></pre>
                 <div class="px-4 py-2 bg-slate-900/80 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between" style="padding:8px 14px; background:rgba(15,23,42,0.8); border-top:1px solid #1e293b; font-size:11px; color:#94a3b8; display:flex; justify-content:space-between;">
                   <span>Blogger Compatibility: Works in all posts and pages</span>
                   <span class="text-emerald-400 font-semibold" style="color:#34d399; font-weight:600;">Zero Dependencies</span>
@@ -2437,9 +2368,6 @@ Answer: A, B</pre>
                     2. Compact Popup Button
                   </h3>
                 </div>
-                <p class="font-body-sm text-body-sm text-text-muted" style="font-size:13px; color:#64748b; margin:2px 0 10px;">
-                  Minimal 1-click launcher button ideal for sidebars, floating widgets, or inline article CTAs.
-                </p>
               </div>
               <!-- Code Box -->
               <div class="bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner" style="background:#1e293b; border-radius:10px; border:1px solid #334155; overflow:hidden;">
@@ -2465,10 +2393,6 @@ Answer: A, B</pre>
                   </button>
                 </div>
               </div>
-              <div class="text-[12px] text-text-muted flex items-center gap-1 pt-1" style="font-size:12px; color:#64748b; display:flex; align-items:center; gap:4px;">
-                <span class="material-symbols-outlined text-[16px] text-primary" style="color:#4f46e5;">view_quilt</span>
-                <span>Clean, light, and fits into any Blogger gadget or WordPress widget.</span>
-              </div>
             </div>
 
             <!-- Option 3: Responsive Iframe -->
@@ -2482,9 +2406,6 @@ Answer: A, B</pre>
                     3. Responsive Iframe
                   </h3>
                 </div>
-                <p class="font-body-sm text-body-sm text-text-muted" style="font-size:13px; color:#64748b; margin:2px 0 10px;">
-                  Embeds the complete quiz engine seamlessly directly inside your webpage.
-                </p>
               </div>
               <!-- Code Box -->
               <div class="bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner" style="background:#1e293b; border-radius:10px; border:1px solid #334155; overflow:hidden;">
@@ -2539,9 +2460,6 @@ Answer: A, B</pre>
                   <h3 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:16px; font-weight:700; color:#0f172a; margin:0;">
                     4. Direct Link &amp; Social Sharing
                   </h3>
-                  <p class="font-body-sm text-body-sm text-text-muted" style="font-size:13px; color:#64748b; margin:2px 0 0;">
-                    Share test links directly with students across chat groups and social networks.
-                  </p>
                 </div>
               </div>
               <span class="px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-emerald-50 text-secondary font-semibold" style="padding:3px 10px; border-radius:20px; background:#ecfdf5; color:#006c49; font-size:11px; font-weight:700;">
@@ -2652,7 +2570,6 @@ Answer: A, B</pre>
             </div>
             <div>
               <div class="font-bold text-[16px]">Results &amp; Cloud DB Studio</div>
-              <div class="text-[13px] text-white/85">Review student test scores, inspect live polls distribution, and manage Google Sheets sync.</div>
             </div>
           </div>
           <a href="results-polls.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-primary font-semibold text-[13px] shadow hover:bg-surface-bright transition-all" style="background:#fff; color:#3525cd; text-decoration:none; padding:8px 16px; border-radius:10px; font-weight:700;">
@@ -2792,7 +2709,6 @@ Answer: A, B</pre>
             </div>
             <div>
               <div class="font-bold text-[16px]">Google Sheets Free Database Hub</div>
-              <div class="text-[13px] text-white/85">Dual storage architecture: Fast local storage + 100% lifetime free Google Drive cloud sync.</div>
             </div>
           </div>
           <a href="results-polls.html#database" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-secondary font-semibold text-[13px] shadow hover:bg-surface-bright transition-all" style="background:#fff; color:#006c49; text-decoration:none; padding:8px 16px; border-radius:10px; font-weight:700;">
@@ -2806,10 +2722,6 @@ Answer: A, B</pre>
             <div class="card-title"><i class="fab fa-google-drive" style="color:#059669;"></i> 100% Lifetime Free Database (Google Sheets)</div>
           </div>
           <div class="card-body">
-            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
-              RK QuizMaker uses a dual storage system: Fast Instant Local Storage in your browser, paired with a permanent Google Sheets Database in your Google Drive that never expires and requires zero server maintenance.
-            </p>
-
             <div class="form-group">
               <label class="form-label">Google Apps Script Web App URL (Optional Cloud Sync):</label>
               <input type="url" id="cloud-api-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
@@ -3930,14 +3842,14 @@ Answer: A, B</pre>
 
       // Update titles
       var titleMap = {
-        'overview': ['Dashboard Overview', 'Manage quizzes, view real-time metrics, and generate embed codes.'],
-        'quizzes': ['My Quizzes Library', 'All active quizzes created in RK QuizMaker.'],
-        'builder': ['Quiz Builder & Visual Editor', 'Configure quiz parameters, points, and add MCQ, Short, Long, or Poll questions.'],
-        'bulk': ['Bulk Question Import Hub', 'Fast plain-text syntax parser to import 50+ questions at once.'],
-        'embed': ['Embed & Share Center', 'Generate 1-click OnClick popup buttons for Blogger and WordPress.'],
-        'results': ['Test-Wise Results & Poll Analytics Hub', 'Comprehensive student leaderboard, test metrics, and detailed answer reviews.'],
-        'database': ['Google Sheets Database', 'Permanent, 100% lifetime free cloud database settings.'],
-        'blog-designer': ['Blog Post Designer (Visual Studio)', 'Drag & drop educational blocks, customize styles, and export 100% inline HTML for Blogger & WordPress.']
+        'overview': ['Dashboard Overview', ''],
+        'quizzes': ['My Quizzes Library', ''],
+        'builder': ['Quiz Builder & Visual Editor', ''],
+        'bulk': ['Bulk Question Import Hub', ''],
+        'embed': ['Embed & Share Center', ''],
+        'results': ['Results & Poll Analytics', ''],
+        'database': ['Google Sheets Database', ''],
+        'blog-designer': ['Blog Post Designer', '']
       };
 
       if (titleMap[viewId]) {
