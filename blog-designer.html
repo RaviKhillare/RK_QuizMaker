@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 
 <html lang="en"><head><meta charset="utf-8"/><title>RK QuizMaker - Blog Post Designer & Visual Studio</title><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary": "#ffffff", "surface-bright": "#faf8ff", "on-error": "#ffffff", "on-tertiary-container": "#e4d4ff", "surface-tint": "#4d44e3", "surface-container": "#eaedff", "inverse-surface": "#283044", "on-primary-container": "#dad7ff", "on-secondary-fixed": "#002113", "secondary": "#006c49", "on-tertiary-fixed": "#25005a", "border-subtle": "#E2E8F0", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "status-warning": "#F59E0B", "text-secondary": "#334155", "surface-container-highest": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-dim": "#d2d9f4", "surface-card": "#FFFFFF", "status-success": "#10B981", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "text-muted": "#64748B", "outline-variant": "#c7c4d8", "surface-canvas": "#F8FAFC", "text-primary": "#0F172A", "inverse-on-surface": "#eef0ff", "inverse-primary": "#c3c0ff", "error-container": "#ffdad6", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#005236", "primary-fixed-dim": "#c3c0ff", "status-danger": "#EF4444", "tertiary-fixed-dim": "#d2bbff", "on-tertiary-fixed-variant": "#5a00c6", "primary-dark": "#3730A3", "outline": "#777587", "on-secondary": "#ffffff", "on-primary-fixed": "#0f0069", "border-medium": "#CBD5E1", "on-tertiary": "#ffffff", "primary-container": "#4f46e5", "on-error-container": "#93000a", "on-secondary-container": "#00714d", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#eaddff", "primary": "#3525cd", "primary-fixed": "#e2dfff", "tertiary-container": "#7531e6", "surface-container-high": "#e2e7ff", "status-info": "#3B82F6", "background": "#faf8ff", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error": "ba1a1a", "on-background": "#131b2e", "tertiary": "#5c00ca", "surface-container-low": "#f2f3ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "gutter-md": "1.5rem", "space-md": "1rem", "space-2xl": "2.5rem", "space-3xl": "3rem", "space-lg": "1.5rem", "sidebar-width": "260px", "space-2xs": "0.25rem", "gutter-sm": "1rem", "space-xs": "0.5rem", "gutter-lg": "2rem", "space-sm": "0.75rem" }, "fontFamily": { "headline-sm": ["Outfit"], "title-sm": ["Outfit"], "title-md": ["Outfit"], "body-sm": ["Noto Sans"], "label-md": ["Outfit"], "headline-lg-mobile": ["Outfit"], "headline-lg": ["Outfit"], "label-lg": ["Outfit"], "body-md": ["Noto Sans"], "body-lg": ["Noto Sans"], "display-lg": ["Outfit"], "label-sm": ["Outfit"], "headline-md": ["Outfit"], "display-lg-mobile": ["Outfit"] }, "fontSize": { "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }] } } } }</script></head><body class="bg-surface-canvas font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest"><img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/><div class="flex flex-col"><span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span><span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span></div></div><nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm"><a aria-current="page" class="flex items-center px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="blog-designer" href="blog-designer.html"><span>Blog Designer</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="index.html#overview"><span>Dashboard</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="index.html#builder"><span>Quiz Builder</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="index.html#bulk"><span>Bulk Import</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="index.html#embed"><span>Embed &amp; Share</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="index.html#results"><span>Results &amp; Polls</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="index.html#database"><span>Sheets Cloud DB</span></a></nav></div><div class="p-space-sm bg-surface-container-lowest"><div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Live Sync</span><a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank"><span>Visit Blog</span><span class="material-symbols-outlined text-[14px]">open_in_new</span></a></div><div class="flex items-center gap-space-sm mt-1"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0 flex-1"><p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p><p class="font-body-sm text-body-sm text-text-muted truncate">Admin</p></div></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-md flex items-center justify-between"><div class="flex items-center gap-space-md flex-1 max-w-lg"><div class="relative w-full max-w-sm"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span><input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card transition-all placeholder:text-text-muted" placeholder="Search quizzes, blocks..." type="search"/></div></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full"><span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span><span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span></div><button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors"><span class="material-symbols-outlined text-[16px]">language</span><span>EN</span></button><button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-[18px]">add</span><span>+ New Quiz</span></button><button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-gutter-md py-space-lg"><div class="flex flex-col w-full gap-space-lg pb-space-3xl">
-<!-- ================= TOP HEADER & ACTION BAR ================= -->
-<div class="w-full bg-surface-card rounded-xl p-space-md shadow-md border-[1.5px] border-primary-container flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-md">
-<div class="flex flex-col gap-1 max-w-2xl">
-<div class="flex items-center gap-2 flex-wrap">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm border-[1.5px] border-surface-tint">
-<span class="material-symbols-outlined text-[14px]">auto_fix_high</span> Visual Studio
-        </span>
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-secondary font-label-sm text-label-sm border-[1.5px] border-emerald-300">
-<span class="w-1.5 h-1.5 rounded-full bg-status-success animate-ping"></span> Blogger &amp; WP Ready
-        </span>
-</div>
-<h1 class="font-headline-md text-headline-md text-text-primary tracking-tight">
-        Blog Post Designer
-</h1>
-<p class="font-body-sm text-body-sm text-text-muted">
-        Drag &amp; drop educational blocks, paste HTML, and export beautiful inline code in 1 click.
-      </p>
-</div>
-<!-- Mode switch and main actions -->
-<div class="flex items-center flex-wrap gap-space-xs w-full xl:w-auto justify-start xl:justify-end">
-<!-- Mode Switcher -->
-<div class="bg-surface-container-low p-1 rounded-lg border-[1.5px] border-border-subtle flex items-center">
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all" id="btnModeVisual" onclick="setMode('visual')">
-<span class="material-symbols-outlined text-[16px]">dashboard_customize</span>
-<span>Visual</span>
-</button>
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md text-text-secondary hover:text-text-primary transition-all" id="btnModeSource" onclick="setMode('source')">
-<span class="material-symbols-outlined text-[16px]">code</span>
-<span>Code</span>
-</button>
-</div>
-<!-- Secondary Action Buttons -->
-<button class="flex items-center gap-1 px-3 py-2 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-md text-label-md shadow-sm transition-colors" onclick="openPasteModal()">
-<span class="material-symbols-outlined text-[18px]">content_paste</span>
-<span>Paste Code</span>
-</button>
-<button class="flex items-center gap-1 px-3 py-2 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-md text-label-md shadow-sm transition-colors" onclick="toggleDevicePreview()">
-<span class="material-symbols-outlined text-[18px]" id="previewDeviceIcon">smartphone</span>
-<span id="previewDeviceLabel">Mobile View</span>
-</button>
-<!-- Primary Gradient Copy Action -->
-<button class="relative flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-primary via-primary-container to-tertiary text-on-primary font-label-lg text-label-lg shadow-md hover:shadow-lg transition-all border-[1.5px] border-primary-dark active:scale-[0.98]" onclick="copyBeautifiedHtml()">
-<span class="material-symbols-outlined text-[18px]">content_copy</span>
-<span>Copy HTML</span>
-<span class="ml-1 px-1.5 py-0.5 rounded bg-surface-card/20 text-[10px] uppercase font-bold tracking-wider">1-Click</span>
-</button>
-<!-- Reset -->
-<button class="p-2 rounded-lg border-[1.5px] border-border-medium text-text-muted hover:text-status-danger hover:border-status-danger bg-surface-card transition-colors" onclick="resetCanvas()" title="Reset Canvas">
-<span class="material-symbols-outlined text-[18px]">refresh</span>
-</button>
-</div>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}.custom-designer-scroll::-webkit-scrollbar{width:6px;height:6px;}.custom-designer-scroll::-webkit-scrollbar-track{background:#F1F5F9;border-radius:4px;}.custom-designer-scroll::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}.custom-designer-scroll::-webkit-scrollbar-thumb:hover{background:#94A3B8;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary": "#ffffff", "surface-bright": "#faf8ff", "on-error": "#ffffff", "on-tertiary-container": "#e4d4ff", "surface-tint": "#4d44e3", "surface-container": "#eaedff", "inverse-surface": "#283044", "on-primary-container": "#dad7ff", "on-secondary-fixed": "#002113", "secondary": "#006c49", "on-tertiary-fixed": "#25005a", "border-subtle": "#E2E8F0", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "status-warning": "#F59E0B", "text-secondary": "#334155", "surface-container-highest": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-dim": "#d2d9f4", "surface-card": "#FFFFFF", "status-success": "#10B981", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "text-muted": "#64748B", "outline-variant": "#c7c4d8", "surface-canvas": "#F8FAFC", "text-primary": "#0F172A", "inverse-on-surface": "#eef0ff", "inverse-primary": "#c3c0ff", "error-container": "#ffdad6", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#005236", "primary-fixed-dim": "#c3c0ff", "status-danger": "#EF4444", "tertiary-fixed-dim": "#d2bbff", "on-tertiary-fixed-variant": "#5a00c6", "primary-dark": "#3730A3", "outline": "#777587", "on-secondary": "#ffffff", "on-primary-fixed": "#0f0069", "border-medium": "#CBD5E1", "on-tertiary": "#ffffff", "primary-container": "#4f46e5", "on-error-container": "#93000a", "on-secondary-container": "#00714d", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#eaddff", "primary": "#3525cd", "primary-fixed": "#e2dfff", "tertiary-container": "#7531e6", "surface-container-high": "#e2e7ff", "status-info": "#3B82F6", "background": "#faf8ff", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error": "ba1a1a", "on-background": "#131b2e", "tertiary": "#5c00ca", "surface-container-low": "#f2f3ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "gutter-md": "1.5rem", "space-md": "1rem", "space-2xl": "2.5rem", "space-3xl": "3rem", "space-lg": "1.5rem", "sidebar-width": "260px", "space-2xs": "0.25rem", "gutter-sm": "1rem", "space-xs": "0.5rem", "gutter-lg": "2rem", "space-sm": "0.75rem" }, "fontFamily": { "headline-sm": ["Outfit"], "title-sm": ["Outfit"], "title-md": ["Outfit"], "body-sm": ["Noto Sans"], "label-md": ["Outfit"], "headline-lg-mobile": ["Outfit"], "headline-lg": ["Outfit"], "label-lg": ["Outfit"], "body-md": ["Noto Sans"], "body-lg": ["Noto Sans"], "display-lg": ["Outfit"], "label-sm": ["Outfit"], "headline-md": ["Outfit"], "display-lg-mobile": ["Outfit"] }, "fontSize": { "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }] } } } }</script></head><body class="bg-surface-canvas font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest"><img alt="RK QuizMaker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/><div class="flex flex-col"><span class="font-title-md text-title-md text-primary tracking-tight leading-tight">RK QuizMaker</span><span class="font-label-sm text-label-sm text-text-muted">CMS Platform</span></div></div><nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm"><a aria-current="page" class="flex items-center px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="blog-designer" href="blog-designer.html"><span>Blog Designer</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="index.html#overview"><span>Dashboard</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="index.html#builder"><span>Quiz Builder</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="index.html#bulk"><span>Bulk Import</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="index.html#embed"><span>Embed &amp; Share</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="index.html#results"><span>Results &amp; Polls</span></a><a class="flex items-center px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="index.html#database"><span>Sheets Cloud DB</span></a></nav></div><div class="p-space-sm bg-surface-container-lowest"><div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Live Sync</span><a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank"><span>Visit Blog</span><span class="material-symbols-outlined text-[14px]">open_in_new</span></a></div><div class="flex items-center gap-space-sm mt-1"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0 flex-1"><p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p><p class="font-body-sm text-body-sm text-text-muted truncate">Admin</p></div></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-4 flex items-center justify-between"><div class="flex items-center gap-space-md flex-1 max-w-lg"><div class="relative w-full max-w-sm"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span><input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-4 py-2 rounded-lg outline-none focus:bg-surface-card transition-all placeholder:text-text-muted" placeholder="Search quizzes, blocks..." type="search"/></div></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full"><span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span><span class="font-label-sm text-label-sm text-text-secondary">Google Sheets: Live</span></div><button class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors"><span class="material-symbols-outlined text-[16px]">language</span><span>EN</span></button><button onclick="window.location.href='index.html#builder'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-[18px]">add</span><span>+ New Quiz</span></button><button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-4 py-3"><div class="flex flex-col w-full gap-3 pb-20">
+<!-- ================= TOP COMPACT ACTION BAR ================= -->
+<div class="w-full bg-surface-card rounded-xl px-4 py-2.5 shadow-sm border-[1.5px] border-primary-container flex flex-wrap items-center justify-between gap-2.5">
+  <div class="flex items-center gap-2">
+    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-[12px] font-semibold border-[1.5px] border-surface-tint">
+      <span class="material-symbols-outlined text-[15px]">auto_fix_high</span> Studio
+    </span>
+    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-secondary font-label-sm text-[12px] font-semibold border-[1.5px] border-emerald-300">
+      <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-ping"></span> Blogger &amp; WP Ready
+    </span>
+  </div>
+  <!-- Action buttons in single line -->
+  <div class="flex items-center flex-wrap gap-2">
+    <!-- Mode Switcher -->
+    <div class="bg-surface-container-low p-0.5 rounded-lg border-[1.5px] border-border-subtle flex items-center">
+      <button class="flex items-center gap-1 px-2.5 py-1 rounded-md font-label-sm text-[12px] font-medium bg-primary text-on-primary shadow-sm transition-all" id="btnModeVisual" onclick="setMode('visual')">
+        <span class="material-symbols-outlined text-[15px]">dashboard_customize</span>
+        <span>Visual</span>
+      </button>
+      <button class="flex items-center gap-1 px-2.5 py-1 rounded-md font-label-sm text-[12px] font-medium text-text-secondary hover:text-text-primary transition-all" id="btnModeSource" onclick="setMode('source')">
+        <span class="material-symbols-outlined text-[15px]">code</span>
+        <span>Code</span>
+      </button>
+    </div>
+    <!-- Secondary Action Buttons -->
+    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="openPasteModal()" title="Paste custom HTML">
+      <span class="material-symbols-outlined text-[16px]">content_paste</span>
+      <span>Paste Code</span>
+    </button>
+    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="toggleDevicePreview()">
+      <span class="material-symbols-outlined text-[16px]" id="previewDeviceIcon">smartphone</span>
+      <span id="previewDeviceLabel">Mobile View</span>
+    </button>
+    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="previewInNewTab()" title="Preview in New Tab">
+      <span class="material-symbols-outlined text-[16px] text-primary">visibility</span>
+      <span>Preview</span>
+    </button>
+    <!-- Primary Gradient Copy Action -->
+    <button class="relative flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-primary via-primary-container to-tertiary text-on-primary font-label-sm text-[12px] font-semibold shadow hover:shadow-md transition-all border-[1.5px] border-primary-dark active:scale-[0.98]" onclick="copyBeautifiedHtml()">
+      <span class="material-symbols-outlined text-[16px]">content_copy</span>
+      <span>Copy HTML</span>
+      <span class="ml-1 px-1 py-0.2 rounded bg-surface-card/25 text-[9px] uppercase font-bold tracking-wider">1-Click</span>
+    </button>
+    <!-- Reset -->
+    <button class="p-1.5 rounded-lg border-[1.5px] border-border-medium text-text-muted hover:text-status-danger hover:border-status-danger bg-surface-card transition-colors" onclick="resetCanvas()" title="Reset Canvas">
+      <span class="material-symbols-outlined text-[16px]">refresh</span>
+    </button>
+  </div>
 </div>
 <!-- Notification Toast -->
 <div class="fixed top-20 right-8 z-50 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl border-[1.5px] border-emerald-400 flex items-center gap-3" id="copyToast">
@@ -65,81 +61,90 @@
 </div>
 </div>
 <!-- ================= 3-COLUMN STUDIO WORKSPACE ================= -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start w-full">
 <!-- ================= LEFT COLUMN: Component Palette ================= -->
-<div class="lg:col-span-3 flex flex-col gap-space-sm bg-surface-card rounded-xl p-space-sm border-[1.5px] border-border-medium shadow-md">
+<div class="lg:col-span-3 flex flex-col gap-2 bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm">
 <!-- Palette Header & Search -->
-<div class="flex flex-col gap-2 pb-2 border-b-[1.5px] border-border-subtle">
+<div class="flex flex-col gap-1.5 pb-2 border-b-[1.5px] border-border-subtle">
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-1.5">
 <span class="material-symbols-outlined text-primary text-[20px]">widgets</span>
-<h2 class="font-title-md text-title-md text-text-primary">Block Library</h2>
+<h2 class="font-title-md text-title-md text-text-primary font-semibold">Block Library</h2>
 </div>
-<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold">12 items</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold">10 items</span>
 </div>
-<p class="font-body-sm text-body-sm text-text-muted">Drag blocks or click (+) to add onto canvas</p>
-<div class="relative w-full mt-1">
+<p class="font-body-sm text-[11px] text-text-muted">Drag blocks or click (+) to add to canvas</p>
+<div class="relative w-full mt-0.5">
 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
-<input class="w-full pl-8 pr-3 py-1.5 rounded-lg border-[1.5px] border-border-subtle bg-surface-canvas text-body-sm text-text-primary outline-none focus:border-primary transition-all placeholder:text-text-muted font-body-sm" id="componentSearch" placeholder="Search components..." type="text"/>
+<input class="w-full pl-8 pr-3 py-1.5 rounded-lg border-[1.5px] border-border-subtle bg-surface-canvas text-[12px] text-text-primary outline-none focus:border-primary transition-all placeholder:text-text-muted font-body-sm" id="componentSearch" placeholder="Search blocks..." type="text"/>
 </div>
 </div>
-<!-- Palette Accordion Sections -->
-<div class="flex flex-col gap-space-xs max-h-[720px] overflow-y-auto pr-1">
+<!-- Palette Accordion Sections with Miniature Visual Previews -->
+<div class="flex flex-col gap-2 max-h-[calc(100vh-230px)] overflow-y-auto pr-1 custom-designer-scroll">
 <!-- 1. Typography & Headers -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-typography')">
-<span class="flex items-center gap-1.5">
+<span class="flex items-center gap-1.5 font-semibold">
 <span class="material-symbols-outlined text-primary text-[18px]">format_size</span>
               1. Typography &amp; Headers
             </span>
 <span class="material-symbols-outlined text-text-muted text-[18px]" id="acc-typography-icon">expand_less</span>
 </button>
 <div class="p-2 flex flex-col gap-2" id="acc-typography">
-<!-- Block 1 -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">Gradient H1 Title</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Vibrant gradient headline</p>
+<!-- Block 1: Gradient H1 -->
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'hero-gradient')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">Gradient H1 Title</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors text-[14px]" onclick="insertBlock('hero-gradient')" title="Add">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('hero-gradient')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
 </div>
-<!-- Block 2 -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">Badge Subhead</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Badge with section heading</p>
+<div class="w-full rounded-md p-2 bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary shadow-xs pointer-events-none">
+  <div class="text-[11px] font-bold leading-tight">✦ Main Headline Title</div>
+  <div class="h-1.5 w-3/4 bg-white/40 rounded mt-1"></div>
 </div>
 </div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('badge-heading')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<!-- Block 2: Badge Subhead -->
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'badge-heading')">
+<div class="flex items-center gap-1.5 justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">Badge Subhead</span>
+</div>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('badge-heading')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
 </div>
-<!-- Block 3 -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">Highlight Quote</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Callout quote &amp; insight</p>
+<div class="w-full rounded-md p-2 bg-surface-canvas border border-border-subtle shadow-xs pointer-events-none flex flex-col gap-1">
+  <span class="self-start px-1.5 py-0.5 rounded-full bg-surface-container text-primary text-[9px] font-bold">Section #1</span>
+  <div class="text-[11px] font-semibold text-text-primary leading-tight">Key Concepts &amp; Notes</div>
 </div>
 </div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('quote-box')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<!-- Block 3: Highlight Quote -->
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quote-box')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">Highlight Quote</span>
+</div>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('quote-box')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-surface-container-low border-l-[3px] border-primary border-y border-r border-border-subtle shadow-xs pointer-events-none">
+  <p class="text-[10px] italic text-text-primary truncate">"Consistent practice leads to success."</p>
+  <span class="text-[9px] text-text-muted mt-0.5 block">— Study Proverb</span>
+</div>
 </div>
 </div>
 </div>
 <!-- 2. Cards & Callouts -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-cards')">
-<span class="flex items-center gap-1.5">
+<span class="flex items-center gap-1.5 font-semibold">
 <span class="material-symbols-outlined text-secondary text-[18px]">view_agenda</span>
               2. Cards &amp; Callouts
             </span>
@@ -147,56 +152,74 @@
 </button>
 <div class="p-2 flex flex-col gap-2" id="acc-cards">
 <!-- Block: Success -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-emerald-50/50 border-[1.5px] border-border-subtle hover:border-status-success shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-status-success text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary flex items-center gap-1">
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-emerald-50/50 border-[1.5px] border-border-subtle hover:border-status-success shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'success-card')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-status-success text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary flex items-center gap-1">
 <span class="w-2 h-2 rounded-full bg-status-success"></span> Success Note
-                  </p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Green verification box</p>
+</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-success hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('success-card')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-success hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('success-card')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-emerald-50 border border-emerald-300 shadow-xs pointer-events-none flex items-center gap-1.5">
+  <span class="material-symbols-outlined text-status-success text-[18px] shrink-0">verified</span>
+  <div class="min-w-0">
+    <div class="text-[10px] font-bold text-emerald-900 leading-tight truncate">Great Job! Ready for test</div>
+    <div class="text-[9px] text-emerald-800/80 truncate">Score verified &amp; ready</div>
+  </div>
+</div>
 </div>
 <!-- Block: Warning Alert -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-amber-50/50 border-[1.5px] border-border-subtle hover:border-status-warning shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-status-warning text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary flex items-center gap-1">
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-amber-50/50 border-[1.5px] border-border-subtle hover:border-status-warning shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'warning-card')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-status-warning text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary flex items-center gap-1">
 <span class="w-2 h-2 rounded-full bg-status-warning"></span> Alert Box
-                  </p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Amber warning &amp; alert notice</p>
+</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-warning hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('warning-card')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-warning hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('warning-card')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-amber-50 border border-amber-300 shadow-xs pointer-events-none flex items-center gap-1.5">
+  <span class="material-symbols-outlined text-status-warning text-[18px] shrink-0">warning</span>
+  <div class="min-w-0">
+    <div class="text-[10px] font-bold text-amber-900 leading-tight truncate">Important Notice</div>
+    <div class="text-[9px] text-amber-950/80 truncate">1/4 Negative Marking Scheme</div>
+  </div>
+</div>
 </div>
 <!-- Block: Feature Card -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-indigo-50/50 border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary flex items-center gap-1">
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-indigo-50/50 border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'info-card')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary flex items-center gap-1">
 <span class="w-2 h-2 rounded-full bg-primary"></span> Feature Card
-                  </p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Indigo info highlights</p>
+</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('info-card')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('info-card')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-indigo-50 border border-primary-container/40 shadow-xs pointer-events-none flex items-center gap-1.5">
+  <span class="material-symbols-outlined text-primary text-[18px] shrink-0">info</span>
+  <div class="min-w-0">
+    <div class="text-[10px] font-bold text-text-primary leading-tight truncate">Preparation Tips</div>
+    <div class="text-[9px] text-text-secondary truncate">Review PYQ trends weekly</div>
+  </div>
+</div>
 </div>
 </div>
 </div>
 <!-- 3. Data & Tables -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-tables')">
-<span class="flex items-center gap-1.5">
+<span class="flex items-center gap-1.5 font-semibold">
 <span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
               3. Data &amp; Tables
             </span>
@@ -204,89 +227,121 @@
 </button>
 <div class="p-2 flex flex-col gap-2" id="acc-tables">
 <!-- Block: Exam Schedule Table -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">Exam Schedule Table</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">4-column structured table</p>
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'edu-table')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">Exam Schedule Table</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('edu-table')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('edu-table')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md overflow-hidden border border-border-medium shadow-xs pointer-events-none bg-surface-card">
+  <div class="bg-surface-container px-2 py-1 flex justify-between text-[9px] font-bold text-text-primary border-b border-border-medium">
+    <span>Subject</span>
+    <span>Marks</span>
+  </div>
+  <div class="px-2 py-0.5 flex justify-between text-[9px] text-text-secondary">
+    <span class="truncate">General Studies</span>
+    <span>200</span>
+  </div>
+</div>
 </div>
 <!-- Block: 2-Col Specs -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">2-Col Specs</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Two-column feature grid</p>
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'two-col-grid')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">2-Col Specs Grid</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('two-col-grid')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('two-col-grid')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full grid grid-cols-2 gap-1 pointer-events-none">
+  <div class="p-1.5 rounded bg-surface-container-low border border-border-subtle">
+    <div class="text-[9px] font-bold text-text-primary truncate">Topic 1</div>
+    <div class="h-1 bg-border-subtle rounded mt-1"></div>
+  </div>
+  <div class="p-1.5 rounded bg-surface-container-low border border-border-subtle">
+    <div class="text-[9px] font-bold text-text-primary truncate">Topic 2</div>
+    <div class="h-1 bg-border-subtle rounded mt-1"></div>
+  </div>
+</div>
 </div>
 </div>
 </div>
 <!-- 4. Action Buttons -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-cta')">
-<span class="flex items-center gap-1.5">
+<span class="flex items-center gap-1.5 font-semibold">
 <span class="material-symbols-outlined text-tertiary text-[18px]">touch_app</span>
-              4. Action Buttons
+              4. Action Buttons &amp; Quiz CTAs
             </span>
 <span class="material-symbols-outlined text-text-muted text-[18px]" id="acc-cta-icon">expand_less</span>
 </button>
 <div class="p-2 flex flex-col gap-2" id="acc-cta">
 <!-- Block: 3D Quiz CTA Button -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">3D Quiz CTA Button</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Interactive test start button</p>
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quiz-cta')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">Interactive Quiz CTA</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('pulse-cta')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('quiz-cta')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-surface-container-lowest border border-primary-container shadow-xs pointer-events-none flex items-center justify-between gap-1.5">
+  <div class="flex items-center gap-1 min-w-0">
+    <div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-[12px]">quiz</span>
+    </div>
+    <span class="text-[10px] font-bold text-text-primary truncate">Live Quiz</span>
+  </div>
+  <span class="px-2 py-0.5 rounded bg-status-success text-on-primary text-[9px] font-bold shrink-0">▶ Start Test</span>
+</div>
 </div>
 <!-- Block: PDF Download Box -->
-<div class="group flex items-center justify-between p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-status-danger shadow-sm cursor-grab transition-all" draggable="true">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-text-muted group-hover:text-status-danger text-[18px]">drag_indicator</span>
-<div>
-<p class="font-label-md text-label-md text-text-primary">PDF Download Box</p>
-<p class="font-body-sm text-body-sm text-text-muted text-[11px]">Download button with meta</p>
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-status-danger shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'pdf-download')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-status-danger text-[16px]">drag_indicator</span>
+<span class="font-label-sm text-[12px] font-semibold text-text-primary">PDF Download Box</span>
 </div>
-</div>
-<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-danger hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('pdf-download')">
-<span class="material-symbols-outlined text-[16px]">add</span>
+<button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-danger hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('pdf-download')" title="Add Block">
+<span class="material-symbols-outlined text-[15px]">add</span>
 </button>
+</div>
+<div class="w-full rounded-md p-2 bg-red-50 border border-red-200 shadow-xs pointer-events-none flex items-center justify-between gap-1.5">
+  <div class="flex items-center gap-1 min-w-0">
+    <span class="material-symbols-outlined text-status-danger text-[16px] shrink-0">picture_as_pdf</span>
+    <span class="text-[10px] font-bold text-red-950 truncate">Study Notes.pdf</span>
+  </div>
+  <span class="material-symbols-outlined text-status-danger text-[14px]">download</span>
+</div>
 </div>
 </div>
 </div>
 </div>
 <!-- Quick Tips Box in Left Column -->
-<div class="mt-auto p-2.5 rounded-lg bg-surface-container-low border-[1.5px] border-border-subtle flex items-start gap-2">
-<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">tips_and_updates</span>
-<p class="font-body-sm text-body-sm text-text-secondary text-[11px] leading-relaxed">
+<div class="mt-auto p-2 rounded-lg bg-surface-container-low border-[1.5px] border-border-subtle flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-0.5">tips_and_updates</span>
+<p class="font-body-sm text-text-secondary text-[11px] leading-relaxed">
 <strong>Auto Inline-CSS:</strong> 100% compatible with Blogger &amp; WordPress.
         </p>
 </div>
 </div>
 <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
-<div class="lg:col-span-6 flex flex-col gap-space-sm">
+<div class="lg:col-span-6 flex flex-col gap-2">
 <!-- Viewport & Canvas Controls Bar -->
-<div class="flex items-center justify-between px-space-sm py-2 bg-surface-card rounded-xl border-[1.5px] border-border-medium shadow-sm">
+<div class="flex items-center justify-between px-3 py-1.5 bg-surface-card rounded-xl border-[1.5px] border-border-medium shadow-sm">
 <div class="flex items-center gap-2">
-<span class="w-3 h-3 rounded-full bg-status-danger inline-block"></span>
-<span class="w-3 h-3 rounded-full bg-status-warning inline-block"></span>
-<span class="w-3 h-3 rounded-full bg-status-success inline-block"></span>
-<span class="ml-2 font-label-md text-label-md text-text-muted hidden sm:inline">https://rkquizmaker.blogspot.com</span>
+<span class="w-2.5 h-2.5 rounded-full bg-status-danger inline-block"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-status-warning inline-block"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-status-success inline-block"></span>
+<span class="ml-2 font-label-sm text-[12px] text-text-muted hidden sm:inline">https://rkquizmaker.blogspot.com</span>
 </div>
 <div class="flex items-center gap-1">
 <button class="p-1.5 rounded hover:bg-surface-container-high text-primary font-bold" onclick="setCanvasWidth('100%')" title="Desktop View">
@@ -307,9 +362,9 @@
 </button>
 </div>
 </div>
-<!-- Main Visual Blog Post Wrapper Container -->
-<div class="w-full mx-auto transition-all duration-300" id="canvasViewport">
-<div class="bg-surface-card rounded-xl p-space-md sm:p-space-xl border-[1.5px] border-border-medium shadow-lg flex flex-col gap-space-md min-h-[780px]" id="visualCanvas">
+<!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
+<div class="w-full mx-auto transition-all duration-300 max-h-[calc(100vh-140px)] overflow-y-auto pr-1 rounded-xl custom-designer-scroll" id="canvasViewport">
+<div class="bg-surface-card rounded-xl p-4 sm:p-6 border-[1.5px] border-border-medium shadow-md flex flex-col gap-3 min-h-[600px]" id="visualCanvas">
 <!-- Blogger Post Header (Metadata) -->
 <div class="pb-space-sm border-b-[1.5px] border-border-subtle flex flex-col gap-2">
 <div class="flex items-center justify-between">
@@ -503,9 +558,9 @@
 </div>
 </div>
 <!-- ================= RIGHT COLUMN: Style & Export ================= -->
-<div class="lg:col-span-3 flex flex-col gap-space-sm">
+<div class="lg:col-span-3 flex flex-col gap-2">
 <!-- Inspector Card with Tabs -->
-<div class="bg-surface-card rounded-xl p-space-sm border-[1.5px] border-border-medium shadow-md flex flex-col gap-space-sm">
+<div class="bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-md flex flex-col gap-2">
 <!-- Inspector Tabs -->
 <div class="flex items-center border-b-[1.5px] border-border-subtle">
 <button class="flex-1 pb-2 font-title-sm text-title-sm text-primary border-b-2 border-primary transition-all text-center" id="tabBtnStyle" onclick="switchRightTab('style')">
@@ -927,6 +982,12 @@
     }
   }
 
+  function handlePaletteDragStart(e, blockType) {
+    if (e && e.dataTransfer) {
+      e.dataTransfer.setData('text/plain', blockType);
+    }
+  }
+
   function handleDragOver(e) {
     e.preventDefault();
     document.getElementById('dropZone').classList.add('border-primary', 'bg-surface-container');
@@ -939,7 +1000,8 @@
   function handleDrop(e) {
     e.preventDefault();
     document.getElementById('dropZone').classList.remove('border-primary', 'bg-surface-container');
-    insertBlock('info-card');
+    const type = (e.dataTransfer && e.dataTransfer.getData('text/plain')) || 'info-card';
+    insertBlock(type);
   }
 
   function changeCanvasFont(fontVal) {
@@ -1047,8 +1109,82 @@
 
   function previewInNewTab() {
     const code = generateExportHtml();
-    const win = window.open();
-    win.document.write(`<!DOCTYPE html><html><head><title>Preview - RK QuizMaker</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://cdn.tailwindcss.com"><\/script></head><body class="p-6 bg-slate-100">${code}</body></html>`);
+    const win = window.open('', '_blank');
+    if (win) {
+      const previewHtml = `<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog Post Preview - RK QuizMaker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"><\/script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "surface-tint": "#4d44e3",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-primary-container": "#dad7ff",
+            "secondary": "#006c49",
+            "border-subtle": "#E2E8F0",
+            "on-surface": "#131b2e",
+            "status-warning": "#F59E0B",
+            "text-secondary": "#334155",
+            "surface-container-highest": "#dae2fd",
+            "surface-container-lowest": "#ffffff",
+            "surface-card": "#FFFFFF",
+            "status-success": "#10B981",
+            "text-muted": "#64748B",
+            "surface-canvas": "#F8FAFC",
+            "text-primary": "#0F172A",
+            "status-danger": "#EF4444",
+            "primary-dark": "#3730A3",
+            "border-medium": "#CBD5E1",
+            "primary-container": "#4f46e5",
+            "primary": "#3525cd",
+            "tertiary-container": "#7531e6",
+            "surface-container-high": "#e2e7ff",
+            "status-info": "#3B82F6",
+            "background": "#faf8ff",
+            "tertiary": "#5c00ca",
+            "surface-container-low": "#f2f3ff"
+          },
+          fontFamily: {
+            sans: ["Outfit", "Noto Sans", "Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  <\/script>
+  <style>
+    body { margin: 0; padding: 24px; background: #F8FAFC; font-family: "Outfit", "Noto Sans", sans-serif; color: #0F172A; }
+    .preview-wrapper { max-width: 860px; margin: 0 auto; background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .preview-notice { max-width: 860px; margin: 0 auto 16px auto; padding: 10px 16px; border-radius: 10px; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; font-size: 13px; display: flex; align-items: center; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div class="preview-notice">
+    <span style="display:flex;align-items:center;gap:6px;"><strong>Live Preview Mode</strong> • Demonstrating exact layout as published on Blogger / WordPress</span>
+    <button onclick="window.close()" style="background:#dbeafe;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:600;color:#1e40af;">Close</button>
+  </div>
+  <div class="preview-wrapper">
+    ${code}
+  </div>
+</body>
+</html>`;
+      win.document.open();
+      win.document.write(previewHtml);
+      win.document.close();
+    }
   }
 
   // Component search filter
