@@ -1320,6 +1320,32 @@
     }
 
 </style>
+
+  <script>
+    // Bulletproof Early Definition of toggleBlockLibrary
+    window.toggleBlockLibrary = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var lib = document.getElementById('blockLibraryCol');
+      var topBtn = document.getElementById('btnOpenLibraryTop');
+      if (!lib) {
+        console.warn('blockLibraryCol element not found');
+        return;
+      }
+      var isHidden = (lib.style.display === 'none') || lib.classList.contains('hidden') || (window.getComputedStyle && window.getComputedStyle(lib).display === 'none');
+      if (isHidden) {
+        lib.style.setProperty('display', 'flex', 'important');
+        lib.classList.remove('hidden');
+        if (topBtn) topBtn.style.setProperty('display', 'none', 'important');
+        if (typeof showToast === 'function') showToast('Block Library opened');
+      } else {
+        lib.style.setProperty('display', 'none', 'important');
+        lib.classList.add('hidden');
+        if (topBtn) topBtn.style.setProperty('display', 'inline-flex', 'important');
+        if (typeof showToast === 'function') showToast('Block Library closed (Wide view)');
+      }
+    };
+  </script>
+
 </head>
 <body>
 
@@ -3363,8 +3389,6 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   </div>
                 </div>
               </div>
-            </div>
-
             </div>
 
             <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
@@ -7251,7 +7275,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       visualCanvasElement.addEventListener('paste', handleSmartPaste);
     }
   </script>
-  <script src="shared-ui.js">
+  <script src="shared-ui.js"></script>
+  <script>
 
     // =========================================================================
     // FEATURE 4: DYNAMIC TABLE EDITOR (ADD/REMOVE ROWS & COLS) IN INDEX.HTML
@@ -8220,7 +8245,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
   // ================= SIDEBAR TOGGLE & ACTIVE BLOCK ACTIONS =================
   // ================= BULLETPROOF SIDEBAR TOGGLE & BLOCK ACTIONS =================
-  function toggleBlockLibrary() {
+  window.toggleBlockLibrary = function toggleBlockLibrary(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     try {
       var lib = document.getElementById('blockLibraryCol');
       var topBtn = document.getElementById('btnOpenLibraryTop');

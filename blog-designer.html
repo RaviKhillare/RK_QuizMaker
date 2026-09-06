@@ -16,6 +16,32 @@
   }
 </style>
 
+
+  <script>
+    // Bulletproof Early Definition of toggleBlockLibrary
+    window.toggleBlockLibrary = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var lib = document.getElementById('blockLibraryCol');
+      var topBtn = document.getElementById('btnOpenLibraryTop');
+      if (!lib) {
+        console.warn('blockLibraryCol element not found');
+        return;
+      }
+      var isHidden = (lib.style.display === 'none') || lib.classList.contains('hidden') || (window.getComputedStyle && window.getComputedStyle(lib).display === 'none');
+      if (isHidden) {
+        lib.style.setProperty('display', 'flex', 'important');
+        lib.classList.remove('hidden');
+        if (topBtn) topBtn.style.setProperty('display', 'none', 'important');
+        if (typeof showToast === 'function') showToast('Block Library opened');
+      } else {
+        lib.style.setProperty('display', 'none', 'important');
+        lib.classList.add('hidden');
+        if (topBtn) topBtn.style.setProperty('display', 'inline-flex', 'important');
+        if (typeof showToast === 'function') showToast('Block Library closed (Wide view)');
+      }
+    };
+  </script>
+
 </head><body class="bg-surface-canvas font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0" id="mainSidebar"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-center bg-surface-container-lowest border-b border-border-subtle"><img alt="RK QuizMaker Logo" class="h-10 w-auto max-w-[220px] object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/></div><nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="blog-designer" href="blog-designer.html"><span class="material-symbols-outlined text-[20px]">design_services</span><span>Blog Designer</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="dashboard.html"><span class="material-symbols-outlined text-[20px]">space_dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="quiz-builder.html"><span class="material-symbols-outlined text-[20px]">quiz</span><span>Quiz Builder</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="bulk-import.html"><span class="material-symbols-outlined text-[20px]">upload_file</span><span>Bulk Import</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html"><span class="material-symbols-outlined text-[20px]">share</span><span>Embed &amp; Share</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="results-polls.html"><span class="material-symbols-outlined text-[20px]">analytics</span><span>Results &amp; Polls</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="results-polls.html#database"><span class="material-symbols-outlined text-[20px]">table_chart</span><span>Sheets Cloud DB</span></a></nav></div><div class="p-space-sm bg-surface-container-lowest"><div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Live Sync</span><a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank"><span>Visit Blog</span><span class="material-symbols-outlined text-[14px]">open_in_new</span></a></div><div class="flex items-center gap-space-sm mt-1"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0 flex-1"><p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p><p class="font-body-sm text-body-sm text-text-muted truncate">Admin</p></div></div></div></div></aside><div class="pl-0 lg:pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-0 lg:left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-4 flex items-center justify-between border-b border-border-subtle"><div class="flex items-center gap-2.5 flex-1 max-w-lg"><button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-lg text-text-secondary hover:bg-surface-container-low transition-colors" title="Toggle Navigation"><span class="material-symbols-outlined text-[24px]">menu</span></button><div class="relative w-full max-w-sm omni-search-wrapper"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span><input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-8 py-2 rounded-lg outline-none focus:bg-surface-card focus:ring-1 focus:ring-primary transition-all placeholder:text-text-muted border border-border-subtle" placeholder="Search quizzes, questions..." type="search" id="globalOmniSearch" oninput="handleOmniSearch(this.value)" autocomplete="off"/><button id="clearOmniSearchBtn" onclick="clearOmniSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary text-[14px]">✕</button><div id="omniSearchResults" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-card rounded-xl shadow-2xl border border-border-medium z-50 max-h-80 overflow-y-auto p-1.5 flex flex-col gap-1"></div></div></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full border border-border-subtle"><span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span><span class="font-label-sm text-label-sm text-text-secondary" id="sheetsLivePillText">Google Sheets: Live</span></div><button onclick="togglePlatformLanguage()" class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle cursor-pointer select-none"><span class="material-symbols-outlined text-[16px]">translate</span><span id="topLangLabel">EN</span></button><button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-[18px]">add</span><span id="topNewQuizBtnText">+ New Quiz</span></button><button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-4 py-3"><div class="flex flex-col w-full gap-3 pb-20">
 <!-- ================= STREAMLINED COMPACT STICKY ACTION BAR ================= -->
     <div class="sticky top-16 z-30 w-full bg-surface-card/95 backdrop-blur-md rounded-xl px-3 py-2 shadow-md border-[1.5px] border-primary-container flex items-center justify-between gap-2 flex-wrap mb-3">
@@ -396,15 +422,14 @@
     <span class="text-[10px] font-bold text-red-950 truncate">Study Notes.pdf</span>
   </div>
   <span class="material-symbols-outlined text-status-danger text-[14px]">download</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
+            <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
 <div id="canvasMainCol" class="flex-1 min-w-0 flex flex-col gap-2 transition-all duration-300 w-full">
 <!-- Viewport & Canvas Controls Bar -->
 <!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
@@ -714,7 +739,8 @@
   </div>
 </div>
 </div>
-</main></div><script src="shared-ui.js">
+</main></div><script src="shared-ui.js"></script>
+  <script>
 
   // =========================================================================
   // DYNAMIC TABLE EDITOR FUNCTIONS (ADD/REMOVE ROWS & COLUMNS)
@@ -1532,7 +1558,8 @@
 
   // ================= SIDEBAR TOGGLE & ACTIVE BLOCK ACTIONS =================
   // ================= BULLETPROOF SIDEBAR TOGGLE & BLOCK ACTIONS =================
-  function toggleBlockLibrary() {
+  window.toggleBlockLibrary = function toggleBlockLibrary(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     try {
       var lib = document.getElementById('blockLibraryCol');
       var topBtn = document.getElementById('btnOpenLibraryTop');
