@@ -3269,6 +3269,96 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                 </div>
               </div>
 
+              <!-- ================= DOCUMENT RICH TEXT EDITING RIBBON ================= -->
+              <div class="w-full bg-surface-card rounded-xl px-3 py-1.5 border-[1.5px] border-primary-container shadow-sm flex flex-wrap items-center gap-1 sm:gap-1.5 z-30 mb-2" id="docEditorRibbon">
+                <!-- Heading / Block Format Dropdown -->
+                <select class="px-2 py-1 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] font-semibold text-text-primary outline-none hover:border-primary cursor-pointer" onchange="formatDocBlockHeading(this.value); this.value='';" title="Text Format">
+                  <option value="">Format...</option>
+                  <option value="p">Paragraph (Normal)</option>
+                  <option value="h1">H1 Main Title</option>
+                  <option value="h2">H2 Subheading</option>
+                  <option value="h3">H3 Section</option>
+                  <option value="blockquote">Quote Block</option>
+                </select>
+
+                <!-- Font Size Dropdown -->
+                <select class="px-2 py-1 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] font-semibold text-text-primary outline-none hover:border-primary cursor-pointer" onchange="formatDocText('fontSizePx', this.value); this.value='';" title="Font Size">
+                  <option value="">Font Size...</option>
+                  <option value="12px">12px (Small)</option>
+                  <option value="14px">14px (Normal)</option>
+                  <option value="16px">16px (Medium)</option>
+                  <option value="18px">18px (Large)</option>
+                  <option value="22px">22px (X-Large)</option>
+                  <option value="28px">28px (Title)</option>
+                  <option value="36px">36px (Headline)</option>
+                </select>
+
+                <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
+
+                <!-- Bold, Italic, Underline, Strikethrough -->
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('bold')" title="Bold (Ctrl+B)">
+                  <span class="material-symbols-outlined text-[18px]">format_bold</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('italic')" title="Italic (Ctrl+I)">
+                  <span class="material-symbols-outlined text-[18px]">format_italic</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('underline')" title="Underline (Ctrl+U)">
+                  <span class="material-symbols-outlined text-[18px]">format_underlined</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('strikeThrough')" title="Strikethrough">
+                  <span class="material-symbols-outlined text-[18px]">strikethrough_s</span>
+                </button>
+
+                <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
+
+                <!-- Text Color Picker -->
+                <label class="relative p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer flex items-center justify-center" title="Text Color (अक्षरांचा रंग)">
+                  <span class="material-symbols-outlined text-[18px]">format_color_text</span>
+                  <span class="absolute bottom-0.5 w-3.5 h-1 rounded-full bg-primary" id="indexCurrentTextColorIndicator"></span>
+                  <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('textColor', this.value); const ind = document.getElementById('indexCurrentTextColorIndicator'); if (ind) ind.style.backgroundColor=this.value;"/>
+                </label>
+
+                <!-- Highlight / Text Background Color Picker -->
+                <label class="relative p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer flex items-center justify-center" title="Highlight Color (हायलाइट रंग)">
+                  <span class="material-symbols-outlined text-[18px]">border_color</span>
+                  <span class="absolute bottom-0.5 w-3.5 h-1 rounded-full bg-amber-400" id="indexCurrentHighlightIndicator"></span>
+                  <input type="color" value="#fef08a" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('highlightColor', this.value); const ind = document.getElementById('indexCurrentHighlightIndicator'); if (ind) ind.style.backgroundColor=this.value;"/>
+                </label>
+
+                <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
+
+                <!-- Text Alignment -->
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyLeft')" title="Align Left">
+                  <span class="material-symbols-outlined text-[18px]">format_align_left</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyCenter')" title="Align Center">
+                  <span class="material-symbols-outlined text-[18px]">format_align_center</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyRight')" title="Align Right">
+                  <span class="material-symbols-outlined text-[18px]">format_align_right</span>
+                </button>
+
+                <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
+
+                <!-- Lists -->
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('insertUnorderedList')" title="Bullet List">
+                  <span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('insertOrderedList')" title="Numbered List">
+                  <span class="material-symbols-outlined text-[18px]">format_list_numbered</span>
+                </button>
+
+                <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
+
+                <!-- Link & Clear Format -->
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-primary transition-colors cursor-pointer" onclick="formatDocText('createLink')" title="Insert Link (Ctrl+K)">
+                  <span class="material-symbols-outlined text-[18px]">link</span>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-surface-container text-status-danger transition-colors cursor-pointer" onclick="formatDocText('removeFormat')" title="Clear Formatting (फॉर्मॅटिंग काढा)">
+                  <span class="material-symbols-outlined text-[18px]">format_clear</span>
+                </button>
+              </div>
+
               <!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
               <div class="w-full mx-auto transition-all duration-300 max-h-[calc(100vh-140px)] overflow-y-auto pr-1 rounded-xl custom-designer-scroll" id="canvasViewport">
                 <div class="bg-surface-card rounded-xl p-4 sm:p-6 border-[1.5px] border-border-medium shadow-md flex flex-col gap-3 min-h-[600px]" id="visualCanvas">
@@ -7821,6 +7911,123 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       showNotification('Quizzes CSV यशस्वीरित्या डाऊनलोड झाली!');
     }
 
+
+
+    // =========================================================================
+    // DOCUMENT RICH TEXT EDITING ENGINE IN INDEX.HTML
+    // =========================================================================
+    function formatDocText(command, value = null) {
+      document.execCommand('styleWithCSS', false, true);
+
+      if (command === 'fontSizePx') {
+        if (!value) return;
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) {
+          showNotification('कृपया ज्या मजकुराचा फॉन्ट आकार बदलायचा आहे तो मजकूर आधी सिलेक्ट करा.');
+          return;
+        }
+        const range = selection.getRangeAt(0);
+        const span = document.createElement('span');
+        span.style.fontSize = value;
+        span.style.lineHeight = (parseInt(value) * 1.4) + 'px';
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
+        selection.removeAllRanges();
+        const newRange = document.createRange();
+        newRange.selectNodeContents(span);
+        selection.addRange(newRange);
+        showNotification('फॉन्ट साईज ' + value + ' केली!');
+      } else if (command === 'textColor') {
+        document.execCommand('foreColor', false, value);
+        showNotification('टेक्स्ट रंग बदलला!');
+      } else if (command === 'highlightColor') {
+        document.execCommand('hiliteColor', false, value);
+        showNotification('हायलाइट रंग लागू केला!');
+      } else if (command === 'createLink') {
+        const url = prompt('लिंक URL प्रविष्ट करा (उदा. https://...):', 'https://');
+        if (url) {
+          document.execCommand('createLink', false, url);
+          const selection = window.getSelection();
+          if (selection.anchorNode && selection.anchorNode.parentElement) {
+            const a = selection.anchorNode.parentElement.closest('a');
+            if (a) a.setAttribute('target', '_blank');
+          }
+          showNotification('लिंक जोडली!');
+        }
+      } else {
+        document.execCommand(command, false, value);
+      }
+    }
+
+    function formatDocBlockHeading(tag) {
+      if (!tag) return;
+      document.execCommand('formatBlock', false, '<' + tag + '>');
+      showNotification('ब्लॉक प्रकार ' + tag.toUpperCase() + ' केला!');
+    }
+
+    // Floating selection bubble tracking for index.html
+    document.addEventListener('selectionchange', () => {
+      const bubble = document.getElementById('floatingFormatBubble');
+      if (!bubble) return;
+
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.rangeCount) {
+        bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const canvas = document.getElementById('visualCanvas');
+      if (!canvas || !canvas.contains(range.commonAncestorContainer)) {
+        bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+        return;
+      }
+
+      const rect = range.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const bubbleWidth = 220;
+        const leftPos = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, rect.left + (rect.width / 2) - (bubbleWidth / 2)));
+        const topPos = Math.max(10, rect.top - 46);
+
+        bubble.style.left = leftPos + 'px';
+        bubble.style.top = topPos + 'px';
+        bubble.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
+      }
+    });
+
+    // Keyboard shortcuts in index.html (Ctrl+B, Ctrl+I, Ctrl+U, Ctrl+K)
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+        if (e.key === 'u' || e.key === 'U') {
+          e.preventDefault();
+          formatDocText('underline');
+        } else if (e.key === 'k' || e.key === 'K') {
+          e.preventDefault();
+          formatDocText('createLink');
+        }
+      }
+    });
+
 </script>
+
+<!-- FLOATING SELECTION FORMATTING BUBBLE -->
+<div id="floatingFormatBubble" class="fixed z-50 bg-inverse-surface text-inverse-on-surface shadow-2xl rounded-xl p-1 flex items-center gap-1 border border-border-subtle/30 opacity-0 pointer-events-none transition-all duration-200 transform scale-95" style="background:#1e293b; color:#fff;">
+  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('bold')" title="Bold"><span class="material-symbols-outlined text-[16px]">format_bold</span></button>
+  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('italic')" title="Italic"><span class="material-symbols-outlined text-[16px]">format_italic</span></button>
+  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('underline')" title="Underline"><span class="material-symbols-outlined text-[16px]">format_underlined</span></button>
+  <div class="h-3.5 w-px bg-white/20 mx-0.5"></div>
+  <label class="p-1 hover:bg-white/20 rounded text-white cursor-pointer relative flex items-center justify-center" title="Text Color">
+    <span class="material-symbols-outlined text-[16px]">format_color_text</span>
+    <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('textColor', this.value)"/>
+  </label>
+  <label class="p-1 hover:bg-white/20 rounded text-white cursor-pointer relative flex items-center justify-center" title="Highlight Color">
+    <span class="material-symbols-outlined text-[16px]">border_color</span>
+    <input type="color" value="#fef08a" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('highlightColor', this.value)"/>
+  </label>
+  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('createLink')" title="Link"><span class="material-symbols-outlined text-[16px]">link</span></button>
+</div>
 </body>
 </html>
