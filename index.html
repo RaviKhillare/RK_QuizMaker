@@ -715,6 +715,33 @@
       gap: 16px;
     }
 
+    
+    /* Enhanced Mobile Responsiveness for Overview Dashboard */
+    @media (max-width: 1024px) {
+      .overview-main-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        width: 100% !important;
+      }
+      .overview-left-col, .overview-right-col {
+        grid-column: span 12 / span 12 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+    @media (max-width: 640px) {
+      .overview-kpi-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+      .bento-hub-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+    }
+  
     @media (max-width: 768px) {
       .form-grid-2, .form-grid-3 {
         grid-template-columns: 1fr;
@@ -1360,7 +1387,7 @@
           </section>
 
           <!-- Metrics KPI Row (4 Cards) -->
-          <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+          <section class="overview-kpi-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             <!-- Card 1: Total Quizzes -->
             <div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow" style="background:#fff; border-radius:14px; padding:18px; border:1.5px solid #cbd5e1; box-shadow:rgba(15,23,42,0.08) 0 4px 14px -2px;">
               <div class="flex items-start justify-between" style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -1451,9 +1478,9 @@
           </section>
 
           <!-- Two Column Main Layout -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg" style="display:grid; grid-template-columns:repeat(12, 1fr); gap:20px; align-items:start;">
+          <div class="overview-main-grid grid grid-cols-1 lg:grid-cols-12 gap-5 items-start w-full">
             <!-- Left Column: Quizzes & Quick Action Center (8 Cols) -->
-            <div class="lg:col-span-8 flex flex-col gap-space-lg" style="grid-column: span 8 / span 8; display:flex; flex-direction:column; gap:20px;">
+            <div class="overview-left-col w-full lg:col-span-8 flex flex-col gap-5">
               <!-- Active Quizzes Section -->
               <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-md" style="background:#fff; border-radius:16px; padding:20px; border:1.5px solid #cbd5e1; box-shadow:rgba(15,23,42,0.06) 0 6px 20px -2px;">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
@@ -1488,7 +1515,7 @@
               </div>
 
               <!-- Quick Action Bento Hub -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+              <div class="bento-hub-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <!-- Bento 1 -->
                 <div class="p-space-md bg-surface-card rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between" style="background:#fff; border-radius:14px; padding:18px; border:1.5px solid #cbd5e1; box-shadow:rgba(15,23,42,0.06) 0 4px 12px -2px; display:flex; flex-direction:column; justify-content:space-between;">
                   <div>
@@ -1549,7 +1576,7 @@
             </div>
 
             <!-- Right Column: Recent Submissions, Poll Widget & Database Status (4 Cols) -->
-            <div class="lg:col-span-4 flex flex-col gap-space-lg" style="grid-column: span 4 / span 4; display:flex; flex-direction:column; gap:20px;">
+            <div class="overview-right-col w-full lg:col-span-4 flex flex-col gap-5">
               <!-- Recent Student Submissions Feed -->
               <div class="bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-md" style="background:#fff; border-radius:16px; padding:20px; border:1.5px solid #cbd5e1; box-shadow:rgba(15,23,42,0.06) 0 6px 20px -2px;">
                 <div class="flex items-center justify-between" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -2629,52 +2656,215 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
            ==================================================================== -->
       <section id="view-database" class="tab-view">
         <!-- Studio Mode Launch Banner -->
-        <div class="flex items-center justify-between p-space-md rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-700 to-emerald-800 text-on-primary shadow-sm mb-space-md" style="background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%); color:#fff; padding:16px 20px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+        <div class="flex items-center justify-between p-space-md rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-700 to-emerald-800 text-on-primary shadow-sm mb-space-md" style="background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%); color:#fff; padding:18px 22px; border-radius:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px;">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0">
-              <span class="material-symbols-outlined text-[24px]">cloud_sync</span>
+            <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-[28px]">cloud_sync</span>
             </div>
             <div>
-              <div class="font-bold text-[16px]">Google Sheets Free Database Hub</div>
+              <div class="font-bold text-[18px] tracking-tight">Google Drive &amp; Sheets Cloud Database Hub</div>
+              <p class="text-[12.5px] text-emerald-100 mt-0.5">100% Free Lifetime Hosting • Auto Sync • Complete Offline &amp; Local PC Data Safety</p>
             </div>
           </div>
-          <a href="results-polls.html#database" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-secondary font-semibold text-[13px] shadow hover:bg-surface-bright transition-all" style="background:#fff; color:#006c49; text-decoration:none; padding:8px 16px; border-radius:10px; font-weight:700;">
-            <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-            <span>Open Database Studio</span>
-          </a>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="downloadFullBackupJSON()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-emerald-900 font-bold text-[13px] shadow hover:bg-emerald-50 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-emerald-700">download</span>
+              <span>Download Local PC Backup</span>
+            </button>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title"><i class="fab fa-google-drive" style="color:#059669;"></i> 100% Lifetime Free Database (Google Sheets)</div>
+        <!-- 3-GRID ROW: STORAGE STATUS, BACKUP RECOVERY, CONNECTED ACCOUNT -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-lg" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; margin-bottom:24px;">
+          
+          <!-- CARD 1: DRIVE & LOCAL STORAGE QUOTA STATUS -->
+          <div class="bg-surface-card rounded-2xl p-5 border-[1.5px] border-border-medium shadow-sm flex flex-col justify-between" style="background:#fff; border-radius:16px; padding:20px; border:1.5px solid #cbd5e1;">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">pie_chart</span>
+                  </div>
+                  <h4 class="font-title-md text-[16px] font-bold text-text-primary m-0">Drive &amp; Storage Status</h4>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-200">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>Active
+                </span>
+              </div>
+              <p class="text-[12.5px] text-text-muted mb-3">Your local storage and Google Drive status for all quiz items.</p>
+              
+              <!-- Storage Progress Bar -->
+              <div class="space-y-1.5 mb-4">
+                <div class="flex justify-between text-[12px] font-semibold text-text-secondary">
+                  <span>Local DB Storage</span>
+                  <span id="storageUsageText" class="text-primary font-bold">Calculating...</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-container-low rounded-full overflow-hidden" style="height:10px; background:#f1f5f9; border-radius:10px; overflow:hidden;">
+                  <div id="storageProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full transition-all duration-500" style="width: 2%; height:100%; background:#10b981;"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-text-muted mt-1">
+                  <span>Drive Tier: 15 GB Free</span>
+                  <span>Browser Cache: ~5 MB</span>
+                </div>
+              </div>
+
+              <!-- Metrics Quick Badges -->
+              <div class="grid grid-cols-2 gap-2 text-[12px] pt-1">
+                <div class="p-2 rounded-lg bg-surface-canvas border border-border-subtle">
+                  <span class="text-text-muted block text-[11px]">Total Quizzes:</span>
+                  <strong class="text-primary text-[14px]" id="dbStatQuizzes">0</strong>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-canvas border border-border-subtle">
+                  <span class="text-text-muted block text-[11px]">Questions:</span>
+                  <strong class="text-secondary text-[14px]" id="dbStatQuestions">0</strong>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-canvas border border-border-subtle">
+                  <span class="text-text-muted block text-[11px]">Submissions:</span>
+                  <strong class="text-tertiary text-[14px]" id="dbStatSubmissions">0</strong>
+                </div>
+                <div class="p-2 rounded-lg bg-surface-canvas border border-border-subtle">
+                  <span class="text-text-muted block text-[11px]">Poll Votes:</span>
+                  <strong class="text-status-warning text-[14px]" id="dbStatVotes">0</strong>
+                </div>
+              </div>
+            </div>
+            <button onclick="calculateStorageUsage()" class="mt-4 w-full py-1.5 rounded-lg border border-border-subtle hover:bg-surface-container text-text-secondary text-[12px] font-semibold flex items-center justify-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-[15px]">refresh</span> Check Storage Now
+            </button>
+          </div>
+
+          <!-- CARD 2: DISASTER RECOVERY & LOCAL PC BACKUP -->
+          <div class="bg-surface-card rounded-2xl p-5 border-[1.5px] border-border-medium shadow-sm flex flex-col justify-between" style="background:#fff; border-radius:16px; padding:20px; border:1.5px solid #cbd5e1;">
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">save</span>
+                </div>
+                <h4 class="font-title-md text-[16px] font-bold text-text-primary m-0">PC Backup &amp; Recovery</h4>
+              </div>
+              <p class="text-[12.5px] text-text-muted mb-4">Drive मध्ये काही समस्या आल्यास किंवा कॉम्प्युटर बदलल्यास तुम्ही सर्व डेटाचा सुरक्षित बॅकअप PC वर सेव्ह करू शकता.</p>
+              
+              <!-- Download Backup Action -->
+              <div class="p-3 rounded-xl bg-indigo-50/60 border border-indigo-200 mb-3">
+                <div class="flex items-center justify-between mb-1">
+                  <strong class="text-[13px] text-indigo-950">1-Click Full Backup</strong>
+                  <span class="text-[11px] text-indigo-700 font-semibold">JSON Format</span>
+                </div>
+                <p class="text-[11.5px] text-indigo-900/80 mb-2">सर्व क्विझेस, प्रश्न, निकाल व पोल डेटा एका फाइलमध्ये डाउनलोड करा.</p>
+                <button onclick="downloadFullBackupJSON()" class="w-full py-2 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[12.5px] font-bold shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                  <span class="material-symbols-outlined text-[16px]">file_download</span>
+                  <span>Download Backup (.json)</span>
+                </button>
+              </div>
+
+              <!-- Restore Backup Action -->
+              <div class="p-3 rounded-xl bg-surface-canvas border border-border-subtle">
+                <strong class="text-[13px] text-text-primary block mb-1">Restore from PC Backup</strong>
+                <p class="text-[11.5px] text-text-muted mb-2">तुमच्या कॉम्प्युटरवरून आधीची बॅकअप फाइल निवडून डेटा पूर्ववत करा.</p>
+                <label class="w-full py-2 px-3 rounded-lg border-[1.5px] border-border-medium hover:bg-surface-container text-text-primary text-[12.5px] font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-primary">upload_file</span>
+                  <span>Select Backup File to Restore</span>
+                  <input type="file" id="backupRestoreInput" accept=".json" class="hidden" onchange="restoreBackupFromJSON(event)">
+                </label>
+              </div>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="text-[11px] text-text-muted flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-status-success">verified</span> 100% Safe Local PC Storage
+              </span>
+            </div>
+          </div>
+
+          <!-- CARD 3: GOOGLE ACCOUNT & SHEET SWITCHER -->
+          <div class="bg-surface-card rounded-2xl p-5 border-[1.5px] border-border-medium shadow-sm flex flex-col justify-between" style="background:#fff; border-radius:16px; padding:20px; border:1.5px solid #cbd5e1;">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                  </div>
+                  <h4 class="font-title-md text-[16px] font-bold text-text-primary m-0">Drive &amp; Account Settings</h4>
+                </div>
+                <button onclick="toggleAccountEditModal()" class="text-primary hover:underline text-[12px] font-semibold flex items-center gap-0.5 cursor-pointer">
+                  <span class="material-symbols-outlined text-[14px]">edit</span> Change
+                </button>
+              </div>
+              <p class="text-[12.5px] text-text-muted mb-3">तुम्ही कनेक्ट केलेले Google Drive आणि Google Sheet अकाउंट कधीही बदलू शकता.</p>
+              
+              <!-- Current Account Info Box -->
+              <div class="space-y-2 mb-4">
+                <div class="p-2.5 rounded-lg bg-surface-canvas border border-border-subtle flex items-center justify-between">
+                  <div class="min-w-0">
+                    <span class="text-[11px] text-text-muted block">Connected Google Account:</span>
+                    <strong class="text-[13px] text-text-primary truncate block" id="currentAccountEmailDisplay">ravindra.khillare@gmail.com</strong>
+                  </div>
+                  <span class="material-symbols-outlined text-[20px] text-status-success">check_circle</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-surface-canvas border border-border-subtle">
+                  <span class="text-[11px] text-text-muted block">Cloud Web App Sync:</span>
+                  <span class="text-[12px] font-mono text-text-secondary truncate block" id="currentSheetUrlDisplay">Offline / Local Mode</span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col gap-2">
+                <button onclick="openChangeAccountDialog()" class="w-full py-2 px-3 rounded-lg bg-primary hover:bg-primary-dark text-white text-[12.5px] font-bold shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                  <span class="material-symbols-outlined text-[16px]">switch_account</span>
+                  <span>Change Google Account / Sheet</span>
+                </button>
+                <button onclick="disconnectCloudAccount()" class="w-full py-1.5 px-3 rounded-lg border border-border-subtle hover:bg-red-50 text-status-danger text-[12px] font-semibold flex items-center justify-center gap-1 cursor-pointer">
+                  <span class="material-symbols-outlined text-[15px]">link_off</span>
+                  <span>Disconnect Cloud Sync</span>
+                </button>
+              </div>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="text-[11px] text-text-muted">Multi-account Google Drive support ready</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DETAILED SYNC CONFIGURATION -->
+        <div class="card mb-4" style="background:#fff; border-radius:16px; border:1.5px solid #cbd5e1; padding:20px;">
+          <div class="card-header pb-2 border-b border-border-subtle mb-4">
+            <div class="card-title text-[17px] font-bold text-text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-[22px]">table_chart</span>
+              <span>Google Sheets Database Configuration &amp; Data Tables</span>
+            </div>
           </div>
           <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">Google Apps Script Web App URL (Optional Cloud Sync):</label>
-              <input type="url" id="cloud-api-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+            <div class="form-group mb-3">
+              <label class="form-label font-semibold text-[13px] text-text-primary mb-1 block">Google Apps Script Web App URL (Cloud Sync Endpoint):</label>
+              <div class="flex items-center gap-2">
+                <input type="url" id="cloud-api-url" class="form-control flex-1 px-3 py-2 rounded-lg border border-border-subtle bg-surface-canvas text-[13px]" placeholder="https://script.google.com/macros/s/.../exec">
+                <button class="btn btn-primary px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] cursor-pointer flex items-center gap-1" onclick="saveCloudConfig()">
+                  <span class="material-symbols-outlined text-[16px]">cloud_upload</span> Save &amp; Sync
+                </button>
+              </div>
             </div>
 
-            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-              <button class="btn btn-primary" onclick="saveCloudConfig()"><i class="fas fa-cloud-upload-alt"></i> Save & Sync with Sheets</button>
+            <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="testCloudConnection()"><i class="fas fa-plug"></i> Test Cloud Connection</button>
               <button class="btn btn-outline" onclick="resetToSampleData()"><i class="fas fa-undo"></i> Reload Default Sample Quizzes</button>
+              <button class="btn btn-outline" onclick="exportAllQuizzesCSV()"><i class="fas fa-file-excel"></i> Export All Quizzes to CSV</button>
             </div>
 
-            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 10px;">Google Sheets Tables:</h4>
+            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color:#0f172a;">Connected Google Sheets Tables Architecture:</h4>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
-              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                <strong>📋 Quizzes</strong>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores titles, descriptions, timers & passing marks.</p>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                <strong style="color:#0f172a; font-size:14px;">📋 Quizzes Sheet</strong>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores titles, categories, timers, passing marks and settings.</p>
               </div>
-              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                <strong>❓ Questions</strong>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores MCQ, Checkbox, Short, Long, and Poll items.</p>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                <strong style="color:#0f172a; font-size:14px;">❓ Questions Sheet</strong>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores MCQ, Checkbox, True/False, Short Answer and Poll items.</p>
               </div>
-              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                <strong>🎯 Responses</strong>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores student marks, percentage, pass/fail and answers.</p>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                <strong style="color:#0f172a; font-size:14px;">🎯 Responses Sheet</strong>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Stores student marks, percentage, pass/fail status and timestamps.</p>
               </div>
-              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                <strong>📊 PollVotes</strong>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                <strong style="color:#0f172a; font-size:14px;">📊 PollVotes Sheet</strong>
                 <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Records instant votes and live percentage counts.</p>
               </div>
             </div>
@@ -2828,6 +3018,38 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Block 4: Best Paragraph -->
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'best-paragraph')">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+                          <span class="font-label-sm text-[12px] font-semibold text-text-primary">Best Paragraph</span>
+                        </div>
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('best-paragraph')" title="Add Block">
+                          <span class="material-symbols-outlined text-[15px]">add</span>
+                        </button>
+                      </div>
+                      <div class="w-full rounded-md p-2 bg-surface-canvas border border-border-subtle shadow-xs pointer-events-none">
+                        <div class="text-[10px] text-text-secondary leading-tight"><span class="font-bold text-primary text-[13px]">ये</span>थे तुमचा मुख्य परिच्छेद सुरू होतो (Drop-cap)...</div>
+                      </div>
+                    </div>
+                    <!-- Block 5: Text Box -->
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'text-box')">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+                          <span class="font-label-sm text-[12px] font-semibold text-text-primary">Text Box</span>
+                        </div>
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('text-box')" title="Add Block">
+                          <span class="material-symbols-outlined text-[15px]">add</span>
+                        </button>
+                      </div>
+                      <div class="w-full rounded-md p-2 bg-surface-container-low border border-primary/30 shadow-xs pointer-events-none flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-primary text-[15px] shrink-0">lightbulb</span>
+                        <span class="text-[10px] font-bold text-text-primary truncate">महत्त्वाची नोंद (Key Note)</span>
+                      </div>
+                    </div>
 
                 <!-- 2. Cards & Callouts -->
                 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
@@ -3290,6 +3512,82 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       <button class="h-8 rounded-md border-[1.5px] border-border-subtle bg-text-primary hover:opacity-90" onclick="applyThemePalette('#0f172a', '#334155')" title="Slate"></button>
                     </div>
                   </div>
+                  <!-- COLOR STYLING FOR SELECTED BLOCK / COLORFUL BOXES -->
+                  <div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle" id="blockColorSettingsSection">
+                    <div class="flex items-center justify-between">
+                      <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-primary text-[18px]">palette</span>
+                        <span>Box Colors &amp; Styling</span>
+                      </label>
+                      <span class="text-[11px] text-primary font-semibold truncate max-w-[120px]" id="selectedBlockName">Select Any Box</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                      <div>
+                        <span class="text-[11px] text-text-muted block mb-1">Background</span>
+                        <input type="color" id="boxBgColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#ffffff" oninput="applySelectedBoxColors()"/>
+                      </div>
+                      <div>
+                        <span class="text-[11px] text-text-muted block mb-1">Border</span>
+                        <input type="color" id="boxBorderColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#cbd5e1" oninput="applySelectedBoxColors()"/>
+                      </div>
+                      <div>
+                        <span class="text-[11px] text-text-muted block mb-1">Text Color</span>
+                        <input type="color" id="boxTextColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#0f172a" oninput="applySelectedBoxColors()"/>
+                      </div>
+                    </div>
+                    <!-- Quick Palette Swatches -->
+                    <div class="flex items-center gap-1 mt-0.5 flex-wrap">
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 hover:opacity-90" onclick="applyQuickBoxTheme('#ecfdf5', '#86efac', '#064e3b')">Emerald</button>
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:opacity-90" onclick="applyQuickBoxTheme('#fffbeb', '#fcd34d', '#78350f')">Amber</button>
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-900 border border-indigo-300 hover:opacity-90" onclick="applyQuickBoxTheme('#eef2ff', '#a5b4fc', '#312e81')">Indigo</button>
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-900 border border-rose-300 hover:opacity-90" onclick="applyQuickBoxTheme('#fff1f2', '#fda4af', '#881337')">Rose</button>
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-900 border border-sky-300 hover:opacity-90" onclick="applyQuickBoxTheme('#f0f9ff', '#7dd3fc', '#0c4a6e')">Sky</button>
+                      <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-300 hover:opacity-90" onclick="applyQuickBoxTheme('#faf5ff', '#d8b4fe', '#581c87')">Purple</button>
+                    </div>
+                  </div>
+
+                  <!-- INTERACTIVE CTA & QUIZ LINK SETTINGS -->
+                  <div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle hidden" id="ctaSettingsSection">
+                    <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-secondary text-[18px]">touch_app</span>
+                      <span>Quiz CTA Settings</span>
+                    </label>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">Select Quiz to Launch</span>
+                      <select id="ctaQuizSelect" class="w-full px-2 py-1.5 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] text-text-primary outline-none focus:border-primary" onchange="applyCtaQuizSelection(this.value)">
+                        <option value="">-- Choose Live Quiz --</option>
+                      </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">Button Action Text</span>
+                      <input type="text" id="ctaButtonTextInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Take Test" oninput="applyCtaButtonText(this.value)"/>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">Or Custom URL Link</span>
+                      <input type="url" id="ctaCustomUrlInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="https://... or #start-quiz" oninput="applyCtaCustomUrl(this.value)"/>
+                    </div>
+                  </div>
+
+                  <!-- PDF NOTES LINK SETTINGS -->
+                  <div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle hidden" id="pdfSettingsSection">
+                    <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-status-danger text-[18px]">picture_as_pdf</span>
+                      <span>PDF Notes Link</span>
+                    </label>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">PDF URL / Google Drive Link</span>
+                      <input type="url" id="pdfUrlInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="https://drive.google.com/..." oninput="updateSelectedPdfLink(this.value)"/>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">PDF Title</span>
+                      <input type="text" id="pdfTitleInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Study Notes.pdf" oninput="updateSelectedPdfTitle(this.value)"/>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <span class="text-[11px] text-text-muted">Download Button Text</span>
+                      <input type="text" id="pdfBtnTextInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Download PDF" oninput="updateSelectedPdfBtnText(this.value)"/>
+                    </div>
+                  </div>
+
                   <!-- Spacing & Border Radius Slider -->
                   <div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle">
                     <div class="flex items-center justify-between font-label-md text-label-md text-text-primary font-medium">
@@ -6474,7 +6772,25 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     }
 
     function getBlockTemplate(type) {
-      if (type === 'hero-gradient') {
+      if (type === 'best-paragraph') {
+        return `
+          <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-card border-[1.5px] border-border-subtle shadow-xs" data-block-type="paragraph" onclick="selectBlockForStyling(this)">
+            <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true" style="font-size:15px; line-height:1.8;">
+              <span style="float:left; font-size:40px; line-height:36px; padding-top:4px; padding-right:8px; font-weight:800; color:#3525cd; font-family:serif;">ये</span>थे तुमचा मुख्य परिच्छेद सुरू होतो. हा आकर्षक ड्रॉप-कॅप परिच्छेद ब्लॉग वाचकांसाठी अत्यंत सुलभ आणि वाचनीय बनवतो. परीक्षेची तयारी, महत्त्वाचे मुद्दे किंवा अभ्यासक्रमाचे सार येथे प्रभावीपणे मांडता येते.
+            </p>
+          </div>`;
+      } else if (type === 'text-box') {
+        return `
+          <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-container-low border-[1.5px] border-primary/30 shadow-xs" data-block-type="textbox" onclick="selectBlockForStyling(this)">
+            <div class="flex items-center gap-2 mb-2 text-primary font-title-sm text-title-sm font-bold">
+              <span class="material-symbols-outlined text-[20px]">lightbulb</span>
+              <span contenteditable="true">महत्त्वाची नोंद (Key Note)</span>
+            </div>
+            <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true">
+              हा एक टेक्स्ट बॉक्स आहे ज्यामध्ये तुम्ही कोणत्याही विषयाची सविस्तर माहिती, महत्त्वाचे फॉर्म्युले किंवा व्याख्या हायलाइट करून दाखवू शकता.
+            </p>
+          </div>`;
+      } else if (type === 'hero-gradient') {
         return `
           <div class="canvas-block group relative rounded-xl p-space-md bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary shadow-md border-[1.5px] border-primary-dark">
             <h2 class="font-headline-sm text-headline-sm text-on-primary font-bold" contenteditable="true">Engaging New Main Headline</h2>
@@ -6548,62 +6864,38 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             </div>
           </div>
         `;
-      } else if (type === 'standard-table') {
+      } else if (type === 'standard-table' || type === 'edu-table') {
         return `
-          <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card">
+          <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card" data-block-type="table" onclick="selectBlockForStyling(this)">
+            <div class="p-3 bg-surface-container-low border-b-[1.5px] border-border-medium flex items-center justify-between flex-wrap gap-2">
+              <span class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5 font-bold">
+                <span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
+                <span contenteditable="true">MPSC Exam Scheme &amp; Marks</span>
+              </span>
+              <div class="table-editor-bar flex items-center gap-1 flex-wrap">
+                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableRow(this)" title="Add Row">+ Row</button>
+                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableRow(this)" title="Delete Row">- Row</button>
+                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableColumn(this)" title="Add Column">+ Col</button>
+                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableColumn(this)" title="Delete Column">- Col</button>
+              </div>
+            </div>
             <div class="w-full overflow-x-auto custom-designer-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
               <table class="w-full text-left font-body-sm text-body-sm min-w-[320px]">
                 <thead class="bg-surface-container text-text-primary font-title-sm border-b-[1.5px] border-border-medium">
                   <tr>
-                    <th class="p-space-sm font-semibold">Subject / Section</th>
-                    <th class="p-space-sm font-semibold">Marks</th>
-                    <th class="p-space-sm font-semibold">Duration</th>
+                    <th class="p-2.5" contenteditable="true">Subject</th>
+                    <th class="p-2.5 text-center" contenteditable="true">Total Questions</th>
+                    <th class="p-2.5 text-center" contenteditable="true">Max Marks</th>
+                    <th class="p-2.5 text-center" contenteditable="true">Duration</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-border-subtle" contenteditable="true">
-                  <tr>
-                    <td class="p-space-sm">General Knowledge & Current Affairs</td>
-                    <td class="p-space-sm font-medium">30</td>
-                    <td class="p-space-sm">30 Mins</td>
-                  </tr>
-                  <tr>
-                    <td class="p-space-sm">Quantitative Aptitude & Reasoning</td>
-                    <td class="p-space-sm font-medium">40</td>
-                    <td class="p-space-sm">45 Mins</td>
-                  </tr>
+                <tbody class="divide-y divide-border-subtle text-text-secondary" contenteditable="true">
+                  <tr><td class="p-2.5 font-medium text-text-primary">General Studies (GS Paper 1)</td><td class="p-2.5 text-center">100</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
+                  <tr><td class="p-2.5 font-medium text-text-primary">CSAT Aptitude</td><td class="p-2.5 text-center">80</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
                 </tbody>
               </table>
             </div>
-          </div>
-        `;
-      } else if (type === 'pricing-table') {
-        return `
-          <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card">
-            <div class="w-full overflow-x-auto custom-designer-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
-              <table class="w-full text-left font-body-sm text-body-sm min-w-[320px]">
-                <thead class="bg-primary text-on-primary font-title-sm">
-                  <tr>
-                    <th class="p-space-sm">Mock Test Series</th>
-                    <th class="p-space-sm">Tests Included</th>
-                    <th class="p-space-sm">Validity</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-border-subtle" contenteditable="true">
-                  <tr>
-                    <td class="p-space-sm font-medium">Free Starter Pack</td>
-                    <td class="p-space-sm">5 Practice Sets</td>
-                    <td class="p-space-sm">Lifetime</td>
-                  </tr>
-                  <tr>
-                    <td class="p-space-sm font-medium">Premium Exam Prep</td>
-                    <td class="p-space-sm">40 Full Length Mocks</td>
-                    <td class="p-space-sm">1 Year</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
+          </div>`;
       } else if (type === 'quiz-cta') {
         return `
           <div class="canvas-block group relative p-space-lg rounded-xl bg-gradient-to-br from-surface-container to-surface-card border-[1.5px] border-primary/40 shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
@@ -7078,6 +7370,457 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       visualCanvasElement.addEventListener('paste', handleSmartPaste);
     }
   </script>
-  <script src="shared-ui.js"></script>
+  <script src="shared-ui.js">
+
+    // =========================================================================
+    // FEATURE 4: DYNAMIC TABLE EDITOR (ADD/REMOVE ROWS & COLS) IN INDEX.HTML
+    // =========================================================================
+    function addTableRow(btn) {
+      const block = btn.closest('.canvas-block');
+      if (!block) return;
+      const table = block.querySelector('table');
+      if (!table) return;
+      const tbody = table.querySelector('tbody');
+      const thead = table.querySelector('thead');
+      if (!tbody || !thead) return;
+
+      const colCount = thead.querySelectorAll('th').length || 3;
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-surface-container-low/50';
+      let cellsHtml = '';
+      for (let i = 0; i < colCount; i++) {
+        const alignClass = i === 0 ? 'p-2.5 font-medium text-text-primary' : 'p-2.5 text-center';
+        cellsHtml += '<td class="' + alignClass + '" contenteditable="true">New Data</td>';
+      }
+      tr.innerHTML = cellsHtml;
+      tbody.appendChild(tr);
+      showNotification('नवीन ओळ यशस्वीरित्या जोडली!');
+    }
+
+    function deleteTableRow(btn) {
+      const block = btn.closest('.canvas-block');
+      if (!block) return;
+      const tbody = block.querySelector('tbody');
+      if (!tbody) return;
+      const rows = tbody.querySelectorAll('tr');
+      if (rows.length > 1) {
+        rows[rows.length - 1].remove();
+        showNotification('शेवटची ओळ काढली!');
+      } else {
+        alert('टेबलमध्ये किमान १ ओळ असणे आवश्यक आहे.');
+      }
+    }
+
+    function addTableColumn(btn) {
+      const block = btn.closest('.canvas-block');
+      if (!block) return;
+      const table = block.querySelector('table');
+      if (!table) return;
+      const theadRow = table.querySelector('thead tr');
+      const tbodyRows = table.querySelectorAll('tbody tr');
+      if (!theadRow) return;
+
+      const th = document.createElement('th');
+      th.className = 'p-2.5 text-center';
+      th.setAttribute('contenteditable', 'true');
+      th.innerText = 'Header ' + (theadRow.children.length + 1);
+      theadRow.appendChild(th);
+
+      tbodyRows.forEach(tr => {
+        const td = document.createElement('td');
+        td.className = 'p-2.5 text-center';
+        td.setAttribute('contenteditable', 'true');
+        td.innerText = '-';
+        tr.appendChild(td);
+      });
+      showNotification('नवीन कॉलम जोडला!');
+    }
+
+    function deleteTableColumn(btn) {
+      const block = btn.closest('.canvas-block');
+      if (!block) return;
+      const table = block.querySelector('table');
+      if (!table) return;
+      const theadCells = table.querySelectorAll('thead tr th');
+      if (theadCells.length <= 1) {
+        alert('टेबलमध्ये किमान १ कॉलम असणे आवश्यक आहे.');
+        return;
+      }
+      const lastIndex = theadCells.length - 1;
+      theadCells[lastIndex].remove();
+
+      const tbodyRows = table.querySelectorAll('tbody tr');
+      tbodyRows.forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        if (tds[lastIndex]) tds[lastIndex].remove();
+      });
+      showNotification('कॉलम काढला!');
+    }
+
+    // =========================================================================
+    // FEATURE 3: BLOCK SELECTION, COLOR & STYLE MANAGEMENT IN INDEX.HTML
+    // =========================================================================
+    let currentlySelectedBlock = null;
+
+    function selectBlockForStyling(target) {
+      let block = target;
+      if (target.closest) {
+        block = target.closest('.canvas-block') || target;
+      }
+      if (!block || !block.classList.contains('canvas-block')) return;
+
+      document.querySelectorAll('.canvas-block').forEach(b => b.classList.remove('ring-2', 'ring-primary'));
+      block.classList.add('ring-2', 'ring-primary');
+      currentlySelectedBlock = block;
+
+      switchRightTab('style');
+
+      const titleEl = block.querySelector('h2, h3, h4, h5, p, [class*="font-title"]');
+      const blockName = titleEl ? titleEl.innerText.trim().slice(0, 18) + '...' : 'Selected Block';
+      const labelEl = document.getElementById('selectedBlockName');
+      if (labelEl) labelEl.innerText = blockName;
+
+      const computed = window.getComputedStyle(block);
+      const rgbToHex = col => {
+        if (!col || col === 'transparent' || col.startsWith('rgba(0, 0, 0, 0)')) return '#ffffff';
+        const m = col.match(/\d+/g);
+        if (!m || m.length < 3) return '#ffffff';
+        return '#' + ((1 << 24) + (parseInt(m[0]) << 16) + (parseInt(m[1]) << 8) + parseInt(m[2])).toString(16).slice(1);
+      };
+
+      const bgPicker = document.getElementById('boxBgColorPicker');
+      const borderPicker = document.getElementById('boxBorderColorPicker');
+      const textPicker = document.getElementById('boxTextColorPicker');
+
+      if (bgPicker && computed.backgroundColor) bgPicker.value = rgbToHex(computed.backgroundColor);
+      if (borderPicker && computed.borderColor) borderPicker.value = rgbToHex(computed.borderColor);
+      if (textPicker && computed.color) textPicker.value = rgbToHex(computed.color);
+
+      // Toggle CTA Settings
+      const ctaSection = document.getElementById('ctaSettingsSection');
+      const pdfSection = document.getElementById('pdfSettingsSection');
+      const isCta = block.getAttribute('data-block-type') === 'cta' || block.querySelector('.cta-action-btn') || block.querySelector('[href="#start-quiz"]');
+      const isPdf = block.getAttribute('data-block-type') === 'pdf' || block.querySelector('.pdf-download-link') || block.querySelector('[download]');
+
+      if (ctaSection) {
+        if (isCta) {
+          ctaSection.classList.remove('hidden');
+          populateCtaQuizDropdown();
+          const btnText = block.querySelector('.cta-btn-text') || block.querySelector('a span');
+          const btnInput = document.getElementById('ctaButtonTextInput');
+          if (btnInput && btnText) btnInput.value = btnText.innerText.trim();
+        } else {
+          ctaSection.classList.add('hidden');
+        }
+      }
+
+      if (pdfSection) {
+        if (isPdf) {
+          pdfSection.classList.remove('hidden');
+          const link = block.querySelector('.pdf-download-link') || block.querySelector('a');
+          const title = block.querySelector('.pdf-title') || block.querySelector('p');
+          const btnText = block.querySelector('.pdf-btn-text') || block.querySelector('button');
+
+          const urlInput = document.getElementById('pdfUrlInput');
+          const titleInput = document.getElementById('pdfTitleInput');
+          const btnInput = document.getElementById('pdfBtnTextInput');
+
+          if (urlInput && link) urlInput.value = link.getAttribute('href') || '';
+          if (titleInput && title) titleInput.value = title.innerText.trim();
+          if (btnInput && btnText) btnInput.value = btnText.innerText.trim();
+        } else {
+          pdfSection.classList.add('hidden');
+        }
+      }
+    }
+
+    function applySelectedBoxColors() {
+      if (!currentlySelectedBlock) return;
+      const bg = document.getElementById('boxBgColorPicker').value;
+      const border = document.getElementById('boxBorderColorPicker').value;
+      const text = document.getElementById('boxTextColorPicker').value;
+
+      currentlySelectedBlock.style.backgroundColor = bg;
+      currentlySelectedBlock.style.borderColor = border;
+      currentlySelectedBlock.style.color = text;
+
+      const textEls = currentlySelectedBlock.querySelectorAll('p, h2, h3, h4, h5, span');
+      textEls.forEach(el => {
+        if (!el.classList.contains('text-on-primary') && !el.closest('button') && !el.closest('a')) {
+          el.style.color = text;
+        }
+      });
+    }
+
+    function applyQuickBoxTheme(bg, border, text) {
+      const bgPicker = document.getElementById('boxBgColorPicker');
+      const borderPicker = document.getElementById('boxBorderColorPicker');
+      const textPicker = document.getElementById('boxTextColorPicker');
+      if (bgPicker) bgPicker.value = bg;
+      if (borderPicker) borderPicker.value = border;
+      if (textPicker) textPicker.value = text;
+      applySelectedBoxColors();
+      showNotification('रंग थीम लागू केली!');
+    }
+
+    // =========================================================================
+    // FEATURE 5 & 6: CTA QUIZ SELECTOR & PDF LINK HANDLERS IN INDEX.HTML
+    // =========================================================================
+    function populateCtaQuizDropdown() {
+      const sel = document.getElementById('ctaQuizSelect');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">-- Choose Live Quiz --</option>';
+
+      (quizzes || []).forEach(q => {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = q.title + ' (' + (q.questions ? q.questions.length : 0) + ' Qs)';
+        sel.appendChild(opt);
+      });
+    }
+
+    function applyCtaQuizSelection(quizId) {
+      if (!currentlySelectedBlock || !quizId) return;
+      const quiz = (quizzes || []).find(q => q.id === quizId);
+      if (!quiz) return;
+
+      const titleEl = currentlySelectedBlock.querySelector('.cta-title') || currentlySelectedBlock.querySelector('h4');
+      const descEl = currentlySelectedBlock.querySelector('.cta-desc') || currentlySelectedBlock.querySelector('p');
+      const btnEl = currentlySelectedBlock.querySelector('.cta-action-btn') || currentlySelectedBlock.querySelector('a');
+
+      if (titleEl) titleEl.innerText = quiz.title;
+      if (descEl) descEl.innerText = (quiz.questions ? quiz.questions.length : 20) + ' Questions • ' + (quiz.timeLimitMinutes || 15) + ' Mins • Instant Result';
+      if (btnEl) btnEl.setAttribute('href', 'quiz-player.html?quizId=' + quizId);
+
+      showNotification('CTA क्विझसह अपडेट झाले!');
+    }
+
+    function applyCtaButtonText(val) {
+      if (!currentlySelectedBlock) return;
+      const btnText = currentlySelectedBlock.querySelector('.cta-btn-text') || currentlySelectedBlock.querySelector('a span');
+      if (btnText) btnText.innerText = val || 'Take Test';
+    }
+
+    function applyCtaCustomUrl(url) {
+      if (!currentlySelectedBlock) return;
+      const btn = currentlySelectedBlock.querySelector('.cta-action-btn') || currentlySelectedBlock.querySelector('a');
+      if (btn) btn.setAttribute('href', url || '#start-quiz');
+    }
+
+    function updateSelectedPdfLink(url) {
+      if (!currentlySelectedBlock) return;
+      const link = currentlySelectedBlock.querySelector('.pdf-download-link') || currentlySelectedBlock.querySelector('a');
+      if (link) link.setAttribute('href', url || '#');
+    }
+
+    function updateSelectedPdfTitle(val) {
+      if (!currentlySelectedBlock) return;
+      const title = currentlySelectedBlock.querySelector('.pdf-title') || currentlySelectedBlock.querySelector('p');
+      if (title) title.innerText = val || 'Study Notes.pdf';
+    }
+
+    function updateSelectedPdfBtnText(val) {
+      if (!currentlySelectedBlock) return;
+      const btnText = currentlySelectedBlock.querySelector('.pdf-btn-text') || currentlySelectedBlock.querySelector('a span') || currentlySelectedBlock.querySelector('button');
+      if (btnText) btnText.innerText = val || 'Download PDF';
+    }
+
+    // =========================================================================
+    // FEATURE 7: STORAGE STATUS & LOCAL PC BACKUP IN INDEX.HTML
+    // =========================================================================
+    function calculateStorageUsage() {
+      let totalBytes = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const val = localStorage.getItem(key);
+        totalBytes += (key ? key.length : 0) + (val ? val.length : 0);
+      }
+      // UTF-16 characters = 2 bytes approximately
+      const kbUsed = (totalBytes * 2 / 1024).toFixed(1);
+      const mbQuota = 5.0;
+      const percent = Math.min(100, Math.max(1, ((kbUsed / (mbQuota * 1024)) * 100))).toFixed(1);
+
+      const usageEl = document.getElementById('storageUsageText');
+      const barEl = document.getElementById('storageProgressBar');
+      if (usageEl) usageEl.textContent = kbUsed + ' KB / 5 MB (' + percent + '%)';
+      if (barEl) barEl.style.width = percent + '%';
+
+      // Update counters
+      let totalQ = 0;
+      (quizzes || []).forEach(q => { totalQ += (q.questions || []).length; });
+
+      const sq = document.getElementById('dbStatQuizzes');
+      const sQuest = document.getElementById('dbStatQuestions');
+      const sSub = document.getElementById('dbStatSubmissions');
+      const sVote = document.getElementById('dbStatVotes');
+
+      if (sq) sq.textContent = (quizzes || []).length;
+      if (sQuest) sQuest.textContent = totalQ;
+      if (sSub) sSub.textContent = (submissions || []).length;
+      if (sVote) sVote.textContent = (pollVotes || []).length;
+
+      // Update current sheet / account display
+      const currentUrl = localStorage.getItem('rk_cloud_api_url') || '';
+      const urlDisp = document.getElementById('currentSheetUrlDisplay');
+      if (urlDisp) {
+        urlDisp.textContent = currentUrl ? currentUrl.slice(0, 45) + '...' : 'Offline / Local PC Mode';
+      }
+
+      const emailDisp = document.getElementById('currentAccountEmailDisplay');
+      const savedEmail = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
+      if (emailDisp) emailDisp.textContent = savedEmail;
+    }
+
+    function downloadFullBackupJSON() {
+      const backupData = {
+        app: 'RK QuizMaker',
+        version: '2.5.0',
+        author: 'Ravindra Khillare',
+        timestamp: new Date().toISOString(),
+        backupDate: new Date().toLocaleDateString('mr-IN'),
+        quizzes: quizzes || [],
+        submissions: submissions || [],
+        pollVotes: pollVotes || [],
+        settings: {
+          cloudApiUrl: localStorage.getItem('rk_cloud_api_url') || '',
+          accountEmail: localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com'
+        }
+      };
+
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      downloadAnchor.setAttribute('href', dataStr);
+      downloadAnchor.setAttribute('download', 'rk_quizmaker_backup_' + dateStr + '.json');
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showNotification('डेटा बॅकअप फाइल PC वर डाऊनलोड झाली!');
+    }
+
+    function restoreBackupFromJSON(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (!imported.quizzes || !Array.isArray(imported.quizzes)) {
+            alert('अवैध बॅकअप फाइल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाइल निवडा.');
+            return;
+          }
+
+          if (confirm('या बॅकअपमध्ये ' + imported.quizzes.length + ' क्विझेस आढळले आहेत. हा बॅकअप रिस्टोअर करायचा आहे का?')) {
+            quizzes = imported.quizzes;
+            localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
+
+            if (imported.submissions && Array.isArray(imported.submissions)) {
+              submissions = imported.submissions;
+              localStorage.setItem('rk_submissions', JSON.stringify(submissions));
+            }
+            if (imported.pollVotes && Array.isArray(imported.pollVotes)) {
+              pollVotes = imported.pollVotes;
+              localStorage.setItem('rk_poll_votes', JSON.stringify(pollVotes));
+            }
+            if (imported.settings && imported.settings.cloudApiUrl) {
+              localStorage.setItem('rk_cloud_api_url', imported.settings.cloudApiUrl);
+            }
+            if (imported.settings && imported.settings.accountEmail) {
+              localStorage.setItem('rk_google_account_email', imported.settings.accountEmail);
+            }
+
+            renderQuizzes();
+            updateStats();
+            calculateStorageUsage();
+            showNotification('डेटा बॅकअप यशस्वीरित्या रिस्टोअर झाला!');
+          }
+        } catch (err) {
+          alert('फाइल वाचताना त्रुटी आली: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    // =========================================================================
+    // FEATURE 8: CHANGE GOOGLE ACCOUNT & SHEET URL IN INDEX.HTML
+    // =========================================================================
+    function openChangeAccountDialog() {
+      const currentEmail = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
+      const currentUrl = localStorage.getItem('rk_cloud_api_url') || '';
+
+      const newEmail = prompt('तुमचा Google Drive Account Email प्रविष्ट करा:', currentEmail);
+      if (newEmail === null) return;
+
+      const newUrl = prompt('तुमचा Google Apps Script Web App URL प्रविष्ट करा (रिकामे ठेवल्यास Offline):', currentUrl);
+      if (newUrl === null) return;
+
+      if (newEmail.trim()) {
+        localStorage.setItem('rk_google_account_email', newEmail.trim());
+      }
+      localStorage.setItem('rk_cloud_api_url', newUrl.trim());
+
+      calculateStorageUsage();
+      showNotification('Google Drive अकाउंट व शीट सेटिंग्ज अपडेट झाल्या!');
+    }
+
+    function toggleAccountEditModal() {
+      openChangeAccountDialog();
+    }
+
+    function disconnectCloudAccount() {
+      if (confirm('तुम्हाला Google Cloud Sync डिस्कनेक्ट करून Local Offline Mode मध्ये काम करायचे आहे का?')) {
+        localStorage.removeItem('rk_cloud_api_url');
+        const input = document.getElementById('cloud-api-url');
+        if (input) input.value = '';
+        calculateStorageUsage();
+        showNotification('Cloud Sync डिस्कनेक्ट केले. डेटा सुरक्षित आहे.');
+      }
+    }
+
+    function testCloudConnection() {
+      const url = (document.getElementById('cloud-api-url') ? document.getElementById('cloud-api-url').value.trim() : '') || localStorage.getItem('rk_cloud_api_url');
+      if (!url) {
+        alert('कृपया आधी Google Apps Script Web App URL टाका.');
+        return;
+      }
+      showNotification('Google Drive शी संपर्क साधत आहे...');
+      fetch(url + '?action=ping', { mode: 'no-cors' })
+        .then(() => {
+          alert('यशस्वी! Google Drive & Sheet Web App शी कनेक्शन चालू आहे.');
+        })
+        .catch(err => {
+          alert('कनेक्शन तपासताना अडचण: ' + err.message + ' (वेब अ‍ॅपचा एक्सेस Anyone असावा)');
+        });
+    }
+
+    function exportAllQuizzesCSV() {
+      if (!quizzes || quizzes.length === 0) {
+        alert('एक्सपोर्ट करण्यासाठी क्विझेस उपलब्ध नाहीत.');
+        return;
+      }
+      let csv = 'ID,Title,Category,QuestionsCount,PassingScore,TimeLimitMinutes\n';
+      quizzes.forEach(q => {
+        csv += [
+          '"' + (q.id || '') + '"',
+          '"' + ((q.title || '').replace(/"/g, '""')) + '"',
+          '"' + (q.category || 'MPSC') + '"',
+          (q.questions ? q.questions.length : 0),
+          (q.passingScore || 50),
+          (q.timeLimitMinutes || 15)
+        ].join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'rk_all_quizzes.csv';
+      link.click();
+      showNotification('Quizzes CSV यशस्वीरित्या डाऊनलोड झाली!');
+    }
+
+</script>
 </body>
 </html>

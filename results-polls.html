@@ -650,6 +650,32 @@
               </div>
             </div>
 
+            <!-- STORAGE QUOTA & LOCAL PC BACKUP ROW -->
+            <div class="pt-space-sm border-t border-border-subtle flex flex-col gap-3">
+              <div class="p-3 rounded-xl bg-surface-container-low border border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                  </div>
+                  <div>
+                    <span class="text-[12.5px] font-bold text-text-primary block">Local PC Data Backup &amp; Storage</span>
+                    <span class="text-[11px] text-text-muted">Google Drive समस्या आल्यास PC वर सुरक्षित बॅकअप सेव्ह करा</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-end">
+                  <button onclick="downloadFullBackupJSON()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-label-md text-label-md transition-colors flex items-center gap-1 shadow-xs cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">file_download</span>
+                    <span>Download Backup (.json)</span>
+                  </button>
+                  <label class="px-3 py-1.5 rounded-lg border border-border-medium hover:bg-surface-container text-text-primary font-label-md text-label-md transition-colors flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px] text-primary">upload_file</span>
+                    <span>Restore</span>
+                    <input type="file" accept=".json" class="hidden" onchange="restoreBackupFromJSON(event)">
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <!-- Action Row: Sync Now & Open Sheet -->
             <div class="pt-space-xs flex flex-col sm:flex-row items-center justify-between gap-space-sm border-t border-border-subtle">
               <button class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-md py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-dark font-label-md text-label-md transition-colors shadow-sm" onclick="saveAndSync()">
@@ -1096,6 +1122,86 @@
 
     window.addEventListener('DOMContentLoaded', initResultsPage);
   </script>
-  <script src="shared-ui.js"></script>
+  <script src="shared-ui.js">
+
+  // =========================================================================
+  // STORAGE & BACKUP RECOVERY FUNCTIONS
+  // =========================================================================
+  function downloadFullBackupJSON() {
+    let qList = [];
+    let sList = [];
+    try {
+      qList = JSON.parse(localStorage.getItem('rk_quizzes') || '[]');
+      sList = JSON.parse(localStorage.getItem('rk_submissions') || '[]');
+    } catch(e) {}
+
+    const backupData = {
+      app: 'RK QuizMaker',
+      version: '2.5.0',
+      author: 'Ravindra Khillare',
+      timestamp: new Date().toISOString(),
+      backupDate: new Date().toLocaleDateString('mr-IN'),
+      quizzes: qList,
+      submissions: sList,
+      pollVotes: JSON.parse(localStorage.getItem('rk_poll_votes') || '[]'),
+      settings: {
+        cloudApiUrl: localStorage.getItem('rk_cloud_api_url') || '',
+        accountEmail: localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com'
+      }
+    };
+
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', 'rk_quizmaker_backup_' + dateStr + '.json');
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+
+    showToast('डेटा बॅकअप फाइल PC वर डाऊनलोड झाली!', 'save');
+  }
+
+  function restoreBackupFromJSON(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (!imported.quizzes || !Array.isArray(imported.quizzes)) {
+          alert('अवैध बॅकअप फाइल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाइल निवडा.');
+          return;
+        }
+
+        if (confirm('या बॅकअपमध्ये ' + imported.quizzes.length + ' क्विझेस आढळले आहेत. हा बॅकअप रिस्टोअर करायचा आहे का?')) {
+          localStorage.setItem('rk_quizzes', JSON.stringify(imported.quizzes));
+
+          if (imported.submissions && Array.isArray(imported.submissions)) {
+            localStorage.setItem('rk_submissions', JSON.stringify(imported.submissions));
+          }
+          if (imported.pollVotes && Array.isArray(imported.pollVotes)) {
+            localStorage.setItem('rk_poll_votes', JSON.stringify(imported.pollVotes));
+          }
+          if (imported.settings && imported.settings.cloudApiUrl) {
+            localStorage.setItem('rk_cloud_api_url', imported.settings.cloudApiUrl);
+          }
+          if (imported.settings && imported.settings.accountEmail) {
+            localStorage.setItem('rk_google_account_email', imported.settings.accountEmail);
+          }
+
+          showToast('डेटा बॅकअप यशस्वीरित्या रिस्टोअर झाला!', 'cloud_done');
+          setTimeout(() => location.reload(), 1000);
+        }
+      } catch (err) {
+        alert('फाइल वाचताना त्रुटी आली: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+</script>
 </body>
 </html>

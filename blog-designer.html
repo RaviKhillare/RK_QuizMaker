@@ -136,6 +136,38 @@
 </div>
 </div>
 </div>
+<!-- Block 4: Best Paragraph -->
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'best-paragraph')">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+      <span class="font-label-sm text-[12px] font-semibold text-text-primary">Best Paragraph</span>
+    </div>
+    <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('best-paragraph')" title="Add Block">
+      <span class="material-symbols-outlined text-[15px]">add</span>
+    </button>
+  </div>
+  <div class="w-full rounded-md p-2 bg-surface-canvas border border-border-subtle shadow-xs pointer-events-none">
+    <div class="text-[10px] text-text-secondary leading-tight"><span class="font-bold text-primary text-[13px]">ये</span>थे तुमचा मुख्य परिच्छेद सुरू होतो (Drop-cap)...</div>
+  </div>
+</div>
+<!-- Block 5: Text Box -->
+<div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'text-box')">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
+      <span class="font-label-sm text-[12px] font-semibold text-text-primary">Text Box</span>
+    </div>
+    <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('text-box')" title="Add Block">
+      <span class="material-symbols-outlined text-[15px]">add</span>
+    </button>
+  </div>
+  <div class="w-full rounded-md p-2 bg-surface-container-low border border-primary/30 shadow-xs pointer-events-none flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-primary text-[15px] shrink-0">lightbulb</span>
+    <span class="text-[10px] font-bold text-text-primary truncate">महत्त्वाची नोंद (Key Note)</span>
+  </div>
+</div>
+
 <!-- 2. Cards & Callouts -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-cards')">
@@ -584,6 +616,82 @@
 <button class="h-8 rounded-md border-[1.5px] border-border-subtle bg-text-primary hover:opacity-90" onclick="applyThemePalette('#0f172a', '#334155')" title="Slate"></button>
 </div>
 </div>
+<!-- COLOR STYLING FOR SELECTED BLOCK / COLORFUL BOXES -->
+<div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle" id="blockColorSettingsSection">
+  <div class="flex items-center justify-between">
+    <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px]">palette</span>
+      <span>Box Colors &amp; Styling</span>
+    </label>
+    <span class="text-[11px] text-primary font-semibold truncate max-w-[120px]" id="selectedBlockName">Select Any Box</span>
+  </div>
+  <div class="grid grid-cols-3 gap-2">
+    <div>
+      <span class="text-[11px] text-text-muted block mb-1">Background</span>
+      <input type="color" id="boxBgColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#ffffff" oninput="applySelectedBoxColors()"/>
+    </div>
+    <div>
+      <span class="text-[11px] text-text-muted block mb-1">Border</span>
+      <input type="color" id="boxBorderColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#cbd5e1" oninput="applySelectedBoxColors()"/>
+    </div>
+    <div>
+      <span class="text-[11px] text-text-muted block mb-1">Text Color</span>
+      <input type="color" id="boxTextColorPicker" class="w-full h-7 rounded border border-border-subtle cursor-pointer p-0.5 bg-surface-canvas" value="#0f172a" oninput="applySelectedBoxColors()"/>
+    </div>
+  </div>
+  <!-- Quick Palette Swatches -->
+  <div class="flex items-center gap-1 mt-0.5 flex-wrap">
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 hover:opacity-90" onclick="applyQuickBoxTheme('#ecfdf5', '#86efac', '#064e3b')">Emerald</button>
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:opacity-90" onclick="applyQuickBoxTheme('#fffbeb', '#fcd34d', '#78350f')">Amber</button>
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-900 border border-indigo-300 hover:opacity-90" onclick="applyQuickBoxTheme('#eef2ff', '#a5b4fc', '#312e81')">Indigo</button>
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-900 border border-rose-300 hover:opacity-90" onclick="applyQuickBoxTheme('#fff1f2', '#fda4af', '#881337')">Rose</button>
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-900 border border-sky-300 hover:opacity-90" onclick="applyQuickBoxTheme('#f0f9ff', '#7dd3fc', '#0c4a6e')">Sky</button>
+    <button type="button" class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-300 hover:opacity-90" onclick="applyQuickBoxTheme('#faf5ff', '#d8b4fe', '#581c87')">Purple</button>
+  </div>
+</div>
+
+<!-- INTERACTIVE CTA & QUIZ LINK SETTINGS -->
+<div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle hidden" id="ctaSettingsSection">
+  <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-secondary text-[18px]">touch_app</span>
+    <span>Quiz CTA Settings</span>
+  </label>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">Select Quiz to Launch</span>
+    <select id="ctaQuizSelect" class="w-full px-2 py-1.5 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] text-text-primary outline-none focus:border-primary" onchange="applyCtaQuizSelection(this.value)">
+      <option value="">-- Choose Live Quiz --</option>
+    </select>
+  </div>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">Button Action Text</span>
+    <input type="text" id="ctaButtonTextInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Take Test" oninput="applyCtaButtonText(this.value)"/>
+  </div>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">Or Custom URL Link</span>
+    <input type="url" id="ctaCustomUrlInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="https://... or #start-quiz" oninput="applyCtaCustomUrl(this.value)"/>
+  </div>
+</div>
+
+<!-- PDF NOTES LINK SETTINGS -->
+<div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle hidden" id="pdfSettingsSection">
+  <label class="font-label-md text-label-md text-text-primary font-bold flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-status-danger text-[18px]">picture_as_pdf</span>
+    <span>PDF Notes Link</span>
+  </label>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">PDF URL / Google Drive Link</span>
+    <input type="url" id="pdfUrlInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="https://drive.google.com/..." oninput="updateSelectedPdfLink(this.value)"/>
+  </div>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">PDF Title</span>
+    <input type="text" id="pdfTitleInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Study Notes.pdf" oninput="updateSelectedPdfTitle(this.value)"/>
+  </div>
+  <div class="flex flex-col gap-1">
+    <span class="text-[11px] text-text-muted">Download Button Text</span>
+    <input type="text" id="pdfBtnTextInput" class="w-full px-2 py-1 rounded border border-border-subtle bg-surface-canvas text-[12px]" placeholder="Download PDF" oninput="updateSelectedPdfBtnText(this.value)"/>
+  </div>
+</div>
+
 <!-- Spacing & Border Radius Slider -->
 <div class="flex flex-col gap-2 pt-2 border-t-[1.5px] border-border-subtle">
 <div class="flex items-center justify-between font-label-md text-label-md text-text-primary">
@@ -1270,25 +1378,41 @@
         </div>`;
     } else if (type === 'edu-table') {
       return `
-        <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card">
-          <div class="p-3 bg-surface-container-low border-b-[1.5px] border-border-medium flex items-center justify-between">
+        <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card" data-block-type="table" onclick="selectBlockForStyling(this)">
+          <div class="p-3 bg-surface-container-low border-b-[1.5px] border-border-medium flex items-center justify-between flex-wrap gap-2">
             <span class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5 font-bold">
               <span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
               <span contenteditable="true">MPSC Exam Scheme &amp; Marks</span>
             </span>
+            <!-- Dynamic Table Editor Bar -->
+            <div class="table-editor-bar flex items-center gap-1 flex-wrap">
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableRow(this)" title="Add New Row (नवीन ओळ जोडा)">
+                <span class="material-symbols-outlined text-[13px] text-status-success">add_circle</span> + Row
+              </button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableRow(this)" title="Delete Last Row (शेवटची ओळ काढा)">
+                <span class="material-symbols-outlined text-[13px] text-status-danger">remove_circle</span> - Row
+              </button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableColumn(this)" title="Add Column (नवीन कॉलम जोडा)">
+                <span class="material-symbols-outlined text-[13px] text-primary">view_column</span> + Col
+              </button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableColumn(this)" title="Delete Last Column (शेवटचा कॉलम काढा)">
+                <span class="material-symbols-outlined text-[13px] text-status-warning">table_rows_narrow</span> - Col
+              </button>
+            </div>
           </div>
           <div class="w-full overflow-x-auto custom-designer-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
             <table class="w-full text-left font-body-sm text-body-sm min-w-[320px]">
               <thead class="bg-surface-container text-text-primary font-title-sm border-b-[1.5px] border-border-medium">
                 <tr>
-                  <th class="p-2.5">Subject</th>
-                  <th class="p-2.5 text-center">Marks</th>
-                  <th class="p-2.5 text-center">Duration</th>
+                  <th class="p-2.5" contenteditable="true">Subject</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Questions</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Marks</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Duration</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-border-subtle" contenteditable="true">
-                <tr><td class="p-2.5">History &amp; Geography</td><td class="p-2.5 text-center">50</td><td class="p-2.5 text-center">1 Hour</td></tr>
-                <tr><td class="p-2.5">General Science</td><td class="p-2.5 text-center">50</td><td class="p-2.5 text-center">1 Hour</td></tr>
+              <tbody class="divide-y divide-border-subtle text-text-secondary" contenteditable="true">
+                <tr><td class="p-2.5 font-medium text-text-primary">General Studies (GS 1)</td><td class="p-2.5 text-center">100</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
+                <tr><td class="p-2.5 font-medium text-text-primary">CSAT Aptitude Paper</td><td class="p-2.5 text-center">80</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
               </tbody>
             </table>
           </div>
@@ -1315,33 +1439,36 @@
         </div>`;
     } else if (type === 'quiz-cta' || type === 'pulse-cta') {
       return `
-        <div class="canvas-block group relative rounded-xl p-space-md bg-surface-container-lowest border-[1.5px] border-primary-container shadow-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
+        <div class="canvas-block group relative rounded-xl p-space-md bg-surface-container-lowest border-[1.5px] border-primary-container shadow-md flex flex-col sm:flex-row items-center justify-between gap-space-md" data-block-type="cta" onclick="selectBlockForStyling(this)">
           <div class="flex items-center gap-space-sm">
             <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-md">
               <span class="material-symbols-outlined text-[28px]">quiz</span>
             </div>
             <div class="flex flex-col">
-              <span class="font-label-sm text-label-sm text-primary font-bold">🎯 Live Quiz Test</span>
-              <h4 class="font-title-md text-title-md text-text-primary font-bold" contenteditable="true">Online Practice Test</h4>
-              <p class="font-body-sm text-body-sm text-text-muted" contenteditable="true">25 Questions • 15 Mins • Instant Result</p>
+              <span class="font-label-sm text-label-sm text-primary font-bold cta-badge">🎯 Live Quiz Test</span>
+              <h4 class="font-title-md text-title-md text-text-primary font-bold cta-title" contenteditable="true">Online Practice Test</h4>
+              <p class="font-body-sm text-body-sm text-text-muted cta-desc" contenteditable="true">25 Questions • 15 Mins • Instant Result</p>
             </div>
           </div>
-          <a class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-status-success hover:bg-secondary text-on-primary font-title-sm text-title-sm shadow-md transition-all animate-bounce cursor-pointer" href="#start-quiz" onclick="event.preventDefault()">
-            <span>Take Test</span>
+          <a class="cta-action-btn shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-status-success hover:bg-secondary text-on-primary font-title-sm text-title-sm shadow-md transition-all animate-bounce cursor-pointer" href="#start-quiz" target="_blank">
+            <span class="cta-btn-text">Take Test</span>
             <span class="material-symbols-outlined text-[18px]">play_circle</span>
           </a>
         </div>`;
     } else if (type === 'pdf-download') {
       return `
-        <div class="canvas-block group relative rounded-xl p-3 bg-red-50 border-[1.5px] border-red-200 flex items-center justify-between shadow-sm">
-          <div class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-status-danger text-[28px]">picture_as_pdf</span>
-            <div>
-              <p class="font-title-sm text-title-sm text-text-primary font-bold" contenteditable="true">Study Notes Revision PDF (Free)</p>
-              <p class="font-body-sm text-body-sm text-text-muted text-[11px]" contenteditable="true">File size: 3.4 MB • Free Download</p>
+        <div class="canvas-block group relative rounded-xl p-3 sm:p-4 bg-red-50 border-[1.5px] border-red-200 flex items-center justify-between shadow-sm flex-wrap gap-3" data-block-type="pdf" onclick="selectBlockForStyling(this)">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="material-symbols-outlined text-status-danger text-[32px] shrink-0">picture_as_pdf</span>
+            <div class="min-w-0">
+              <p class="font-title-sm text-title-sm text-text-primary font-bold pdf-title truncate" contenteditable="true">Study Notes Revision PDF (Free)</p>
+              <p class="font-body-sm text-body-sm text-text-muted text-[11px] pdf-desc truncate" contenteditable="true">File size: 3.4 MB • Free Download</p>
             </div>
           </div>
-          <button class="px-3 py-1.5 rounded-md bg-status-danger text-on-primary font-label-md text-label-md hover:opacity-90">Download</button>
+          <a class="pdf-download-link px-4 py-2 rounded-lg bg-status-danger text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center gap-1.5 shadow-sm text-decoration-none" href="https://drive.google.com" target="_blank" download>
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            <span class="pdf-btn-text">Download PDF</span>
+          </a>
         </div>`;
     } else if (type === 'divider') {
       return `
@@ -1758,4 +1885,288 @@
   if (visualCanvasEl) {
     visualCanvasEl.addEventListener('paste', handleSmartPaste);
   }
-</script></main></div><script src="shared-ui.js"></script></body></html>
+</script></main></div><script src="shared-ui.js">
+
+  // =========================================================================
+  // DYNAMIC TABLE EDITOR FUNCTIONS (ADD/REMOVE ROWS & COLUMNS)
+  // =========================================================================
+  function addTableRow(btn) {
+    const block = btn.closest('.canvas-block');
+    if (!block) return;
+    const table = block.querySelector('table');
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const thead = table.querySelector('thead');
+    if (!tbody || !thead) return;
+
+    const colCount = thead.querySelectorAll('th').length || 3;
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-surface-container-low/50';
+    let cellsHtml = '';
+    for (let i = 0; i < colCount; i++) {
+      const alignClass = i === 0 ? 'p-2.5 font-medium text-text-primary' : 'p-2.5 text-center';
+      cellsHtml += '<td class="' + alignClass + '" contenteditable="true">New Data</td>';
+    }
+    tr.innerHTML = cellsHtml;
+    tbody.appendChild(tr);
+    showToast('New table row added!');
+  }
+
+  function deleteTableRow(btn) {
+    const block = btn.closest('.canvas-block');
+    if (!block) return;
+    const tbody = block.querySelector('tbody');
+    if (!tbody) return;
+    const rows = tbody.querySelectorAll('tr');
+    if (rows.length > 1) {
+      rows[rows.length - 1].remove();
+      showToast('Table row deleted!');
+    } else {
+      showToast('Cannot delete the only row.');
+    }
+  }
+
+  function addTableColumn(btn) {
+    const block = btn.closest('.canvas-block');
+    if (!block) return;
+    const table = block.querySelector('table');
+    if (!table) return;
+    const theadRow = table.querySelector('thead tr');
+    const tbodyRows = table.querySelectorAll('tbody tr');
+    if (!theadRow) return;
+
+    const th = document.createElement('th');
+    th.className = 'p-2.5 text-center';
+    th.setAttribute('contenteditable', 'true');
+    th.innerText = 'Header ' + (theadRow.children.length + 1);
+    theadRow.appendChild(th);
+
+    tbodyRows.forEach(tr => {
+      const td = document.createElement('td');
+      td.className = 'p-2.5 text-center';
+      td.setAttribute('contenteditable', 'true');
+      td.innerText = '-';
+      tr.appendChild(td);
+    });
+    showToast('New column added!');
+  }
+
+  function deleteTableColumn(btn) {
+    const block = btn.closest('.canvas-block');
+    if (!block) return;
+    const table = block.querySelector('table');
+    if (!table) return;
+    const theadCells = table.querySelectorAll('thead tr th');
+    if (theadCells.length <= 1) {
+      showToast('Cannot delete the only column.');
+      return;
+    }
+    const lastIndex = theadCells.length - 1;
+    theadCells[lastIndex].remove();
+
+    const tbodyRows = table.querySelectorAll('tbody tr');
+    tbodyRows.forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      if (tds[lastIndex]) tds[lastIndex].remove();
+    });
+    showToast('Column deleted!');
+  }
+
+  // =========================================================================
+  // BLOCK SELECTION, COLOR & STYLE MANAGEMENT
+  // =========================================================================
+  let currentlySelectedBlock = null;
+
+  function selectBlockForStyling(target) {
+    let block = target;
+    if (target.closest) {
+      block = target.closest('.canvas-block') || target;
+    }
+    if (!block || !block.classList.contains('canvas-block')) return;
+
+    // Highlight active selected block
+    document.querySelectorAll('.canvas-block').forEach(b => b.classList.remove('ring-2', 'ring-primary'));
+    block.classList.add('ring-2', 'ring-primary');
+    currentlySelectedBlock = block;
+
+    // Switch to Style Tab
+    switchRightTab('style');
+
+    // Update block name in style panel
+    const titleEl = block.querySelector('h2, h3, h4, h5, p, [class*="font-title"]');
+    const blockName = titleEl ? titleEl.innerText.trim().slice(0, 18) + '...' : 'Selected Block';
+    const labelEl = document.getElementById('selectedBlockName');
+    if (labelEl) labelEl.innerText = blockName;
+
+    // Read colors
+    const computed = window.getComputedStyle(block);
+    const rgbToHex = col => {
+      if (!col || col === 'transparent' || col.startsWith('rgba(0, 0, 0, 0)')) return '#ffffff';
+      const m = col.match(/\d+/g);
+      if (!m || m.length < 3) return '#ffffff';
+      return '#' + ((1 << 24) + (parseInt(m[0]) << 16) + (parseInt(m[1]) << 8) + parseInt(m[2])).toString(16).slice(1);
+    };
+
+    const bgPicker = document.getElementById('boxBgColorPicker');
+    const borderPicker = document.getElementById('boxBorderColorPicker');
+    const textPicker = document.getElementById('boxTextColorPicker');
+
+    if (bgPicker && computed.backgroundColor) bgPicker.value = rgbToHex(computed.backgroundColor);
+    if (borderPicker && computed.borderColor) borderPicker.value = rgbToHex(computed.borderColor);
+    if (textPicker && computed.color) textPicker.value = rgbToHex(computed.color);
+
+    // Toggle CTA Settings
+    const ctaSection = document.getElementById('ctaSettingsSection');
+    const pdfSection = document.getElementById('pdfSettingsSection');
+    const isCta = block.getAttribute('data-block-type') === 'cta' || block.querySelector('.cta-action-btn') || block.querySelector('[href="#start-quiz"]');
+    const isPdf = block.getAttribute('data-block-type') === 'pdf' || block.querySelector('.pdf-download-link') || block.querySelector('[download]');
+
+    if (ctaSection) {
+      if (isCta) {
+        ctaSection.classList.remove('hidden');
+        populateCtaQuizDropdown();
+        const btnText = block.querySelector('.cta-btn-text') || block.querySelector('a span');
+        const btnInput = document.getElementById('ctaButtonTextInput');
+        if (btnInput && btnText) btnInput.value = btnText.innerText.trim();
+      } else {
+        ctaSection.classList.add('hidden');
+      }
+    }
+
+    if (pdfSection) {
+      if (isPdf) {
+        pdfSection.classList.remove('hidden');
+        const link = block.querySelector('.pdf-download-link') || block.querySelector('a');
+        const title = block.querySelector('.pdf-title') || block.querySelector('p');
+        const btnText = block.querySelector('.pdf-btn-text') || block.querySelector('button');
+
+        const urlInput = document.getElementById('pdfUrlInput');
+        const titleInput = document.getElementById('pdfTitleInput');
+        const btnInput = document.getElementById('pdfBtnTextInput');
+
+        if (urlInput && link) urlInput.value = link.getAttribute('href') || '';
+        if (titleInput && title) titleInput.value = title.innerText.trim();
+        if (btnInput && btnText) btnInput.value = btnText.innerText.trim();
+      } else {
+        pdfSection.classList.add('hidden');
+      }
+    }
+  }
+
+  function applySelectedBoxColors() {
+    if (!currentlySelectedBlock) return;
+    const bg = document.getElementById('boxBgColorPicker').value;
+    const border = document.getElementById('boxBorderColorPicker').value;
+    const text = document.getElementById('boxTextColorPicker').value;
+
+    currentlySelectedBlock.style.backgroundColor = bg;
+    currentlySelectedBlock.style.borderColor = border;
+    currentlySelectedBlock.style.color = text;
+
+    // Apply color to text children if needed
+    const textEls = currentlySelectedBlock.querySelectorAll('p, h2, h3, h4, h5, span');
+    textEls.forEach(el => {
+      if (!el.classList.contains('text-on-primary') && !el.closest('button') && !el.closest('a')) {
+        el.style.color = text;
+      }
+    });
+  }
+
+  function applyQuickBoxTheme(bg, border, text) {
+    const bgPicker = document.getElementById('boxBgColorPicker');
+    const borderPicker = document.getElementById('boxBorderColorPicker');
+    const textPicker = document.getElementById('boxTextColorPicker');
+    if (bgPicker) bgPicker.value = bg;
+    if (borderPicker) borderPicker.value = border;
+    if (textPicker) textPicker.value = text;
+    applySelectedBoxColors();
+    showToast('Theme colors applied!');
+  }
+
+  // =========================================================================
+  // CTA & PDF SETTINGS HANDLERS
+  // =========================================================================
+  function populateCtaQuizDropdown() {
+    const sel = document.getElementById('ctaQuizSelect');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">-- Choose Live Quiz --</option>';
+
+    // Try reading quizzes from localStorage
+    let storedQuizzes = [];
+    try {
+      const raw = localStorage.getItem('rk_quizzes');
+      if (raw) storedQuizzes = JSON.parse(raw);
+    } catch (e) {}
+
+    if (storedQuizzes.length === 0) {
+      storedQuizzes = [
+        { id: 'mpsc-demo-01', title: 'MPSC Rajyaseva GS Paper 1 Mock', questions: [1,2,3,4,5], timeLimitMinutes: 15 },
+        { id: 'mpsc-geo-02', title: 'Maharashtra Geography & History Test', questions: [1,2,3], timeLimitMinutes: 10 },
+        { id: 'school-sci-03', title: 'Class 10 Science & Technology Quiz', questions: [1,2], timeLimitMinutes: 20 }
+      ];
+    }
+
+    storedQuizzes.forEach(q => {
+      const opt = document.createElement('option');
+      opt.value = q.id;
+      opt.textContent = q.title + ' (' + (q.questions ? q.questions.length : 0) + ' Qs)';
+      sel.appendChild(opt);
+    });
+  }
+
+  function applyCtaQuizSelection(quizId) {
+    if (!currentlySelectedBlock || !quizId) return;
+    let storedQuizzes = [];
+    try {
+      const raw = localStorage.getItem('rk_quizzes');
+      if (raw) storedQuizzes = JSON.parse(raw);
+    } catch (e) {}
+
+    const quiz = storedQuizzes.find(q => q.id === quizId) || {
+      title: 'Online Practice Test',
+      questions: [1,2,3,4,5],
+      timeLimitMinutes: 15
+    };
+
+    const titleEl = currentlySelectedBlock.querySelector('.cta-title');
+    const descEl = currentlySelectedBlock.querySelector('.cta-desc');
+    const btnEl = currentlySelectedBlock.querySelector('.cta-action-btn');
+
+    if (titleEl) titleEl.innerText = quiz.title;
+    if (descEl) descEl.innerText = (quiz.questions ? quiz.questions.length : 20) + ' Questions • ' + (quiz.timeLimitMinutes || 15) + ' Mins • Instant Result';
+    if (btnEl) btnEl.setAttribute('href', 'quiz-player.html?quizId=' + quizId);
+
+    showToast('CTA updated with quiz details!');
+  }
+
+  function applyCtaButtonText(val) {
+    if (!currentlySelectedBlock) return;
+    const btnText = currentlySelectedBlock.querySelector('.cta-btn-text');
+    if (btnText) btnText.innerText = val || 'Take Test';
+  }
+
+  function applyCtaCustomUrl(url) {
+    if (!currentlySelectedBlock) return;
+    const btn = currentlySelectedBlock.querySelector('.cta-action-btn');
+    if (btn) btn.setAttribute('href', url || '#start-quiz');
+  }
+
+  function updateSelectedPdfLink(url) {
+    if (!currentlySelectedBlock) return;
+    const link = currentlySelectedBlock.querySelector('.pdf-download-link');
+    if (link) link.setAttribute('href', url || '#');
+  }
+
+  function updateSelectedPdfTitle(val) {
+    if (!currentlySelectedBlock) return;
+    const title = currentlySelectedBlock.querySelector('.pdf-title');
+    if (title) title.innerText = val || 'Study Notes.pdf';
+  }
+
+  function updateSelectedPdfBtnText(val) {
+    if (!currentlySelectedBlock) return;
+    const btnText = currentlySelectedBlock.querySelector('.pdf-btn-text');
+    if (btnText) btnText.innerText = val || 'Download PDF';
+  }
+
+</script></body></html>
