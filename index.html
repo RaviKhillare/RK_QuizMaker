@@ -3045,7 +3045,17 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                     <span class="material-symbols-outlined text-primary text-[20px]">widgets</span>
                     <h3 class="font-title-md text-title-md text-text-primary font-semibold">Block Library</h3>
                   </div>
-                  <span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold">10 items</span>
+                  <div class="flex items-center gap-1">
+  <span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold mr-1">10 items</span>
+  <button type="button" onclick="scrollBlockLibrary('top')" class="p-1 px-1.5 rounded-md bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-primary transition-all text-[11px] font-semibold flex items-center gap-0.5 border border-border-subtle cursor-pointer shadow-2xs" title="Scroll to Top (वर स्क्रोल करा)">
+    <span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+    <span class="hidden sm:inline">Top</span>
+  </button>
+  <button type="button" onclick="scrollBlockLibrary('bottom')" class="p-1 px-1.5 rounded-md bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-primary transition-all text-[11px] font-semibold flex items-center gap-0.5 border border-border-subtle cursor-pointer shadow-2xs" title="Scroll to Bottom (खाली स्क्रोल करा)">
+    <span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+    <span class="hidden sm:inline">Bottom</span>
+  </button>
+</div>
                 </div>
                 <div class="relative w-full mt-0.5">
                   <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
@@ -3336,27 +3346,59 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
               </div>
             </div>
 
+            <div class="pt-2 border-t border-border-subtle flex items-center justify-between px-1 text-[11px] text-text-muted shrink-0 bg-surface-card mt-1">
+  <span class="font-medium">Scroll Library:</span>
+  <div class="flex items-center gap-1.5">
+    <button type="button" onclick="scrollBlockLibrary('top')" class="px-2 py-0.5 rounded bg-surface-container-low hover:bg-surface-container text-primary font-semibold flex items-center gap-0.5 cursor-pointer border border-border-subtle transition-all" title="Scroll to Top">
+      <span class="material-symbols-outlined text-[13px]">vertical_align_top</span> Top
+    </button>
+    <button type="button" onclick="scrollBlockLibrary('bottom')" class="px-2 py-0.5 rounded bg-surface-container-low hover:bg-surface-container text-primary font-semibold flex items-center gap-0.5 cursor-pointer border border-border-subtle transition-all" title="Scroll to Bottom">
+      <span class="material-symbols-outlined text-[13px]">vertical_align_bottom</span> Bottom
+    </button>
+  </div>
+</div>
+</div>
+
             <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
             <div class="lg:col-span-6 flex flex-col gap-2">
               <!-- Viewport & Canvas Controls Bar -->
-              <div class="flex items-center justify-between px-3 py-1.5 bg-surface-card rounded-xl border-[1.5px] border-border-medium shadow-sm">
-                
-                <div class="flex items-center gap-1">
-                  <button class="p-1.5 rounded hover:bg-surface-container-high text-primary font-bold" onclick="setCanvasWidth('100%')" title="Desktop View">
-                    <span class="material-symbols-outlined text-[18px]">desktop_windows</span>
+              <!-- Sub-Bar: Saved Blogs Dropdown & Word-like Shortcuts -->
+              <div class="flex items-center justify-between px-3 py-1.5 bg-surface-card rounded-xl border-[1.5px] border-border-medium shadow-sm flex-wrap gap-2">
+                <!-- Left: Saved Blogs Dropdown & Management -->
+                <div class="flex items-center gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-lg border border-border-subtle shadow-2xs">
+                    <span class="material-symbols-outlined text-primary text-[17px]">folder_open</span>
+                    <span class="text-[12px] font-bold text-text-secondary hidden sm:inline">Saved Blogs:</span>
+                    <select id="savedBlogsDropdown" onchange="onSavedBlogDropdownChange(this.value)" class="text-[12px] font-medium bg-transparent border-none outline-none text-text-primary cursor-pointer max-w-[190px] sm:max-w-[280px] truncate" title="Select a previously saved blog to edit or delete">
+                      <option value="">📁 Select Saved Blog...</option>
+                    </select>
+                  </div>
+                  <button type="button" id="btnEditDropdownBlog" onclick="loadSelectedDropdownBlog()" class="px-2.5 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer" title="Edit / Load Selected Blog">
+                    <span class="material-symbols-outlined text-[15px]">edit_note</span>
+                    <span>Edit</span>
                   </button>
-                  <button class="p-1.5 rounded hover:bg-surface-container-high text-text-secondary" onclick="setCanvasWidth('768px')" title="Tablet View">
-                    <span class="material-symbols-outlined text-[18px]">tablet</span>
+                  <button type="button" id="btnDeleteDropdownBlog" onclick="deleteSelectedDropdownBlog()" class="px-2 py-1.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-status-danger text-[12px] font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer" title="Delete Selected Blog">
+                    <span class="material-symbols-outlined text-[15px]">delete</span>
+                    <span>Delete</span>
                   </button>
-                  <button class="p-1.5 rounded hover:bg-surface-container-high text-text-secondary" onclick="setCanvasWidth('420px')" title="Mobile View">
-                    <span class="material-symbols-outlined text-[18px]">smartphone</span>
+                </div>
+
+                <!-- Right: Word-style Cut, Copy, Paste actions -->
+                <div class="flex items-center gap-1.5">
+                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogCut()" title="Cut (Ctrl+X) - Cut selected text or block">
+                    <span class="material-symbols-outlined text-[16px] text-primary">content_cut</span>
+                    <span>Cut</span>
+                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+X</span>
                   </button>
-                  <div class="h-4 w-px bg-border-subtle mx-1"></div>
-                  <button class="p-1.5 rounded hover:bg-surface-container-high text-text-secondary" onclick="undoCanvas()" title="Undo">
-                    <span class="material-symbols-outlined text-[18px]">undo</span>
+                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogCopy()" title="Copy (Ctrl+C) - Copy selected text or block">
+                    <span class="material-symbols-outlined text-[16px] text-primary">content_copy</span>
+                    <span>Copy</span>
+                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+C</span>
                   </button>
-                  <button class="p-1.5 rounded hover:bg-surface-container-high text-text-secondary" onclick="redoCanvas()" title="Redo">
-                    <span class="material-symbols-outlined text-[18px]">redo</span>
+                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogPaste()" title="Paste (Ctrl+V) - Paste text or block">
+                    <span class="material-symbols-outlined text-[16px] text-primary">content_paste</span>
+                    <span>Paste</span>
+                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+V</span>
                   </button>
                 </div>
               </div>
@@ -8277,7 +8319,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         drafts.push(sampleDraft);
         localStorage.setItem('rk_blog_drafts', JSON.stringify(drafts));
       }
-      updateDraftsBadgeCount();
+      updateDraftsBadgeCount(); renderSavedBlogsDropdown();
     } catch(e) {}
   }
 
@@ -8326,7 +8368,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     if (drafts.length > 20) drafts = drafts.slice(0, 20);
 
     localStorage.setItem('rk_blog_drafts', JSON.stringify(drafts));
-    showToast('Blog draft saved successfully!'); updateDraftsBadgeCount();
+    showToast('Blog draft saved successfully!'); updateDraftsBadgeCount(); renderSavedBlogsDropdown(draftId);
   }
 
   function openDraftsModal() {
@@ -8379,20 +8421,274 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
   }
 
   function deleteBlogDraft(draftId) {
-    if (!confirm('हा ड्राफ्ट कायमचा काढायचा आहे का?')) return;
-    let drafts = [];
+    if (!confirm('Are you sure you want to permanently delete this saved blog draft?')) return;
+    var drafts = [];
     try {
       drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
     } catch(e) {}
-    drafts = drafts.filter(d => d.id !== draftId);
+    drafts = drafts.filter(function(d) { return d.id !== draftId; });
     localStorage.setItem('rk_blog_drafts', JSON.stringify(drafts));
-    renderDraftsList();
-    showToast('ड्राफ्ट काढला.');
+    if (typeof renderDraftsList === 'function') renderDraftsList();
+    if (typeof renderSavedBlogsDropdown === 'function') renderSavedBlogsDropdown();
+    if (typeof updateDraftsBadgeCount === 'function') updateDraftsBadgeCount();
+    showToast('Saved blog draft deleted.');
   }
 
   function escapeHtmlAttr(str) {
     if (!str) return '';
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+
+  // ================= WORD-STYLE COPY / CUT / PASTE & SHORTCUTS =================
+  window.activeCanvasBlock = null;
+  window.copiedBlockHtml = null;
+
+  // Track active block click for block-level operations
+  document.addEventListener('click', function(e) {
+    var block = e.target.closest ? e.target.closest('.canvas-block') : null;
+    if (block) {
+      document.querySelectorAll('.canvas-block.ring-2').forEach(function(b) {
+        if (b !== block) b.classList.remove('ring-2', 'ring-primary/60');
+      });
+      block.classList.add('ring-2', 'ring-primary/60');
+      window.activeCanvasBlock = block;
+    }
+  });
+
+  function execBlogCopy() {
+    var sel = window.getSelection();
+    if (sel && sel.toString().trim().length > 0) {
+      try {
+        navigator.clipboard.writeText(sel.toString());
+      } catch(e) {
+        document.execCommand('copy');
+      }
+      showToast('Text copied to clipboard (Ctrl+C)');
+      return;
+    }
+    var block = window.activeCanvasBlock || document.querySelector('.canvas-block.ring-2');
+    if (block) {
+      var clone = block.cloneNode(true);
+      clone.querySelectorAll('.block-inserter-zone').forEach(function(el) { el.remove(); });
+      clone.classList.remove('ring-2', 'ring-primary/60');
+      window.copiedBlockHtml = clone.outerHTML;
+      try {
+        localStorage.setItem('rk_copied_block_html', clone.outerHTML);
+        navigator.clipboard.writeText(clone.innerText || clone.textContent || '');
+      } catch(e) {}
+      showToast('Block copied to clipboard (Ctrl+C)');
+    } else {
+      showToast('Select text or click a block to copy');
+    }
+  }
+
+  function execBlogCut() {
+    var sel = window.getSelection();
+    if (sel && sel.toString().trim().length > 0) {
+      try {
+        navigator.clipboard.writeText(sel.toString());
+        document.execCommand('cut');
+      } catch(e) {
+        document.execCommand('cut');
+      }
+      showToast('Text cut to clipboard (Ctrl+X)');
+      if (typeof saveState === 'function') saveState();
+      return;
+    }
+    var block = window.activeCanvasBlock || document.querySelector('.canvas-block.ring-2');
+    if (block) {
+      var clone = block.cloneNode(true);
+      clone.querySelectorAll('.block-inserter-zone').forEach(function(el) { el.remove(); });
+      clone.classList.remove('ring-2', 'ring-primary/60');
+      window.copiedBlockHtml = clone.outerHTML;
+      try {
+        localStorage.setItem('rk_copied_block_html', clone.outerHTML);
+      } catch(e) {}
+      block.remove();
+      window.activeCanvasBlock = null;
+      if (typeof initBlockInserters === 'function') initBlockInserters();
+      if (typeof updateBlockCount === 'function') updateBlockCount();
+      if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
+      if (typeof saveState === 'function') saveState();
+      showToast('Block cut to clipboard (Ctrl+X)');
+    } else {
+      showToast('Select text or click a block to cut');
+    }
+  }
+
+  function execBlogPaste() {
+    var activeEl = document.activeElement;
+    var isEditable = activeEl && (activeEl.isContentEditable || activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+    if (isEditable) {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText().then(function(clipText) {
+          if (clipText) {
+            document.execCommand('insertText', false, clipText);
+            showToast('Text pasted (Ctrl+V)');
+          }
+        }).catch(function() {
+          document.execCommand('paste');
+        });
+      } else {
+        document.execCommand('paste');
+      }
+      return;
+    }
+
+    // Block paste
+    var blockHtml = window.copiedBlockHtml || localStorage.getItem('rk_copied_block_html');
+    if (blockHtml) {
+      var container = document.getElementById('blocksContainer');
+      if (!container) return;
+
+      var tempDiv = document.createElement('div');
+      tempDiv.innerHTML = blockHtml;
+      var newBlock = tempDiv.firstElementChild;
+      if (!newBlock) return;
+
+      var targetBlock = window.activeCanvasBlock || container.lastElementChild;
+      if (targetBlock && targetBlock.parentNode === container) {
+        targetBlock.insertAdjacentElement('afterend', newBlock);
+      } else {
+        container.appendChild(newBlock);
+      }
+
+      document.querySelectorAll('.canvas-block.ring-2').forEach(function(b) {
+        b.classList.remove('ring-2', 'ring-primary/60');
+      });
+      newBlock.classList.add('ring-2', 'ring-primary/60');
+      window.activeCanvasBlock = newBlock;
+
+      if (typeof initBlockInserters === 'function') initBlockInserters();
+      if (typeof attachBlockListeners === 'function') attachBlockListeners();
+      if (typeof updateBlockCount === 'function') updateBlockCount();
+      if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
+      if (typeof saveState === 'function') saveState();
+      newBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      showToast('Block pasted successfully (Ctrl+V)');
+    } else {
+      showToast('Clipboard is empty! Copy text or a block first.');
+    }
+  }
+
+  // Keyboard Shortcuts (Word Style: Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+Z, Ctrl+Y, Ctrl+B, Ctrl+I, Ctrl+U)
+  document.addEventListener('keydown', function(e) {
+    if (!e.ctrlKey && !e.metaKey) return;
+    var key = e.key.toLowerCase();
+    var sel = window.getSelection();
+    var hasTextSelection = sel && sel.toString().trim().length > 0;
+    var activeEl = document.activeElement;
+    var isTyping = activeEl && (activeEl.isContentEditable || activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+    if (key === 'c' && !hasTextSelection && window.activeCanvasBlock && !isTyping) {
+      e.preventDefault();
+      execBlogCopy();
+    } else if (key === 'x' && !hasTextSelection && window.activeCanvasBlock && !isTyping) {
+      e.preventDefault();
+      execBlogCut();
+    } else if (key === 'v' && !isTyping && (window.copiedBlockHtml || localStorage.getItem('rk_copied_block_html'))) {
+      e.preventDefault();
+      execBlogPaste();
+    } else if (key === 'z' && !e.shiftKey && !isTyping && typeof undoCanvas === 'function') {
+      e.preventDefault();
+      undoCanvas();
+    } else if ((key === 'y' || (key === 'z' && e.shiftKey)) && !isTyping && typeof redoCanvas === 'function') {
+      e.preventDefault();
+      redoCanvas();
+    }
+  });
+
+  // ================= BLOCK LIBRARY TOP-BOTTOM SCROLLING =================
+  function scrollBlockLibrary(direction) {
+    var list = document.getElementById('paletteAccordionList') || document.getElementById('indexPaletteAccordionList');
+    if (!list) return;
+    if (direction === 'top') {
+      list.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (direction === 'bottom') {
+      list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' });
+    } else if (direction === 'up') {
+      list.scrollBy({ top: -260, behavior: 'smooth' });
+    } else if (direction === 'down') {
+      list.scrollBy({ top: 260, behavior: 'smooth' });
+    }
+  }
+
+  // ================= SAVED BLOGS DROPDOWN & DRAFT ACTIONS =================
+  function renderSavedBlogsDropdown(selectedId) {
+    var dropdown = document.getElementById('savedBlogsDropdown');
+    if (!dropdown) return;
+    var drafts = [];
+    try {
+      drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+    } catch(e) {}
+
+    var html = '<option value="">📁 Select Saved Blog (' + drafts.length + ' available)...</option>';
+    drafts.forEach(function(d) {
+      var dateStr = d.date ? ' (' + d.date + ')' : '';
+      var title = (d.title || 'Untitled Blog Post').substring(0, 38);
+      html += '<option value="' + d.id + '"' + (selectedId && selectedId === d.id ? ' selected' : '') + '>' + escapeHtmlAttr(title) + dateStr + '</option>';
+    });
+    dropdown.innerHTML = html;
+    if (selectedId) dropdown.value = selectedId;
+  }
+
+  function onSavedBlogDropdownChange(val) {
+    if (val) {
+      loadBlogDraft(val);
+    }
+  }
+
+  function loadSelectedDropdownBlog() {
+    var dropdown = document.getElementById('savedBlogsDropdown');
+    if (!dropdown || !dropdown.value) {
+      showToast('Please select a saved blog from the dropdown first!');
+      return;
+    }
+    loadBlogDraft(dropdown.value);
+  }
+
+  function deleteSelectedDropdownBlog() {
+    var dropdown = document.getElementById('savedBlogsDropdown');
+    if (!dropdown || !dropdown.value) {
+      showToast('Please select a saved blog to delete!');
+      return;
+    }
+    deleteBlogDraft(dropdown.value);
+  }
+
+  function loadBlogDraft(draftId) {
+    try {
+      var drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+      var draft = drafts.find(function(d) { return d.id === draftId; });
+      if (!draft) {
+        showToast('Selected draft not found!');
+        return;
+      }
+      var titleInput = document.getElementById('postTitleInput');
+      if (titleInput && draft.title) {
+        titleInput.value = draft.title;
+      }
+      var container = document.getElementById('blocksContainer');
+      if (container && draft.blocksHtml) {
+        container.innerHTML = draft.blocksHtml;
+        if (typeof initBlockInserters === 'function') initBlockInserters();
+        if (typeof attachBlockListeners === 'function') attachBlockListeners();
+        if (typeof updateBlockCount === 'function') updateBlockCount();
+        if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
+        if (typeof saveState === 'function') saveState();
+
+        var dropdown = document.getElementById('savedBlogsDropdown');
+        if (dropdown) dropdown.value = draftId;
+
+        closeDraftsModal();
+        showToast('Loaded "' + (draft.title || 'Draft') + '" successfully!');
+      }
+    } catch(err) {
+      console.error('Failed to load draft:', err);
+      showToast('Failed to load draft');
+    }
   }
 
 </script>
