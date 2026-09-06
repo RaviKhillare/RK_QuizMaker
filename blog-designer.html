@@ -24,6 +24,55 @@
       background: #64748b;
     }
 
+  
+    /* Bulletproof Floating Selection Format Bubble */
+    #floatingFormatBubble {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    }
+    .format-bubble-btn {
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none !important;
+      color: #ffffff !important;
+      box-shadow: none !important;
+      outline: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 28px !important;
+      height: 28px !important;
+      min-width: 28px !important;
+      min-height: 28px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+    }
+    .format-bubble-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transform: translateY(-1px) scale(1.04) !important;
+    }
+    .format-bubble-btn:active {
+      background-color: rgba(255, 255, 255, 0.35) !important;
+      transform: translateY(0) scale(0.96) !important;
+    }
+    .format-bubble-btn .material-symbols-outlined {
+      color: #ffffff !important;
+      font-size: 17px !important;
+      line-height: 1 !important;
+    }
+    #floatingTextColorPalette,
+    #floatingHighlightColorPalette {
+      background-color: #0f172a !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6) !important;
+    }
+
   </style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary": "#ffffff", "surface-bright": "#faf8ff", "on-error": "#ffffff", "on-tertiary-container": "#e4d4ff", "surface-tint": "#4d44e3", "surface-container": "#eaedff", "inverse-surface": "#283044", "on-primary-container": "#dad7ff", "on-secondary-fixed": "#002113", "secondary": "#006c49", "on-tertiary-fixed": "#25005a", "border-subtle": "#E2E8F0", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "status-warning": "#F59E0B", "text-secondary": "#334155", "surface-container-highest": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-dim": "#d2d9f4", "surface-card": "#FFFFFF", "status-success": "#10B981", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "text-muted": "#64748B", "outline-variant": "#c7c4d8", "surface-canvas": "#F8FAFC", "text-primary": "#0F172A", "inverse-on-surface": "#eef0ff", "inverse-primary": "#c3c0ff", "error-container": "#ffdad6", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#005236", "primary-fixed-dim": "#c3c0ff", "status-danger": "#EF4444", "tertiary-fixed-dim": "#d2bbff", "on-tertiary-fixed-variant": "#5a00c6", "primary-dark": "#3730A3", "outline": "#777587", "on-secondary": "#ffffff", "on-primary-fixed": "#0f0069", "border-medium": "#CBD5E1", "on-tertiary": "#ffffff", "primary-container": "#4f46e5", "on-error-container": "#93000a", "on-secondary-container": "#00714d", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#eaddff", "primary": "#3525cd", "primary-fixed": "#e2dfff", "tertiary-container": "#7531e6", "surface-container-high": "#e2e7ff", "status-info": "#3B82F6", "background": "#faf8ff", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error": "ba1a1a", "on-background": "#131b2e", "tertiary": "#5c00ca", "surface-container-low": "#f2f3ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "gutter-md": "1.5rem", "space-md": "1rem", "space-2xl": "2.5rem", "space-3xl": "3rem", "space-lg": "1.5rem", "sidebar-width": "260px", "space-2xs": "0.25rem", "gutter-sm": "1rem", "space-xs": "0.5rem", "gutter-lg": "2rem", "space-sm": "0.75rem" }, "fontFamily": { "headline-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-sm": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "label-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-md": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "body-lg": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "display-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "display-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"] }, "fontSize": { "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }] } } } }</script>
 <style>
   .canvas-block, #visualCanvas, .canvas-block p, .canvas-block h1, .canvas-block h2, .canvas-block h3, .canvas-block h4, .canvas-block h5, .canvas-block h6 {
@@ -110,6 +159,95 @@
     };
   </script>
 
+
+  <script>
+    // ================= SELECTION TRACKING & COLOR PALETTE HELPERS =================
+    window.savedFormatRange = null;
+
+    window.saveCurrentSelection = function() {
+      var sel = window.getSelection();
+      if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+        var range = sel.getRangeAt(0);
+        var canvas = document.getElementById('visualCanvas');
+        if (canvas && canvas.contains(range.commonAncestorContainer)) {
+          window.savedFormatRange = range.cloneRange();
+          return true;
+        }
+      }
+      return false;
+    };
+
+    window.restoreFormatSelection = function() {
+      if (window.savedFormatRange) {
+        var sel = window.getSelection();
+        if (sel) {
+          try {
+            sel.removeAllRanges();
+            sel.addRange(window.savedFormatRange);
+            return true;
+          } catch(e) {}
+        }
+      }
+      return false;
+    };
+
+    window.applyTextColorFromPalette = function(color) {
+      window.restoreFormatSelection();
+      var indicator = document.getElementById('floatingTextColorIndicator');
+      if (indicator) indicator.style.backgroundColor = color;
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand('foreColor', false, color);
+      var palette = document.getElementById('floatingTextColorPalette');
+      if (palette) palette.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('Text color changed!');
+      else if (typeof showNotification === 'function') showNotification('Text color changed!');
+      if (typeof saveState === 'function') saveState();
+    };
+
+    window.applyHighlightColorFromPalette = function(color) {
+      window.restoreFormatSelection();
+      var indicator = document.getElementById('floatingHighlightColorIndicator');
+      if (indicator) indicator.style.backgroundColor = color === 'transparent' ? '#cbd5e1' : color;
+      document.execCommand('styleWithCSS', false, true);
+      if (color === 'transparent') {
+        document.execCommand('removeFormat', false, null);
+      } else {
+        document.execCommand('hiliteColor', false, color);
+      }
+      var palette = document.getElementById('floatingHighlightColorPalette');
+      if (palette) palette.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('Highlight changed!');
+      else if (typeof showNotification === 'function') showNotification('Highlight changed!');
+      if (typeof saveState === 'function') saveState();
+    };
+
+    window.toggleTextColorPalette = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var p = document.getElementById('floatingTextColorPalette');
+      var hp = document.getElementById('floatingHighlightColorPalette');
+      if (hp) hp.classList.add('hidden');
+      if (p) p.classList.toggle('hidden');
+    };
+
+    window.toggleHighlightColorPalette = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var hp = document.getElementById('floatingHighlightColorPalette');
+      var p = document.getElementById('floatingTextColorPalette');
+      if (p) p.classList.add('hidden');
+      if (hp) hp.classList.toggle('hidden');
+    };
+
+    // Close palettes when clicking anywhere else
+    document.addEventListener('mousedown', function(e) {
+      var bubble = document.getElementById('floatingFormatBubble');
+      if (bubble && !bubble.contains(e.target)) {
+        var p = document.getElementById('floatingTextColorPalette');
+        var hp = document.getElementById('floatingHighlightColorPalette');
+        if (p) p.classList.add('hidden');
+        if (hp) hp.classList.add('hidden');
+      }
+    });
+  </script>
 </head><body class="bg-surface-canvas font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest flex flex-col justify-between z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0" id="mainSidebar"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center justify-center bg-surface-container-lowest border-b border-border-subtle"><img alt="RK QuizMaker Logo" class="h-10 w-auto max-w-[220px] object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Uddphv-9GjPZVqr4MVsyIWze0kiQFhRAmr4N0P2Re-KOzgwaLpnYOpwcdobME75igQdYMAlg9hwoLPUaKPE1w_DOTUqXmnaqtZLAzTeSsLpHLY1oIcFJkH-hgnnfzjwS3hBGsAxaaFoJtzmqCnaRQOxVRBcFwqCk7ZrYJRDBWHLXzDtwimPRQY9xTCxFUeclMkWGrV9okTtZHhtoD7WktaheUhWhJ07LJflqtyyAXrTYmAmjnwmCdq7uqC"/></div><nav class="flex-1 px-space-sm py-space-md space-y-space-2xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-sm" data-path="blog-designer" href="blog-designer.html"><span class="material-symbols-outlined text-[20px]">design_services</span><span>Blog Designer</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="dashboard.html"><span class="material-symbols-outlined text-[20px]">space_dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="quiz-builder" href="quiz-builder.html"><span class="material-symbols-outlined text-[20px]">quiz</span><span>Quiz Builder</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="bulk-import" href="bulk-import.html"><span class="material-symbols-outlined text-[20px]">upload_file</span><span>Bulk Import</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="embed-share" href="embed-share.html"><span class="material-symbols-outlined text-[20px]">share</span><span>Embed &amp; Share</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="results-polls" href="results-polls.html"><span class="material-symbols-outlined text-[20px]">analytics</span><span>Results &amp; Polls</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-text-secondary hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="database" href="results-polls.html#database"><span class="material-symbols-outlined text-[20px]">table_chart</span><span>Sheets Cloud DB</span></a></nav></div><div class="p-space-sm bg-surface-container-lowest"><div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>Live Sync</span><a class="font-label-sm text-label-sm text-primary hover:text-primary-dark flex items-center gap-0.5 transition-colors" href="https://timepasstimewithravi.blogspot.com/" target="_blank"><span>Visit Blog</span><span class="material-symbols-outlined text-[14px]">open_in_new</span></a></div><div class="flex items-center gap-space-sm mt-1"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0 flex-1"><p class="font-title-sm text-title-sm text-text-primary truncate">Ravindra Khillare</p><p class="font-body-sm text-body-sm text-text-muted truncate">Admin</p></div></div></div></div></aside><div class="pl-0 lg:pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-0 lg:left-[260px] right-0 h-16 bg-surface-card/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-4 flex items-center justify-between border-b border-border-subtle"><div class="flex items-center gap-2.5 flex-1 max-w-lg"><button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-lg text-text-secondary hover:bg-surface-container-low transition-colors" title="Toggle Navigation"><span class="material-symbols-outlined text-[24px]">menu</span></button><div class="relative w-full max-w-sm omni-search-wrapper"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span><input class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-9 pr-8 py-2 rounded-lg outline-none focus:bg-surface-card focus:ring-1 focus:ring-primary transition-all placeholder:text-text-muted border border-border-subtle" placeholder="Search quizzes, questions..." type="search" id="globalOmniSearch" oninput="handleOmniSearch(this.value)" autocomplete="off"/><button id="clearOmniSearchBtn" onclick="clearOmniSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary text-[14px]">✕</button><div id="omniSearchResults" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-card rounded-xl shadow-2xl border border-border-medium z-50 max-h-80 overflow-y-auto p-1.5 flex flex-col gap-1"></div></div></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-full border border-border-subtle"><span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span><span class="font-label-sm text-label-sm text-text-secondary" id="sheetsLivePillText">Google Sheets: Live</span></div><button onclick="togglePlatformLanguage()" class="flex items-center gap-1 bg-surface-container-low hover:bg-surface-container px-space-sm py-1.5 rounded-full text-text-secondary font-label-md text-label-md transition-colors border border-border-subtle cursor-pointer select-none"><span class="material-symbols-outlined text-[16px]">translate</span><span id="topLangLabel">EN</span></button><button onclick="window.location.href='quiz-builder.html'" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-colors shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-[18px]">add</span><span id="topNewQuizBtnText">+ New Quiz</span></button><button class="relative p-2 rounded-lg text-text-muted hover:bg-surface-container-low hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 bg-surface-canvas min-h-screen w-full px-4 py-3"><div class="flex flex-col w-full gap-3 pb-20">
 <!-- ================= STREAMLINED COMPACT STICKY ACTION BAR ================= -->
     <div class="sticky top-16 z-30 w-full bg-surface-card/95 backdrop-blur-md rounded-xl px-3 py-2 shadow-md border-[1.5px] border-primary-container flex items-center justify-between gap-2 flex-wrap mb-3">
@@ -1048,6 +1186,7 @@
   // DOCUMENT RICH TEXT EDITING ENGINE (MS WORD / GOOGLE DOCS STYLE)
   // =========================================================================
   function formatDocText(command, value = null) {
+      if (window.restoreFormatSelection) window.restoreFormatSelection();
     document.execCommand('styleWithCSS', false, true);
 
     if (command === 'fontSizePx') {
@@ -1098,37 +1237,47 @@
   }
 
   // Floating selection bubble tracking
-  document.addEventListener('selectionchange', () => {
-    const bubble = document.getElementById('floatingFormatBubble');
-    if (!bubble) return;
+  // Floating selection bubble tracking
+    document.addEventListener('selectionchange', () => {
+      const bubble = document.getElementById('floatingFormatBubble');
+      if (!bubble) return;
 
-    const selection = window.getSelection();
-    if (!selection || selection.isCollapsed || !selection.rangeCount) {
-      bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
-      return;
-    }
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.rangeCount) {
+        // If color palettes are open, do not immediately close bubble
+        const p = document.getElementById('floatingTextColorPalette');
+        const hp = document.getElementById('floatingHighlightColorPalette');
+        if ((p && !p.classList.contains('hidden')) || (hp && !hp.classList.contains('hidden'))) {
+          return;
+        }
+        bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+        return;
+      }
 
-    const range = selection.getRangeAt(0);
-    const canvas = document.getElementById('visualCanvas');
-    if (!canvas || !canvas.contains(range.commonAncestorContainer)) {
-      bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-      bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
-      return;
-    }
+      const range = selection.getRangeAt(0);
+      const canvas = document.getElementById('visualCanvas');
+      if (!canvas || !canvas.contains(range.commonAncestorContainer)) {
+        bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+        return;
+      }
 
-    const rect = range.getBoundingClientRect();
-    if (rect.width > 0 && rect.height > 0) {
-      const bubbleWidth = 220;
-      const leftPos = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, rect.left + (rect.width / 2) - (bubbleWidth / 2)));
-      const topPos = Math.max(10, rect.top - 46);
+      // Save valid range
+      window.savedFormatRange = range.cloneRange();
 
-      bubble.style.left = leftPos + 'px';
-      bubble.style.top = topPos + 'px';
-      bubble.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-      bubble.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
-    }
-  });
+      const rect = range.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const bubbleWidth = 240;
+        const leftPos = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, rect.left + (rect.width / 2) - (bubbleWidth / 2)));
+        const topPos = Math.max(10, rect.top - 50);
+
+        bubble.style.left = leftPos + 'px';
+        bubble.style.top = topPos + 'px';
+        bubble.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        bubble.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
+      }
+    });
 
   // Ensure all text elements on canvas are contenteditable
   function makeCanvasTextEditable() {
@@ -1916,4 +2065,76 @@
   </div>
 </div>
 
+<!-- FLOATING SELECTION FORMATTING BUBBLE -->
+<div id="floatingFormatBubble" class="fixed z-50 bg-slate-900 text-white shadow-2xl rounded-xl p-1 flex items-center gap-0.5 border border-slate-700/70 opacity-0 pointer-events-none transition-all duration-150 transform scale-95 select-none" style="background: #0f172a !important; color: #ffffff !important;">
+  <!-- Bold -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('bold')" title="Bold (Ctrl+B)">
+    <span class="material-symbols-outlined text-[17px]">format_bold</span>
+  </button>
+  <!-- Italic -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('italic')" title="Italic (Ctrl+I)">
+    <span class="material-symbols-outlined text-[17px]">format_italic</span>
+  </button>
+  <!-- Underline -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('underline')" title="Underline (Ctrl+U)">
+    <span class="material-symbols-outlined text-[17px]">format_underlined</span>
+  </button>
+  <!-- Strikethrough -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('strikeThrough')" title="Strikethrough">
+    <span class="material-symbols-outlined text-[17px]">strikethrough_s</span>
+  </button>
+
+  <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
+
+  <!-- Text Color Dropdown Trigger -->
+  <div class="relative">
+    <button type="button" class="format-bubble-btn flex flex-col items-center justify-center relative" id="btnFloatingTextColor" onmousedown="event.preventDefault();" onclick="toggleTextColorPalette(event)" title="Text Color (अक्षरांचा रंग)">
+      <span class="material-symbols-outlined text-[16px] leading-none">format_color_text</span>
+      <span class="w-3.5 h-[3px] rounded-full bg-blue-500 mt-[1px]" id="floatingTextColorIndicator"></span>
+    </button>
+    <!-- Quick Text Color Palette Popup -->
+    <div id="floatingTextColorPalette" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900 border border-slate-700 rounded-xl p-2 shadow-2xl z-50 flex items-center gap-1.5">
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-slate-900 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#0f172a')" title="Black / Dark"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-blue-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#2563eb')" title="Blue"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-red-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#dc2626')" title="Red"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-emerald-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#059669')" title="Green"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-amber-500 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#d97706')" title="Amber / Orange"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-purple-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#7c3aed')" title="Purple"></button>
+      <div class="h-4 w-px bg-slate-700"></div>
+      <label class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 via-pink-500 to-amber-400 cursor-pointer flex items-center justify-center hover:scale-115 transition-transform relative" title="Custom Color (इतर रंग)">
+        <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" onchange="applyTextColorFromPalette(this.value)"/>
+      </label>
+    </div>
+  </div>
+
+  <!-- Highlight Color Dropdown Trigger -->
+  <div class="relative">
+    <button type="button" class="format-bubble-btn flex flex-col items-center justify-center relative" id="btnFloatingHighlightColor" onmousedown="event.preventDefault();" onclick="toggleHighlightColorPalette(event)" title="Highlight Color (हायलाइट रंग)">
+      <span class="material-symbols-outlined text-[16px] leading-none">border_color</span>
+      <span class="w-3.5 h-[3px] rounded-full bg-yellow-400 mt-[1px]" id="floatingHighlightColorIndicator"></span>
+    </button>
+    <!-- Quick Highlight Color Palette Popup -->
+    <div id="floatingHighlightColorPalette" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900 border border-slate-700 rounded-xl p-2 shadow-2xl z-50 flex items-center gap-1.5">
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-yellow-300 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fef08a')" title="Yellow"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-emerald-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#bbf7d0')" title="Green"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-sky-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#bfdbfe')" title="Blue"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-pink-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fbcfe8')" title="Pink"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-orange-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fed7aa')" title="Orange"></button>
+      <div class="h-4 w-px bg-slate-700"></div>
+      <button type="button" class="w-5 h-5 rounded-full border border-red-400/60 bg-transparent flex items-center justify-center text-red-400 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('transparent')" title="Remove Highlight (काढून टाका)">
+        <span class="material-symbols-outlined text-[13px]">format_color_reset</span>
+      </button>
+      <label class="w-5 h-5 rounded-full bg-gradient-to-tr from-yellow-300 via-green-300 to-pink-300 cursor-pointer flex items-center justify-center hover:scale-115 transition-transform relative" title="Custom Highlight">
+        <input type="color" value="#fef08a" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" onchange="applyHighlightColorFromPalette(this.value)"/>
+      </label>
+    </div>
+  </div>
+
+  <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
+
+  <!-- Link -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('createLink')" title="Insert Link (Ctrl+K)">
+    <span class="material-symbols-outlined text-[17px]">link</span>
+  </button>
+</div>
 </body></html>

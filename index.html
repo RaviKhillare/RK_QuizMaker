@@ -1342,6 +1342,55 @@
       background: #64748b;
     }
 
+  
+    /* Bulletproof Floating Selection Format Bubble */
+    #floatingFormatBubble {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    }
+    .format-bubble-btn {
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none !important;
+      color: #ffffff !important;
+      box-shadow: none !important;
+      outline: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 28px !important;
+      height: 28px !important;
+      min-width: 28px !important;
+      min-height: 28px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+    }
+    .format-bubble-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transform: translateY(-1px) scale(1.04) !important;
+    }
+    .format-bubble-btn:active {
+      background-color: rgba(255, 255, 255, 0.35) !important;
+      transform: translateY(0) scale(0.96) !important;
+    }
+    .format-bubble-btn .material-symbols-outlined {
+      color: #ffffff !important;
+      font-size: 17px !important;
+      line-height: 1 !important;
+    }
+    #floatingTextColorPalette,
+    #floatingHighlightColorPalette {
+      background-color: #0f172a !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6) !important;
+    }
+
   </style>
 
   
@@ -1414,6 +1463,95 @@
     };
   </script>
 
+
+  <script>
+    // ================= SELECTION TRACKING & COLOR PALETTE HELPERS =================
+    window.savedFormatRange = null;
+
+    window.saveCurrentSelection = function() {
+      var sel = window.getSelection();
+      if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+        var range = sel.getRangeAt(0);
+        var canvas = document.getElementById('visualCanvas');
+        if (canvas && canvas.contains(range.commonAncestorContainer)) {
+          window.savedFormatRange = range.cloneRange();
+          return true;
+        }
+      }
+      return false;
+    };
+
+    window.restoreFormatSelection = function() {
+      if (window.savedFormatRange) {
+        var sel = window.getSelection();
+        if (sel) {
+          try {
+            sel.removeAllRanges();
+            sel.addRange(window.savedFormatRange);
+            return true;
+          } catch(e) {}
+        }
+      }
+      return false;
+    };
+
+    window.applyTextColorFromPalette = function(color) {
+      window.restoreFormatSelection();
+      var indicator = document.getElementById('floatingTextColorIndicator');
+      if (indicator) indicator.style.backgroundColor = color;
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand('foreColor', false, color);
+      var palette = document.getElementById('floatingTextColorPalette');
+      if (palette) palette.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('Text color changed!');
+      else if (typeof showNotification === 'function') showNotification('Text color changed!');
+      if (typeof saveState === 'function') saveState();
+    };
+
+    window.applyHighlightColorFromPalette = function(color) {
+      window.restoreFormatSelection();
+      var indicator = document.getElementById('floatingHighlightColorIndicator');
+      if (indicator) indicator.style.backgroundColor = color === 'transparent' ? '#cbd5e1' : color;
+      document.execCommand('styleWithCSS', false, true);
+      if (color === 'transparent') {
+        document.execCommand('removeFormat', false, null);
+      } else {
+        document.execCommand('hiliteColor', false, color);
+      }
+      var palette = document.getElementById('floatingHighlightColorPalette');
+      if (palette) palette.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('Highlight changed!');
+      else if (typeof showNotification === 'function') showNotification('Highlight changed!');
+      if (typeof saveState === 'function') saveState();
+    };
+
+    window.toggleTextColorPalette = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var p = document.getElementById('floatingTextColorPalette');
+      var hp = document.getElementById('floatingHighlightColorPalette');
+      if (hp) hp.classList.add('hidden');
+      if (p) p.classList.toggle('hidden');
+    };
+
+    window.toggleHighlightColorPalette = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var hp = document.getElementById('floatingHighlightColorPalette');
+      var p = document.getElementById('floatingTextColorPalette');
+      if (p) p.classList.add('hidden');
+      if (hp) hp.classList.toggle('hidden');
+    };
+
+    // Close palettes when clicking anywhere else
+    document.addEventListener('mousedown', function(e) {
+      var bubble = document.getElementById('floatingFormatBubble');
+      if (bubble && !bubble.contains(e.target)) {
+        var p = document.getElementById('floatingTextColorPalette');
+        var hp = document.getElementById('floatingHighlightColorPalette');
+        if (p) p.classList.add('hidden');
+        if (hp) hp.classList.add('hidden');
+      }
+    });
+  </script>
 </head>
 <body>
 
@@ -7748,6 +7886,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     // DOCUMENT RICH TEXT EDITING ENGINE IN INDEX.HTML
     // =========================================================================
     function formatDocText(command, value = null) {
+      if (window.restoreFormatSelection) window.restoreFormatSelection();
       document.execCommand('styleWithCSS', false, true);
 
       if (command === 'fontSizePx') {
@@ -7797,12 +7936,19 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     }
 
     // Floating selection bubble tracking for index.html
+    // Floating selection bubble tracking
     document.addEventListener('selectionchange', () => {
       const bubble = document.getElementById('floatingFormatBubble');
       if (!bubble) return;
 
       const selection = window.getSelection();
       if (!selection || selection.isCollapsed || !selection.rangeCount) {
+        // If color palettes are open, do not immediately close bubble
+        const p = document.getElementById('floatingTextColorPalette');
+        const hp = document.getElementById('floatingHighlightColorPalette');
+        if ((p && !p.classList.contains('hidden')) || (hp && !hp.classList.contains('hidden'))) {
+          return;
+        }
         bubble.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         bubble.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
         return;
@@ -7816,11 +7962,14 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         return;
       }
 
+      // Save valid range
+      window.savedFormatRange = range.cloneRange();
+
       const rect = range.getBoundingClientRect();
       if (rect.width > 0 && rect.height > 0) {
-        const bubbleWidth = 220;
+        const bubbleWidth = 240;
         const leftPos = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, rect.left + (rect.width / 2) - (bubbleWidth / 2)));
-        const topPos = Math.max(10, rect.top - 46);
+        const topPos = Math.max(10, rect.top - 50);
 
         bubble.style.left = leftPos + 'px';
         bubble.style.top = topPos + 'px';
@@ -8563,11 +8712,77 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 </script>
 
 <!-- FLOATING SELECTION FORMATTING BUBBLE -->
-<div id="floatingFormatBubble" class="fixed z-50 bg-inverse-surface text-inverse-on-surface shadow-2xl rounded-xl p-1 flex items-center gap-1 border border-border-subtle/30 opacity-0 pointer-events-none transition-all duration-200 transform scale-95" style="background:#1e293b; color:#fff;">
-  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('bold')" title="Bold"><span class="material-symbols-outlined text-[16px]">format_bold</span></button>
-  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('italic')" title="Italic"><span class="material-symbols-outlined text-[16px]">format_italic</span></button>
-  <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('underline')" title="Underline"><span class="material-symbols-outlined text-[16px]">format_underlined</span></button>
-  <div class="h-3.5 w-px bg-white/20 mx-0.5"></div>
+<div id="floatingFormatBubble" class="fixed z-50 bg-slate-900 text-white shadow-2xl rounded-xl p-1 flex items-center gap-0.5 border border-slate-700/70 opacity-0 pointer-events-none transition-all duration-150 transform scale-95 select-none" style="background: #0f172a !important; color: #ffffff !important;">
+  <!-- Bold -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('bold')" title="Bold (Ctrl+B)">
+    <span class="material-symbols-outlined text-[17px]">format_bold</span>
+  </button>
+  <!-- Italic -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('italic')" title="Italic (Ctrl+I)">
+    <span class="material-symbols-outlined text-[17px]">format_italic</span>
+  </button>
+  <!-- Underline -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('underline')" title="Underline (Ctrl+U)">
+    <span class="material-symbols-outlined text-[17px]">format_underlined</span>
+  </button>
+  <!-- Strikethrough -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('strikeThrough')" title="Strikethrough">
+    <span class="material-symbols-outlined text-[17px]">strikethrough_s</span>
+  </button>
+
+  <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
+
+  <!-- Text Color Dropdown Trigger -->
+  <div class="relative">
+    <button type="button" class="format-bubble-btn flex flex-col items-center justify-center relative" id="btnFloatingTextColor" onmousedown="event.preventDefault();" onclick="toggleTextColorPalette(event)" title="Text Color (अक्षरांचा रंग)">
+      <span class="material-symbols-outlined text-[16px] leading-none">format_color_text</span>
+      <span class="w-3.5 h-[3px] rounded-full bg-blue-500 mt-[1px]" id="floatingTextColorIndicator"></span>
+    </button>
+    <!-- Quick Text Color Palette Popup -->
+    <div id="floatingTextColorPalette" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900 border border-slate-700 rounded-xl p-2 shadow-2xl z-50 flex items-center gap-1.5">
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-slate-900 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#0f172a')" title="Black / Dark"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-blue-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#2563eb')" title="Blue"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-red-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#dc2626')" title="Red"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-emerald-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#059669')" title="Green"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-amber-500 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#d97706')" title="Amber / Orange"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-white/30 bg-purple-600 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyTextColorFromPalette('#7c3aed')" title="Purple"></button>
+      <div class="h-4 w-px bg-slate-700"></div>
+      <label class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 via-pink-500 to-amber-400 cursor-pointer flex items-center justify-center hover:scale-115 transition-transform relative" title="Custom Color (इतर रंग)">
+        <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" onchange="applyTextColorFromPalette(this.value)"/>
+      </label>
+    </div>
+  </div>
+
+  <!-- Highlight Color Dropdown Trigger -->
+  <div class="relative">
+    <button type="button" class="format-bubble-btn flex flex-col items-center justify-center relative" id="btnFloatingHighlightColor" onmousedown="event.preventDefault();" onclick="toggleHighlightColorPalette(event)" title="Highlight Color (हायलाइट रंग)">
+      <span class="material-symbols-outlined text-[16px] leading-none">border_color</span>
+      <span class="w-3.5 h-[3px] rounded-full bg-yellow-400 mt-[1px]" id="floatingHighlightColorIndicator"></span>
+    </button>
+    <!-- Quick Highlight Color Palette Popup -->
+    <div id="floatingHighlightColorPalette" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-slate-900 border border-slate-700 rounded-xl p-2 shadow-2xl z-50 flex items-center gap-1.5">
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-yellow-300 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fef08a')" title="Yellow"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-emerald-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#bbf7d0')" title="Green"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-sky-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#bfdbfe')" title="Blue"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-pink-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fbcfe8')" title="Pink"></button>
+      <button type="button" class="w-5 h-5 rounded-full border border-slate-600 bg-orange-200 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('#fed7aa')" title="Orange"></button>
+      <div class="h-4 w-px bg-slate-700"></div>
+      <button type="button" class="w-5 h-5 rounded-full border border-red-400/60 bg-transparent flex items-center justify-center text-red-400 hover:scale-115 transition-transform cursor-pointer" onmousedown="event.preventDefault();" onclick="applyHighlightColorFromPalette('transparent')" title="Remove Highlight (काढून टाका)">
+        <span class="material-symbols-outlined text-[13px]">format_color_reset</span>
+      </button>
+      <label class="w-5 h-5 rounded-full bg-gradient-to-tr from-yellow-300 via-green-300 to-pink-300 cursor-pointer flex items-center justify-center hover:scale-115 transition-transform relative" title="Custom Highlight">
+        <input type="color" value="#fef08a" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" onchange="applyHighlightColorFromPalette(this.value)"/>
+      </label>
+    </div>
+  </div>
+
+  <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
+
+  <!-- Link -->
+  <button type="button" class="format-bubble-btn" onmousedown="event.preventDefault();" onclick="formatDocText('createLink')" title="Insert Link (Ctrl+K)">
+    <span class="material-symbols-outlined text-[17px]">link</span>
+  </button>
+</div>
   <label class="p-1 hover:bg-white/20 rounded text-white cursor-pointer relative flex items-center justify-center" title="Text Color">
     <span class="material-symbols-outlined text-[16px]">format_color_text</span>
     <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('textColor', this.value)"/>
