@@ -2981,7 +2981,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             <!-- Left: Sidebar Toggle, New Blog, Mode Switcher, Saved Blogs Dropdown -->
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Toggle Block Library Sidebar -->
-              <button type="button" id="btnOpenLibraryTop" onclick="toggleBlockLibrary()" class="hidden px-2.5 py-1.5 rounded-lg border border-primary/40 bg-primary/10 text-primary text-[12px] font-semibold flex items-center gap-1 cursor-pointer transition-all shadow-2xs" title="Open Block Library">
+              <button type="button" id="btnOpenLibraryTop" onclick="event.stopPropagation(); toggleBlockLibrary();" class="px-2.5 py-1.5 rounded-lg border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary text-[12px] font-semibold items-center gap-1 cursor-pointer transition-all shadow-2xs" style="display: none;" title="Open Block Library (Click to Expand)">
                 <span class="material-symbols-outlined text-[18px]">menu</span>
                 <span>Block Library</span>
               </button>
@@ -3069,9 +3069,9 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
               <!-- Palette Header & Search -->
               <div class="flex items-center justify-between pb-2 border-b-[1.5px] border-border-subtle shrink-0">
                 <div class="flex items-center gap-1.5">
-                  <button type="button" onclick="toggleBlockLibrary()" class="p-1 -ml-1 rounded-md hover:bg-surface-container text-text-primary flex items-center justify-center cursor-pointer transition-all" title="Toggle / Hide Block Library">
-                    <span class="material-symbols-outlined text-[20px] text-primary">menu</span>
-                  </button>
+                  <button type="button" id="btnToggleLibraryInHeader" onclick="event.stopPropagation(); toggleBlockLibrary();" class="p-1.5 -ml-1 rounded-lg hover:bg-surface-container-high active:scale-90 text-text-primary flex items-center justify-center cursor-pointer transition-all border border-border-subtle shadow-2xs" title="Hide Block Library (Click to Collapse)">
+                  <span class="material-symbols-outlined text-[20px] text-primary">menu</span>
+                </button>
                   <span class="material-symbols-outlined text-primary text-[19px]">widgets</span>
                   <h3 class="font-title-md text-[15px] text-text-primary font-bold">Block Library</h3>
                 </div>
@@ -8219,20 +8219,45 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
 
   // ================= SIDEBAR TOGGLE & ACTIVE BLOCK ACTIONS =================
+  // ================= BULLETPROOF SIDEBAR TOGGLE & BLOCK ACTIONS =================
   function toggleBlockLibrary() {
-    var lib = document.getElementById('blockLibraryCol');
-    var topBtn = document.getElementById('btnOpenLibraryTop');
-    if (!lib) return;
+    try {
+      var lib = document.getElementById('blockLibraryCol');
+      var topBtn = document.getElementById('btnOpenLibraryTop');
+      if (!lib) {
+        console.warn('blockLibraryCol element not found');
+        return;
+      }
 
-    var isHidden = lib.classList.contains('hidden');
-    if (isHidden) {
-      lib.classList.remove('hidden');
-      if (topBtn) topBtn.classList.add('hidden');
-      showToast('Block Library shown');
-    } else {
-      lib.classList.add('hidden');
-      if (topBtn) topBtn.classList.remove('hidden');
-      showToast('Block Library hidden (Wide canvas mode)');
+      // Check current visibility via inline style, computed style, or class
+      var currentDisplay = window.getComputedStyle ? window.getComputedStyle(lib).display : lib.style.display;
+      var isHidden = (currentDisplay === 'none') || (lib.style.display === 'none') || lib.classList.contains('hidden');
+
+      if (isHidden) {
+        // OPEN / SHOW LIBRARY
+        lib.style.setProperty('display', 'flex', 'important');
+        lib.classList.remove('hidden');
+        if (topBtn) {
+          topBtn.style.setProperty('display', 'none', 'important');
+          topBtn.classList.add('hidden');
+        }
+        if (typeof showToast === 'function') {
+          try { showToast('Block Library opened'); } catch(e) {}
+        }
+      } else {
+        // CLOSE / HIDE LIBRARY
+        lib.style.setProperty('display', 'none', 'important');
+        lib.classList.add('hidden');
+        if (topBtn) {
+          topBtn.style.setProperty('display', 'inline-flex', 'important');
+          topBtn.classList.remove('hidden');
+        }
+        if (typeof showToast === 'function') {
+          try { showToast('Block Library closed (Wide view)'); } catch(e) {}
+        }
+      }
+    } catch(err) {
+      console.error('toggleBlockLibrary error:', err);
     }
   }
 
