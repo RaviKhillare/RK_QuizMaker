@@ -2981,8 +2981,9 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             <!-- Left: Sidebar Toggle, New Blog, Mode Switcher, Saved Blogs Dropdown -->
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Toggle Block Library Sidebar -->
-              <button type="button" id="btnToggleLibrary" onclick="toggleBlockLibrary()" class="p-2 rounded-lg border border-border-medium bg-surface-container-low hover:bg-surface-container text-text-primary flex items-center justify-center cursor-pointer transition-all shadow-2xs" title="Toggle Block Library (Menu)">
-                <span class="material-symbols-outlined text-[20px] text-primary">menu</span>
+              <button type="button" id="btnOpenLibraryTop" onclick="toggleBlockLibrary()" class="hidden px-2.5 py-1.5 rounded-lg border border-primary/40 bg-primary/10 text-primary text-[12px] font-semibold flex items-center gap-1 cursor-pointer transition-all shadow-2xs" title="Open Block Library">
+                <span class="material-symbols-outlined text-[18px]">menu</span>
+                <span>Block Library</span>
               </button>
 
               <!-- + New Blog -->
@@ -3062,13 +3063,16 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
           </div>
 
           <!-- ================= 3-COLUMN STUDIO WORKSPACE ================= -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start w-full">
+          <div class="flex flex-col md:flex-row gap-3 items-start w-full">
             <!-- ================= LEFT COLUMN: Component Palette ================= -->
-            <div id="blockLibraryCol" class="lg:col-span-3 flex flex-col bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm lg:sticky lg:top-20 h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] transition-all duration-300">
+            <div id="blockLibraryCol" class="w-full md:w-72 lg:w-80 shrink-0 flex flex-col bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm md:sticky md:top-20 h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] transition-all duration-300">
               <!-- Palette Header & Search -->
               <div class="flex items-center justify-between pb-2 border-b-[1.5px] border-border-subtle shrink-0">
                 <div class="flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-primary text-[20px]">widgets</span>
+                  <button type="button" onclick="toggleBlockLibrary()" class="p-1 -ml-1 rounded-md hover:bg-surface-container text-text-primary flex items-center justify-center cursor-pointer transition-all" title="Toggle / Hide Block Library">
+                    <span class="material-symbols-outlined text-[20px] text-primary">menu</span>
+                  </button>
+                  <span class="material-symbols-outlined text-primary text-[19px]">widgets</span>
                   <h3 class="font-title-md text-[15px] text-text-primary font-bold">Block Library</h3>
                 </div>
                 <span class="font-label-sm text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-bold">10 items</span>
@@ -3364,7 +3368,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             </div>
 
             <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
-            <div id="canvasMainCol" class="lg:col-span-6 flex flex-col gap-2 transition-all duration-300">
+            <div id="canvasMainCol" class="flex-1 min-w-0 flex flex-col gap-2 transition-all duration-300 w-full">
               <!-- Viewport & Canvas Controls Bar -->
               <!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
               <div class="w-full mx-auto transition-all duration-300 max-h-[calc(100vh-140px)] overflow-y-auto pr-1 rounded-xl custom-designer-scroll" id="canvasViewport">
@@ -3570,7 +3574,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             </div>
 
             <!-- ================= RIGHT COLUMN: Fixed Property Inspector ================= -->
-            <div id="propertyInspectorCol" class="lg:col-span-3 flex flex-col gap-2 lg:sticky lg:top-20 max-h-[calc(100vh-90px)] overflow-y-auto custom-designer-scroll">
+            <div id="propertyInspectorCol" class="w-full lg:w-72 shrink-0 flex flex-col gap-2 lg:sticky lg:top-20 max-h-[calc(100vh-90px)] overflow-y-auto custom-designer-scroll">
               <div class="bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm flex flex-col gap-3">
                 
                 <!-- Header -->
@@ -8217,23 +8221,17 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
   // ================= SIDEBAR TOGGLE & ACTIVE BLOCK ACTIONS =================
   function toggleBlockLibrary() {
     var lib = document.getElementById('blockLibraryCol');
-    var canvas = document.getElementById('canvasMainCol');
-    var btnText = document.getElementById('toggleLibraryText');
-    var btnIcon = document.getElementById('toggleLibraryIcon');
-    if (!lib || !canvas) return;
+    var topBtn = document.getElementById('btnOpenLibraryTop');
+    if (!lib) return;
 
     var isHidden = lib.classList.contains('hidden');
     if (isHidden) {
       lib.classList.remove('hidden');
-      canvas.className = 'lg:col-span-6 flex flex-col gap-2 transition-all duration-300';
-      if (btnText) btnText.textContent = 'Hide Library';
-      if (btnIcon) btnIcon.textContent = 'side_navigation';
+      if (topBtn) topBtn.classList.add('hidden');
       showToast('Block Library shown');
     } else {
       lib.classList.add('hidden');
-      canvas.className = 'lg:col-span-9 flex flex-col gap-2 transition-all duration-300';
-      if (btnText) btnText.textContent = 'Show Library';
-      if (btnIcon) btnIcon.textContent = 'dock_to_left';
+      if (topBtn) topBtn.classList.remove('hidden');
       showToast('Block Library hidden (Wide canvas mode)');
     }
   }
