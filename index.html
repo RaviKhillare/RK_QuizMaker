@@ -1552,6 +1552,355 @@
       }
     });
   </script>
+<script>
+    window.copyHighlightedBlockCode = function() {
+      var rawTa = document.getElementById('rawHtmlTextarea');
+      if (!rawTa) return;
+      var start = rawTa.selectionStart;
+      var end = rawTa.selectionEnd;
+      if (start < end) {
+        var code = rawTa.value.substring(start, end);
+        try { navigator.clipboard.writeText(code); } catch(e) {}
+        if (typeof showToast === 'function') showToast('Active block code copied to clipboard!');
+      } else {
+        try { navigator.clipboard.writeText(rawTa.value); } catch(e) {}
+        if (typeof showToast === 'function') showToast('Full code copied to clipboard!');
+      }
+    };</script>
+
+  <script>
+    // ================= FULL TEXT EDITOR CAPABILITY & EDITABLE BLOCKS =================
+    window.makeBlockTextEditable = function(block) {
+      if (!block) return;
+      var textSelectors = 'h1, h2, h3, h4, h5, h6, p, td, th, blockquote, .cta-title, .cta-desc, .cta-badge';
+      var textEls = block.querySelectorAll(textSelectors);
+      if (textEls.length > 0) {
+        textEls.forEach(function(el) {
+          el.setAttribute('contenteditable', 'true');
+          el.setAttribute('spellcheck', 'true');
+          el.style.outline = 'none';
+          el.style.cursor = 'text';
+        });
+      } else {
+        var innerSpans = block.querySelectorAll('span:not(.material-symbols-outlined):not([class*="badge"])');
+        if (innerSpans.length > 0) {
+          innerSpans.forEach(function(s) {
+            s.setAttribute('contenteditable', 'true');
+            s.setAttribute('spellcheck', 'true');
+            s.style.outline = 'none';
+            s.style.cursor = 'text';
+          });
+        } else {
+          var innerDiv = block.querySelector(':scope > div:not(.absolute)');
+          if (innerDiv) {
+            innerDiv.setAttribute('contenteditable', 'true');
+            innerDiv.setAttribute('spellcheck', 'true');
+            innerDiv.style.outline = 'none';
+            innerDiv.style.cursor = 'text';
+          } else {
+            block.setAttribute('contenteditable', 'true');
+            block.setAttribute('spellcheck', 'true');
+            block.style.outline = 'none';
+            block.style.cursor = 'text';
+          }
+        }
+      }
+    };
+
+    window.initializeAllCanvasBlocks = function() {
+      var container = document.getElementById('blocksContainer');
+      if (!container) return;
+
+      var blocks = container.querySelectorAll('.canvas-block');
+      blocks.forEach(function(block) {
+        if (typeof ensureBlockControls === 'function') {
+          ensureBlockControls(block);
+        }
+        window.makeBlockTextEditable(block);
+
+        block.onclick = function(e) {
+          if (typeof selectBlockForStyling === 'function') {
+            selectBlockForStyling(this);
+          }
+        };
+
+        block.addEventListener('focusin', function(e) {
+          window.activeCanvasBlock = block;
+          window.lastEditedBlock = block;
+        });
+
+        block.addEventListener('input', function(e) {
+          window.activeCanvasBlock = block;
+          window.lastEditedBlock = block;
+          if (typeof saveState === 'function') saveState();
+        });
+      });
+
+      if (typeof setupBlockInserters === 'function') setupBlockInserters();
+      if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
+    };
+
+    window.attachBlockListeners = window.initializeAllCanvasBlocks;
+  </script>
+
+  <script>
+    // =========================================================================
+    // FULL RICH TEXT EDITOR CAPABILITY, ACTIVE BLOCK TRACKING & CODE HIGHLIGHT
+    // =========================================================================
+    window.lastEditedBlock = null;
+    window.activeCanvasBlock = null;
+    window.lastExportDetails = null;
+
+    // Track active block whenever user interacts with canvas
+    document.addEventListener('focusin', function(e) {
+      var block = e.target.closest ? e.target.closest('.canvas-block') : null;
+      if (block) {
+        window.activeCanvasBlock = block;
+        window.lastEditedBlock = block;
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      var block = e.target.closest ? e.target.closest('.canvas-block') : null;
+      if (block) {
+        window.activeCanvasBlock = block;
+        window.lastEditedBlock = block;
+      }
+    });
+
+    // Make every text container in a block contenteditable and styled like a text editor
+    window.makeBlockTextEditable = function(block) {
+      if (!block) return;
+      var textSelectors = 'h1, h2, h3, h4, h5, h6, p, td, th, blockquote, .cta-title, .cta-desc, .cta-badge, .pdf-title, .pdf-desc';
+      var textEls = block.querySelectorAll(textSelectors);
+      if (textEls.length > 0) {
+        textEls.forEach(function(el) {
+          el.setAttribute('contenteditable', 'true');
+          el.setAttribute('spellcheck', 'true');
+          el.style.outline = 'none';
+          el.style.cursor = 'text';
+          el.style.minHeight = '1.2em';
+        });
+      } else {
+        var innerSpans = block.querySelectorAll('span:not(.material-symbols-outlined):not([class*="badge"])');
+        if (innerSpans.length > 0) {
+          innerSpans.forEach(function(s) {
+            s.setAttribute('contenteditable', 'true');
+            s.setAttribute('spellcheck', 'true');
+            s.style.outline = 'none';
+            s.style.cursor = 'text';
+          });
+        } else {
+          var innerDiv = block.querySelector(':scope > div:not(.absolute)');
+          if (innerDiv) {
+            innerDiv.setAttribute('contenteditable', 'true');
+            innerDiv.setAttribute('spellcheck', 'true');
+            innerDiv.style.outline = 'none';
+            innerDiv.style.cursor = 'text';
+          } else {
+            block.setAttribute('contenteditable', 'true');
+            block.setAttribute('spellcheck', 'true');
+            block.style.outline = 'none';
+            block.style.cursor = 'text';
+          }
+        }
+      }
+    };
+
+    // Initialize all canvas blocks (controls, editability, selection, inserters)
+    window.initializeAllCanvasBlocks = function() {
+      var container = document.getElementById('blocksContainer');
+      if (!container) return;
+
+      var blocks = container.querySelectorAll('.canvas-block');
+      blocks.forEach(function(block) {
+        if (typeof ensureBlockControls === 'function') {
+          ensureBlockControls(block);
+        }
+        window.makeBlockTextEditable(block);
+
+        block.onclick = function(e) {
+          if (typeof selectBlockForStyling === 'function') {
+            selectBlockForStyling(this);
+          }
+        };
+
+        block.addEventListener('focusin', function(e) {
+          window.activeCanvasBlock = block;
+          window.lastEditedBlock = block;
+        });
+
+        block.addEventListener('input', function(e) {
+          window.activeCanvasBlock = block;
+          window.lastEditedBlock = block;
+          if (typeof saveState === 'function') saveState();
+        });
+      });
+
+      if (typeof setupBlockInserters === 'function') setupBlockInserters();
+      if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
+    };
+    window.attachBlockListeners = window.initializeAllCanvasBlocks;
+
+    // Generate Export HTML and compute exact character bounds for active block
+    window.generateExportHtml = function(targetBlockEl) {
+      const titleEl = document.getElementById('postTitleInput');
+      const title = (titleEl ? titleEl.value : 'Blog Post').trim();
+      const container = document.getElementById('blocksContainer');
+      if (!container) {
+        window.lastExportDetails = { highlightStart: -1, highlightEnd: -1, blockTitle: '', blockIndex: -1 };
+        return '';
+      }
+
+      const allBlocks = Array.from(container.querySelectorAll('.canvas-block'));
+      if (!targetBlockEl) {
+        targetBlockEl = window.lastEditedBlock || window.activeCanvasBlock || container.querySelector('.canvas-block.ring-2') || allBlocks[0];
+      }
+      const targetIndex = targetBlockEl ? allBlocks.indexOf(targetBlockEl) : -1;
+
+      let blockTitle = '';
+      if (targetBlockEl) {
+        const heading = targetBlockEl.querySelector('h1, h2, h3, h4, h5, h6, p, [class*="font-title"], [class*="font-headline"]');
+        blockTitle = heading ? heading.innerText.trim().slice(0, 32) : (targetBlockEl.getAttribute('data-block-type') || 'Block');
+      }
+
+      let output = '<!-- RK QuizMaker Generated Blog Post -->\n' +
+'<style>\n' +
+'  .rk-blog-wrapper { width: 100%; max-width: 820px; margin: 0 auto; color: #0F172A; font-family: Outfit, \'Noto Sans\', sans-serif; line-height: 1.6; }\n' +
+'  .rk-blog-wrapper table { width: 100% !important; border-collapse: collapse; min-width: 320px; }\n' +
+'  .rk-blog-wrapper th, .rk-blog-wrapper td { padding: 10px 14px; }\n' +
+'  .rk-blog-table-scroll { width: 100% !important; max-width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; }\n' +
+'  .rk-blog-wrapper img { max-width: 100% !important; height: auto !important; display: block; border-radius: 8px; margin: 12px auto; }\n' +
+'  .rk-blog-wrapper .canvas-block { margin-bottom: 16px; }\n' +
+'</style>\n\n' +
+'<div class="rk-blog-wrapper">\n' +
+'  <h1 class="rk-blog-title" style="font-size: 28px; font-weight: 700; color: #1E1B4B; margin-bottom: 16px;">' + (title || 'Blog Post') + '</h1>\n' +
+'  <div style="display: flex; flex-direction: column; gap: 16px;">\n';
+
+      let highlightStart = -1;
+      let highlightEnd = -1;
+
+      allBlocks.forEach((origBlock, idx) => {
+        const clone = origBlock.cloneNode(true);
+        clone.querySelectorAll('.block-inserter-zone').forEach(el => el.remove());
+        clone.querySelectorAll('.group > div.absolute, div.absolute.top-2.right-2').forEach(el => el.remove());
+        clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+        clone.classList.remove('ring-2', 'ring-primary', 'ring-primary/60');
+
+        clone.querySelectorAll('table').forEach(tbl => {
+          if (!tbl.parentElement || !tbl.parentElement.classList.contains('rk-blog-table-scroll')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'rk-blog-table-scroll';
+            wrapper.style.cssText = 'width: 100% !important; max-width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0;';
+            tbl.parentNode.insertBefore(wrapper, tbl);
+            wrapper.appendChild(tbl);
+          }
+        });
+
+        const blockType = origBlock.getAttribute('data-block-type') || 'block';
+        const startComment = '    <!-- ================= Block ' + (idx + 1) + ': ' + blockType.toUpperCase() + ' ================= -->\n';
+        const endComment = '\n    <!-- ================= /Block ' + (idx + 1) + ' ================= -->\n\n';
+
+        output += startComment;
+        if (idx === targetIndex) {
+          highlightStart = output.length;
+        }
+
+        const blockHtml = '    ' + clone.outerHTML.trim();
+        output += blockHtml;
+
+        if (idx === targetIndex) {
+          highlightEnd = output.length;
+        }
+        output += endComment;
+      });
+
+      output += '  </div>\n' +
+'</div>\n' +
+'<!-- /RK QuizMaker End -->';
+
+      window.lastExportDetails = { highlightStart, highlightEnd, blockTitle, blockIndex: targetIndex };
+      return output;
+    };
+
+    // Mode Switcher (Visual vs Code) with Active Block Highlighting
+    window.setMode = function(mode) {
+      window.currentDesignerMode = mode;
+      var visualView = document.getElementById('canvasViewport');
+      var sourceView = document.getElementById('sourceCodeView');
+      var btnVisual = document.getElementById('btnModeVisual');
+      var btnSource = document.getElementById('btnModeSource');
+      if (!visualView || !sourceView) return;
+
+      if (mode === 'visual') {
+        visualView.classList.remove('hidden');
+        sourceView.classList.add('hidden');
+        if (btnVisual) btnVisual.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all";
+        if (btnSource) btnSource.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md text-text-secondary hover:text-text-primary transition-all";
+
+        // Re-initialize blocks so all text elements remain fully editable
+        if (typeof initializeAllCanvasBlocks === 'function') {
+          initializeAllCanvasBlocks();
+        }
+      } else {
+        // CODE MODE: find currently active/focused block from visual mode
+        var activeBlock = window.lastEditedBlock || window.activeCanvasBlock || document.querySelector('#blocksContainer .canvas-block.ring-2') || document.querySelector('#blocksContainer .canvas-block');
+        var exportHtml = window.generateExportHtml(activeBlock);
+        var details = window.lastExportDetails || {};
+
+        var rawTa = document.getElementById('rawHtmlTextarea');
+        if (rawTa) {
+          rawTa.value = exportHtml;
+        }
+
+        visualView.classList.add('hidden');
+        sourceView.classList.remove('hidden');
+        if (btnSource) btnSource.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all";
+        if (btnVisual) btnVisual.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md text-text-secondary hover:text-text-primary transition-all";
+
+        // Highlight and scroll to active block in Code View
+        var notice = document.getElementById('codeActiveBlockNotice');
+        var noticeTitle = document.getElementById('codeActiveBlockTitle');
+        if (details.highlightStart !== -1 && details.highlightEnd !== -1 && rawTa) {
+          if (notice && noticeTitle) {
+            noticeTitle.innerText = (details.blockTitle || 'Active Block') + ' (Block #' + (details.blockIndex + 1) + ')';
+            notice.classList.remove('hidden');
+          }
+          setTimeout(function() {
+            rawTa.focus();
+            rawTa.setSelectionRange(details.highlightStart, details.highlightEnd);
+
+            // Center scroll on the highlighted block code
+            var textBefore = rawTa.value.substring(0, details.highlightStart);
+            var lineNum = textBefore.split('\n').length;
+            var totalLines = rawTa.value.split('\n').length;
+            var targetScroll = (lineNum / totalLines) * rawTa.scrollHeight - (rawTa.clientHeight / 3);
+            rawTa.scrollTop = Math.max(0, targetScroll);
+          }, 60);
+        } else {
+          if (notice) notice.classList.add('hidden');
+        }
+      }
+    };
+
+    // Copy highlighted block code button
+    window.copyHighlightedBlockCode = function() {
+      var rawTa = document.getElementById('rawHtmlTextarea');
+      if (!rawTa) return;
+      var start = rawTa.selectionStart;
+      var end = rawTa.selectionEnd;
+      if (start < end) {
+        var code = rawTa.value.substring(start, end);
+        try { navigator.clipboard.writeText(code); } catch(e) {}
+        if (typeof showToast === 'function') showToast('Active block code copied to clipboard!');
+        else if (typeof showDesignerToast === 'function') showDesignerToast('Active block code copied!');
+      } else {
+        try { navigator.clipboard.writeText(rawTa.value); } catch(e) {}
+        if (typeof showToast === 'function') showToast('Full code copied to clipboard!');
+        else if (typeof showDesignerToast === 'function') showDesignerToast('Full code copied!');
+      }
+    };
+  </script>
 </head>
 <body>
 
@@ -3745,6 +4094,15 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   <button class="px-3 py-1 rounded bg-primary text-on-primary text-label-md font-label-md hover:bg-primary-dark transition-colors" onclick="syncSourceToVisual()">
                     Apply Changes
                   </button>
+                </div>
+                
+                <!-- Active Block Code Highlight Banner -->
+                <div id="codeActiveBlockNotice" class="hidden flex items-center justify-between px-3 py-2 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[12px] font-medium transition-all">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="material-symbols-outlined text-[18px] text-primary shrink-0 animate-pulse">code_blocks</span>
+                    <span class="truncate">Active Block Code Highlighted: <strong id="codeActiveBlockTitle" class="font-bold">Block #1</strong></span>
+                  </div>
+                  <button type="button" onclick="copyHighlightedBlockCode()" class="px-2.5 py-1 rounded bg-primary text-white text-[11px] font-semibold hover:bg-primary-dark transition-colors cursor-pointer shrink-0 shadow-2xs" title="Copy highlighted block code">Copy Block Code</button>
                 </div>
                 <textarea class="w-full h-[650px] p-4 font-mono text-[13px] rounded-lg outline-none border-[1.5px] border-border-medium leading-relaxed overflow-y-auto shadow-inner" id="rawHtmlTextarea" style="background-color: #ffffff !important; color: #0f172a !important; font-family: Consolas, 'Courier New', monospace; font-weight: 500;" spellcheck="false"></textarea>
               </div>
@@ -6574,13 +6932,48 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         sourceView.classList.add('hidden');
         if (btnVisual) btnVisual.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all";
         if (btnSource) btnSource.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md text-text-secondary hover:text-text-primary transition-all";
+
+        // Re-initialize blocks so all text elements remain fully editable
+        if (typeof initializeAllCanvasBlocks === 'function') {
+          initializeAllCanvasBlocks();
+        }
       } else {
+        // CODE MODE: find currently active/focused block from visual mode
+        var activeBlock = window.lastEditedBlock || window.activeCanvasBlock || document.querySelector('#blocksContainer .canvas-block.ring-2') || document.querySelector('#blocksContainer .canvas-block');
+        var exportResult = generateExportHtml(activeBlock);
+
         var rawTa = document.getElementById('rawHtmlTextarea');
-        if (rawTa) rawTa.value = generateExportHtml();
+        if (rawTa) {
+          rawTa.value = exportResult.html;
+        }
+
         visualView.classList.add('hidden');
         sourceView.classList.remove('hidden');
         if (btnSource) btnSource.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all";
         if (btnVisual) btnVisual.className = "flex items-center gap-1 px-3 py-1.5 rounded-md font-label-md text-label-md text-text-secondary hover:text-text-primary transition-all";
+
+        // Highlight and scroll to active block in Code View
+        var notice = document.getElementById('codeActiveBlockNotice');
+        var noticeTitle = document.getElementById('codeActiveBlockTitle');
+        if (exportResult && exportResult.highlightStart !== -1 && exportResult.highlightEnd !== -1 && rawTa) {
+          if (notice && noticeTitle) {
+            noticeTitle.innerText = (exportResult.blockTitle || 'Active Block') + ' (Block #' + (exportResult.blockIndex + 1) + ')';
+            notice.classList.remove('hidden');
+          }
+          setTimeout(function() {
+            rawTa.focus();
+            rawTa.setSelectionRange(exportResult.highlightStart, exportResult.highlightEnd);
+
+            // Center scroll on the highlighted block code
+            var textBefore = rawTa.value.substring(0, exportResult.highlightStart);
+            var lineNum = textBefore.split('\n').length;
+            var totalLines = rawTa.value.split('\n').length;
+            var targetScroll = (lineNum / totalLines) * rawTa.scrollHeight - (rawTa.clientHeight / 3);
+            rawTa.scrollTop = Math.max(0, targetScroll);
+          }, 60);
+        } else {
+          if (notice) notice.classList.add('hidden');
+        }
       }
     }
 
@@ -8293,22 +8686,34 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     var key = e.key.toLowerCase();
     var sel = window.getSelection();
     var hasTextSelection = sel && sel.toString().trim().length > 0;
+    
     var activeEl = document.activeElement;
-    var isTyping = activeEl && (activeEl.isContentEditable || activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+    var isContentEditable = activeEl && (activeEl.isContentEditable || activeEl.getAttribute('contenteditable') === 'true' || !!activeEl.closest('[contenteditable="true"]'));
+    var isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
 
-    if (key === 'c' && !hasTextSelection && window.activeCanvasBlock && !isTyping) {
+    // When editing text in a block or text is selected:
+    // ALWAYS allow standard native Cut (Ctrl+X), Copy (Ctrl+C), and Paste (Ctrl+V)!
+    if (hasTextSelection && (key === 'c' || key === 'x')) {
+      return; // native browser copy / cut
+    }
+    if ((isContentEditable || isInput) && key === 'v') {
+      return; // native browser paste text right at caret
+    }
+
+    // When NOT editing text in a block: block-level shortcuts
+    if (key === 'c' && !hasTextSelection && window.activeCanvasBlock && !isContentEditable) {
       e.preventDefault();
       execBlogCopy();
-    } else if (key === 'x' && !hasTextSelection && window.activeCanvasBlock && !isTyping) {
+    } else if (key === 'x' && !hasTextSelection && window.activeCanvasBlock && !isContentEditable) {
       e.preventDefault();
       execBlogCut();
-    } else if (key === 'v' && !isTyping && (window.copiedBlockHtml || localStorage.getItem('rk_copied_block_html'))) {
+    } else if (key === 'v' && !isContentEditable && (window.copiedBlockHtml || localStorage.getItem('rk_copied_block_html'))) {
       e.preventDefault();
       execBlogPaste();
-    } else if (key === 'z' && !e.shiftKey && !isTyping && typeof undoCanvas === 'function') {
+    } else if (key === 'z' && !e.shiftKey && !isInput && typeof undoCanvas === 'function') {
       e.preventDefault();
       undoCanvas();
-    } else if ((key === 'y' || (key === 'z' && e.shiftKey)) && !isTyping && typeof redoCanvas === 'function') {
+    } else if ((key === 'y' || (key === 'z' && e.shiftKey)) && !isInput && typeof redoCanvas === 'function') {
       e.preventDefault();
       redoCanvas();
     }
@@ -8387,17 +8792,19 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var container = document.getElementById('blocksContainer');
       if (container && draft.blocksHtml) {
         container.innerHTML = draft.blocksHtml;
-        if (typeof initBlockInserters === 'function') initBlockInserters();
-        if (typeof attachBlockListeners === 'function') attachBlockListeners();
-        if (typeof updateBlockCount === 'function') updateBlockCount();
-        if (typeof updateDesignerBlockCount === 'function') updateDesignerBlockCount();
-        if (typeof saveState === 'function') saveState();
+        
+        // Comprehensive initialization for all loaded blocks (makes all text editable!)
+        if (typeof initializeAllCanvasBlocks === 'function') {
+          initializeAllCanvasBlocks();
+        } else if (typeof attachBlockListeners === 'function') {
+          attachBlockListeners();
+        }
 
         var dropdown = document.getElementById('savedBlogsDropdown');
         if (dropdown) dropdown.value = draftId;
 
-        closeDraftsModal();
-        showToast('Loaded "' + (draft.title || 'Draft') + '" successfully!');
+        if (typeof closeDraftsModal === 'function') closeDraftsModal();
+        showToast('Loaded "' + (draft.title || 'Draft') + '" successfully! Click any text to edit.');
       }
     } catch(err) {
       console.error('Failed to load draft:', err);
