@@ -448,6 +448,13 @@
                         <div class="text-[11px] text-text-muted">Multiple correct answers</div>
                       </div>
                     </button>
+                    <button onclick="addQuestion('TRUE_FALSE')" class="w-full px-4 py-2.5 text-left font-body-sm text-body-sm text-text-primary hover:bg-surface-container-low flex items-center gap-2.5 transition-colors">
+                      <span class="material-symbols-outlined text-secondary text-[18px]">flaky</span>
+                      <div>
+                        <div class="font-semibold">True / False (खरे / खोटे)</div>
+                        <div class="text-[11px] text-text-muted">२ पर्याय: खरे किंवा खोटे</div>
+                      </div>
+                    </button>
                     <button onclick="addQuestion('POLL')" class="w-full px-4 py-2.5 text-left font-body-sm text-body-sm text-text-primary hover:bg-surface-container-low flex items-center gap-2.5 transition-colors">
                       <span class="material-symbols-outlined text-tertiary text-[18px]">poll</span>
                       <div>
@@ -913,6 +920,16 @@
           correctAnswer: 'Option A',
           explanation: ''
         });
+      } else if (type === 'TRUE_FALSE') {
+        currentQuestions.push({
+          id: newId,
+          type: 'TRUE_FALSE',
+          question: 'नवीन खरे की खोटे विधान (New True/False Statement)',
+          points: 1,
+          options: ['True (खरे)', 'False (खोटे)'],
+          correctAnswer: 'True (खरे)',
+          explanation: ''
+        });
       } else if (type === 'CHECKBOX') {
         currentQuestions.push({
           id: newId,
@@ -1081,6 +1098,106 @@
       showToast('New blank quiz created!', 'add');
     }
 
+    
+    function validateQuizQuestions() {
+      if (currentQuestions.length === 0) {
+        return { valid: false, message: 'कृपया क्विझमध्ये किमान एक प्रश्न जोडा (Please add at least 1 question).', qIdx: -1 };
+      }
+
+      for (let i = 0; i < currentQuestions.length; i++) {
+        const q = currentQuestions[i];
+        const qNum = i + 1;
+        const card = document.getElementById('question-card-' + i);
+        if (card) {
+          card.classList.remove('ring-2', 'ring-status-danger', 'border-status-danger');
+        }
+
+        // 1. Question Text
+        if (!q.question || !q.question.trim()) {
+          return {
+            valid: false,
+            message: 'प्रश्न #' + qNum + ': प्रश्नाचा मजकूर रिकामा आहे. कृपया प्रश्न टाइप करा.',
+            qIdx: i
+          };
+        }
+
+        // 2. MCQ Validation
+        if (q.type === 'MCQ') {
+          if (!Array.isArray(q.options) || q.options.length < 4) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (MCQ): बहुपर्यायी प्रश्नासाठी किमान ४ पर्याय (Options) असणे अनिवार्य आहे.',
+              qIdx: i
+            };
+          }
+          for (let o = 0; o < q.options.length; o++) {
+            if (!q.options[o] || !String(q.options[o]).trim()) {
+              return {
+                valid: false,
+                message: 'प्रश्न #' + qNum + ' (MCQ): पर्याय क्रमांक ' + (o + 1) + ' रिकामा आहे. सर्व पर्याय भरा.',
+                qIdx: i
+              };
+            }
+          }
+          if (!q.correctAnswer || !String(q.correctAnswer).trim()) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (MCQ): कृपया ४ पर्यायांपैकी एक अचूक उत्तर (Right Answer) निवडा.',
+              qIdx: i
+            };
+          }
+          const match = q.options.some(opt => String(opt).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase());
+          if (!match) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (MCQ): निवडलेले अचूक उत्तर ("' + q.correctAnswer + '") दिलेल्या ४ पर्यायांशी जुळत नाही.',
+              qIdx: i
+            };
+          }
+        }
+
+        // 3. CHECKBOX Validation
+        if (q.type === 'CHECKBOX') {
+          if (!Array.isArray(q.options) || q.options.length < 2) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (Checkbox): किमान २ पर्याय असणे आवश्यक आहे.',
+              qIdx: i
+            };
+          }
+          for (let o = 0; o < q.options.length; o++) {
+            if (!q.options[o] || !String(q.options[o]).trim()) {
+              return {
+                valid: false,
+                message: 'प्रश्न #' + qNum + ' (Checkbox): पर्याय क्रमांक ' + (o + 1) + ' रिकामा आहे.',
+                qIdx: i
+              };
+            }
+          }
+          if (!q.correctAnswer || !String(q.correctAnswer).trim()) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (Checkbox): किमान एक अचूक उत्तर निवडणे आवश्यक आहे.',
+              qIdx: i
+            };
+          }
+        }
+
+        // 4. TRUE_FALSE Validation
+        if (q.type === 'TRUE_FALSE') {
+          if (!q.correctAnswer || !String(q.correctAnswer).trim()) {
+            return {
+              valid: false,
+              message: 'प्रश्न #' + qNum + ' (True/False): कृपया \'खरे\' की \'खोटे\' अचूक उत्तर निवडा.',
+              qIdx: i
+            };
+          }
+        }
+      }
+
+      return { valid: true };
+    }
+
     function saveQuizToDB() {
       const title = document.getElementById('quizTitleInput').value.trim();
       if (!title) {
@@ -1089,8 +1206,20 @@
         return;
       }
 
-      if (currentQuestions.length === 0) {
-        showToast('Please add at least one question!', 'warning');
+      // Comprehensive Question Validation (MCQ 4 options, right answer check)
+      const validation = validateQuizQuestions();
+      if (!validation.valid) {
+        showToast(validation.message, 'warning');
+        if (validation.qIdx >= 0) {
+          const card = document.getElementById('question-card-' + validation.qIdx);
+          if (card) {
+            card.classList.add('ring-2', 'ring-status-danger', 'border-status-danger');
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+              card.classList.remove('ring-2', 'ring-status-danger', 'border-status-danger');
+            }, 5000);
+          }
+        }
         return;
       }
 

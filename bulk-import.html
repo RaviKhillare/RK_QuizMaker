@@ -540,21 +540,42 @@ Explanation: Dihydrogen monoxide.</pre>
                   <div>
                     <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Type</label>
                     <select id="aiTypeSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
-                      <option selected value="Mixed (MCQ, Checkbox, Poll)">Mixed</option>
-                      <option value="MCQ Only">MCQ Only</option>
-                      <option value="Live Polls Only">Live Polls</option>
+                      <option selected value="Mixed (All Types: MCQ, Checkbox, True/False, Short Answer)">मिश्रित (Mixed: All Types)</option>
+                      <option value="MCQ (4 Options, 1 Correct Answer)">बहुपर्यायी (MCQ - 4 Options)</option>
+                      <option value="Checkbox (Multi-Select, Multiple Answers)">चेकबॉक (Multiple Correct)</option>
+                      <option value="True / False (खरे की खोटे / बरोबर की चूक)">खरे किंवा खोटे (True / False)</option>
+                      <option value="Fill in the Blanks / Short Answer (एका वाक्यात / रिकाम्या जागा)">रिकाम्या जागा / एका वाक्यात (Short Answer)</option>
+                      <option value="Descriptive / Long Answer (सविस्तर उत्तरे)">सविस्तर उत्तरे (Descriptive)</option>
+                      <option value="Live Polls / Survey (जनमत चाचणी)">जनमत चाचणी (Live Poll)</option>
+                      <option value="Assertion & Reason / Statement Analysis (विधान व कारण)">विधान व कारण (Assertion & Reason)</option>
+                      <option value="Match the Column / Pairs (जोड्या जुळवा)">जोड्या जुळवा (Match the Column)</option>
                     </select>
                   </div>
                 </div>
                 <!-- Difficulty -->
                 <div>
-                  <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Difficulty</label>
-                  <select id="aiDiffSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
-                    <option selected value="Competitive Exam">Competitive Exam</option>
-                    <option value="School / College Level">School / College</option>
-                    <option value="General Public / Easy">General / Easy</option>
-                  </select>
-                </div>
+                    <label style="font-size:11px; font-weight:600; color:#334155; display:block; margin-bottom:3px;">Class / Target Exam (वर्ग व काठिण्य पातळी)</label>
+                    <select id="aiDiffSelect" onchange="updateAiPrompt()" style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:7px; padding:5px 7px; font-size:12px; outline:none; box-sizing:border-box;">
+                      <optgroup label="शालेय वर्ग (School Classes)">
+                        <option value="Class 1 to 4 (Primary School - इ. १ ली ते ४ थी)">इयत्ता १ ली ते ४ थी (Primary School)</option>
+                        <option value="Class 5 to 8 (Middle School - इ. ५ वी ते ८ वी)">इयत्ता ५ वी ते ८ वी (Middle School)</option>
+                        <option value="Class 9 & 10 (SSC Board - इ. ९ वी - १० वी)">इयत्ता ९ वी व १० वी (SSC Board)</option>
+                        <option value="Class 11 & 12 (HSC Board / Junior College)">इयत्ता ११ वी व १२ वी (HSC Board)</option>
+                      </optgroup>
+                      <optgroup label="स्पर्धा परीक्षा व उच्च शिक्षण (Competitive Exams & Degree)">
+                        <option selected value="MPSC Prelims & Mains (राज्यसेवा व संयुक्त परीक्षा)">MPSC Prelims & Mains (राज्यसेवा व संयुक्त)</option>
+                        <option value="UPSC / Civil Services Exam">UPSC / Civil Services Exam</option>
+                        <option value="Police Bharti & Talathi / Saral Seva (पोलीस व तलाठी भरती)">पोलीस भरती, तलाठी व सरळसेवा</option>
+                        <option value="TET / CTET / Shikshak Bharti (शिक्षक पात्रता परीक्षा)">TET / CTET / शिक्षक भरती परीक्षा</option>
+                        <option value="Graduation / Degree Level (College)">पदवी स्तर (Graduation Level)</option>
+                      </optgroup>
+                      <optgroup label="सामान्य काठिण्य पातळी (General Difficulty)">
+                        <option value="Easy / Beginner Level (सुलभ स्तर)">सुलभ / सोपे (Easy / Beginner)</option>
+                        <option value="Medium Standard (मध्यम स्तर)">मध्यम स्तर (Medium / Moderate)</option>
+                        <option value="Hard / Advanced Level (कठीण स्तर)">कठीण / प्रगत (Hard / Advanced)</option>
+                      </optgroup>
+                    </select>
+                  </div>
                 <!-- Generated Prompt Box -->
                 <div style="margin-top:4px;">
                   <div style="font-size:11px; color:#64748b; margin-bottom:4px; font-weight:600;">Ready-to-use Prompt:</div>
@@ -1038,15 +1059,46 @@ Ensure Options are comma-separated. Do not add markdown backticks around cell va
     function updateAiPrompt() {
       const topic = document.getElementById('aiTopicInput')?.value.trim() || 'Modern Indian History & MPSC Syllabus';
       const count = document.getElementById('aiCountSelect')?.value || '20 Questions';
-      const type = document.getElementById('aiTypeSelect')?.value || 'Mixed (MCQ, Checkbox, Poll)';
-      const diff = document.getElementById('aiDiffSelect')?.value || 'Competitive Exam';
+      const type = document.getElementById('aiTypeSelect')?.value || 'Mixed (All Types: MCQ, Checkbox, True/False, Short Answer)';
+      const diff = document.getElementById('aiDiffSelect')?.value || 'MPSC Prelims & Mains (राज्यसेवा व संयुक्त परीक्षा)';
       const lang = document.getElementById('aiLangInput')?.value.trim() || 'Marathi';
-      
-      const prompt = `Create a table of ${count} for ${diff} on "${topic}" in ${lang} language.
-Question types required: ${type}.
-Format as a clean markdown table with these exact columns:
+
+      let typeDetails = '';
+      if (type.includes('MCQ')) {
+        typeDetails = 'Question Format: Multiple Choice Question (MCQ). Each question must have EXACTLY 4 clear choices (Option A, Option B, Option C, Option D) and exactly 1 correct answer.';
+      } else if (type.includes('True / False')) {
+        typeDetails = 'Question Format: True / False (खरे की खोटे). Options must strictly be "True, False" (or "खरे, खोटे"), and the Correct Answer must be either True or False.';
+      } else if (type.includes('Checkbox')) {
+        typeDetails = 'Question Format: Checkbox Multi-Select. Provide 4 options, where 2 or more options are correct. In Correct Answer, list all correct options separated by comma.';
+      } else if (type.includes('Short Answer') || type.includes('Blanks')) {
+        typeDetails = 'Question Format: Fill in the Blanks / Short Answer. Leave Options column blank, and provide the exact required word or answer in Correct Answer.';
+      } else if (type.includes('Descriptive') || type.includes('Long Answer')) {
+        typeDetails = 'Question Format: Descriptive / Long Answer. In Correct Answer provide key model answer points / summary.';
+      } else if (type.includes('Poll')) {
+        typeDetails = 'Question Format: Live Poll / Survey. Provide 4 survey options. Points must be 0, and leave Correct Answer blank.';
+      } else if (type.includes('Assertion')) {
+        typeDetails = 'Question Format: Assertion & Reason (विधान व कारणे). Provide Statement (A) and Reason (R), with 4 standard analytical choices in Options.';
+      } else if (type.includes('Match')) {
+        typeDetails = 'Question Format: Match the Pairs / Column Matching (जोड्या जुळवा). Provide Column A and Column B elements, with 4 matching option codes in Options.';
+      } else {
+        typeDetails = 'Question Format: A balanced mix of MCQ (with 4 options), True/False (with True, False), and Checkbox questions.';
+      }
+
+      const prompt = `I want you to act as an expert Exam Question Creator and Educational Quiz Master.
+Please generate ${count} on the topic: "${topic}" in ${lang} language.
+Target Class / Exam Level: ${diff}.
+Question Type Requirement: ${type}.
+${typeDetails}
+
+Format your response strictly as a clean, copyable TABLE with these exact columns:
 Question | Option A | Option B | Option C | Option D | Correct Answer | Points | Explanation
-Ensure Options are in separate columns. Do not add markdown backticks around cell values.`;
+
+Strict Guidelines:
+1. For MCQ questions, Option A, B, C, D must each contain a distinct valid choice, and Correct Answer must exactly match one of these 4 options.
+2. For True/False, Option A should be True (खरे) and Option B should be False (खोटे), and Correct Answer must be True or False.
+3. Points should be 1 or 2 (0 for polls).
+4. Do not wrap cell contents in markdown backticks or quotes.
+5. Output ONLY the table directly, with no introductory text or conversational sign-off.`;
 
       const promptDisplay = document.getElementById('promptDisplay');
       if (promptDisplay) promptDisplay.textContent = prompt;

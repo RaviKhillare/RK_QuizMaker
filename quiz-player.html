@@ -520,7 +520,33 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-  </style>
+  
+    @keyframes cheerBounce {
+      0% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.15) translateY(-10px) rotate(4deg); }
+      100% { transform: scale(1.05) translateY(-4px) rotate(-3deg); }
+    }
+    @keyframes gentleSigh {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(6px); }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .celebration-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      overflow: hidden;
+    }
+
+</style>
 </head>
 <body>
 
@@ -868,15 +894,129 @@
         google.script.run
           .withSuccessHandler(renderResults)
           .withFailureHandler(function(err) {
-            btn.disabled = false;
-            btn.innerHTML = 'Submit Quiz <i class="fas fa-arrow-right"></i>';
-            alert('Failed to submit: ' + err.message);
+            // Local fallback on error
+            renderResults(evaluateLocally(name, userAnswers));
           })
           .submitQuizResponse(currentQuizId, payload);
       } else {
-        // Fallback mock/API for standalone preview
-        alert('Demo submission recorded!');
+        // Immediate local evaluation & instant result
+        renderResults(evaluateLocally(name, userAnswers));
       }
+    }
+
+    
+    // Canvas Confetti Celebration Engine
+    function launchCelebrationConfetti(container) {
+      if (!container) container = document.body;
+      var canvas = document.createElement('canvas');
+      canvas.className = 'celebration-canvas-container';
+      canvas.width = container.clientWidth || window.innerWidth;
+      canvas.height = container.clientHeight || window.innerHeight;
+      container.style.position = 'relative';
+      container.appendChild(canvas);
+
+      var ctx = canvas.getContext('2d');
+      var pieces = [];
+      var colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#14b8a6', '#f43f5e'];
+
+      for (var i = 0; i < 120; i++) {
+        pieces.push({
+          x: canvas.width * 0.5 + (Math.random() - 0.5) * 180,
+          y: canvas.height * 0.35 + (Math.random() - 0.5) * 60,
+          w: Math.random() * 10 + 6,
+          h: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 16,
+          vy: Math.random() * -14 - 6,
+          rotation: Math.random() * 360,
+          rspeed: (Math.random() - 0.5) * 12,
+          gravity: 0.38,
+          opacity: 1
+        });
+      }
+
+      var frameCount = 0;
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var alive = false;
+
+        pieces.forEach(function(p) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= 0.98;
+          p.rotation += p.rspeed;
+
+          if (frameCount > 80) p.opacity -= 0.015;
+
+          if (p.opacity > 0 && p.y < canvas.height + 40) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+        });
+
+        frameCount++;
+        if (alive && frameCount < 240) {
+          requestAnimationFrame(render);
+        } else {
+          canvas.remove();
+        }
+      }
+      requestAnimationFrame(render);
+    }
+
+    function evaluateLocally(userName, answers) {
+      var questions = (quizData && quizData.questions) ? quizData.questions : [];
+      var score = 0;
+      var totalPoints = 0;
+      var review = [];
+
+      questions.forEach(function(q) {
+        var pts = Number(q.points) || 1;
+        totalPoints += pts;
+        var uAns = answers[q.id] || '';
+        var isCorrect = false;
+
+        if (q.type === 'CHECKBOX') {
+          var corrArr = (q.correctAnswer || '').split(',').map(function(s) { return s.trim().toLowerCase(); }).sort();
+          var userArr = (Array.isArray(uAns) ? uAns : [uAns]).map(function(s) { return String(s).trim().toLowerCase(); }).sort();
+          isCorrect = corrArr.length > 0 && JSON.stringify(corrArr) === JSON.stringify(userArr);
+        } else {
+          isCorrect = String(uAns).trim().toLowerCase() === String(q.correctAnswer || '').trim().toLowerCase();
+        }
+
+        if (isCorrect) score += pts;
+
+        review.push({
+          question: q.question,
+          imageUrl: q.imageUrl || '',
+          userAnswer: uAns,
+          correctAnswer: q.correctAnswer,
+          isCorrect: isCorrect,
+          explanation: q.explanation,
+          pointsEarned: isCorrect ? pts : 0
+        });
+      });
+
+      var percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 100;
+      var passingScore = (quizData && quizData.passingScore) ? quizData.passingScore : 50;
+      var passed = percentage >= passingScore;
+
+      return {
+        userName: userName || 'परीक्षार्थी (Student)',
+        score: score,
+        totalPoints: totalPoints,
+        percentage: percentage,
+        passed: passed,
+        passingScore: passingScore,
+        review: review
+      };
     }
 
     function renderResults(res) {
@@ -892,7 +1032,19 @@
       document.getElementById('score-percentage').textContent = res.percentage + '%';
       document.getElementById('score-status').textContent = res.passed ? 'PASSED' : 'FAILED';
 
-      document.getElementById('result-greeting').textContent = res.passed ? '🎉 Congratulations, ' + res.userName + '!' : 'Keep practicing, ' + res.userName + '!';
+      
+      if (res.passed) {
+        document.getElementById('result-greeting').innerHTML = '<div style="font-size:48px; display:inline-block; animation: cheerBounce 1.2s infinite alternate ease-in-out; margin-bottom:6px;">🎉 🏆 🥳</div><br/>शानदार! अभिनंदन, ' + escapeHtml(res.userName) + '!';
+        document.getElementById('result-msg').innerHTML = '<span style="color:#059669; font-weight:700;">अभिनंदन! तुम्ही परीक्षा यशस्वीरित्या उत्तीर्ण केली आहे! 🎯</span><br/><span style="font-size:12px; color:#64748b;">(Outstanding score! Keep up the brilliant performance!)</span>';
+        setTimeout(function() {
+          var card = document.getElementById('result-card');
+          if (card) launchCelebrationConfetti(card);
+        }, 150);
+      } else {
+        document.getElementById('result-greeting').innerHTML = '<div style="font-size:46px; display:inline-block; animation: gentleSigh 1.5s infinite alternate ease-in-out; margin-bottom:6px;">😢 💔 📚</div><br/>कदाचित आज तुमचा दिवस नव्हता, ' + escapeHtml(res.userName) + '!';
+        document.getElementById('result-msg').innerHTML = '<span style="color:#dc2626; font-weight:700;">निराश होऊ नका! सराव करत राहा, पुढील प्रयत्नात नक्की यश मिळेल!</span><br/><span style="font-size:12px; color:#64748b;">(Don\'t give up! Revision and consistency lead to victory.)</span>';
+      }
+
       document.getElementById('result-msg').textContent = res.passed
         ? 'You have successfully cleared the quiz criteria.'
         : 'You fell short of the required passing percentage.';

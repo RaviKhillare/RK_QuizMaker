@@ -1293,7 +1293,33 @@
     .custom-designer-scroll::-webkit-scrollbar-thumb:hover {
       background: #94A3B8;
     }
-  </style>
+  
+    @keyframes cheerBounce {
+      0% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.15) translateY(-10px) rotate(4deg); }
+      100% { transform: scale(1.05) translateY(-4px) rotate(-3deg); }
+    }
+    @keyframes gentleSigh {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(6px); }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .celebration-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      overflow: hidden;
+    }
+
+</style>
 </head>
 <body>
 
@@ -2111,20 +2137,41 @@ Explanation: Dihydrogen monoxide.</pre>
                     <div>
                       <label style="font-size:11px;font-weight:600;color:#334155;display:block;margin-bottom:3px;">Type</label>
                       <select id="gpt-type-select" onchange="updateChatGptPrompt()" style="width:100%;background:#f8fafc;border:1px solid #cbd5e1;border-radius:7px;padding:5px 7px;font-size:12px;outline:none;box-sizing:border-box;">
-                        <option selected value="Mixed (MCQ, Checkbox, Poll)">Mixed</option>
-                        <option value="MCQ Only">MCQ Only</option>
-                        <option value="Live Polls Only">Live Polls</option>
+                        <option selected value="Mixed (All Types: MCQ, Checkbox, True/False, Short Answer)">मिश्रित (Mixed: All Types)</option>
+                        <option value="MCQ (4 Options, 1 Correct Answer)">बहुपर्यायी (MCQ - 4 Options)</option>
+                        <option value="Checkbox (Multi-Select, Multiple Answers)">चेकबॉक (Multiple Correct)</option>
+                        <option value="True / False (खरे की खोटे / बरोबर की चूक)">खरे किंवा खोटे (True / False)</option>
+                        <option value="Fill in the Blanks / Short Answer (एका वाक्यात / रिकाम्या जागा)">रिकाम्या जागा / एका वाक्यात (Short Answer)</option>
+                        <option value="Descriptive / Long Answer (सविस्तर उत्तरे)">सविस्तर उत्तरे (Descriptive)</option>
+                        <option value="Live Polls / Survey (जनमत चाचणी)">जनमत चाचणी (Live Poll)</option>
+                        <option value="Assertion & Reason / Statement Analysis (विधान व कारण)">विधान व कारण (Assertion & Reason)</option>
+                        <option value="Match the Column / Pairs (जोड्या जुळवा)">जोड्या जुळवा (Match the Column)</option>
                       </select>
                     </div>
                   </div>
                   <div>
-                    <label style="font-size:11px;font-weight:600;color:#334155;display:block;margin-bottom:3px;">Difficulty</label>
-                    <select id="gpt-diff-select" onchange="updateChatGptPrompt()" style="width:100%;background:#f8fafc;border:1px solid #cbd5e1;border-radius:7px;padding:5px 7px;font-size:12px;outline:none;box-sizing:border-box;">
-                      <option selected value="Competitive Exam">Competitive Exam</option>
-                      <option value="School / College Level">School / College</option>
-                      <option value="General Public / Easy">General / Easy</option>
-                    </select>
-                  </div>
+                      <label style="font-size:11px;font-weight:600;color:#334155;display:block;margin-bottom:3px;">Class / Target Exam (वर्ग व काठिण्य पातळी)</label>
+                      <select id="gpt-diff-select" onchange="updateChatGptPrompt()" style="width:100%;background:#f8fafc;border:1px solid #cbd5e1;border-radius:7px;padding:5px 7px;font-size:12px;outline:none;box-sizing:border-box;">
+                        <optgroup label="शालेय वर्ग (School Classes)">
+                          <option value="Class 1 to 4 (Primary School - इ. १ ली ते ४ थी)">इयत्ता १ ली ते ४ थी (Primary School)</option>
+                          <option value="Class 5 to 8 (Middle School - इ. ५ वी ते ८ वी)">इयत्ता ५ वी ते ८ वी (Middle School)</option>
+                          <option value="Class 9 & 10 (SSC Board - इ. ९ वी - १० वी)">इयत्ता ९ वी व १० वी (SSC Board)</option>
+                          <option value="Class 11 & 12 (HSC Board / Junior College)">इयत्ता ११ वी व १२ वी (HSC Board)</option>
+                        </optgroup>
+                        <optgroup label="स्पर्धा परीक्षा व उच्च शिक्षण (Competitive Exams & Degree)">
+                          <option selected value="MPSC Prelims & Mains (राज्यसेवा व संयुक्त परीक्षा)">MPSC Prelims & Mains (राज्यसेवा व संयुक्त)</option>
+                          <option value="UPSC / Civil Services Exam">UPSC / Civil Services Exam</option>
+                          <option value="Police Bharti & Talathi / Saral Seva (पोलीस व तलाठी भरती)">पोलीस भरती, तलाठी व सरळसेवा</option>
+                          <option value="TET / CTET / Shikshak Bharti (शिक्षक पात्रता परीक्षा)">TET / CTET / शिक्षक भरती परीक्षा</option>
+                          <option value="Graduation / Degree Level (College)">पदवी स्तर (Graduation Level)</option>
+                        </optgroup>
+                        <optgroup label="सामान्य काठिण्य पातळी (General Difficulty)">
+                          <option value="Easy / Beginner Level (सुलभ स्तर)">सुलभ / सोपे (Easy / Beginner)</option>
+                          <option value="Medium Standard (मध्यम स्तर)">मध्यम स्तर (Medium / Moderate)</option>
+                          <option value="Hard / Advanced Level (कठीण स्तर)">कठीण / प्रगत (Hard / Advanced)</option>
+                        </optgroup>
+                      </select>
+                    </div>
                   <div style="margin-top:4px;">
                     <div style="font-size:11px;color:#64748b;margin-bottom:4px;font-weight:600;">Ready-to-use Prompt:</div>
                     <div id="gpt-prompt-display" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-family:monospace;font-size:11px;line-height:1.5;color:#475569;max-height:110px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;user-select:all;">Create a table of 20 Competitive Exam questions on "Modern Indian History &amp; MPSC Syllabus" in Marathi language.
@@ -4802,18 +4849,71 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
       for (var i = 0; i < blocks.length; i++) {
         var b = blocks[i];
-        var qText = b.querySelector('.b-q-text').value.trim();
-        if (!qText) continue;
+        var qNum = i + 1;
+        b.style.border = '1.5px solid var(--border)';
+
+        var qTextEl = b.querySelector('.b-q-text');
+        var qText = qTextEl ? qTextEl.value.trim() : '';
+        if (!qText) {
+          b.style.border = '2px solid var(--danger)';
+          b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showToast('प्रश्न #' + qNum + ': प्रश्नाचा मजकूर रिकामा आहे. कृपया प्रश्न भरा.');
+          if (qTextEl) qTextEl.focus();
+          return;
+        }
 
         var qType = b.querySelector('.b-q-type').value;
         var qPoints = Number(b.querySelector('.b-q-points').value) || 1;
-        var optsRaw = b.querySelector('.b-q-options').value;
-        var ansRaw = b.querySelector('.b-q-answer').value.trim();
-        var expRaw = b.querySelector('.b-q-exp').value.trim();
+        var optsEl = b.querySelector('.b-q-options');
+        var optsRaw = optsEl ? optsEl.value : '';
+        var ansEl = b.querySelector('.b-q-answer');
+        var ansRaw = ansEl ? ansEl.value.trim() : '';
+        var expRaw = b.querySelector('.b-q-exp') ? b.querySelector('.b-q-exp').value.trim() : '';
         var imgEl = b.querySelector('.b-q-image');
         var imgUrl = imgEl ? imgEl.value.trim() : '';
 
         var opts = optsRaw ? optsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+
+        // Comprehensive validation
+        if (qType === 'MCQ') {
+          if (opts.length < 4) {
+            b.style.border = '2px solid var(--danger)';
+            b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('प्रश्न #' + qNum + ' (MCQ): किमान ४ पर्याय (Options) आवश्यक आहेत! (पर्याय १, पर्याय २, पर्याय ३, पर्याय ४ असे स्वल्पविरामाने भरा)');
+            if (optsEl) optsEl.focus();
+            return;
+          }
+          if (!ansRaw) {
+            b.style.border = '2px solid var(--danger)';
+            b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('प्रश्न #' + qNum + ' (MCQ): कृपया अचूक उत्तर (Correct Answer) भरा!');
+            if (ansEl) ansEl.focus();
+            return;
+          }
+          var hasMatch = opts.some(function(o) { return o.toLowerCase() === ansRaw.toLowerCase(); });
+          if (!hasMatch) {
+            b.style.border = '2px solid var(--danger)';
+            b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('प्रश्न #' + qNum + ' (MCQ): अचूक उत्तर ("' + ansRaw + '") दिलेल्या ४ पर्यायांशी जुळत नाही!');
+            if (ansEl) ansEl.focus();
+            return;
+          }
+        } else if (qType === 'CHECKBOX') {
+          if (opts.length < 2) {
+            b.style.border = '2px solid var(--danger)';
+            b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('प्रश्न #' + qNum + ' (Checkbox): किमान २ पर्याय आवश्यक आहेत!');
+            if (optsEl) optsEl.focus();
+            return;
+          }
+          if (!ansRaw) {
+            b.style.border = '2px solid var(--danger)';
+            b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('प्रश्न #' + qNum + ' (Checkbox): किमान १ अचूक उत्तर भरणे आवश्यक आहे!');
+            if (ansEl) ansEl.focus();
+            return;
+          }
+        }
 
         questionsArr.push({
           questionId: 'q_' + (i + 1) + '_' + Math.random().toString(36).substr(2, 4),
@@ -5333,52 +5433,48 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     function updateChatGptPrompt() {
       var topicInput = document.getElementById('gpt-topic-input');
       if (!topicInput) return;
-      var topic = topicInput.value.trim() || 'General Knowledge';
+      var topic = topicInput.value.trim() || 'Modern Indian History & MPSC Syllabus';
       var langEl = document.getElementById('gpt-lang-input');
       var lang = langEl ? (langEl.value.trim() || 'Marathi') : 'Marathi';
-      var count = document.getElementById('gpt-count-select') ? document.getElementById('gpt-count-select').value : '10';
-      var type = document.getElementById('gpt-type-select') ? document.getElementById('gpt-type-select').value : 'MCQ';
-      var diff = document.getElementById('gpt-diff-select') ? document.getElementById('gpt-diff-select').value : 'Medium';
+      var count = document.getElementById('gpt-count-select') ? document.getElementById('gpt-count-select').value : '20 Questions';
+      var type = document.getElementById('gpt-type-select') ? document.getElementById('gpt-type-select').value : 'Mixed (All Types: MCQ, Checkbox, True/False, Short Answer)';
+      var diff = document.getElementById('gpt-diff-select') ? document.getElementById('gpt-diff-select').value : 'MPSC Prelims & Mains (राज्यसेवा व संयुक्त परीक्षा)';
 
-      var modeRadio = document.querySelector('input[name="gpt-format-mode"]:checked');
-      var mode = modeRadio ? modeRadio.value : 'table';
-      var includeImage = document.getElementById('gpt-include-image') ? document.getElementById('gpt-include-image').checked : false;
-
-      var promptLabel = document.getElementById('gpt-prompt-label');
-      var step3El = document.getElementById('gpt-step3-text');
-      var promptText = '';
-
-      if (mode === 'table') {
-        if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Google Sheets & Table Format):';
-        if (step3El) step3El.textContent = "AI ने तयार केलेले टेबल कॉपी करा आणि 'Google Sheets & CSV' टॅबमधील Option B मध्ये पेस्ट करा.";
-        promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
-          'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
-          'Difficulty Level: ' + diff + '.\n' +
-          'Question Types: ' + type + '.\n\n' +
-          'Format your response strictly as a clean, copyable TABLE with these exact ' + (includeImage ? '7' : '6') + ' COLUMNS:\n' +
-          '1. Question: The full question prompt.\n' +
-          '2. Type: Must be exactly one of: MCQ, CHECKBOX, SHORT_ANSWER, LONG_ANSWER, or POLL.\n' +
-          '3. Options: For MCQ, CHECKBOX, and POLL, provide 4 choices separated by comma. Leave blank for SHORT_ANSWER.\n' +
-          '4. Correct Answer: Exact text of the correct choice.\n' +
-          '5. Points: Marks (e.g., 1 or 2). For POLL, 0.\n' +
-          '6. Explanation: Brief 1-2 sentence explanation.\n' +
-          (includeImage ? '7. Image_URL: Direct URL to relevant image, or blank.\n\n' : '\n') +
-          'Important: Output ONLY the table directly, with no greeting or conversational text.';
+      var typeDetails = '';
+      if (type.indexOf('MCQ') !== -1) {
+        typeDetails = 'Question Format: Multiple Choice Question (MCQ). Each question must have EXACTLY 4 clear choices (Option A, Option B, Option C, Option D) and exactly 1 correct answer.';
+      } else if (type.indexOf('True / False') !== -1) {
+        typeDetails = 'Question Format: True / False (खरे की खोटे). Options must strictly be "True, False" (or "खरे, खोटे"), and the Correct Answer must be either True or False.';
+      } else if (type.indexOf('Checkbox') !== -1) {
+        typeDetails = 'Question Format: Checkbox Multi-Select. Provide 4 options, where 2 or more options are correct. In Correct Answer, list all correct options separated by comma.';
+      } else if (type.indexOf('Short Answer') !== -1 || type.indexOf('Blanks') !== -1) {
+        typeDetails = 'Question Format: Fill in the Blanks / Short Answer. Leave Options column blank, and provide the exact required word or answer in Correct Answer.';
+      } else if (type.indexOf('Descriptive') !== -1 || type.indexOf('Long Answer') !== -1) {
+        typeDetails = 'Question Format: Descriptive / Long Answer. In Correct Answer provide key model answer points / summary.';
+      } else if (type.indexOf('Poll') !== -1) {
+        typeDetails = 'Question Format: Live Poll / Survey. Provide 4 survey options. Points must be 0, and leave Correct Answer blank.';
+      } else if (type.indexOf('Assertion') !== -1) {
+        typeDetails = 'Question Format: Assertion & Reason (विधान व कारणे). Provide Statement (A) and Reason (R), with 4 standard analytical choices in Options.';
+      } else if (type.indexOf('Match') !== -1) {
+        typeDetails = 'Question Format: Match the Pairs / Column Matching (जोड्या जुळवा). Provide Column A and Column B elements, with 4 matching option codes in Options.';
       } else {
-        if (promptLabel) promptLabel.textContent = 'Ready-to-Use AI Prompt (Plain Text Format):';
-        if (step3El) step3El.textContent = "AI चे उत्तर कॉपी करा आणि 'Plain Text Paste' टॅबमध्ये पेस्ट करा.";
-        promptText = 'I want you to act as an expert Quiz Master and Exam Question Creator.\n' +
-          'Please generate ' + count + ' quiz questions on the topic: "' + topic + '" in ' + lang + '.\n' +
-          'Difficulty Level: ' + diff + '.\n' +
-          'Question Types: ' + type + '.\n\n' +
-          'Format your response strictly in the following clean Plain Text format for every question:\n\n' +
-          '1. [Question Prompt text here]\n' +
-          (includeImage ? '[Image: https://example.com/diagram.jpg] (Optional direct image URL)\n' : '') +
-          'A) Option 1\nB) Option 2\nC) Option 3\nD) Option 4\n' +
-          'Answer: [Correct Option Letter or Text]\n' +
-          'Explanation: [Brief 1-2 sentence explanation]\n\n' +
-          'Important: Output ONLY the questions directly with no introductory or conversational remarks.';
+        typeDetails = 'Question Format: A balanced mix of MCQ (with 4 options), True/False (with True, False), and Checkbox questions.';
       }
+
+      var promptText = 'I want you to act as an expert Exam Question Creator and Educational Quiz Master.\n' +
+        'Please generate ' + count + ' on the topic: "' + topic + '" in ' + lang + ' language.\n' +
+        'Target Class / Exam Level: ' + diff + '.\n' +
+        'Question Type Requirement: ' + type + '.\n' +
+        typeDetails + '\n\n' +
+        'Format your response strictly as a clean, copyable TABLE with these exact columns:\n' +
+        'Question | Option A | Option B | Option C | Option D | Correct Answer | Points | Explanation\n\n' +
+        'Strict Guidelines:\n' +
+        '1. For MCQ questions, Option A, B, C, D must each contain a distinct valid choice, and Correct Answer must exactly match one of these 4 options.\n' +
+        '2. For True/False, Option A should be True (खरे) and Option B should be False (खोटे), and Correct Answer must be True or False.\n' +
+        '3. Points should be 1 or 2 (0 for polls).\n' +
+        '4. Do not wrap cell contents in markdown backticks or quotes.\n' +
+        '5. Output ONLY the table directly, with no introductory text or conversational sign-off.';
+
       var promptDisplay = document.getElementById('gpt-prompt-display');
       if (promptDisplay) promptDisplay.textContent = promptText;
     }
@@ -6095,66 +6191,128 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       renderPlayerResults(newSub, review);
     }
 
+    
+    // Canvas Confetti Celebration Engine
+    function launchCelebrationConfetti(container) {
+      if (!container) container = document.body;
+      var canvas = document.createElement('canvas');
+      canvas.className = 'celebration-canvas-container';
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '999';
+      canvas.width = container.clientWidth || window.innerWidth;
+      canvas.height = container.clientHeight || window.innerHeight;
+      container.style.position = 'relative';
+      container.appendChild(canvas);
+
+      var ctx = canvas.getContext('2d');
+      var pieces = [];
+      var colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#14b8a6', '#f43f5e'];
+
+      for (var i = 0; i < 140; i++) {
+        pieces.push({
+          x: canvas.width * 0.5 + (Math.random() - 0.5) * 200,
+          y: canvas.height * 0.35 + (Math.random() - 0.5) * 80,
+          w: Math.random() * 11 + 6,
+          h: Math.random() * 9 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 16,
+          vy: Math.random() * -14 - 6,
+          rotation: Math.random() * 360,
+          rspeed: (Math.random() - 0.5) * 12,
+          gravity: 0.38,
+          opacity: 1
+        });
+      }
+
+      var frameCount = 0;
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var alive = false;
+
+        pieces.forEach(function(p) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= 0.98;
+          p.rotation += p.rspeed;
+
+          if (frameCount > 80) p.opacity -= 0.015;
+
+          if (p.opacity > 0 && p.y < canvas.height + 40) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+        });
+
+        frameCount++;
+        if (alive && frameCount < 240) {
+          requestAnimationFrame(render);
+        } else {
+          canvas.remove();
+        }
+      }
+      requestAnimationFrame(render);
+    }
+
     function renderPlayerResults(sub, review) {
       var body = document.getElementById('player-modal-body');
       body.innerHTML = '';
 
       var passClass = sub.passed ? 'pass' : 'fail';
-      var badgeText = sub.passed ? 'PASSED' : 'FAILED';
-      var icon = sub.passed ? '🎉' : '📚';
+      var badgeText = sub.passed ? 'PASSED (उत्तीर्ण)' : 'FAILED (अनुत्तीर्ण)';
 
-      var html = '<div style="text-align:center; padding:24px 10px;">' +
-        '<div style="font-size:42px; margin-bottom:10px;">' + icon + '</div>' +
-        '<h2 style="font-size:22px; font-weight:800; margin-bottom:6px;">' + (sub.passed ? 'Congratulations, ' : 'Keep Practicing, ') + escapeHtml(sub.userName) + '!</h2>' +
-        '<p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">' + (sub.passed ? 'You cleared the quiz criteria.' : 'You fell short of the passing score.') + '</p>' +
-        '<div style="display:flex; justify-content:center; gap:24px; margin-bottom:28px;">' +
-          '<div style="background:#f8fafc; padding:12px 20px; border-radius:8px; border:1px solid var(--border);">' +
-            '<div style="font-size:24px; font-weight:800; color:var(--primary);">' + sub.score + ' / ' + sub.totalPoints + '</div>' +
-            '<div style="font-size:12px; color:var(--text-muted);">Points</div>' +
-          '</div>' +
-          '<div style="background:#f8fafc; padding:12px 20px; border-radius:8px; border:1px solid var(--border);">' +
-            '<div style="font-size:24px; font-weight:800; color:' + (sub.passed ? 'var(--success)' : 'var(--danger)') + ';">' + sub.percentage + '%</div>' +
-            '<div style="font-size:12px; color:var(--text-muted);">Percentage</div>' +
-          '</div>' +
-          '<div style="background:#f8fafc; padding:12px 20px; border-radius:8px; border:1px solid var(--border);">' +
-            '<div style="font-size:24px; font-weight:800; color:var(--text);">' + badgeText + '</div>' +
-            '<div style="font-size:12px; color:var(--text-muted);">Status</div>' +
-          '</div>' +
+      var reactionBanner = '';
+      if (sub.passed) {
+        reactionBanner = '<div style="margin-bottom:20px; animation:fadeIn 0.5s ease-out; position:relative;">' +
+          '<div style="font-size:56px; line-height:1; margin-bottom:10px; display:inline-block; animation:cheerBounce 1.2s infinite alternate ease-in-out;">🎉 🏆 🥳</div>' +
+          '<div style="display:inline-block; padding:4px 16px; border-radius:20px; background:#dcfce7; color:#15803d; font-size:12.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">✨ उत्कृष्ट यश! (PASSED) ✨</div>' +
+          '<h2 style="font-size:24px; font-weight:800; color:#0f172a; margin:0 0 6px;">अभिनंदन, ' + escapeHtml(sub.userName) + '! 🎉</h2>' +
+          '<p style="color:#15803d; font-size:14.5px; font-weight:600; margin:0 auto; max-width:480px; line-height:1.5;">' +
+            'तुम्ही ही परीक्षा यशस्वीरीत्या उत्तीर्ण केली आहे! तुमचे खूप खूप अभिनंदन व भावी वाटचालीस हार्दिक शुभेच्छा! (Outstanding score!)' +
+          '</p>' +
         '</div>';
-
-      if (activeQuizForPlayer.showAnswers) {
-        html += '<h3 style="text-align:left; font-size:16px; font-weight:700; margin-bottom:14px;"><i class="fas fa-clipboard-check"></i> Answer Review:</h3>';
-        review.forEach(function (r, i) {
-          var border = r.isCorrect === true ? 'border-left: 4px solid var(--success);' : (r.isCorrect === false ? 'border-left: 4px solid var(--danger);' : 'border-left: 4px solid var(--secondary);');
-          var statusBadge = r.isCorrect === true ? '<span class="status-pill pass"><i class="fas fa-check"></i> Correct</span>' : (r.isCorrect === false ? '<span class="status-pill fail"><i class="fas fa-times"></i> Incorrect</span>' : '<span class="badge">Recorded</span>');
-
-          html += '<div style="background:#f8fafc; border:1px solid var(--border); ' + border + ' border-radius:6px; padding:14px; margin-bottom:12px; text-align:left;">' +
-            '<div style="display:flex; justify-content:space-between; margin-bottom:6px;">' +
-              '<strong>Q' + (i + 1) + ': ' + escapeHtml(r.question) + '</strong>' +
-              statusBadge +
-            '</div>';
-
-          if (r.imageUrl) {
-            html += '<div style="margin:8px 0;"><img src="' + escapeQuotes(r.imageUrl) + '" style="max-height:140px; max-width:100%; border-radius:6px; border:1px solid var(--border); object-fit:contain;" alt="Question Image" onerror="this.parentElement.style.display=\'none\'"></div>';
-          }
-
-          html += '<div style="font-size:13px; margin:4px 0;"><strong>Your Answer:</strong> ' + escapeHtml(formatAns(r.userAnswer)) + '</div>';
-
-          if (r.correctAnswer && r.isCorrect === false) {
-            html += '<div style="font-size:13px; color:var(--success); margin:4px 0;"><strong>Correct Answer:</strong> ' + escapeHtml(r.correctAnswer) + '</div>';
-          }
-          if (r.explanation) {
-            html += '<div style="font-size:12px; color:var(--text-muted); background:white; padding:6px 10px; border-radius:4px; margin-top:6px;"><i class="fas fa-lightbulb"></i> ' + escapeHtml(r.explanation) + '</div>';
-          }
-          html += '</div>';
-        });
+        setTimeout(function() {
+          var modalContent = document.querySelector('#quiz-player-modal .modal-content') || body;
+          launchCelebrationConfetti(modalContent);
+        }, 120);
+      } else {
+        reactionBanner = '<div style="margin-bottom:20px; animation:fadeIn 0.5s ease-out; position:relative;">' +
+          '<div style="font-size:52px; line-height:1; margin-bottom:10px; display:inline-block; animation:gentleSigh 1.5s infinite alternate ease-in-out;">😢 💔 📚</div>' +
+          '<div style="display:inline-block; padding:4px 16px; border-radius:20px; background:#fee2e2; color:#b91c1c; font-size:12.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">पुन्हा प्रयत्न करा (KEEP PRACTICING)</div>' +
+          '<h2 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px;">कदाचित आज तुमचा दिवस नव्हता, ' + escapeHtml(sub.userName) + '!</h2>' +
+          '<p style="color:#64748b; font-size:14px; font-weight:500; margin:0 auto; max-width:480px; line-height:1.5;">' +
+            'निराश होऊ नका! अपयश ही यशाची पहिली पायरी आहे. पुन्हा सराव करा आणि पुढील प्रयत्नात नक्की १००% यश मिळवा! (Don\'t give up, practice makes perfect!)' +
+          '</p>' +
+        '</div>';
       }
 
-      html += '<div style="margin-top:24px; display:flex; gap:12px; justify-content:center;">' +
-        '<button class="btn btn-primary" onclick="closePlayerModal(true)">Close</button>' +
-        (activeQuizForPlayer.allowRetake ? '<button class="btn btn-outline" onclick="startQuizPlayer(\'' + activeQuizForPlayer.id + '\')"><i class="fas fa-redo"></i> Retake Quiz</button>' : '') +
-      '</div></div>';
-
+      var html = '<div style="text-align:center; padding:20px 10px; position:relative;">' +
+        reactionBanner +
+        '<div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:26px;">' +
+          '<div style="background:#f8fafc; padding:12px 20px; border-radius:10px; border:1.5px solid var(--border); min-width:110px;">' +
+            '<div style="font-size:24px; font-weight:800; color:var(--primary);">' + sub.score + ' / ' + sub.totalPoints + '</div>' +
+            '<div style="font-size:12px; color:var(--text-muted); font-weight:600;">गुण (Points)</div>' +
+          '</div>' +
+          '<div style="background:#f8fafc; padding:12px 20px; border-radius:10px; border:1.5px solid var(--border); min-width:110px;">' +
+            '<div style="font-size:24px; font-weight:800; color:' + (sub.passed ? 'var(--success)' : 'var(--danger)') + ';">' + sub.percentage + '%</div>' +
+            '<div style="font-size:12px; color:var(--text-muted); font-weight:600;">टक्केवारी (Percentage)</div>' +
+          '</div>' +
+          '<div style="background:#f8fafc; padding:12px 20px; border-radius:10px; border:1.5px solid var(--border); min-width:110px;">' +
+            '<div style="font-size:20px; font-weight:800; color:' + (sub.passed ? 'var(--success)' : 'var(--danger)') + ';">' + badgeText + '</div>' +
+            '<div style="font-size:12px; color:var(--text-muted); font-weight:600;">निकाल (Status)</div>' +
+          '</div>' +
+        '</div>';
       body.innerHTML = html;
     }
 
