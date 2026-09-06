@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en"><head><meta charset="utf-8"/><title>RK QuizMaker - Blog Post Designer & Visual Studio</title><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&amp;family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Outfit:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&amp;display=swap" rel="stylesheet"/>
-<style>@layer base{html,body{margin:0;padding:0;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}body,input,button,textarea,select{font-family:'Noto Sans','Noto Sans Devanagari',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}h1,h2,h3,h4,h5,h6{font-family:'Outfit','Noto Sans Devanagari',sans-serif;}.custom-designer-scroll::-webkit-scrollbar{width:6px;height:6px;}.custom-designer-scroll::-webkit-scrollbar-track{background:#F1F5F9;border-radius:4px;}.custom-designer-scroll::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px;}.custom-designer-scroll::-webkit-scrollbar-thumb:hover{background:#94A3B8;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary": "#ffffff", "surface-bright": "#faf8ff", "on-error": "#ffffff", "on-tertiary-container": "#e4d4ff", "surface-tint": "#4d44e3", "surface-container": "#eaedff", "inverse-surface": "#283044", "on-primary-container": "#dad7ff", "on-secondary-fixed": "#002113", "secondary": "#006c49", "on-tertiary-fixed": "#25005a", "border-subtle": "#E2E8F0", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "status-warning": "#F59E0B", "text-secondary": "#334155", "surface-container-highest": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-dim": "#d2d9f4", "surface-card": "#FFFFFF", "status-success": "#10B981", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "text-muted": "#64748B", "outline-variant": "#c7c4d8", "surface-canvas": "#F8FAFC", "text-primary": "#0F172A", "inverse-on-surface": "#eef0ff", "inverse-primary": "#c3c0ff", "error-container": "#ffdad6", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#005236", "primary-fixed-dim": "#c3c0ff", "status-danger": "#EF4444", "tertiary-fixed-dim": "#d2bbff", "on-tertiary-fixed-variant": "#5a00c6", "primary-dark": "#3730A3", "outline": "#777587", "on-secondary": "#ffffff", "on-primary-fixed": "#0f0069", "border-medium": "#CBD5E1", "on-tertiary": "#ffffff", "primary-container": "#4f46e5", "on-error-container": "#93000a", "on-secondary-container": "#00714d", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#eaddff", "primary": "#3525cd", "primary-fixed": "#e2dfff", "tertiary-container": "#7531e6", "surface-container-high": "#e2e7ff", "status-info": "#3B82F6", "background": "#faf8ff", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error": "ba1a1a", "on-background": "#131b2e", "tertiary": "#5c00ca", "surface-container-low": "#f2f3ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "gutter-md": "1.5rem", "space-md": "1rem", "space-2xl": "2.5rem", "space-3xl": "3rem", "space-lg": "1.5rem", "sidebar-width": "260px", "space-2xs": "0.25rem", "gutter-sm": "1rem", "space-xs": "0.5rem", "gutter-lg": "2rem", "space-sm": "0.75rem" }, "fontFamily": { "headline-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-sm": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "label-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-md": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "body-lg": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "display-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "display-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"] }, "fontSize": { "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }] } } } }</script>
+<style>@layer base{html,body{margin:0;padding:0;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}body,input,button,textarea,select{font-family:'Noto Sans','Noto Sans Devanagari',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}h1,h2,h3,h4,h5,h6{font-family:'Outfit','Noto Sans Devanagari',sans-serif;}.custom-designer-scroll{scrollbar-width:thin!important;scrollbar-color:#64748b #f1f5f9!important;}.custom-designer-scroll::-webkit-scrollbar{width:8px!important;height:8px!important;display:block!important;}.custom-designer-scroll::-webkit-scrollbar-track{background:#f1f5f9!important;border-radius:4px!important;}.custom-designer-scroll::-webkit-scrollbar-thumb{background:#64748b!important;border-radius:4px!important;border:1px solid #f1f5f9!important;}.custom-designer-scroll::-webkit-scrollbar-thumb:hover{background:#334155!important;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary": "#ffffff", "surface-bright": "#faf8ff", "on-error": "#ffffff", "on-tertiary-container": "#e4d4ff", "surface-tint": "#4d44e3", "surface-container": "#eaedff", "inverse-surface": "#283044", "on-primary-container": "#dad7ff", "on-secondary-fixed": "#002113", "secondary": "#006c49", "on-tertiary-fixed": "#25005a", "border-subtle": "#E2E8F0", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "status-warning": "#F59E0B", "text-secondary": "#334155", "surface-container-highest": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-dim": "#d2d9f4", "surface-card": "#FFFFFF", "status-success": "#10B981", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "text-muted": "#64748B", "outline-variant": "#c7c4d8", "surface-canvas": "#F8FAFC", "text-primary": "#0F172A", "inverse-on-surface": "#eef0ff", "inverse-primary": "#c3c0ff", "error-container": "#ffdad6", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#005236", "primary-fixed-dim": "#c3c0ff", "status-danger": "#EF4444", "tertiary-fixed-dim": "#d2bbff", "on-tertiary-fixed-variant": "#5a00c6", "primary-dark": "#3730A3", "outline": "#777587", "on-secondary": "#ffffff", "on-primary-fixed": "#0f0069", "border-medium": "#CBD5E1", "on-tertiary": "#ffffff", "primary-container": "#4f46e5", "on-error-container": "#93000a", "on-secondary-container": "#00714d", "secondary-fixed": "#6ffbbe", "tertiary-fixed": "#eaddff", "primary": "#3525cd", "primary-fixed": "#e2dfff", "tertiary-container": "#7531e6", "surface-container-high": "#e2e7ff", "status-info": "#3B82F6", "background": "#faf8ff", "secondary-container": "#6cf8bb", "surface": "#faf8ff", "error": "ba1a1a", "on-background": "#131b2e", "tertiary": "#5c00ca", "surface-container-low": "#f2f3ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "gutter-md": "1.5rem", "space-md": "1rem", "space-2xl": "2.5rem", "space-3xl": "3rem", "space-lg": "1.5rem", "sidebar-width": "260px", "space-2xs": "0.25rem", "gutter-sm": "1rem", "space-xs": "0.5rem", "gutter-lg": "2rem", "space-sm": "0.75rem" }, "fontFamily": { "headline-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "title-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-sm": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "label-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "body-md": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "body-lg": ["Noto Sans", "Noto Sans Devanagari", "sans-serif"], "display-lg": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "label-sm": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "headline-md": ["Outfit", "Noto Sans Devanagari", "sans-serif"], "display-lg-mobile": ["Outfit", "Noto Sans Devanagari", "sans-serif"] }, "fontSize": { "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }] } } } }</script>
 <style>
   .canvas-block, #visualCanvas, .canvas-block p, .canvas-block h1, .canvas-block h2, .canvas-block h3, .canvas-block h4, .canvas-block h5, .canvas-block h6 {
     font-family: 'Poppins', 'Noto Sans Devanagari', 'Mukta', sans-serif !important;
@@ -22,10 +22,9 @@
       <!-- Left: Sidebar Toggle, New Blog, Mode Switcher, Saved Blogs Dropdown -->
       <div class="flex items-center gap-1.5 flex-wrap">
         <!-- Toggle Block Library Sidebar -->
-        <button type="button" id="btnToggleLibrary" onclick="toggleBlockLibrary()" class="px-2.5 py-1.5 rounded-lg border border-border-medium bg-surface-container-low hover:bg-surface-container text-text-primary text-[12px] font-semibold flex items-center gap-1 cursor-pointer transition-all shadow-2xs" title="Toggle Block Library Sidebar (Alt+B)">
-          <span class="material-symbols-outlined text-[16px] text-primary" id="toggleLibraryIcon">side_navigation</span>
-          <span id="toggleLibraryText" class="hidden sm:inline">Hide Library</span>
-        </button>
+        <button type="button" id="btnToggleLibrary" onclick="toggleBlockLibrary()" class="p-2 rounded-lg border border-border-medium bg-surface-container-low hover:bg-surface-container text-text-primary flex items-center justify-center cursor-pointer transition-all shadow-2xs" title="Toggle Block Library (Menu)">
+                <span class="material-symbols-outlined text-[20px] text-primary">menu</span>
+              </button>
 
         <!-- + New Blog -->
         <button type="button" onclick="createNewBlog()" class="px-2.5 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold flex items-center gap-1 shadow-2xs transition-all cursor-pointer" title="Start a fresh new blog post">
@@ -106,22 +105,22 @@
     <!-- ================= 3-COLUMN STUDIO WORKSPACE ================= -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start w-full">
 <!-- ================= LEFT COLUMN: Component Palette ================= -->
-<div id="blockLibraryCol" class="lg:col-span-3 flex flex-col gap-2 bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm lg:sticky lg:top-20 max-h-[calc(100vh-90px)] overflow-hidden transition-all duration-300">
-<!-- Palette Header & Search -->
-<div class="flex flex-col gap-1.5 pb-2 border-b-[1.5px] border-border-subtle shrink-0">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-1.5">
-<span class="material-symbols-outlined text-primary text-[20px]">widgets</span>
-<h2 class="font-title-md text-title-md text-text-primary font-bold">Block Library</h2>
-</div>
-<div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">widgets</span><h3 class="font-title-md text-[14px] text-text-primary font-bold">Block Library</h3></div><span class="font-label-sm text-[11px] px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold">10 items</span></div>
-<div class="relative w-full mt-0.5">
-<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
-<input class="w-full pl-8 pr-3 py-1.5 rounded-lg border-[1.5px] border-border-subtle bg-surface-canvas text-[12px] text-text-primary outline-none focus:border-primary transition-all placeholder:text-text-muted font-body-sm" id="componentSearch" placeholder="Search blocks..." type="text"/>
-</div>
-</div>
-<!-- Palette Accordion Sections with Miniature Visual Previews -->
-<div class="flex flex-col gap-2 flex-1 overflow-y-auto pr-1 pb-36 custom-designer-scroll" id="paletteAccordionList" style="height:calc(100vh - 190px); max-height:calc(100vh - 190px); padding-bottom:140px; overscroll-behavior:contain;">
+<div id="blockLibraryCol" class="lg:col-span-3 flex flex-col bg-surface-card rounded-xl p-3 border-[1.5px] border-border-medium shadow-sm lg:sticky lg:top-20 h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] transition-all duration-300">
+      <!-- Palette Header & Search -->
+      <div class="flex items-center justify-between pb-2 border-b-[1.5px] border-border-subtle shrink-0">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[20px]">widgets</span>
+          <h3 class="font-title-md text-[15px] text-text-primary font-bold">Block Library</h3>
+        </div>
+        <span class="font-label-sm text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-bold">10 items</span>
+      </div>
+      <div class="relative w-full my-2 shrink-0">
+        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
+        <input class="w-full pl-8 pr-3 py-1.5 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] text-text-primary outline-none focus:border-primary transition-all placeholder:text-text-muted font-body-sm" id="componentSearch" placeholder="Search blocks..." type="text"/>
+      </div>
+
+      <!-- Palette Accordion Sections with Full Height Native Scrollbar -->
+      <div class="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1.5 pb-4 custom-designer-scroll" id="paletteAccordionList" style="overflow-y: auto !important; scrollbar-width: thin; scrollbar-color: #64748b #f1f5f9;">
 <!-- 1. Typography & Headers -->
 <div class="rounded-lg border-[1.5px] border-border-subtle bg-surface-container-low/60 overflow-hidden">
 <button class="w-full px-3 py-2 flex items-center justify-between text-left font-title-sm text-title-sm text-text-primary bg-surface-container-high/40 hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-typography')">
@@ -404,137 +403,7 @@
 <!-- ================= MIDDLE COLUMN: Main Visual Canvas / Blog Preview ================= -->
 <div id="canvasMainCol" class="lg:col-span-6 flex flex-col gap-2 transition-all duration-300">
 <!-- Viewport & Canvas Controls Bar -->
-<!-- Sub-Bar: Saved Blogs Dropdown & Word-like Shortcuts -->
-              <div class="flex items-center justify-between px-3 py-1.5 bg-surface-card rounded-xl border-[1.5px] border-border-medium shadow-sm flex-wrap gap-2">
-                <!-- Left: Saved Blogs Dropdown & Management -->
-                <div class="flex items-center gap-2 flex-wrap">
-                  <div class="flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-lg border border-border-subtle shadow-2xs">
-                    <span class="material-symbols-outlined text-primary text-[17px]">folder_open</span>
-                    <span class="text-[12px] font-bold text-text-secondary hidden sm:inline">Saved Blogs:</span>
-                    <select id="savedBlogsDropdown" onchange="onSavedBlogDropdownChange(this.value)" class="text-[12px] font-medium bg-transparent border-none outline-none text-text-primary cursor-pointer max-w-[190px] sm:max-w-[280px] truncate" title="Select a previously saved blog to edit or delete">
-                      <option value="">📁 Select Saved Blog...</option>
-                    </select>
-                  </div>
-                  <button type="button" id="btnEditDropdownBlog" onclick="loadSelectedDropdownBlog()" class="px-2.5 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer" title="Edit / Load Selected Blog">
-                    <span class="material-symbols-outlined text-[15px]">edit_note</span>
-                    <span>Edit</span>
-                  </button>
-                  <button type="button" id="btnDeleteDropdownBlog" onclick="deleteSelectedDropdownBlog()" class="px-2 py-1.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-status-danger text-[12px] font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer" title="Delete Selected Blog">
-                    <span class="material-symbols-outlined text-[15px]">delete</span>
-                    <span>Delete</span>
-                  </button>
-                </div>
-
-                <!-- Right: Word-style Cut, Copy, Paste actions -->
-                <div class="flex items-center gap-1.5">
-                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogCut()" title="Cut (Ctrl+X) - Cut selected text or block">
-                    <span class="material-symbols-outlined text-[16px] text-primary">content_cut</span>
-                    <span>Cut</span>
-                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+X</span>
-                  </button>
-                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogCopy()" title="Copy (Ctrl+C) - Copy selected text or block">
-                    <span class="material-symbols-outlined text-[16px] text-primary">content_copy</span>
-                    <span>Copy</span>
-                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+C</span>
-                  </button>
-                  <button type="button" class="px-2.5 py-1.5 rounded-lg border border-border-subtle bg-surface-container-low hover:bg-surface-container-high text-text-secondary hover:text-text-primary text-[12px] font-medium flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer" onclick="execBlogPaste()" title="Paste (Ctrl+V) - Paste text or block">
-                    <span class="material-symbols-outlined text-[16px] text-primary">content_paste</span>
-                    <span>Paste</span>
-                    <span class="text-[10px] text-text-muted hidden md:inline font-mono">Ctrl+V</span>
-                  </button>
-                </div>
-              </div>
-<!-- ================= DOCUMENT RICH TEXT EDITING RIBBON ================= -->
-      <div class="w-full bg-surface-card rounded-xl px-3 py-1.5 border-[1.5px] border-primary-container shadow-sm flex flex-wrap items-center gap-1 sm:gap-1.5 z-30" id="docEditorRibbon">
-        <!-- Heading / Block Format Dropdown -->
-        <select class="px-2 py-1 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] font-semibold text-text-primary outline-none hover:border-primary cursor-pointer" onchange="formatDocBlockHeading(this.value); this.value='';" title="Text Format">
-          <option value="">Format...</option>
-          <option value="p">Paragraph (Normal)</option>
-          <option value="h1">H1 Main Title</option>
-          <option value="h2">H2 Subheading</option>
-          <option value="h3">H3 Section</option>
-          <option value="blockquote">Quote Block</option>
-        </select>
-
-        <!-- Font Size Dropdown -->
-        <select class="px-2 py-1 rounded-lg border border-border-subtle bg-surface-canvas text-[12px] font-semibold text-text-primary outline-none hover:border-primary cursor-pointer" onchange="formatDocText('fontSizePx', this.value); this.value='';" title="Font Size">
-          <option value="">Font Size...</option>
-          <option value="12px">12px (Small)</option>
-          <option value="14px">14px (Normal)</option>
-          <option value="16px">16px (Medium)</option>
-          <option value="18px">18px (Large)</option>
-          <option value="22px">22px (X-Large)</option>
-          <option value="28px">28px (Title)</option>
-          <option value="36px">36px (Headline)</option>
-        </select>
-
-        <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
-
-        <!-- Bold, Italic, Underline, Strikethrough -->
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('bold')" title="Bold (Ctrl+B)">
-          <span class="material-symbols-outlined text-[18px]">format_bold</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('italic')" title="Italic (Ctrl+I)">
-          <span class="material-symbols-outlined text-[18px]">format_italic</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('underline')" title="Underline (Ctrl+U)">
-          <span class="material-symbols-outlined text-[18px]">format_underlined</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('strikeThrough')" title="Strikethrough">
-          <span class="material-symbols-outlined text-[18px]">strikethrough_s</span>
-        </button>
-
-        <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
-
-        <!-- Text Color Picker -->
-        <label class="relative p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer flex items-center justify-center" title="Text Color (अक्षरांचा रंग)">
-          <span class="material-symbols-outlined text-[18px]">format_color_text</span>
-          <span class="absolute bottom-0.5 w-3.5 h-1 rounded-full bg-primary" id="currentTextColorIndicator"></span>
-          <input type="color" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('textColor', this.value); document.getElementById('currentTextColorIndicator').style.backgroundColor=this.value;"/>
-        </label>
-
-        <!-- Highlight / Text Background Color Picker -->
-        <label class="relative p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer flex items-center justify-center" title="Highlight Color (हायलाइट रंग)">
-          <span class="material-symbols-outlined text-[18px]">border_color</span>
-          <span class="absolute bottom-0.5 w-3.5 h-1 rounded-full bg-amber-400" id="currentHighlightIndicator"></span>
-          <input type="color" value="#fef08a" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" oninput="formatDocText('highlightColor', this.value); document.getElementById('currentHighlightIndicator').style.backgroundColor=this.value;"/>
-        </label>
-
-        <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
-
-        <!-- Text Alignment -->
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyLeft')" title="Align Left">
-          <span class="material-symbols-outlined text-[18px]">format_align_left</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyCenter')" title="Align Center">
-          <span class="material-symbols-outlined text-[18px]">format_align_center</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('justifyRight')" title="Align Right">
-          <span class="material-symbols-outlined text-[18px]">format_align_right</span>
-        </button>
-
-        <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
-
-        <!-- Lists -->
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('insertUnorderedList')" title="Bullet List">
-          <span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-text-primary transition-colors cursor-pointer" onclick="formatDocText('insertOrderedList')" title="Numbered List">
-          <span class="material-symbols-outlined text-[18px]">format_list_numbered</span>
-        </button>
-
-        <div class="h-4 w-px bg-border-subtle mx-0.5"></div>
-
-        <!-- Link & Clear Format -->
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-primary transition-colors cursor-pointer" onclick="formatDocText('createLink')" title="Insert Link (Ctrl+K)">
-          <span class="material-symbols-outlined text-[18px]">link</span>
-        </button>
-        <button type="button" class="p-1.5 rounded hover:bg-surface-container text-status-danger transition-colors cursor-pointer" onclick="formatDocText('removeFormat')" title="Clear Formatting (फॉर्मॅटिंग काढा)">
-          <span class="material-symbols-outlined text-[18px]">format_clear</span>
-        </button>
-      </div>
-
-      <!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
+<!-- Main Visual Blog Post Wrapper Container (Smooth Scrollable) -->
 <div class="w-full mx-auto transition-all duration-300 max-h-[calc(100vh-140px)] overflow-y-auto pr-1 rounded-xl custom-designer-scroll" id="canvasViewport">
 <div class="bg-surface-card rounded-xl p-4 sm:p-6 border-[1.5px] border-border-medium shadow-md flex flex-col gap-3 min-h-[600px]" id="visualCanvas">
 <!-- Blogger Post Header (Metadata) -->
