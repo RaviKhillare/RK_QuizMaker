@@ -24,7 +24,22 @@
     ::-webkit-scrollbar-track { background: #F1F5F9; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-  </style>
+  
+    @media (max-width: 1024px) {
+      .embed-card-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 16px !important;
+      }
+      .embed-card-grid > div {
+        grid-column: span 12 / span 12 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+      }
+    }
+</style>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -334,7 +349,7 @@
           </div>
 
           <!-- Two-Col: Code Snippet (Left) & Live Preview (Right) -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+          <div class="embed-card-grid grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch w-full">
             <!-- Left: Code Box -->
             <div class="lg:col-span-6 flex flex-col justify-between bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner">
               <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-[12px] font-mono text-slate-300">

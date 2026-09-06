@@ -24,7 +24,44 @@
     ::-webkit-scrollbar-track { background: #F1F5F9; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-  </style>
+  
+    /* Responsive Embed & Bulk Grids on Mobile */
+    @media (max-width: 1024px) {
+      .embed-card-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .embed-card-grid > div {
+        grid-column: span 12 / span 12 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .bulk-main-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      
+      .bulk-main-grid > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        position: static !important;
+        top: auto !important;
+      }
+      .bulk-ai-col {
+        position: static !important;
+        top: auto !important;
+      }
+      /* original */
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+
+</style>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -258,10 +295,9 @@
         </div>
 
         <!-- Main Grid: Left (import panels) + Right (AI Generator) -->
-        <div style="display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start;">
-
+        <div class="bulk-main-grid grid grid-cols-1 lg:grid-cols-12 gap-5 items-start w-full">
           <!-- ═══ LEFT COLUMN ═══ -->
-          <div style="display:flex; flex-direction:column; gap:16px; min-width:0;">
+          <div class="lg:col-span-8 flex flex-col gap-4 min-w-0 w-full" style="flex:1 1 68%; min-width:0;">
 
             <!-- TAB 1: Google Sheets & CSV -->
             <div class="tab-content block" id="sheetsTab">
@@ -452,7 +488,7 @@ Explanation: Dihydrogen monoxide.</pre>
           </div><!-- end LEFT COLUMN -->
 
           <!-- ═══ RIGHT COLUMN: AI Generator ═══ -->
-          <div style="position:sticky; top:76px; display:flex; flex-direction:column; gap:12px;">
+          <div class="bulk-ai-col lg:col-span-4 flex flex-col gap-3 min-w-0 w-full" style="flex:1 1 30%; min-width:0; position:sticky; top:76px;">
 
             <!-- AI Question Generator Card -->
             <div style="background:#fff; border:2px solid #c7c4d8; border-radius:18px; padding:16px; box-shadow:rgba(92,0,202,.12) 0 12px 28px -4px; position:relative; overflow:hidden;">

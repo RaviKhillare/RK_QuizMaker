@@ -742,6 +742,43 @@
       }
     }
   
+    
+    /* Responsive Embed & Bulk Grids on Mobile */
+    @media (max-width: 1024px) {
+      .embed-card-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .embed-card-grid > div {
+        grid-column: span 12 / span 12 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .bulk-main-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      
+      .bulk-main-grid > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        position: static !important;
+        top: auto !important;
+      }
+      .bulk-ai-col {
+        position: static !important;
+        top: auto !important;
+      }
+      /* original */
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+
     @media (max-width: 768px) {
       .form-grid-2, .form-grid-3 {
         grid-template-columns: 1fr;
@@ -1839,10 +1876,9 @@
           </div>
 
           <!-- Main Grid: Left (import panels) + Right (AI Generator) -->
-          <div style="display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start;">
-
+          <div class="bulk-main-grid grid grid-cols-1 lg:grid-cols-12 gap-5 items-start w-full">
             <!-- LEFT COLUMN -->
-            <div style="display:flex; flex-direction:column; gap:16px; min-width:0;">
+            <div class="lg:col-span-8 flex flex-col gap-4 min-w-0 w-full" style="flex:1 1 68%; min-width:0;">
 
               <!-- TAB: Sheets -->
               <div class="bulk-subtab-pane" id="subtab-sheets-content" style="display:flex; flex-direction:column; gap:14px;">
@@ -2030,7 +2066,7 @@ Explanation: Dihydrogen monoxide.</pre>
             </div><!-- end LEFT COLUMN -->
 
             <!-- RIGHT COLUMN: AI Generator -->
-            <div style="position:sticky;top:76px;display:flex;flex-direction:column;gap:12px;">
+            <div class="bulk-ai-col lg:col-span-4 flex flex-col gap-3 min-w-0 w-full" style="flex:1 1 30%; min-width:0; position:sticky; top:76px;">
 
               <div style="background:#fff;border:2px solid #c7c4d8;border-radius:18px;padding:16px;box-shadow:rgba(92,0,202,.12) 0 10px 24px -4px;position:relative;overflow:hidden;">
                 <div style="position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:rgba(79,70,229,.1);filter:blur(18px);pointer-events:none;"></div>
@@ -2220,9 +2256,9 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             </div>
 
             <!-- Two-Col: Code Snippet (Left) & Live Preview (Right) -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch" style="display:grid; grid-template-columns:repeat(12, 1fr); gap:20px; align-items:stretch;">
+            <div class="embed-card-grid grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch w-full">
               <!-- Left: Code Box (6 cols) -->
-              <div class="lg:col-span-6 flex flex-col justify-between bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner" style="grid-column:span 6; background:#1e293b; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="lg:col-span-6 flex flex-col justify-between bg-inverse-surface rounded-xl overflow-hidden border border-slate-700 shadow-inner" style="background:#1e293b; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
                 <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-[12px] font-mono text-slate-300" style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#0f172a; border-bottom:1px solid #1e293b; font-size:12px; font-family:monospace; color:#cbd5e1;">
                   <div class="flex items-center gap-2" style="display:flex; align-items:center; gap:8px;">
                     <span class="flex gap-1.5" style="display:flex; gap:6px;">
@@ -2245,7 +2281,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
               </div>
 
               <!-- Right: Interactive Live Preview (6 cols) -->
-              <div class="lg:col-span-6 flex flex-col justify-between bg-surface-canvas rounded-xl p-space-md border border-border-medium shadow-xs" style="grid-column:span 6; background:#f8fafc; border-radius:12px; padding:18px; border:1.5px solid #cbd5e1; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="lg:col-span-6 flex flex-col justify-between bg-surface-canvas rounded-xl p-space-md border border-border-medium shadow-xs" style="background:#f8fafc; border-radius:12px; padding:18px; border:1.5px solid #cbd5e1; display:flex; flex-direction:column; justify-content:space-between;">
                 <div class="flex items-center justify-between mb-3 text-label-sm font-label-sm text-text-muted" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:12px; color:#64748b;">
                   <span class="flex items-center gap-1.5 text-text-primary font-semibold" style="display:flex; align-items:center; gap:6px; color:#0f172a; font-weight:700;">
                     <span class="w-2 h-2 rounded-full bg-status-success animate-pulse" style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
@@ -2905,6 +2941,16 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                 <span class="material-symbols-outlined text-[16px]">content_paste</span>
                 <span>Paste Code</span>
               </button>
+              <!-- Save Draft & Load Drafts -->
+    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-container text-text-primary font-label-sm text-[12px] font-semibold shadow-sm transition-colors cursor-pointer" onclick="saveBlogDraft()" title="Save as Draft (ड्राफ्ट सेव्ह करा)">
+      <span class="material-symbols-outlined text-[16px] text-primary">save</span>
+      <span>Save Draft</span>
+    </button>
+    <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-container text-text-primary font-label-sm text-[12px] font-semibold shadow-sm transition-colors cursor-pointer" onclick="openDraftsModal()" title="View Saved Drafts (जतन केलेले ड्राफ्ट्स)">
+      <span class="material-symbols-outlined text-[16px] text-amber-600">drafts</span>
+      <span>Drafts</span>
+    </button>
+    
               <button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border-[1.5px] border-border-medium bg-surface-card hover:bg-surface-canvas text-text-secondary font-label-sm text-[12px] font-medium shadow-sm transition-colors" onclick="toggleDevicePreview()">
                 <span class="material-symbols-outlined text-[16px]" id="previewDeviceIcon">smartphone</span>
                 <span id="previewDeviceLabel">Mobile View</span>
@@ -2969,13 +3015,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   </button>
                   <div class="p-2 flex flex-col gap-2" id="acc-typography">
                     <!-- Block 1: Gradient H1 -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'hero-gradient')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'hero-gradient')" onclick="insertBlock('hero-gradient')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Gradient H1 Title</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('hero-gradient')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('hero-gradient')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -2985,13 +3031,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block 2: Badge Subhead -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'badge-heading')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'badge-heading')" onclick="insertBlock('badge-heading')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Badge Subhead</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('badge-heading')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('badge-heading')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3001,13 +3047,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block 3: Highlight Quote -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quote-box')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quote-box')" onclick="insertBlock('quote-box')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Highlight Quote</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('quote-box')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('quote-box')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3020,13 +3066,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                 </div>
 
                 <!-- Block 4: Best Paragraph -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'best-paragraph')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'best-paragraph')" onclick="insertBlock('best-paragraph')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Best Paragraph</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('best-paragraph')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('best-paragraph')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3035,13 +3081,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block 5: Text Box -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'text-box')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'text-box')" onclick="insertBlock('text-box')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Text Box</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('text-box')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('text-box')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3062,7 +3108,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   </button>
                   <div class="p-2 flex flex-col gap-2" id="acc-cards">
                     <!-- Block: Success Note -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-emerald-50/50 border-[1.5px] border-border-subtle hover:border-status-success shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'success-card')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-emerald-50/50 border-[1.5px] border-border-subtle hover:border-status-success shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'success-card')" onclick="insertBlock('success-card')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-status-success text-[16px]">drag_indicator</span>
@@ -3070,7 +3116,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                             <span class="w-2 h-2 rounded-full bg-status-success"></span> Success Note
                           </span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-success hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('success-card')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-success hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('success-card')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3083,7 +3129,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block: Warning Alert -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-amber-50/50 border-[1.5px] border-border-subtle hover:border-status-warning shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'warning-card')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-amber-50/50 border-[1.5px] border-border-subtle hover:border-status-warning shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'warning-card')" onclick="insertBlock('warning-card')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-status-warning text-[16px]">drag_indicator</span>
@@ -3091,7 +3137,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                             <span class="w-2 h-2 rounded-full bg-status-warning"></span> Alert Box
                           </span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-warning hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('warning-card')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-warning hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('warning-card')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3104,7 +3150,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block: Feature Card -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-indigo-50/50 border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'info-card')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-indigo-50/50 border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'info-card')" onclick="insertBlock('info-card')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
@@ -3112,7 +3158,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                             <span class="w-2 h-2 rounded-full bg-primary"></span> Feature Card
                           </span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('info-card')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('info-card')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3138,13 +3184,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   </button>
                   <div class="p-2 flex flex-col gap-2" id="acc-tables">
                     <!-- Block: Exam Schedule Table -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'edu-table')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'edu-table')" onclick="insertBlock('edu-table')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Exam Schedule Table</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('edu-table')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('edu-table')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3160,13 +3206,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block: 2-Col Specs -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'two-col-grid')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'two-col-grid')" onclick="insertBlock('two-col-grid')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">2-Col Specs Grid</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('two-col-grid')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('two-col-grid')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3195,13 +3241,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                   </button>
                   <div class="p-2 flex flex-col gap-2" id="acc-cta">
                     <!-- Block: 3D Quiz CTA Button -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quiz-cta')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-primary shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'quiz-cta')" onclick="insertBlock('quiz-cta')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-primary text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">Interactive Quiz CTA</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('quiz-cta')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-primary hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('quiz-cta')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -3216,13 +3262,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                       </div>
                     </div>
                     <!-- Block: PDF Download Box -->
-                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-status-danger shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'pdf-download')">
+                    <div class="group flex flex-col p-2 rounded-lg bg-surface-card hover:bg-surface-container-low border-[1.5px] border-border-subtle hover:border-status-danger shadow-sm cursor-grab transition-all gap-1.5" draggable="true" ondragstart="handlePaletteDragStart(event, 'pdf-download')" onclick="insertBlock('pdf-download')" title="Click to add or drag to canvas" style="cursor:pointer;">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-text-muted group-hover:text-status-danger text-[16px]">drag_indicator</span>
                           <span class="font-label-sm text-[12px] font-semibold text-text-primary">PDF Download Box</span>
                         </div>
-                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-danger hover:text-on-primary text-text-secondary transition-colors" onclick="insertBlock('pdf-download')" title="Add Block">
+                        <button class="w-6 h-6 rounded flex items-center justify-center bg-surface-container-high hover:bg-status-danger hover:text-on-primary text-text-secondary transition-colors" onclick="event.stopPropagation(); insertBlock('pdf-download')" title="Add Block">
                           <span class="material-symbols-outlined text-[15px]">add</span>
                         </button>
                       </div>
@@ -4446,23 +4492,23 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var timerText = quiz.timeLimitMinutes > 0 ? (quiz.timeLimitMinutes + ' Mins') : 'Untimed';
       var solveCount = (submissions || []).filter(function (s) { return s.quizId === quiz.id; }).length;
       var div = document.createElement('div');
-      div.className = "p-space-md rounded-xl bg-surface-bright hover:bg-surface-container-low transition-colors shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-space-md group";
-      div.style.cssText = "box-shadow: rgba(15, 23, 42, 0.06) 0px 4px 12px -2px; border: 1.5px solid rgb(203, 213, 225); background:#faf8ff; padding:16px; border-radius:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;";
+      div.className = "p-space-md rounded-xl bg-surface-bright hover:bg-surface-container-low transition-colors shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-space-md group";
+      div.style.cssText = "box-shadow: rgba(15, 23, 42, 0.06) 0px 4px 12px -2px; border: 1.5px solid rgb(203, 213, 225); background:#faf8ff; padding:16px; border-radius:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; width:100%; max-width:100%; box-sizing:border-box; overflow:hidden;";
       div.innerHTML = [
-        '<div class="space-y-1.5 min-w-0 flex-1" style="flex:1; min-width:240px;">',
+        '<div class="space-y-1.5 min-w-0 w-full flex-1" style="flex:1 1 260px; min-width:0; width:100%; max-width:100%; overflow-wrap:anywhere; word-break:break-word; box-sizing:border-box;">',
         '  <div class="flex flex-wrap items-center gap-2" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px;">',
         '    <span class="px-2.5 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm font-semibold" style="padding:2px 8px; border-radius:20px; background:#e0f2fe; color:#0369a1; font-size:11px; font-weight:700;">' + escapeHtml(quiz.category || 'MPSC 2025') + '</span>',
-        '    <span class="px-2 py-0.5 rounded-full bg-surface-container text-text-secondary font-label-sm text-label-sm" style="padding:2px 8px; border-radius:20px; background:#f1f5f9; color:#475569; font-size:11px;">Marathi + EN</span>',
+        '    <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-text-secondary font-label-sm text-label-sm" style="padding:2px 8px; border-radius:20px; background:#f1f5f9; color:#475569; font-size:11px;">Marathi + EN</span>',
         '    <span class="inline-flex items-center gap-1 text-text-muted font-body-sm text-body-sm" style="display:inline-flex; align-items:center; gap:4px; font-size:12px; color:#64748b;"><span class="material-symbols-outlined text-[14px]">schedule</span> ' + timerText + '</span>',
         '  </div>',
-        '  <h3 class="font-title-md text-title-md text-text-primary font-bold group-hover:text-primary transition-colors truncate" style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 6px;">' + escapeHtml(quiz.title) + '</h3>',
+        '  <h3 class="font-title-md text-title-md text-text-primary font-bold group-hover:text-primary transition-colors" style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 6px; word-break:break-word; overflow-wrap:anywhere; white-space:normal; line-height:1.4;">' + escapeHtml(quiz.title) + '</h3>',
         '  <div class="flex flex-wrap items-center gap-4 text-text-muted font-body-sm text-body-sm" style="display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:#64748b;">',
         '    <span style="display:inline-flex; align-items:center; gap:4px;"><span class="material-symbols-outlined text-[16px] text-text-muted">help_center</span> ' + qCount + ' Qs</span>',
         '    <span style="display:inline-flex; align-items:center; gap:4px;"><span class="material-symbols-outlined text-[16px] text-status-success" style="color:#10b981;">verified</span> ' + (quiz.passingScore || 50) + '% Passing</span>',
         '    <span style="display:inline-flex; align-items:center; gap:4px;"><span class="material-symbols-outlined text-[16px] text-status-info" style="color:#3b82f6;">groups</span> ' + solveCount + ' Solved</span>',
         '  </div>',
         '</div>',
-        '<div class="flex items-center gap-1.5 shrink-0" style="display:flex; align-items:center; gap:6px; shrink:0;">',
+        '<div class="flex items-center gap-1.5 shrink-0" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:6px;">',
         '  <button type="button" onclick="startQuizPlayer(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-primary hover:bg-primary-dark text-on-primary shadow-xs transition-colors" style="padding:7px 10px; border-radius:8px; background:#3525cd; color:#fff; border:none; cursor:pointer;" data-tooltip="Run Test (चाचणी सुरू करा)">',
         '    <span class="material-symbols-outlined text-[18px]">play_arrow</span>',
         '  </button>',
@@ -4472,11 +4518,11 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         '  <button type="button" onclick="editQuizInBuilder(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Edit Quiz (संपादित करा)">',
         '    <span class="material-symbols-outlined text-[18px]">edit</span>',
         '  </button>',
-        '  <button type="button" onclick="switchView(\'results\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Results & Analytics (निकाल पहा)">',
+        '  <button type="button" onclick="switchTab(\'analytics\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="View Stats (विश्लेषण पहा)">',
         '    <span class="material-symbols-outlined text-[18px]">bar_chart</span>',
         '  </button>',
         '</div>'
-      ].join('\n');
+      ].join('');
       return div;
     }
 
@@ -6713,6 +6759,9 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
     function insertBlock(type) {
       insertBlockAt(type, -1);
+      if (typeof showToast === 'function') {
+        showToast('नवीन ब्लॉक जोडला गेला (Block added)!');
+      }
     }
 
     function deleteBlock(btn) {
@@ -6862,163 +6911,181 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     }
 
     function getBlockTemplate(type) {
-      if (type === 'best-paragraph') {
-        return `
-          <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-card border-[1.5px] border-border-subtle shadow-xs" data-block-type="paragraph" onclick="selectBlockForStyling(this)">
-            <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true" style="font-size:15px; line-height:1.8;">
-              <span style="float:left; font-size:40px; line-height:36px; padding-top:4px; padding-right:8px; font-weight:800; color:#3525cd; font-family:serif;">ये</span>थे तुमचा मुख्य परिच्छेद सुरू होतो. हा आकर्षक ड्रॉप-कॅप परिच्छेद ब्लॉग वाचकांसाठी अत्यंत सुलभ आणि वाचनीय बनवतो. परीक्षेची तयारी, महत्त्वाचे मुद्दे किंवा अभ्यासक्रमाचे सार येथे प्रभावीपणे मांडता येते.
-            </p>
-          </div>`;
-      } else if (type === 'text-box') {
-        return `
-          <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-container-low border-[1.5px] border-primary/30 shadow-xs" data-block-type="textbox" onclick="selectBlockForStyling(this)">
-            <div class="flex items-center gap-2 mb-2 text-primary font-title-sm text-title-sm font-bold">
-              <span class="material-symbols-outlined text-[20px]">lightbulb</span>
-              <span contenteditable="true">महत्त्वाची नोंद (Key Note)</span>
-            </div>
-            <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true">
-              हा एक टेक्स्ट बॉक्स आहे ज्यामध्ये तुम्ही कोणत्याही विषयाची सविस्तर माहिती, महत्त्वाचे फॉर्म्युले किंवा व्याख्या हायलाइट करून दाखवू शकता.
-            </p>
-          </div>`;
-      } else if (type === 'hero-gradient') {
-        return `
-          <div class="canvas-block group relative rounded-xl p-space-md bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary shadow-md border-[1.5px] border-primary-dark">
-            <h2 class="font-headline-sm text-headline-sm text-on-primary font-bold" contenteditable="true">Engaging New Main Headline</h2>
-            <p class="font-body-md text-body-md text-on-primary-container/90 mt-1" contenteditable="true">Provide an intuitive overview and highlight core takeaways for students and test takers.</p>
+    if (!type) type = 'best-paragraph';
+    type = type.toLowerCase().trim();
+
+    if (type === 'hero-gradient') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-space-md bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary shadow-md border-[1.5px] border-primary-dark" data-block-type="hero" onclick="selectBlockForStyling(this)">
+          <h2 class="font-headline-sm text-headline-sm text-on-primary font-bold" contenteditable="true">Engaging New Main Headline</h2>
+          <p class="font-body-md text-body-md text-on-primary-container/90 mt-1" contenteditable="true">Provide an intuitive overview and highlight core takeaways for students and test takers.</p>
+        </div>`;
+    } else if (type === 'badge-heading') {
+      return `
+        <div class="canvas-block group relative flex flex-col gap-1 p-3 rounded-lg border-[1.5px] border-border-subtle bg-surface-card shadow-sm" data-block-type="heading" onclick="selectBlockForStyling(this)">
+          <span class="self-start px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold" contenteditable="true">Section #1</span>
+          <h3 class="font-title-md text-title-md text-text-primary font-bold" contenteditable="true">Key Concepts &amp; Reference Materials</h3>
+        </div>`;
+    } else if (type === 'best-paragraph') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-card border-[1.5px] border-border-subtle shadow-xs" data-block-type="paragraph" onclick="selectBlockForStyling(this)">
+          <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true" style="font-size:15px; line-height:1.8;">
+            <span style="float:left; font-size:40px; line-height:36px; padding-top:4px; padding-right:8px; font-weight:800; color:#3525cd; font-family:serif;">ये</span>थे तुमचा मुख्य परिच्छेद सुरू होतो. हा आकर्षक ड्रॉप-कॅप परिच्छेद ब्लॉग वाचकांसाठी अत्यंत सुलभ आणि वाचनीय बनवतो. परीक्षेची तयारी, महत्त्वाचे मुद्दे किंवा अभ्यासक्रमाचे सार येथे प्रभावीपणे मांडता येते.
+          </p>
+        </div>`;
+    } else if (type === 'paragraph' || type === 'simple-paragraph') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-4 bg-surface-card border-[1.5px] border-border-subtle shadow-xs" data-block-type="paragraph" onclick="selectBlockForStyling(this)">
+          <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true" style="font-size:15px; line-height:1.7;">
+            येथे तुमचा मजकूर टाइप करा किंवा कॉपी-पेस्ट करा. तुम्ही या मजकुराची फॉन्ट साईज, रंग, बोल्ड, इटॅलिक व हायलाइट थेट वरील टूलबारमधून बदलू शकता.
+          </p>
+        </div>`;
+    } else if (type === 'text-box') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-4 sm:p-5 bg-surface-container-low border-[1.5px] border-primary/30 shadow-xs" data-block-type="textbox" onclick="selectBlockForStyling(this)">
+          <div class="flex items-center gap-2 mb-2 text-primary font-title-sm text-title-sm font-bold">
+            <span class="material-symbols-outlined text-[20px]">lightbulb</span>
+            <span contenteditable="true">महत्त्वाची नोंद (Key Note)</span>
           </div>
-        `;
-      } else if (type === 'badge-heading') {
-        return `
-          <div class="canvas-block group relative flex flex-col gap-1 p-3 rounded-lg border-[1.5px] border-border-subtle bg-surface-card shadow-sm">
-            <span class="self-start px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold" contenteditable="true">Section #2</span>
-            <h3 class="font-title-md text-title-md text-text-primary font-semibold" contenteditable="true">Key Concepts & Reference Materials</h3>
-          </div>
-        `;
-      } else if (type === 'quote-box') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-surface-container-low border-l-4 border-primary border-y-[1.5px] border-r-[1.5px] border-border-subtle shadow-sm">
-            <p class="font-title-sm text-title-sm text-text-primary italic" contenteditable="true">"Success isn't always about greatness. It's about consistency. Consistent hard work leads to success."</p>
-            <span class="block mt-2 font-label-sm text-label-sm text-text-muted" contenteditable="true">— Study Strategy Proverb</span>
-          </div>
-        `;
-      } else if (type === 'feature-card') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-surface-card border-[1.5px] border-border-subtle shadow-sm hover:shadow-md transition-shadow">
-            <div class="w-10 h-10 rounded-lg bg-surface-container text-primary flex items-center justify-center mb-3">
-              <span class="material-symbols-outlined text-[24px]">school</span>
-            </div>
-            <h4 class="font-title-md text-title-md text-text-primary font-semibold" contenteditable="true">Interactive Study Modules</h4>
-            <p class="font-body-sm text-body-sm text-text-secondary mt-1" contenteditable="true">Solve exam-level questions with rich hints, detailed explanations and performance analytics.</p>
-          </div>
-        `;
-      } else if (type === 'grid-2col') {
-        return `
-          <div class="canvas-block group relative grid grid-cols-1 md:grid-cols-2 gap-space-sm">
-            <div class="p-space-sm rounded-xl bg-surface-card border-[1.5px] border-border-subtle shadow-sm">
-              <h4 class="font-title-sm text-title-sm text-text-primary font-semibold mb-1" contenteditable="true">Phase 1: Syllabus Master</h4>
-              <p class="font-body-sm text-body-sm text-text-secondary" contenteditable="true">Cover standard textbook topics and previous year solved questions.</p>
-            </div>
-            <div class="p-space-sm rounded-xl bg-surface-card border-[1.5px] border-border-subtle shadow-sm">
-              <h4 class="font-title-sm text-title-sm text-text-primary font-semibold mb-1" contenteditable="true">Phase 2: Timed Mock Tests</h4>
-              <p class="font-body-sm text-body-sm text-text-secondary" contenteditable="true">Simulate exam hall pressure with 50-minute timed quiz rounds.</p>
-            </div>
-          </div>
-        `;
-      } else if (type === 'info-card') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-surface-container-low border-[1.5px] border-border-subtle flex gap-3 items-start">
-            <span class="material-symbols-outlined text-primary text-[24px] mt-0.5">info</span>
+          <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true">
+            हा एक टेक्स्ट बॉक्स आहे ज्यामध्ये तुम्ही कोणत्याही विषयाची सविस्तर माहिती, महत्त्वाचे फॉर्म्युले किंवा व्याख्या हायलाइट करून दाखवू शकता.
+          </p>
+        </div>`;
+    } else if (type === 'quote-box') {
+      return `
+        <div class="canvas-block group relative p-space-md rounded-xl bg-surface-container-low border-l-4 border-primary border-y-[1.5px] border-r-[1.5px] border-border-subtle shadow-sm" data-block-type="quote" onclick="selectBlockForStyling(this)">
+          <p class="font-title-sm text-title-sm text-text-primary italic" contenteditable="true">"Success isn't always about greatness. It's about consistency. Consistent hard work leads to success."</p>
+          <span class="block mt-2 font-label-sm text-label-sm text-text-muted" contenteditable="true">— Study Strategy Proverb</span>
+        </div>`;
+    } else if (type === 'success-card') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-space-md bg-emerald-50 text-emerald-950 shadow-sm border-[1.5px] border-emerald-300" data-block-type="card" onclick="selectBlockForStyling(this)">
+          <div class="flex items-start gap-space-sm">
+            <span class="material-symbols-outlined text-status-success text-[24px]">verified</span>
             <div>
-              <h4 class="font-title-sm text-title-sm text-text-primary font-semibold" contenteditable="true">Important Exam Tip</h4>
-              <p class="font-body-sm text-body-sm text-text-secondary mt-0.5" contenteditable="true">Always review the negative marking criteria before guessing in multiple-choice rounds.</p>
+              <h4 class="font-title-md text-title-md text-emerald-900 font-bold" contenteditable="true">Great Job! You are ready for the test.</h4>
+              <p class="font-body-sm text-body-sm text-emerald-900/80 mt-0.5" contenteditable="true">Solve all mock papers below to benchmark your preparation level.</p>
             </div>
           </div>
-        `;
-      } else if (type === 'warning-card') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-amber-500/10 border-[1.5px] border-amber-500/30 flex gap-3 items-start">
-            <span class="material-symbols-outlined text-amber-600 text-[24px] mt-0.5">warning</span>
-            <div>
-              <h4 class="font-title-sm text-title-sm text-amber-950 font-semibold" contenteditable="true">Crucial Cut-off Deadline</h4>
-              <p class="font-body-sm text-body-sm text-amber-900/90 mt-0.5" contenteditable="true">Submit your application forms before 5:00 PM on the closing date to avoid disqualification.</p>
+        </div>`;
+    } else if (type === 'warning-card') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-space-md bg-amber-50 text-text-primary shadow-sm border-[1.5px] border-amber-300" data-block-type="card" onclick="selectBlockForStyling(this)">
+          <div class="flex items-center gap-2 text-status-warning font-title-sm text-title-sm">
+            <span class="material-symbols-outlined text-[20px]">warning</span>
+            <h4 class="font-bold text-amber-900" contenteditable="true">Important Notice</h4>
+          </div>
+          <p class="font-body-sm text-body-sm text-amber-950 mt-1" contenteditable="true">Ensure you download the official admit card exclusively from the authorized portal.</p>
+        </div>`;
+    } else if (type === 'info-card' || type === 'feature-card') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-space-md bg-indigo-50 border-[1.5px] border-primary-container shadow-sm flex items-start gap-space-sm" data-block-type="card" onclick="selectBlockForStyling(this)">
+          <span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">info</span>
+          <div>
+            <h4 class="font-title-sm text-title-sm text-text-primary font-bold" contenteditable="true">Preparation Tip</h4>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-0.5" contenteditable="true">Review previous year question trends every weekend to build exam confidence.</p>
+          </div>
+        </div>`;
+    } else if (type === 'edu-table' || type === 'standard-table' || type === 'table') {
+      return `
+        <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card" data-block-type="table" onclick="selectBlockForStyling(this)">
+          <div class="p-3 bg-surface-container-low border-b-[1.5px] border-border-medium flex items-center justify-between flex-wrap gap-2">
+            <span class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5 font-bold">
+              <span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
+              <span contenteditable="true">MPSC Exam Scheme &amp; Marks</span>
+            </span>
+            <div class="table-editor-bar flex items-center gap-1 flex-wrap">
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableRow(this)" title="Add Row">+ Row</button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableRow(this)" title="Delete Row">- Row</button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableColumn(this)" title="Add Column">+ Col</button>
+              <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableColumn(this)" title="Delete Column">- Col</button>
             </div>
           </div>
-        `;
-      } else if (type === 'success-card') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-emerald-500/10 border-[1.5px] border-emerald-500/30 flex gap-3 items-start">
-            <span class="material-symbols-outlined text-emerald-600 text-[24px] mt-0.5">check_circle</span>
-            <div>
-              <h4 class="font-title-sm text-title-sm text-emerald-950 font-semibold" contenteditable="true">Practice Goal Completed</h4>
-              <p class="font-body-sm text-body-sm text-emerald-900/90 mt-0.5" contenteditable="true">You have successfully attempted all mock sets with >85% accuracy mark.</p>
+          <div class="w-full overflow-x-auto custom-designer-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
+            <table class="w-full text-left font-body-sm text-body-sm min-w-[320px]">
+              <thead class="bg-surface-container text-text-primary font-title-sm border-b-[1.5px] border-border-medium">
+                <tr>
+                  <th class="p-2.5" contenteditable="true">Subject</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Questions</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Marks</th>
+                  <th class="p-2.5 text-center" contenteditable="true">Duration</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border-subtle text-text-secondary" contenteditable="true">
+                <tr><td class="p-2.5 font-medium text-text-primary">General Studies (GS 1)</td><td class="p-2.5 text-center">100</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
+                <tr><td class="p-2.5 font-medium text-text-primary">CSAT Aptitude Paper</td><td class="p-2.5 text-center">80</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    } else if (type === 'two-col-grid' || type === 'grid-2col') {
+      return `
+        <div class="canvas-block group relative grid grid-cols-1 md:grid-cols-2 gap-space-sm" data-block-type="grid" onclick="selectBlockForStyling(this)">
+          <div class="p-3 rounded-xl bg-surface-container-low border-[1.5px] border-border-subtle">
+            <h5 class="font-title-sm text-title-sm text-text-primary font-bold" contenteditable="true">Topic 1</h5>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1" contenteditable="true">Detailed overview and key study notes.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-low border-[1.5px] border-border-subtle">
+            <h5 class="font-title-sm text-title-sm text-text-primary font-bold" contenteditable="true">Topic 2</h5>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1" contenteditable="true">Detailed overview and key study notes.</p>
+          </div>
+        </div>`;
+    } else if (type === 'quiz-cta' || type === 'pulse-cta') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-space-md bg-surface-container-lowest border-[1.5px] border-primary-container shadow-md flex flex-col sm:flex-row items-center justify-between gap-space-md" data-block-type="cta" onclick="selectBlockForStyling(this)">
+          <div class="flex items-center gap-space-sm">
+            <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-md">
+              <span class="material-symbols-outlined text-[28px]">quiz</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-label-sm text-label-sm text-primary font-bold cta-badge">🎯 Live Quiz Test</span>
+              <h4 class="font-title-md text-title-md text-text-primary font-bold cta-title" contenteditable="true">Online Practice Test</h4>
+              <p class="font-body-sm text-body-sm text-text-muted cta-desc" contenteditable="true">25 Questions • 15 Mins • Instant Result</p>
             </div>
           </div>
-        `;
-      } else if (type === 'standard-table' || type === 'edu-table') {
-        return `
-          <div class="canvas-block group relative rounded-xl overflow-hidden border-[1.5px] border-border-medium shadow-sm bg-surface-card" data-block-type="table" onclick="selectBlockForStyling(this)">
-            <div class="p-3 bg-surface-container-low border-b-[1.5px] border-border-medium flex items-center justify-between flex-wrap gap-2">
-              <span class="font-title-sm text-title-sm text-text-primary flex items-center gap-1.5 font-bold">
-                <span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
-                <span contenteditable="true">MPSC Exam Scheme &amp; Marks</span>
-              </span>
-              <div class="table-editor-bar flex items-center gap-1 flex-wrap">
-                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableRow(this)" title="Add Row">+ Row</button>
-                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableRow(this)" title="Delete Row">- Row</button>
-                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="addTableColumn(this)" title="Add Column">+ Col</button>
-                <button type="button" class="px-2 py-1 rounded bg-surface-card hover:bg-surface-container border border-border-subtle text-[11px] font-semibold text-text-primary inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs" onclick="deleteTableColumn(this)" title="Delete Column">- Col</button>
-              </div>
+          <a class="cta-action-btn shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-status-success hover:bg-secondary text-on-primary font-title-sm text-title-sm shadow-md transition-all animate-bounce cursor-pointer" href="#start-quiz" target="_blank">
+            <span class="cta-btn-text">Take Test</span>
+            <span class="material-symbols-outlined text-[18px]">play_circle</span>
+          </a>
+        </div>`;
+    } else if (type === 'pdf-download') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-3 sm:p-4 bg-red-50 border-[1.5px] border-red-200 flex items-center justify-between shadow-sm flex-wrap gap-3" data-block-type="pdf" onclick="selectBlockForStyling(this)">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="material-symbols-outlined text-status-danger text-[32px] shrink-0">picture_as_pdf</span>
+            <div class="min-w-0">
+              <p class="font-title-sm text-title-sm text-text-primary font-bold pdf-title truncate" contenteditable="true">Study Notes Revision PDF (Free)</p>
+              <p class="font-body-sm text-body-sm text-text-muted text-[11px] pdf-desc truncate" contenteditable="true">File size: 3.4 MB • Free Download</p>
             </div>
-            <div class="w-full overflow-x-auto custom-designer-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
-              <table class="w-full text-left font-body-sm text-body-sm min-w-[320px]">
-                <thead class="bg-surface-container text-text-primary font-title-sm border-b-[1.5px] border-border-medium">
-                  <tr>
-                    <th class="p-2.5" contenteditable="true">Subject</th>
-                    <th class="p-2.5 text-center" contenteditable="true">Total Questions</th>
-                    <th class="p-2.5 text-center" contenteditable="true">Max Marks</th>
-                    <th class="p-2.5 text-center" contenteditable="true">Duration</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-border-subtle text-text-secondary" contenteditable="true">
-                  <tr><td class="p-2.5 font-medium text-text-primary">General Studies (GS Paper 1)</td><td class="p-2.5 text-center">100</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
-                  <tr><td class="p-2.5 font-medium text-text-primary">CSAT Aptitude</td><td class="p-2.5 text-center">80</td><td class="p-2.5 text-center">200</td><td class="p-2.5 text-center">2 Hours</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>`;
-      } else if (type === 'quiz-cta') {
-        return `
-          <div class="canvas-block group relative p-space-lg rounded-xl bg-gradient-to-br from-surface-container to-surface-card border-[1.5px] border-primary/40 shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
-            <div>
-              <span class="inline-block px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm font-bold mb-2">Live Quiz</span>
-              <h3 class="font-headline-sm text-headline-sm text-text-primary font-bold" contenteditable="true">Ready to Test Your Knowledge?</h3>
-              <p class="font-body-sm text-body-sm text-text-secondary mt-1" contenteditable="true">Click below to start this interactive 10-question challenge instantly!</p>
-            </div>
-            <button class="px-6 py-3 rounded-xl bg-primary hover:bg-primary-dark text-on-primary font-title-sm font-bold shadow-md hover:shadow-lg transition-all whitespace-nowrap">Take Live Quiz</button>
           </div>
-        `;
-      } else if (type === 'pdf-cta') {
-        return `
-          <div class="canvas-block group relative p-space-md rounded-xl bg-surface-card border-[1.5px] border-border-subtle flex items-center justify-between gap-space-sm shadow-sm">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-status-danger text-[32px]">picture_as_pdf</span>
-              <div>
-                <h4 class="font-title-sm text-title-sm text-text-primary font-semibold" contenteditable="true">Download Practice Question Bank (PDF)</h4>
-                <p class="font-label-sm text-label-sm text-text-muted mt-0.5" contenteditable="true">Comprehensive 50-page set with detailed solutions</p>
-              </div>
-            </div>
-            <button class="px-3 py-1.5 rounded-md bg-status-danger text-on-primary font-label-md text-label-md hover:opacity-90">Download</button>
+          <a class="pdf-download-link px-4 py-2 rounded-lg bg-status-danger text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center gap-1.5 shadow-sm text-decoration-none" href="https://drive.google.com" target="_blank" download>
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            <span class="pdf-btn-text">Download PDF</span>
+          </a>
+        </div>`;
+    } else if (type === 'image-block') {
+      return `
+        <div class="canvas-block group relative rounded-xl p-3 bg-surface-card border-[1.5px] border-border-subtle shadow-sm flex flex-col items-center" data-block-type="image" onclick="selectBlockForStyling(this)">
+          <div class="w-full text-center my-2">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80" alt="Study Notes" class="max-w-full h-auto rounded-xl mx-auto shadow-sm" style="max-width:100%;height:auto;border-radius:10px;"/>
+            <p class="text-center text-[12px] text-text-muted mt-2" contenteditable="true">इमेज कॅप्शन / वर्णन (Image Caption)</p>
           </div>
-        `;
-      } else if (type === 'divider') {
-        return `
-          <div class="canvas-block group relative py-3">
-            <div class="h-[1.5px] bg-gradient-to-r from-transparent via-border-medium to-transparent"></div>
-          </div>
-        `;
-      }
-      return '';
+        </div>`;
+    } else if (type === 'divider') {
+      return `
+        <div class="canvas-block group relative py-3 flex items-center justify-center" data-block-type="divider">
+          <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-border-medium to-transparent"></div>
+        </div>`;
     }
+
+    // Default fallback: Always return an editable paragraph so clicking never fails!
+    return `
+      <div class="canvas-block group relative rounded-xl p-4 bg-surface-card border-[1.5px] border-border-subtle shadow-xs" data-block-type="paragraph" onclick="selectBlockForStyling(this)">
+        <p class="font-body-md text-body-md text-text-primary leading-relaxed" contenteditable="true">
+          नवीन ब्लॉक मजकूर. येथे क्लिक करून तुम्ही मजकूर लिहू किंवा कॉपी-पेस्ट करू शकता.
+        </p>
+      </div>`;
+  }
 
     function handlePaletteDragStart(e, blockType) {
       if (e && e.dataTransfer) {
@@ -8011,6 +8078,142 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       }
     });
 
+
+
+  // =========================================================================
+  // BLOG DRAFT SAVE & EDIT SYSTEM
+  // =========================================================================
+  function saveBlogDraft() {
+    const postTitleInput = document.getElementById('postTitleInput');
+    const title = (postTitleInput ? postTitleInput.value.trim() : '') || 'Untitled Blog Post';
+    const container = document.getElementById('blocksContainer');
+    if (!container) return;
+
+    // Clone blocks without inserter zones
+    const clone = container.cloneNode(true);
+    clone.querySelectorAll('.block-inserter-zone').forEach(el => el.remove());
+    clone.querySelectorAll('.ring-2').forEach(el => el.classList.remove('ring-2', 'ring-primary'));
+
+    const blocksHtml = clone.innerHTML;
+    const blockCount = clone.querySelectorAll('.canvas-block').length;
+
+    let drafts = [];
+    try {
+      drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+    } catch(e) {}
+
+    const draftId = 'draft_' + Date.now();
+    const newDraft = {
+      id: draftId,
+      title: title,
+      date: new Date().toLocaleDateString('mr-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      blockCount: blockCount,
+      blocksHtml: blocksHtml,
+      postTitle: title
+    };
+
+    // Keep up to 20 drafts
+    drafts.unshift(newDraft);
+    if (drafts.length > 20) drafts = drafts.slice(0, 20);
+
+    localStorage.setItem('rk_blog_drafts', JSON.stringify(drafts));
+    showToast('ब्लॉग ड्राफ्ट यशस्वीरित्या सेव्ह झाला!');
+  }
+
+  function openDraftsModal() {
+    const modal = document.getElementById('blogDraftsModal');
+    if (!modal) return;
+    renderDraftsList();
+    modal.classList.remove('hidden');
+  }
+
+  function closeDraftsModal() {
+    const modal = document.getElementById('blogDraftsModal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function renderDraftsList() {
+    const listEl = document.getElementById('blogDraftsList');
+    if (!listEl) return;
+
+    let drafts = [];
+    try {
+      drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+    } catch(e) {}
+
+    if (drafts.length === 0) {
+      listEl.innerHTML = '<div class="p-8 text-center text-text-muted"><span class="material-symbols-outlined text-[36px] text-border-medium mb-2 block">drafts</span>कोणतेही सेव्ह केलेले ड्राफ्ट्स उपलब्ध नाहीत.<br/><span class="text-[12px]">ब्लॉग डिझाइन केल्यावर "Save Draft" वर क्लिक करा.</span></div>';
+      return;
+    }
+
+    listEl.innerHTML = drafts.map(d => `
+      <div class="p-3 rounded-xl bg-surface-canvas border border-border-subtle hover:border-primary transition-all flex items-center justify-between gap-3">
+        <div class="min-w-0 flex-1">
+          <h4 class="text-[14px] font-bold text-text-primary truncate">${escapeHtmlAttr(d.title)}</h4>
+          <div class="flex items-center gap-2 text-[11px] text-text-muted mt-0.5">
+            <span>${d.date}</span>
+            <span>•</span>
+            <span class="text-primary font-semibold">${d.blockCount || 0} Blocks</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" onclick="loadBlogDraft('${d.id}')" class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[12px] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-xs">
+            <span class="material-symbols-outlined text-[15px]">edit_document</span>
+            <span>Edit</span>
+          </button>
+          <button type="button" onclick="deleteBlogDraft('${d.id}')" class="p-1.5 rounded-lg border border-border-subtle hover:bg-red-50 text-status-danger transition-colors cursor-pointer" title="Delete Draft">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function loadBlogDraft(draftId) {
+    let drafts = [];
+    try {
+      drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+    } catch(e) {}
+
+    const draft = drafts.find(d => d.id === draftId);
+    if (!draft) return;
+
+    if (confirm('या ड्राफ्टचे मजकूर कॅनव्हासवर लोड करायचे आहे का?')) {
+      const container = document.getElementById('blocksContainer');
+      const postTitleInput = document.getElementById('postTitleInput');
+      if (postTitleInput && draft.postTitle) postTitleInput.value = draft.postTitle;
+
+      if (container && draft.blocksHtml) {
+        container.innerHTML = draft.blocksHtml;
+        // Re-attach controls to all loaded blocks
+        container.querySelectorAll('.canvas-block').forEach(b => {
+          ensureBlockControls(b);
+        });
+        updateBlockCount();
+        setupBlockInserters();
+        closeDraftsModal();
+        showToast('ड्राफ्ट यशस्वीरित्या लोड झाला! तुम्ही आता एडिट करू शकता.');
+      }
+    }
+  }
+
+  function deleteBlogDraft(draftId) {
+    if (!confirm('हा ड्राफ्ट कायमचा काढायचा आहे का?')) return;
+    let drafts = [];
+    try {
+      drafts = JSON.parse(localStorage.getItem('rk_blog_drafts') || '[]');
+    } catch(e) {}
+    drafts = drafts.filter(d => d.id !== draftId);
+    localStorage.setItem('rk_blog_drafts', JSON.stringify(drafts));
+    renderDraftsList();
+    showToast('ड्राफ्ट काढला.');
+  }
+
+  function escapeHtmlAttr(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
 </script>
 
 <!-- FLOATING SELECTION FORMATTING BUBBLE -->
@@ -8029,5 +8232,27 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
   </label>
   <button type="button" class="p-1 hover:bg-white/20 rounded text-white cursor-pointer" onclick="formatDocText('createLink')" title="Link"><span class="material-symbols-outlined text-[16px]">link</span></button>
 </div>
+
+
+<!-- ================= SAVED BLOG DRAFTS MODAL ================= -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm flex items-center justify-center p-4 hidden" id="blogDraftsModal">
+  <div class="w-full max-w-lg bg-surface-card rounded-2xl shadow-2xl border-[1.5px] border-border-medium p-4 sm:p-5 flex flex-col gap-3 max-h-[85vh] animate-in fade-in zoom-in-95">
+    <div class="flex items-center justify-between border-b border-border-subtle pb-2.5">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]">drafts</span>
+        </div>
+        <h3 class="font-title-md text-[17px] text-text-primary font-bold">Saved Blog Drafts (जतन केलेले ड्राफ्ट्स)</h3>
+      </div>
+      <button class="p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-container" onclick="closeDraftsModal()">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <div class="flex flex-col gap-2 overflow-y-auto max-h-[60vh] pr-1 custom-designer-scroll" id="blogDraftsList">
+      <!-- Loaded dynamically -->
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
