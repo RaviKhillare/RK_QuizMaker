@@ -8,6 +8,7 @@
   const I18N = {
     en: {
       nav_blog_designer: 'Blog Designer',
+      nav_blogger_editor: 'Blogger Editor',
       nav_dashboard: 'Dashboard',
       nav_overview: 'Overview',
       nav_quizzes: 'My Quizzes',
@@ -31,6 +32,7 @@
     },
     mr: {
       nav_blog_designer: 'ब्लॉग डिझायनर',
+      nav_blogger_editor: 'ब्लॉगर एडिटर',
       nav_dashboard: 'डॅशबोर्ड',
       nav_overview: 'डॅशबोर्ड सारांश',
       nav_quizzes: 'माझ्या क्विझ',
@@ -79,6 +81,7 @@
     // Update Nav items with data-path
     const pathMap = {
       'blog-designer': dict.nav_blog_designer,
+      'blogger-editor': dict.nav_blogger_editor,
       'dashboard': dict.nav_dashboard,
       'overview': dict.nav_overview,
       'quizzes': dict.nav_quizzes,
@@ -173,6 +176,7 @@
     const studioTools = [
       { name: 'Quiz Builder Studio', desc: 'Create MCQ, Checkbox, Polls', url: 'quiz-builder.html', icon: 'quiz' },
       { name: 'Blog Post Designer', desc: 'Visual Gutenberg-style editor', url: 'blog-designer.html', icon: 'design_services' },
+      { name: 'Blogger Rich Text Editor', desc: 'Official Blogger-style visual & HTML post editor', url: 'blogger-editor.html', icon: 'edit_note' },
       { name: 'Bulk Import Studio', desc: 'Import from Google Sheets or CSV', url: 'bulk-import.html', icon: 'upload_file' },
       { name: 'Embed & Share Center', desc: 'Blogger OnClick popup buttons', url: 'embed-share.html', icon: 'share' },
       { name: 'Results & Analytics Hub', desc: 'Student marks, leaderboard & polls', url: 'results-polls.html', icon: 'analytics' },

@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>RK Post Editor - Blogger-Style Rich Text & HTML Studio</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Poppins, Mukta (Marathi/Devanagari), Inter, Outfit, Fira Code & Google Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=Poppins:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            blogger: {
+              orange: '#f57c00',
+              accent: '#ff5722',
+              hover: '#e65100',
+              canvas: '#f1f3f4',
+              border: '#dadce0',
+              text: '#202124',
+              secondary: '#5f6368',
+              active: '#e8f0fe'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Devanagari', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            mukta: ['Mukta', 'Noto Sans Devanagari', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Blogger Editor Standard Baseline Styles */
+    body {
+      background-color: #f1f3f4;
+      color: #202124;
+      font-family: 'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Blogger Toolbar Button Styling */
+    .tb-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      min-width: 32px;
+      padding: 0 6px;
+      border-radius: 4px;
+      color: #5f6368;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .tb-btn:hover {
+      background-color: #e8eaed;
+      color: #202124;
+    }
+    .tb-btn:active, .tb-btn.active {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+      border-color: #d2e3fc;
+    }
+    .tb-divider {
+      width: 1px;
+      height: 22px;
+      background-color: #dadce0;
+      margin: 0 4px;
+      align-self: center;
+    }
+
+    /* Paper Canvas for Compose View */
+    .editor-paper {
+      background: #ffffff;
+      min-height: 720px;
+      box-shadow: 0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
+      border-radius: 2px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    /* ContentEditable Typography (Standard Blogger Post Styling) */
+    .blogger-content {
+      outline: none !important;
+      font-size: 16px;
+      line-height: 1.75;
+      color: #222222;
+      min-height: 640px;
+      word-wrap: break-word;
+    }
+    .blogger-content:empty:before {
+      content: attr(data-placeholder);
+      color: #9aa0a6;
+      pointer-events: none;
+      display: block;
+      font-style: italic;
+    }
+    .blogger-content p {
+      margin-bottom: 1rem;
+    }
+    .blogger-content h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #111827;
+      line-height: 1.3;
+    }
+    .blogger-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 1.25rem;
+      margin-bottom: 0.6rem;
+      color: #1f2937;
+      line-height: 1.35;
+    }
+    .blogger-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      line-height: 1.4;
+    }
+    .blogger-content h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 0.85rem;
+      margin-bottom: 0.4rem;
+      color: #4b5563;
+    }
+    .blogger-content blockquote {
+      border-left: 4px solid #f57c00;
+      background: #fff8f1;
+      padding: 12px 18px;
+      margin: 1.25rem 0;
+      font-style: italic;
+      color: #4b5563;
+      border-radius: 0 8px 8px 0;
+    }
+    .blogger-content ul {
+      list-style-type: disc;
+      margin-left: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .blogger-content ol {
+      list-style-type: decimal;
+      margin-left: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .blogger-content li {
+      margin-bottom: 0.35rem;
+    }
+    .blogger-content a {
+      color: #1a73e8;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .blogger-content a:hover {
+      color: #1557b0;
+    }
+    .blogger-content hr {
+      border: 0;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 1.75rem 0;
+    }
+    .blogger-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 1rem auto;
+      display: block;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .blogger-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    .blogger-content th, .blogger-content td {
+      border: 1px solid #dadce0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .blogger-content th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+
+    /* Shortcode Preview Chip in Visual Mode */
+    .shortcode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px dashed #fb923c;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      user-select: all;
+      margin: 2px 0;
+    }
+
+    /* HTML Code View Editor Area */
+    .html-code-area {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      tab-size: 2;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      caret-color: #38bdf8;
+      resize: vertical;
+      min-height: 720px;
+    }
+    .html-code-area:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    /* Dropdown Menus */
+    .tb-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 50;
+      background: #ffffff;
+      border: 1px solid #dadce0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      padding: 6px 0;
+      min-width: 180px;
+    }
+    .tb-dropdown-menu.show {
+      display: block;
+    }
+    .tb-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #3c4043;
+      text-align: left;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      transition: background 0.12s ease;
+    }
+    .tb-dropdown-item:hover {
+      background-color: #f1f3f4;
+      color: #202124;
+    }
+    .tb-dropdown-item.active {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+      font-weight: 600;
+    }
+
+    /* Color Palette Grid */
+    .color-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 20px);
+      gap: 4px;
+      padding: 10px;
+    }
+    .color-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .color-swatch:hover {
+      transform: scale(1.2);
+      z-index: 2;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    /* Toast Notification */
+    #toastNotification {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    /* Smooth Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f3f4;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c7c7c7;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0a0a0;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-[#f1f3f4] text-[#202124] antialiased select-auto">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP APP BAR (Blogger-Inspired Header)                                   -->
+  <!-- ========================================================================= -->
+  <header class="bg-white border-b border-[#dadce0] sticky top-0 z-40 px-4 py-2 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+    <div class="flex items-center gap-3 min-w-0 flex-1">
+      <!-- Back to Dashboard / Blog Designer -->
+      <a href="blog-designer.html" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 transition flex items-center justify-center" title="Back to Blog Designer">
+        <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+      </a>
+
+      <!-- Blogger Logo Icon -->
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-bold shadow-sm">
+          <span class="material-symbols-outlined text-[20px]">edit_note</span>
+        </div>
+        <div class="hidden sm:block">
+          <span class="text-xs font-semibold uppercase tracking-wider text-orange-600">RK Post Studio</span>
+          <span class="block text-[10px] text-gray-400 font-medium">Blogger-Style Rich Editor</span>
+        </div>
+      </div>
+
+      <!-- Post Title Field -->
+      <div class="flex-1 max-w-2xl ml-2">
+        <input 
+          id="postTitleInput" 
+          type="text" 
+          placeholder="Title of your blog post..." 
+          value="नवीन शैक्षणिक ब्लॉग पोस्ट - चालू घडामोडी व सराव टेस्ट"
+          class="w-full text-base sm:text-lg font-semibold text-gray-800 placeholder-gray-400 bg-transparent hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-500 px-3 py-1.5 rounded border border-transparent hover:border-gray-300 focus:border-orange-500 transition" 
+        />
+      </div>
+
+      <!-- Live Save Status Indicator -->
+      <div class="hidden md:flex items-center gap-1 text-xs text-gray-500">
+        <span id="saveStatusDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span id="saveStatusText">All changes synced</span>
+      </div>
+    </div>
+
+    <!-- Right Header Actions -->
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <!-- Preview Modal Trigger -->
+      <button 
+        id="btnOpenPreview" 
+        onclick="openPreviewModal()"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition"
+        title="Preview blog post"
+      >
+        <span class="material-symbols-outlined text-[18px]">visibility</span>
+        <span class="hidden sm:inline">Preview</span>
+      </button>
+
+      <!-- Copy Clean HTML Code Button (With Transient Toast) -->
+      <button 
+        id="btnCopyHtml" 
+        onclick="copyHtmlToClipboard()"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 active:bg-orange-800 shadow-sm transition"
+        title="Copy 100% Blogger compatible HTML code"
+      >
+        <span class="material-symbols-outlined text-[18px]">content_copy</span>
+        <span id="copyBtnLabel">Copy HTML</span>
+      </button>
+
+      <!-- Save / Export Dropdown -->
+      <div class="relative">
+        <button 
+          id="btnExportMenuToggle" 
+          onclick="toggleDropdown('exportDropdownMenu')"
+          class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition border border-gray-200"
+        >
+          <span class="material-symbols-outlined text-[18px]">download</span>
+          <span class="material-symbols-outlined text-[16px]">expand_more</span>
+        </button>
+        <div id="exportDropdownMenu" class="tb-dropdown-menu right-0 left-auto w-48 shadow-lg">
+          <button onclick="downloadHtmlFile()" class="tb-dropdown-item">
+            <span class="material-symbols-outlined text-[18px] text-blue-600">code</span>
+            <span>Download .html file</span>
+          </button>
+          <button onclick="saveDraftToStorage(true)" class="tb-dropdown-item">
+            <span class="material-symbols-outlined text-[18px] text-emerald-600">save</span>
+            <span>Save to Local Draft</span>
+          </button>
+          <button onclick="loadSavedDraft()" class="tb-dropdown-item">
+            <span class="material-symbols-outlined text-[18px] text-purple-600">folder_open</span>
+            <span>Load Saved Draft</span>
+          </button>
+          <div class="border-t border-gray-100 my-1"></div>
+          <button onclick="resetEditorContent()" class="tb-dropdown-item text-red-600 hover:bg-red-50">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+            <span>Clear All Content</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ========================================================================= -->
+  <!-- 2. STICKY BLOGGER-STYLE FORMATTING TOOLBAR                                -->
+  <!-- ========================================================================= -->
+  <div class="bg-white border-b border-[#dadce0] sticky top-[53px] z-30 px-3 py-1.5 flex items-center flex-wrap gap-1 shadow-sm select-none">
+    
+    <!-- 2.1 View Switcher (Compose vs HTML vs Split) - Authentic Blogger Pen Icon -->
+    <div class="relative">
+      <button 
+        id="btnViewModeToggle"
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('viewModeMenu')"
+        class="tb-btn font-semibold gap-1 text-orange-600 bg-orange-50 border border-orange-200 hover:bg-orange-100"
+        title="Switch between Compose (Visual) and HTML (Code) view"
+      >
+        <span id="currentViewModeIcon" class="material-symbols-outlined text-[18px]">edit</span>
+        <span id="currentViewModeLabel" class="text-xs font-semibold">Compose view</span>
+        <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+      </button>
+      <div id="viewModeMenu" class="tb-dropdown-menu w-44">
+        <button onmousedown="event.preventDefault()" onclick="setViewMode('compose')" class="tb-dropdown-item active" id="viewItemCompose">
+          <span class="material-symbols-outlined text-[18px] text-orange-600">edit</span>
+          <span>Compose view</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="setViewMode('html')" class="tb-dropdown-item" id="viewItemHtml">
+          <span class="material-symbols-outlined text-[18px] text-slate-700">code</span>
+          <span>HTML view</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="setViewMode('split')" class="tb-dropdown-item" id="viewItemSplit">
+          <span class="material-symbols-outlined text-[18px] text-indigo-600">splitscreen</span>
+          <span>Split Dual View</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.2 Undo & Redo -->
+    <button onmousedown="event.preventDefault()" onclick="execFormat('undo')" class="tb-btn" title="Undo (Ctrl+Z)">
+      <span class="material-symbols-outlined text-[18px]">undo</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('redo')" class="tb-btn" title="Redo (Ctrl+Y)">
+      <span class="material-symbols-outlined text-[18px]">redo</span>
+    </button>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.3 Font Family Dropdown ('Poppins', 'Mukta', 'Inter', etc.) -->
+    <div class="relative">
+      <button 
+        id="btnFontFamilyToggle"
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('fontFamilyMenu')"
+        class="tb-btn gap-1 text-xs max-w-[130px] overflow-hidden" 
+        title="Font Family"
+      >
+        <span id="currentFontLabel" class="truncate">Default Font</span>
+        <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+      </button>
+      <div id="fontFamilyMenu" class="tb-dropdown-menu w-52">
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Inter, sans-serif', 'Inter (Modern UI)')" class="tb-dropdown-item" style="font-family: 'Inter', sans-serif;">
+          <span>Inter (Modern UI)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Mukta, sans-serif', 'Mukta (मराठी Devanagari)')" class="tb-dropdown-item font-semibold" style="font-family: 'Mukta', sans-serif;">
+          <span>मुक्ता (Mukta - मराठी / Hindi)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Poppins, sans-serif', 'Poppins (Clean Bold)')" class="tb-dropdown-item" style="font-family: 'Poppins', sans-serif;">
+          <span>Poppins (Clean Bold)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Arial, sans-serif', 'Arial (Web Safe)')" class="tb-dropdown-item" style="font-family: Arial, sans-serif;">
+          <span>Arial</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Georgia, serif', 'Georgia (Serif)')" class="tb-dropdown-item" style="font-family: Georgia, serif;">
+          <span>Georgia (Serif)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyFontFamily('Courier New, monospace', 'Courier New (Mono)')" class="tb-dropdown-item" style="font-family: 'Courier New', monospace;">
+          <span>Courier New (Code)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2.4 Text Sizes / Headings Dropdown (Normal, Heading, Subheading, Minor Heading) -->
+    <div class="relative">
+      <button 
+        id="btnHeadingToggle"
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('headingMenu')"
+        class="tb-btn gap-1 text-xs max-w-[125px]" 
+        title="Paragraph format & headings"
+      >
+        <span id="currentHeadingLabel" class="truncate">Normal text</span>
+        <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+      </button>
+      <div id="headingMenu" class="tb-dropdown-menu w-48">
+        <button onmousedown="event.preventDefault()" onclick="applyBlockFormat('p', 'Normal text')" class="tb-dropdown-item">
+          <span class="text-sm">Normal text</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyBlockFormat('h1', 'Main Title (H1)')" class="tb-dropdown-item">
+          <span class="text-xl font-bold">Main Title (H1)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyBlockFormat('h2', 'Heading (H2)')" class="tb-dropdown-item">
+          <span class="text-lg font-bold">Heading (H2)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyBlockFormat('h3', 'Subheading (H3)')" class="tb-dropdown-item">
+          <span class="text-base font-semibold">Subheading (H3)</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyBlockFormat('h4', 'Minor heading (H4)')" class="tb-dropdown-item">
+          <span class="text-sm font-semibold text-gray-600">Minor heading (H4)</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.5 Bold, Italic, Underline, Strikethrough -->
+    <button onmousedown="event.preventDefault()" onclick="execFormat('bold')" class="tb-btn font-bold text-gray-800" title="Bold (Ctrl+B)">
+      <span class="material-symbols-outlined text-[18px]">format_bold</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('italic')" class="tb-btn italic" title="Italic (Ctrl+I)">
+      <span class="material-symbols-outlined text-[18px]">format_italic</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('underline')" class="tb-btn underline" title="Underline (Ctrl+U)">
+      <span class="material-symbols-outlined text-[18px]">format_underlined</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('strikeThrough')" class="tb-btn line-through" title="Strikethrough">
+      <span class="material-symbols-outlined text-[18px]">strikethrough_s</span>
+    </button>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.6 Text Color Palette Dropdown -->
+    <div class="relative">
+      <button 
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('textColorPalette')"
+        class="tb-btn flex flex-col items-center justify-center p-0.5" 
+        title="Text color"
+      >
+        <span class="material-symbols-outlined text-[18px] leading-none">format_color_text</span>
+        <span id="activeTextColorBar" class="w-4 h-1 bg-red-600 rounded-sm mt-0.5"></span>
+      </button>
+      <div id="textColorPalette" class="tb-dropdown-menu w-56 p-2">
+        <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 px-1">Select Text Color</div>
+        <div class="color-swatch-grid">
+          <div class="color-swatch" style="background:#000000;" onclick="applyTextColor('#000000')"></div>
+          <div class="color-swatch" style="background:#434343;" onclick="applyTextColor('#434343')"></div>
+          <div class="color-swatch" style="background:#666666;" onclick="applyTextColor('#666666')"></div>
+          <div class="color-swatch" style="background:#999999;" onclick="applyTextColor('#999999')"></div>
+          <div class="color-swatch" style="background:#b7b7b7;" onclick="applyTextColor('#b7b7b7')"></div>
+          <div class="color-swatch" style="background:#cccccc;" onclick="applyTextColor('#cccccc')"></div>
+          <div class="color-swatch" style="background:#d9d9d9;" onclick="applyTextColor('#d9d9d9')"></div>
+          <div class="color-swatch" style="background:#efefef;" onclick="applyTextColor('#efefef')"></div>
+
+          <div class="color-swatch" style="background:#980000;" onclick="applyTextColor('#980000')"></div>
+          <div class="color-swatch" style="background:#ff0000;" onclick="applyTextColor('#ff0000')"></div>
+          <div class="color-swatch" style="background:#ff9900;" onclick="applyTextColor('#ff9900')"></div>
+          <div class="color-swatch" style="background:#ffff00;" onclick="applyTextColor('#ffff00')"></div>
+          <div class="color-swatch" style="background:#00ff00;" onclick="applyTextColor('#00ff00')"></div>
+          <div class="color-swatch" style="background:#00ffff;" onclick="applyTextColor('#00ffff')"></div>
+          <div class="color-swatch" style="background:#4a86e8;" onclick="applyTextColor('#4a86e8')"></div>
+          <div class="color-swatch" style="background:#0000ff;" onclick="applyTextColor('#0000ff')"></div>
+
+          <div class="color-swatch" style="background:#9900ff;" onclick="applyTextColor('#9900ff')"></div>
+          <div class="color-swatch" style="background:#ff00ff;" onclick="applyTextColor('#ff00ff')"></div>
+          <div class="color-swatch" style="background:#e6b8af;" onclick="applyTextColor('#e6b8af')"></div>
+          <div class="color-swatch" style="background:#f4cccc;" onclick="applyTextColor('#f4cccc')"></div>
+          <div class="color-swatch" style="background:#fce5cd;" onclick="applyTextColor('#fce5cd')"></div>
+          <div class="color-swatch" style="background:#fff2cc;" onclick="applyTextColor('#fff2cc')"></div>
+          <div class="color-swatch" style="background:#d9ead3;" onclick="applyTextColor('#d9ead3')"></div>
+          <div class="color-swatch" style="background:#c9daf8;" onclick="applyTextColor('#c9daf8')"></div>
+        </div>
+        <div class="border-t border-gray-200 mt-2 pt-2 flex items-center justify-between px-1">
+          <span class="text-xs text-gray-500">Custom Color:</span>
+          <input type="color" id="customTextColorPicker" onchange="applyTextColor(this.value)" class="w-6 h-6 rounded cursor-pointer border-0 p-0" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.7 Text Background Highlight Color Dropdown -->
+    <div class="relative">
+      <button 
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('bgColorPalette')"
+        class="tb-btn flex flex-col items-center justify-center p-0.5" 
+        title="Text background color (Highlight)"
+      >
+        <span class="material-symbols-outlined text-[18px] leading-none">format_ink_highlighter</span>
+        <span id="activeBgColorBar" class="w-4 h-1 bg-yellow-400 rounded-sm mt-0.5"></span>
+      </button>
+      <div id="bgColorPalette" class="tb-dropdown-menu w-56 p-2">
+        <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 px-1">Highlight Color</div>
+        <div class="color-swatch-grid">
+          <div class="color-swatch" style="background:#ffffff; border:1px solid #ccc;" onclick="applyBgColor('transparent')"></div>
+          <div class="color-swatch" style="background:#fef08a;" onclick="applyBgColor('#fef08a')"></div>
+          <div class="color-swatch" style="background:#bbf7d0;" onclick="applyBgColor('#bbf7d0')"></div>
+          <div class="color-swatch" style="background:#fed7aa;" onclick="applyBgColor('#fed7aa')"></div>
+          <div class="color-swatch" style="background:#fbcfe8;" onclick="applyBgColor('#fbcfe8')"></div>
+          <div class="color-swatch" style="background:#bae6fd;" onclick="applyBgColor('#bae6fd')"></div>
+          <div class="color-swatch" style="background:#ddd6fe;" onclick="applyBgColor('#ddd6fe')"></div>
+          <div class="color-swatch" style="background:#fecaca;" onclick="applyBgColor('#fecaca')"></div>
+          <div class="color-swatch" style="background:#ffedd5;" onclick="applyBgColor('#ffedd5')"></div>
+          <div class="color-swatch" style="background:#e0e7ff;" onclick="applyBgColor('#e0e7ff')"></div>
+          <div class="color-swatch" style="background:#f5f5f4;" onclick="applyBgColor('#f5f5f4')"></div>
+          <div class="color-swatch" style="background:#e2e8f0;" onclick="applyBgColor('#e2e8f0')"></div>
+        </div>
+        <div class="border-t border-gray-200 mt-2 pt-2 flex items-center justify-between px-1">
+          <span class="text-xs text-gray-500">Custom Highlight:</span>
+          <input type="color" id="customBgColorPicker" value="#fef08a" onchange="applyBgColor(this.value)" class="w-6 h-6 rounded cursor-pointer border-0 p-0" />
+        </div>
+      </div>
+    </div>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.8 Insert/Edit Link Dialog Trigger -->
+    <button onmousedown="event.preventDefault()" onclick="openLinkModal()" class="tb-btn" title="Insert or edit link (Ctrl+K)">
+      <span class="material-symbols-outlined text-[18px]">link</span>
+    </button>
+
+    <!-- 2.9 Insert Image Dialog Trigger -->
+    <button onmousedown="event.preventDefault()" onclick="openImageModal()" class="tb-btn" title="Insert image">
+      <span class="material-symbols-outlined text-[18px]">image</span>
+    </button>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.10 Alignment Dropdown (Left, Center, Right, Justify) -->
+    <div class="relative">
+      <button 
+        id="btnAlignToggle"
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('alignMenu')"
+        class="tb-btn" 
+        title="Alignment"
+      >
+        <span id="currentAlignIcon" class="material-symbols-outlined text-[18px]">format_align_left</span>
+        <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+      </button>
+      <div id="alignMenu" class="tb-dropdown-menu w-40">
+        <button onmousedown="event.preventDefault()" onclick="applyAlignment('justifyLeft', 'format_align_left')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px]">format_align_left</span>
+          <span>Left align</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyAlignment('justifyCenter', 'format_align_center')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px]">format_align_center</span>
+          <span>Center align</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyAlignment('justifyRight', 'format_align_right')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px]">format_align_right</span>
+          <span>Right align</span>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="applyAlignment('justifyFull', 'format_align_justify')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px]">format_align_justify</span>
+          <span>Justify</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2.11 Lists & Indentation -->
+    <button onmousedown="event.preventDefault()" onclick="execFormat('insertUnorderedList')" class="tb-btn" title="Bulleted list">
+      <span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('insertOrderedList')" class="tb-btn" title="Numbered list">
+      <span class="material-symbols-outlined text-[18px]">format_list_numbered</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('outdent')" class="tb-btn" title="Decrease indent">
+      <span class="material-symbols-outlined text-[18px]">format_indent_decrease</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('indent')" class="tb-btn" title="Increase indent">
+      <span class="material-symbols-outlined text-[18px]">format_indent_increase</span>
+    </button>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.12 Blockquote & Horizontal Line -->
+    <button onmousedown="event.preventDefault()" onclick="insertBlockquote()" class="tb-btn" title="Quote text (Blockquote)">
+      <span class="material-symbols-outlined text-[18px]">format_quote</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="execFormat('insertHorizontalRule')" class="tb-btn" title="Insert horizontal line">
+      <span class="material-symbols-outlined text-[18px]">horizontal_rule</span>
+    </button>
+
+    <div class="tb-divider"></div>
+
+    <!-- 2.13 RK QuizMaker Custom Shortcodes Dropdown -->
+    <div class="relative">
+      <button 
+        id="btnShortcodeToggle"
+        onmousedown="event.preventDefault()" 
+        onclick="toggleDropdown('shortcodeMenu')"
+        class="tb-btn gap-1 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 hover:bg-orange-100" 
+        title="Insert RK QuizMaker Shortcode Widgets"
+      >
+        <span class="material-symbols-outlined text-[17px]">extension</span>
+        <span>Shortcodes</span>
+        <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+      </button>
+      <div id="shortcodeMenu" class="tb-dropdown-menu w-64 shadow-xl">
+        <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-3 py-1">QuizMaker Embeds</div>
+        <button onmousedown="event.preventDefault()" onclick="insertCustomShortcode('[QUIZ_CARD_HERE]')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px] text-orange-600">quiz</span>
+          <div>
+            <div class="font-medium text-xs">[QUIZ_CARD_HERE]</div>
+            <div class="text-[11px] text-gray-400">Interactive Quiz Card Badge</div>
+          </div>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="insertCustomShortcode('[MOCK_TEST_CTA]')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px] text-blue-600">play_circle</span>
+          <div>
+            <div class="font-medium text-xs">[MOCK_TEST_CTA]</div>
+            <div class="text-[11px] text-gray-400">Start Mock Test Action Button</div>
+          </div>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="insertCustomShortcode('[QUESTION_POLL_EMBED]')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px] text-purple-600">how_to_vote</span>
+          <div>
+            <div class="font-medium text-xs">[QUESTION_POLL_EMBED]</div>
+            <div class="text-[11px] text-gray-400">Live Student Poll Widget</div>
+          </div>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="insertCustomShortcode('[EXAM_COUNTDOWN]')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px] text-emerald-600">timer</span>
+          <div>
+            <div class="font-medium text-xs">[EXAM_COUNTDOWN]</div>
+            <div class="text-[11px] text-gray-400">Exam Timer Countdown Widget</div>
+          </div>
+        </button>
+        <button onmousedown="event.preventDefault()" onclick="insertCustomShortcode('[PDF_DOWNLOAD_BUTTON]')" class="tb-dropdown-item">
+          <span class="material-symbols-outlined text-[18px] text-red-600">picture_as_pdf</span>
+          <div>
+            <div class="font-medium text-xs">[PDF_DOWNLOAD_BUTTON]</div>
+            <div class="text-[11px] text-gray-400">Notes PDF Download Button</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2.14 Clear Formatting & Beautify -->
+    <button onmousedown="event.preventDefault()" onclick="execFormat('removeFormat')" class="tb-btn" title="Clear formatting">
+      <span class="material-symbols-outlined text-[18px]">format_clear</span>
+    </button>
+    <button onmousedown="event.preventDefault()" onclick="formatAndCleanHtml()" class="tb-btn" title="Format and Clean Blogger HTML">
+      <span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+    </button>
+
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 3. MAIN EDITOR CANVAS AREA (Compose View / HTML View / Dual Split)        -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 py-6">
+
+    <!-- Active View Mode Banner (Mobile / Tablet Info) -->
+    <div id="viewModeBanner" class="hidden sm:flex items-center justify-between text-xs text-gray-500 mb-3 px-1">
+      <div class="flex items-center gap-1.5">
+        <span class="font-semibold text-gray-700 uppercase tracking-wider text-[11px]">Active Mode:</span>
+        <span id="activeModeBadge" class="bg-orange-100 text-orange-800 font-semibold px-2 py-0.5 rounded">Compose View (Visual Mode)</span>
+      </div>
+      <div class="text-gray-400">
+        Changes synchronize bidirectionally in real time
+      </div>
+    </div>
+
+    <!-- VIEW ZONE CONTAINER -->
+    <div id="viewsWrapper" class="w-full transition-all duration-200">
+      
+      <!-- 3.1 COMPOSE VIEW (Visual WYSIWYG Mode) -->
+      <div id="composeContainer" class="w-full flex justify-center">
+        <div class="editor-paper w-full max-w-4xl p-6 sm:p-12">
+          
+          <!-- Visual ContentEditable Area -->
+          <div 
+            id="composeArea" 
+            class="blogger-content"
+            contenteditable="true" 
+            spellcheck="true"
+            data-placeholder="Start typing your blog post here... Use formatting tools, insert headings, Marathi text, or quiz shortcodes."
+          >
+            <h2><strong>MPSC व तलाठी भरती सराव प्रश्नसंच - चालू घडामोडी २०२६</strong></h2>
+            <p>विद्यार्थी मित्रांनो, आगामी स्पर्धा परीक्षांच्या तयारीसाठी आम्ही घेऊन आलो आहोत अतिसंभाव्य वस्तुनिष्ठ बहुपर्यायी प्रश्नांचा विशेष सराव संच. खालील सर्व प्रश्न काळजीपूर्वक सोडवा आणि तुमचा स्कोर तपासा.</p>
+            
+            <blockquote>
+              "यश मिळवण्यासाठी तयारी हीच सर्वात मोठी गुरुकिल्ली आहे." — सराव सातत्याने चालू ठेवा!
+            </blockquote>
+
+            <h3><strong>महत्त्वाचे सराव प्रश्न (Practice Questions):</strong></h3>
+            <p>प्रश्न १: नुकतेच जाहीर झालेल्या राष्ट्रीय क्रीडा पुरस्कारांमध्ये सर्वोत्कृष्ट खेळाडूचा मान कोणाला मिळाला?</p>
+            <ul>
+              <li>पर्याय अ) रोहन बोपण्णा</li>
+              <li>पर्याय ब) सात्विक साईराज व चिराग शेट्टी</li>
+              <li>पर्याय क) नीरज चोप्रा</li>
+              <li>पर्याय ड) मनू भाकर</li>
+            </ul>
+
+            <p>[QUIZ_CARD_HERE]</p>
+
+            <h3><strong>परीक्षेसाठी मोफत अभ्यास साहित्य:</strong></h3>
+            <p>खालील बटणावर क्लिक करून संपूर्ण सराव प्रश्नसंच PDF स्वरूपात डाऊनलोड करा:</p>
+            <p>[PDF_DOWNLOAD_BUTTON]</p>
+
+            <hr/>
+            <p><em>टीप: नियमित सराव टेस्ट देण्यासाठी आमच्या Telegram चॅनेलला नक्की जॉइन करा.</em></p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3.2 HTML VIEW (Source Code Monospace Mode) -->
+      <div id="htmlContainer" class="w-full hidden justify-center">
+        <div class="w-full max-w-4xl bg-slate-900 rounded-lg shadow-xl overflow-hidden border border-slate-700">
+          
+          <!-- Code Editor Top Header -->
+          <div class="bg-slate-950 px-4 py-2 flex items-center justify-between border-b border-slate-800 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+              <span class="ml-2 font-mono text-slate-300 font-semibold">raw_post.html</span>
+              <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">100% Blogger Semantic</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="formatAndCleanHtml()" class="hover:text-white flex items-center gap-1 bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded transition text-[11px]">
+                <span class="material-symbols-outlined text-[14px]">code</span>
+                Prettify HTML
+              </button>
+              <button onclick="copyHtmlToClipboard()" class="hover:text-white flex items-center gap-1 bg-orange-600 hover:bg-orange-500 text-white px-2.5 py-1 rounded transition text-[11px] font-semibold">
+                <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                Copy Code
+              </button>
+            </div>
+          </div>
+
+          <!-- HTML Textarea with Live Two-Way Binding -->
+          <div class="p-2">
+            <textarea 
+              id="htmlSourceArea" 
+              class="html-code-area w-full p-4 font-mono rounded bg-transparent focus:ring-0" 
+              placeholder="Paste or write clean Blogger HTML code here..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ========================================================================= -->
+  <!-- 4. BOTTOM STATUS BAR (Words, Characters, Reading Time & Sync Status)      -->
+  <!-- ========================================================================= -->
+  <footer class="bg-white border-t border-[#dadce0] px-4 py-2 sticky bottom-0 z-30 text-xs text-gray-500 flex flex-wrap items-center justify-between gap-2 shadow-sm">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1 font-medium text-gray-700">
+        <span class="material-symbols-outlined text-[16px] text-gray-400">text_snippet</span>
+        <span id="statWordCount">0</span> words
+      </div>
+      <div class="flex items-center gap-1">
+        <span id="statCharCount">0</span> characters
+      </div>
+      <div class="flex items-center gap-1 hidden sm:flex">
+        <span class="material-symbols-outlined text-[16px] text-gray-400">schedule</span>
+        <span id="statReadTime">~1 min</span> read
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1 text-[11px]">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+        <span class="font-medium text-gray-600">Two-way live sync active</span>
+      </div>
+      <span class="text-gray-300">|</span>
+      <a href="blog-designer.html" class="text-orange-600 hover:underline font-medium">Switch to Block Designer</a>
+    </div>
+  </footer>
+
+
+  <!-- ========================================================================= -->
+  <!-- 5. DIALOGS & MODALS                                                       -->
+  <!-- ========================================================================= -->
+
+  <!-- 5.1 Insert / Edit Link Dialog (Authentic Blogger Options) -->
+  <div id="linkModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <span class="material-symbols-outlined text-orange-600">link</span>
+          Insert or Edit Link
+        </h3>
+        <button onclick="closeLinkModal()" class="text-gray-400 hover:text-gray-600">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Text to display:</label>
+          <input 
+            id="linkTextInput" 
+            type="text" 
+            placeholder="Click here to read more" 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500 focus:outline-none" 
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Link URL (Web address):</label>
+          <input 
+            id="linkUrlInput" 
+            type="url" 
+            placeholder="https://example.com/quiz" 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500 focus:outline-none font-mono" 
+          />
+        </div>
+
+        <div class="pt-2 border-t border-gray-100 space-y-2">
+          <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+            <input id="linkTargetBlank" type="checkbox" checked class="rounded text-orange-600 focus:ring-orange-500" />
+            <span>Open this link in a new window (<code>target="_blank"</code>)</span>
+          </label>
+          <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+            <input id="linkNofollow" type="checkbox" class="rounded text-orange-600 focus:ring-orange-500" />
+            <span>Add <code>rel="nofollow"</code> attribute (SEO safe)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-end gap-2">
+        <button onclick="closeLinkModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
+        <button onclick="applyLinkInsert()" class="px-4 py-1.5 rounded text-sm bg-orange-600 hover:bg-orange-700 text-white font-semibold">Apply Link</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5.2 Insert Image Dialog -->
+  <div id="imageModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <span class="material-symbols-outlined text-orange-600">image</span>
+          Insert Image
+        </h3>
+        <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Image URL (Direct link):</label>
+          <input 
+            id="imageUrlInput" 
+            type="url" 
+            placeholder="https://blogger.googleusercontent.com/img/..." 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500 focus:outline-none font-mono" 
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Alt Text (Accessibility & SEO):</label>
+          <input 
+            id="imageAltInput" 
+            type="text" 
+            placeholder="MPSC Study Material Banner" 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500 focus:outline-none" 
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Alignment:</label>
+          <select id="imageAlignInput" class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500">
+            <option value="center">Center (Default)</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-end gap-2">
+        <button onclick="closeImageModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
+        <button onclick="applyImageInsert()" class="px-4 py-1.5 rounded text-sm bg-orange-600 hover:bg-orange-700 text-white font-semibold">Insert Image</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5.3 Live Preview Modal (Simulates Authentic Blogger Blog Page) -->
+  <div id="previewModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-2 sm:p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden border border-gray-300">
+      
+      <!-- Preview Header -->
+      <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <span class="material-symbols-outlined text-[18px] text-orange-600">preview</span>
+            Live Blogger Post Preview
+          </div>
+          <div class="hidden sm:flex items-center gap-1 bg-gray-200 rounded p-0.5 text-xs">
+            <button onclick="setPreviewDevice('desktop')" class="px-2 py-0.5 rounded font-medium bg-white text-gray-800 shadow-xs" id="prevDevDesk">Desktop</button>
+            <button onclick="setPreviewDevice('tablet')" class="px-2 py-0.5 rounded font-medium text-gray-600 hover:text-gray-800" id="prevDevTab">Tablet</button>
+            <button onclick="setPreviewDevice('mobile')" class="px-2 py-0.5 rounded font-medium text-gray-600 hover:text-gray-800" id="prevDevMob">Mobile</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="copyHtmlToClipboard()" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded font-medium flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">content_copy</span>
+            Copy Code
+          </button>
+          <button onclick="closePreviewModal()" class="text-gray-400 hover:text-gray-700 p-1">
+            <span class="material-symbols-outlined text-[24px]">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Body (Simulated Blog Post Body) -->
+      <div class="flex-1 overflow-y-auto bg-slate-100 p-4 sm:p-8 flex justify-center">
+        <div id="previewCardWrapper" class="w-full max-w-3xl bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-12 transition-all duration-300">
+          
+          <!-- Simulated Blog Header -->
+          <div class="border-b border-gray-100 pb-4 mb-6">
+            <div class="text-xs font-semibold text-orange-600 uppercase tracking-wider mb-1">RK QuizMaker Blog</div>
+            <h1 id="previewPostTitle" class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2"></h1>
+            <div class="flex items-center gap-3 text-xs text-gray-400">
+              <span id="previewPostDate">Published Today</span>
+              <span>•</span>
+              <span>By RK QuizMaker Studio</span>
+            </div>
+          </div>
+
+          <!-- Blog Content Body -->
+          <div id="previewBodyContent" class="blogger-content">
+            <!-- Injected via JavaScript -->
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 6. TOAST NOTIFICATION BADGE                                              -->
+  <!-- ========================================================================= -->
+  <div 
+    id="toastNotification" 
+    class="fixed bottom-12 right-6 z-50 transform translate-y-8 opacity-0 pointer-events-none bg-gray-900 text-white px-4 py-2.5 rounded-lg shadow-2xl flex items-center gap-2 text-sm font-medium border border-gray-700"
+  >
+    <span id="toastIcon" class="material-symbols-outlined text-emerald-400 text-[20px]">check_circle</span>
+    <span id="toastMessage">HTML Code copied to clipboard!</span>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 7. COMPLETE JAVASCRIPT ENGINE (Two-way sync, execCommand, shortcodes)     -->
+  <!-- ========================================================================= -->
+  <script>
+    // State Variables
+    let currentMode = 'compose'; // 'compose', 'html', or 'split'
+    let savedRange = null;
+    let syncTimeout = null;
+    const STORAGE_KEY_CONTENT = 'rk_blogger_editor_content';
+    const STORAGE_KEY_TITLE = 'rk_blogger_editor_title';
+
+    // Elements
+    const composeArea = document.getElementById('composeArea');
+    const htmlSourceArea = document.getElementById('htmlSourceArea');
+    const composeContainer = document.getElementById('composeContainer');
+    const htmlContainer = document.getElementById('htmlContainer');
+    const postTitleInput = document.getElementById('postTitleInput');
+    const saveStatusText = document.getElementById('saveStatusText');
+    const saveStatusDot = document.getElementById('saveStatusDot');
+
+    // -----------------------------------------------------------------------
+    // INITIALIZATION & EVENT LISTENERS
+    // -----------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved draft if present, otherwise keep initial template
+      const savedTitle = localStorage.getItem(STORAGE_KEY_TITLE);
+      const savedContent = localStorage.getItem(STORAGE_KEY_CONTENT);
+      if (savedTitle) postTitleInput.value = savedTitle;
+      if (savedContent) composeArea.innerHTML = savedContent;
+
+      // Sync initial compose content to HTML textarea
+      htmlSourceArea.value = beautifyHtml(composeArea.innerHTML);
+      updateStatistics();
+
+      // Setup Live Listeners for Two-Way Binding
+      composeArea.addEventListener('input', () => {
+        handleComposeChange();
+      });
+
+      htmlSourceArea.addEventListener('input', () => {
+        handleHtmlChange();
+      });
+
+      // Title input change triggers auto-save
+      postTitleInput.addEventListener('input', () => {
+        markUnsaved();
+        scheduleAutoSave();
+      });
+
+      // Track selection ranges to restore after dialogs
+      document.addEventListener('selectionchange', () => {
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0) {
+          const range = sel.getRangeAt(0);
+          // Only save range if focus is inside composeArea
+          if (composeArea.contains(range.commonAncestorContainer)) {
+            savedRange = range.cloneRange();
+          }
+        }
+      });
+
+      // Support Tab key in HTML Textarea
+      htmlSourceArea.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = htmlSourceArea.selectionStart;
+          const end = htmlSourceArea.selectionEnd;
+          htmlSourceArea.value = htmlSourceArea.value.substring(0, start) + "  " + htmlSourceArea.value.substring(end);
+          htmlSourceArea.selectionStart = htmlSourceArea.selectionEnd = start + 2;
+          handleHtmlChange();
+        }
+      });
+
+      // Keyboard Shortcuts (Ctrl+B, Ctrl+I, Ctrl+U, Ctrl+S)
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          saveDraftToStorage(true);
+        }
+      });
+
+      // Close dropdown menus when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.relative')) {
+          closeAllDropdowns();
+        }
+      });
+    });
+
+    // -----------------------------------------------------------------------
+    // TWO-WAY LIVE SYNCHRONIZATION ENGINE
+    // -----------------------------------------------------------------------
+    function handleComposeChange() {
+      markUnsaved();
+      updateStatistics();
+
+      // Debounce HTML sync for buttery smooth 60fps typing
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+        htmlSourceArea.value = beautifyHtml(composeArea.innerHTML);
+        scheduleAutoSave();
+      }, 150);
+    }
+
+    function handleHtmlChange() {
+      markUnsaved();
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+        composeArea.innerHTML = htmlSourceArea.value;
+        updateStatistics();
+        scheduleAutoSave();
+      }, 150);
+    }
+
+    function markUnsaved() {
+      saveStatusText.textContent = 'Saving...';
+      saveStatusDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
+    }
+
+    function scheduleAutoSave() {
+      clearTimeout(window._autoSaveTimer);
+      window._autoSaveTimer = setTimeout(() => {
+        saveDraftToStorage(false);
+      }, 600);
+    }
+
+    function saveDraftToStorage(showToast = true) {
+      localStorage.setItem(STORAGE_KEY_TITLE, postTitleInput.value);
+      localStorage.setItem(STORAGE_KEY_CONTENT, composeArea.innerHTML);
+      saveStatusText.textContent = 'All changes saved locally';
+      saveStatusDot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+      if (showToast) {
+        showToastNotification('Draft saved successfully to browser storage!');
+      }
+    }
+
+    function loadSavedDraft() {
+      const savedTitle = localStorage.getItem(STORAGE_KEY_TITLE);
+      const savedContent = localStorage.getItem(STORAGE_KEY_CONTENT);
+      if (savedContent) {
+        if (savedTitle) postTitleInput.value = savedTitle;
+        composeArea.innerHTML = savedContent;
+        htmlSourceArea.value = beautifyHtml(savedContent);
+        updateStatistics();
+        showToastNotification('Saved draft loaded!');
+      } else {
+        alert('No saved draft found in local storage.');
+      }
+      closeAllDropdowns();
+    }
+
+    function resetEditorContent() {
+      if (confirm('Are you sure you want to clear all content in the editor?')) {
+        composeArea.innerHTML = '<p><br></p>';
+        htmlSourceArea.value = '<p><br></p>';
+        updateStatistics();
+        showToastNotification('Editor content cleared');
+      }
+      closeAllDropdowns();
+    }
+
+    // -----------------------------------------------------------------------
+    // VIEW SWITCHER (Compose View, HTML View, Split View)
+    // -----------------------------------------------------------------------
+    function setViewMode(mode) {
+      currentMode = mode;
+      closeAllDropdowns();
+
+      const label = document.getElementById('currentViewModeLabel');
+      const icon = document.getElementById('currentViewModeIcon');
+      const badge = document.getElementById('activeModeBadge');
+
+      // Update active states on dropdown
+      document.getElementById('viewItemCompose').classList.toggle('active', mode === 'compose');
+      document.getElementById('viewItemHtml').classList.toggle('active', mode === 'html');
+      document.getElementById('viewItemSplit').classList.toggle('active', mode === 'split');
+
+      if (mode === 'compose') {
+        // Sync HTML -> Compose before switching
+        composeArea.innerHTML = htmlSourceArea.value;
+        composeContainer.classList.remove('hidden');
+        composeContainer.className = 'w-full flex justify-center';
+        htmlContainer.classList.add('hidden');
+        label.textContent = 'Compose view';
+        icon.textContent = 'edit';
+        badge.textContent = 'Compose View (Visual WYSIWYG)';
+        badge.className = 'bg-orange-100 text-orange-800 font-semibold px-2 py-0.5 rounded';
+        composeArea.focus();
+      } 
+      else if (mode === 'html') {
+        // Sync Compose -> HTML before switching
+        htmlSourceArea.value = beautifyHtml(composeArea.innerHTML);
+        composeContainer.classList.add('hidden');
+        htmlContainer.classList.remove('hidden');
+        htmlContainer.className = 'w-full flex justify-center';
+        label.textContent = 'HTML view';
+        icon.textContent = 'code';
+        badge.textContent = 'HTML View (Source Code)';
+        badge.className = 'bg-slate-800 text-slate-100 font-semibold px-2 py-0.5 rounded font-mono';
+        htmlSourceArea.focus();
+      } 
+      else if (mode === 'split') {
+        // Side-by-side Dual View
+        htmlSourceArea.value = beautifyHtml(composeArea.innerHTML);
+        composeContainer.classList.remove('hidden');
+        composeContainer.className = 'w-full lg:w-1/2 px-2';
+        htmlContainer.classList.remove('hidden');
+        htmlContainer.className = 'w-full lg:w-1/2 px-2';
+        document.getElementById('viewsWrapper').className = 'w-full flex flex-col lg:flex-row gap-4 items-start';
+        label.textContent = 'Split view';
+        icon.textContent = 'splitscreen';
+        badge.textContent = 'Split View (Live Dual-Pane)';
+        badge.className = 'bg-indigo-100 text-indigo-800 font-semibold px-2 py-0.5 rounded';
+      }
+
+      updateStatistics();
+    }
+
+    // -----------------------------------------------------------------------
+    // FORMATTING EXECUTION & SELECTION RESTORATION
+    // -----------------------------------------------------------------------
+    function restoreSelection() {
+      if (savedRange) {
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(savedRange);
+      } else {
+        composeArea.focus();
+      }
+    }
+
+    function execFormat(command, value = null) {
+      if (currentMode === 'html') {
+        // If in HTML mode, notify user or perform snippet insert
+        showToastNotification('Switch to Compose view to apply visual formatting', 'info');
+        return;
+      }
+      restoreSelection();
+      document.execCommand(command, false, value);
+      handleComposeChange();
+    }
+
+    function applyFontFamily(fontValue, label) {
+      execFormat('fontName', fontValue);
+      document.getElementById('currentFontLabel').textContent = label;
+      closeAllDropdowns();
+    }
+
+    function applyBlockFormat(tag, label) {
+      if (currentMode === 'html') return;
+      restoreSelection();
+      document.execCommand('formatBlock', false, `<${tag}>`);
+      document.getElementById('currentHeadingLabel').textContent = label;
+      closeAllDropdowns();
+      handleComposeChange();
+    }
+
+    function applyTextColor(colorHex) {
+      execFormat('foreColor', colorHex);
+      document.getElementById('activeTextColorBar').style.backgroundColor = colorHex;
+      closeAllDropdowns();
+    }
+
+    function applyBgColor(colorHex) {
+      if (colorHex === 'transparent') {
+        execFormat('removeFormat');
+      } else {
+        execFormat('hiliteColor', colorHex);
+      }
+      document.getElementById('activeBgColorBar').style.backgroundColor = colorHex;
+      closeAllDropdowns();
+    }
+
+    function applyAlignment(alignCommand, iconName) {
+      execFormat(alignCommand);
+      document.getElementById('currentAlignIcon').textContent = iconName;
+      closeAllDropdowns();
+    }
+
+    function insertBlockquote() {
+      if (currentMode === 'html') return;
+      restoreSelection();
+      document.execCommand('formatBlock', false, '<blockquote>');
+      handleComposeChange();
+    }
+
+    // -----------------------------------------------------------------------
+    // SHORTCODES INSERTER ([QUIZ_CARD_HERE], [MOCK_TEST_CTA], etc.)
+    // -----------------------------------------------------------------------
+    function insertCustomShortcode(shortcode) {
+      closeAllDropdowns();
+      if (currentMode === 'html') {
+        insertTextAtHtmlCursor(shortcode);
+      } else {
+        restoreSelection();
+        // Insert shortcode wrapped in clean paragraph
+        const htmlSnippet = `<p><span class="shortcode-badge" data-shortcode="${shortcode}">🏷️ ${shortcode}</span></p>`;
+        document.execCommand('insertHTML', false, htmlSnippet);
+        handleComposeChange();
+      }
+      showToastNotification(`Inserted ${shortcode}`);
+    }
+
+    function insertTextAtHtmlCursor(text) {
+      const start = htmlSourceArea.selectionStart;
+      const end = htmlSourceArea.selectionEnd;
+      htmlSourceArea.value = htmlSourceArea.value.substring(0, start) + text + htmlSourceArea.value.substring(end);
+      htmlSourceArea.selectionStart = htmlSourceArea.selectionEnd = start + text.length;
+      handleHtmlChange();
+    }
+
+    // -----------------------------------------------------------------------
+    // LINK DIALOG
+    // -----------------------------------------------------------------------
+    function openLinkModal() {
+      closeAllDropdowns();
+      const sel = window.getSelection();
+      let selectedText = '';
+      if (sel && sel.toString().trim().length > 0) {
+        selectedText = sel.toString().trim();
+      }
+      document.getElementById('linkTextInput').value = selectedText;
+      document.getElementById('linkUrlInput').value = 'https://';
+      document.getElementById('linkTargetBlank').checked = true;
+      document.getElementById('linkNofollow').checked = false;
+
+      const modal = document.getElementById('linkModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('linkUrlInput').focus();
+    }
+
+    function closeLinkModal() {
+      const modal = document.getElementById('linkModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function applyLinkInsert() {
+      const text = document.getElementById('linkTextInput').value.trim();
+      const url = document.getElementById('linkUrlInput').value.trim();
+      const targetBlank = document.getElementById('linkTargetBlank').checked;
+      const nofollow = document.getElementById('linkNofollow').checked;
+
+      if (!url || url === 'https://') {
+        alert('Please enter a valid URL.');
+        return;
+      }
+
+      closeLinkModal();
+      restoreSelection();
+
+      let relAttrs = [];
+      if (targetBlank) relAttrs.push('noopener', 'noreferrer');
+      if (nofollow) relAttrs.push('nofollow');
+
+      const targetAttr = targetBlank ? ' target="_blank"' : '';
+      const relAttr = relAttrs.length > 0 ? ` rel="${relAttrs.join(' ')}"` : '';
+      const displayText = text || url;
+
+      const linkHtml = `<a href="${url}"${targetAttr}${relAttr}>${escapeHtml(displayText)}</a>`;
+
+      if (currentMode === 'html') {
+        insertTextAtHtmlCursor(linkHtml);
+      } else {
+        document.execCommand('insertHTML', false, linkHtml);
+        handleComposeChange();
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // IMAGE DIALOG
+    // -----------------------------------------------------------------------
+    function openImageModal() {
+      closeAllDropdowns();
+      document.getElementById('imageUrlInput').value = '';
+      document.getElementById('imageAltInput').value = '';
+      document.getElementById('imageAlignInput').value = 'center';
+
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('imageUrlInput').focus();
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function applyImageInsert() {
+      const url = document.getElementById('imageUrlInput').value.trim();
+      const alt = document.getElementById('imageAltInput').value.trim();
+      const align = document.getElementById('imageAlignInput').value;
+
+      if (!url) {
+        alert('Please enter an image URL.');
+        return;
+      }
+
+      closeImageModal();
+      restoreSelection();
+
+      let styleAttr = '';
+      if (align === 'center') styleAttr = 'display: block; margin: 12px auto;';
+      else if (align === 'left') styleAttr = 'float: left; margin: 0 16px 16px 0;';
+      else if (align === 'right') styleAttr = 'float: right; margin: 0 0 16px 16px;';
+
+      const imgHtml = `<p><img src="${url}" alt="${escapeHtml(alt)}" style="${styleAttr} max-width: 100%; border-radius: 6px;" /></p>`;
+
+      if (currentMode === 'html') {
+        insertTextAtHtmlCursor(imgHtml);
+      } else {
+        document.execCommand('insertHTML', false, imgHtml);
+        handleComposeChange();
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // LIVE PREVIEW MODAL
+    // -----------------------------------------------------------------------
+    function openPreviewModal() {
+      closeAllDropdowns();
+      // Ensure sync
+      if (currentMode === 'html') {
+        composeArea.innerHTML = htmlSourceArea.value;
+      }
+
+      document.getElementById('previewPostTitle').textContent = postTitleInput.value || 'Untitled Post';
+      const now = new Date();
+      document.getElementById('previewPostDate').textContent = now.toLocaleDateString('mr-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
+      // Prepare preview HTML with clean rendering of shortcode chips
+      let previewHtml = composeArea.innerHTML;
+      document.getElementById('previewBodyContent').innerHTML = previewHtml;
+
+      const modal = document.getElementById('previewModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePreviewModal() {
+      const modal = document.getElementById('previewModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setPreviewDevice(device) {
+      const wrapper = document.getElementById('previewCardWrapper');
+      const deskBtn = document.getElementById('prevDevDesk');
+      const tabBtn = document.getElementById('prevDevTab');
+      const mobBtn = document.getElementById('prevDevMob');
+
+      [deskBtn, tabBtn, mobBtn].forEach(b => {
+        b.className = 'px-2 py-0.5 rounded font-medium text-gray-600 hover:text-gray-800';
+      });
+
+      if (device === 'desktop') {
+        wrapper.className = 'w-full max-w-3xl bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-12 transition-all duration-300';
+        deskBtn.className = 'px-2 py-0.5 rounded font-medium bg-white text-gray-800 shadow-xs';
+      } else if (device === 'tablet') {
+        wrapper.className = 'w-full max-w-xl bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8 transition-all duration-300';
+        tabBtn.className = 'px-2 py-0.5 rounded font-medium bg-white text-gray-800 shadow-xs';
+      } else if (device === 'mobile') {
+        wrapper.className = 'w-full max-w-sm bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 transition-all duration-300';
+        mobBtn.className = 'px-2 py-0.5 rounded font-medium bg-white text-gray-800 shadow-xs';
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // COPY HTML CODE & DOWNLOAD UTILITIES
+    // -----------------------------------------------------------------------
+    function getCleanExportHtml() {
+      let rawHtml = currentMode === 'html' ? htmlSourceArea.value : composeArea.innerHTML;
+      
+      // Convert temporary shortcode visual chips back to pure standard shortcode text [QUIZ_CARD_HERE]
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = rawHtml;
+      tempDiv.querySelectorAll('.shortcode-badge').forEach(badge => {
+        const code = badge.getAttribute('data-shortcode') || badge.textContent.replace(/^[^\w\[]*/, '').trim();
+        badge.replaceWith(document.createTextNode(code));
+      });
+
+      return beautifyHtml(tempDiv.innerHTML);
+    }
+
+    function copyHtmlToClipboard() {
+      const cleanHtml = getCleanExportHtml();
+      navigator.clipboard.writeText(cleanHtml).then(() => {
+        showToastNotification('Blogger HTML Code copied to clipboard!');
+        // Update copy button state
+        const copyBtn = document.getElementById('copyBtnLabel');
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error('Clipboard copy failed:', err);
+        showToastNotification('Failed to copy. Please copy manually from HTML view.', 'error');
+      });
+    }
+
+    function downloadHtmlFile() {
+      closeAllDropdowns();
+      const cleanHtml = getCleanExportHtml();
+      const title = (postTitleInput.value || 'blogger-post').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const blob = new Blob([cleanHtml], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${title}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToastNotification(`Downloaded ${title}.html`);
+    }
+
+    // -----------------------------------------------------------------------
+    // HTML BEAUTIFIER & SEMANTIC CLEANER
+    // -----------------------------------------------------------------------
+    function formatAndCleanHtml() {
+      const clean = getCleanExportHtml();
+      htmlSourceArea.value = clean;
+      composeArea.innerHTML = clean;
+      updateStatistics();
+      showToastNotification('HTML Code prettified and cleaned!');
+      closeAllDropdowns();
+    }
+
+    function beautifyHtml(html) {
+      if (!html) return '';
+      let tab = '  ';
+      let result = '';
+      let indent = '';
+
+      // Normalize line breaks & excessive spaces
+      html = html.replace(/>\s*</g, '>\n<');
+
+      html.split('\n').forEach(element => {
+        element = element.trim();
+        if (!element) return;
+
+        // Closing tag decreases indent
+        if (element.match(/^<\/\w/)) {
+          indent = indent.substring(tab.length);
+        }
+
+        result += indent + element + '\n';
+
+        // Opening tag increases indent (exclude void and self-closing tags)
+        if (element.match(/^<\w[^>]*[^\/]>.*$/) && 
+            !element.startsWith('<br') && 
+            !element.startsWith('<hr') && 
+            !element.startsWith('<img') && 
+            !element.startsWith('<input') && 
+            !element.includes('</')) {
+          indent += tab;
+        }
+      });
+
+      return result.trim();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // -----------------------------------------------------------------------
+    // WORD & CHARACTER COUNTER STATS
+    // -----------------------------------------------------------------------
+    function updateStatistics() {
+      const text = composeArea.innerText || composeArea.textContent || '';
+      const cleanText = text.trim();
+      const words = cleanText.length > 0 ? cleanText.split(/\s+/).length : 0;
+      const chars = cleanText.length;
+      const readMinutes = Math.max(1, Math.ceil(words / 180));
+
+      document.getElementById('statWordCount').textContent = words.toLocaleString();
+      document.getElementById('statCharCount').textContent = chars.toLocaleString();
+      document.getElementById('statReadTime').textContent = `~${readMinutes} min`;
+    }
+
+    // -----------------------------------------------------------------------
+    // TOAST & DROPDOWN CONTROLS
+    // -----------------------------------------------------------------------
+    function showToastNotification(message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMsg.textContent = message;
+      if (type === 'error') {
+        toastIcon.textContent = 'error';
+        toastIcon.className = 'material-symbols-outlined text-red-400 text-[20px]';
+      } else if (type === 'info') {
+        toastIcon.textContent = 'info';
+        toastIcon.className = 'material-symbols-outlined text-blue-400 text-[20px]';
+      } else {
+        toastIcon.textContent = 'check_circle';
+        toastIcon.className = 'material-symbols-outlined text-emerald-400 text-[20px]';
+      }
+
+      toast.classList.remove('translate-y-8', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-8', 'opacity-0', 'pointer-events-none');
+      }, 2500);
+    }
+
+    function toggleDropdown(menuId) {
+      const target = document.getElementById(menuId);
+      const isVisible = target.classList.contains('show');
+      closeAllDropdowns();
+      if (!isVisible) {
+        target.classList.add('show');
+      }
+    }
+
+    function closeAllDropdowns() {
+      document.querySelectorAll('.tb-dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+  </script>
+
+</body>
+</html>
