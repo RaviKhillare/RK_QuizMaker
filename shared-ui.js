@@ -174,10 +174,11 @@
 
     // Tools shortcuts
     const studioTools = [
+      { name: 'Google Forms to Quiz Converter', desc: 'Convert public Google Form link directly into an interactive quiz (गुगल फॉर्मवरून थेट क्विझ)', url: 'bulk-import.html?tab=gform', icon: 'dynamic_form' },
       { name: 'Quiz Builder Studio', desc: 'Create MCQ, Checkbox, Polls', url: 'quiz-builder.html', icon: 'quiz' },
       { name: 'Blog Post Designer', desc: 'Visual Gutenberg-style editor', url: 'blog-designer.html', icon: 'design_services' },
       { name: 'Blogger Rich Text Editor', desc: 'Official Blogger-style visual & HTML post editor', url: 'blogger-editor.html', icon: 'edit_note' },
-      { name: 'Bulk Import Studio', desc: 'Import from Google Sheets or CSV', url: 'bulk-import.html', icon: 'upload_file' },
+      { name: 'Bulk Import Studio', desc: 'Import from Google Sheets, Forms or CSV', url: 'bulk-import.html', icon: 'upload_file' },
       { name: 'Embed & Share Center', desc: 'Blogger OnClick popup buttons', url: 'embed-share.html', icon: 'share' },
       { name: 'Results & Analytics Hub', desc: 'Student marks, leaderboard & polls', url: 'results-polls.html', icon: 'analytics' },
       { name: 'Google Sheets Cloud DB', desc: '100% Free Lifetime DB settings', url: 'results-polls.html#database', icon: 'table_chart' }
