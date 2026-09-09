@@ -188,19 +188,29 @@
       display: block;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    .blogger-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
+
+    /* Table Styling for Compose View */
+    .blogger-content table.blog-data-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      margin: 1rem 0 !important;
     }
-    .blogger-content th, .blogger-content td {
-      border: 1px solid #dadce0;
-      padding: 8px 12px;
-      text-align: left;
+    .blogger-content table.blog-data-table th, 
+    .blogger-content table.blog-data-table td {
+      border: 1px solid #cbd5e1 !important;
+      padding: 10px 14px !important;
+      min-width: 60px;
     }
-    .blogger-content th {
-      background-color: #f8f9fa;
-      font-weight: 600;
+    .blogger-content table.blog-data-table th {
+      background-color: #f1f5f9 !important;
+      font-weight: 700 !important;
+      color: #1e293b !important;
+    }
+    .blogger-content table.blog-data-table td:focus,
+    .blogger-content table.blog-data-table th:focus {
+      outline: 2px solid #f97316 !important;
+      outline-offset: -2px;
+      background-color: #fff7ed !important;
     }
 
     /* Shortcode Preview Chip in Visual Mode */
@@ -274,7 +284,7 @@
     }
 
     /* Floating Image Adjustment Toolbar Bubble */
-    #imageActionBubble {
+    #imageActionBubble, #tableActionBubble {
       position: absolute;
       z-index: 60;
       background: #0f172a;
@@ -288,13 +298,13 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
       user-select: none;
     }
-    .img-bubble-btn {
+    .img-bubble-btn, .tbl-bubble-btn {
       background: transparent;
       border: none;
       color: #cbd5e1;
       height: 28px;
       min-width: 28px;
-      padding: 0 5px;
+      padding: 0 6px;
       border-radius: 4px;
       cursor: pointer;
       display: inline-flex;
@@ -303,8 +313,9 @@
       font-size: 11px;
       font-weight: 600;
       transition: all 0.15s ease;
+      gap: 3px;
     }
-    .img-bubble-btn:hover {
+    .img-bubble-btn:hover, .tbl-bubble-btn:hover {
       background: rgba(255, 255, 255, 0.18);
       color: #ffffff;
     }
@@ -312,11 +323,39 @@
       background: #f97316;
       color: #ffffff;
     }
-    .img-bubble-divider {
+    .img-bubble-divider, .tbl-bubble-divider {
       width: 1px;
       height: 18px;
       background: rgba(255, 255, 255, 0.2);
       margin: 0 2px;
+    }
+
+    /* Interactive Table Grid Picker Cells */
+    .grid-picker-cell {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #cbd5e1;
+      border-radius: 3px;
+      cursor: pointer;
+      background: #f8fafc;
+      transition: background 0.1s ease, border-color 0.1s ease;
+    }
+    .grid-picker-cell.highlighted {
+      background: #fed7aa !important;
+      border-color: #f97316 !important;
+    }
+
+    /* Video Responsive Container */
+    .video-responsive-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      margin: 18px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      user-select: none;
     }
 
     /* HTML Code View Editor Area */
@@ -744,6 +783,16 @@
       <span class="material-symbols-outlined text-[18px]">image</span>
     </button>
 
+    <!-- 2.9.1 Dynamic Table Maker Trigger -->
+    <button onmousedown="event.preventDefault()" onclick="openTableModal()" class="tb-btn" title="Insert table (Data grid)">
+      <span class="material-symbols-outlined text-[18px]">table_chart</span>
+    </button>
+
+    <!-- 2.9.2 YouTube Video Embedder Trigger -->
+    <button onmousedown="event.preventDefault()" onclick="openYouTubeModal()" class="tb-btn text-red-600 hover:text-red-700" title="Embed YouTube Video">
+      <span class="material-symbols-outlined text-[18px]">smart_display</span>
+    </button>
+
     <div class="tb-divider"></div>
 
     <!-- 2.10 Alignment Dropdown (Left, Center, Right, Justify) -->
@@ -902,7 +951,7 @@
             class="blogger-content"
             contenteditable="true" 
             spellcheck="true"
-            data-placeholder="Start typing your blog post here... Use formatting tools, insert headings, Marathi text, images, or dynamic quiz cards."
+            data-placeholder="Start typing your blog post here... Use formatting tools, insert headings, Marathi text, images, tables, or dynamic quiz cards."
           >
             <h2><strong>MPSC व तलाठी भरती सराव प्रश्नसंच - चालू घडामोडी २०२६</strong></h2>
             <p>विद्यार्थी मित्रांनो, आगामी स्पर्धा परीक्षांच्या तयारीसाठी आम्ही घेऊन आलो आहोत अतिसंभाव्य वस्तुनिष्ठ बहुपर्यायी प्रश्नांचा विशेष सराव संच. खालील सर्व प्रश्न काळजीपूर्वक सोडवा आणि तुमचा स्कोर तपासा.</p>
@@ -912,6 +961,34 @@
             </blockquote>
 
             <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7b-mock/s1600/mpsc-prep.jpg" alt="MPSC Study Banner" class="blog-responsive-img" style="max-width: 100%; height: auto; border-radius: 6px; display: block; margin: 16px auto;" /></p>
+
+            <h3><strong>परीक्षेचे संभाव्य वेळापत्रक व गुणदान (Exam Schedule):</strong></h3>
+            <div class="blog-table-wrapper" style="overflow-x: auto; margin: 16px 0; border-radius: 6px;">
+              <table class="blog-data-table" style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #dadce0;">
+                <thead>
+                  <tr style="background-color: #f1f5f9;">
+                    <th style="border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b;">विषय (Subject)</th>
+                    <th style="border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b;">एकूण प्रश्न</th>
+                    <th style="border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b;">गुण (Marks)</th>
+                    <th style="border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b;">वेळ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">चालू घडामोडी</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">२५</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">५०</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">३० मिनिटे</td>
+                  </tr>
+                  <tr style="background-color: #f8fafc;">
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">मराठी व्याकरण</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">२५</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">५०</td>
+                    <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">३० मिनिटे</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <h3><strong>महत्त्वाचे सराव प्रश्न (Practice Questions):</strong></h3>
             <p>प्रश्न १: नुकतेच जाहीर झालेल्या राष्ट्रीय क्रीडा पुरस्कारांमध्ये सर्वोत्कृष्ट खेळाडूचा मान कोणाला मिळाला?</p>
@@ -926,6 +1003,11 @@
             <div class="rk-quiz-placeholder" data-quiz-id="101" data-quiz-title="MPSC चालू घडामोडी सराव टेस्ट २०२६" contenteditable="false">
               <span class="quiz-chip-badge">🎯 QUIZ CARD</span>
               <span>🎯 [QUIZ_CARD: MPSC चालू घडामोडी सराव टेस्ट २०२६]</span>
+            </div>
+
+            <h3><strong>मार्गदर्शन व्हिडिओ पहा (Video Lecture):</strong></h3>
+            <div class="video-responsive-wrapper" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 18px 0; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);" contenteditable="false">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
 
             <h3><strong>परीक्षेसाठी मोफत अभ्यास साहित्य:</strong></h3>
@@ -1160,35 +1242,160 @@
           <label class="block text-xs font-semibold text-gray-700 mb-1">Display Size:</label>
           <div class="grid grid-cols-3 gap-2 text-xs">
             <label class="flex items-center gap-1.5 p-1.5 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
-              <input type="radio" name="imgSizeChoice" value="100%" checked class="text-orange-600 focus:ring-orange-500" />
-              <span>Full Width (100%)</span>
-            </label>
-            <label class="flex items-center gap-1.5 p-1.5 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
-              <input type="radio" name="imgSizeChoice" value="60%" class="text-orange-600 focus:ring-orange-500" />
-              <span>Medium (60%)</span>
-            </label>
-            <label class="flex items-center gap-1.5 p-1.5 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
-              <input type="radio" name="imgSizeChoice" value="35%" class="text-orange-600 focus:ring-orange-500" />
-              <span>Small (35%)</span>
-            </label>
-          </div>
-        </div>
-      </div>
+               <input type="radio" name="imgSizeChoice" value="100%" checked class="text-orange-600 focus:ring-orange-500" />
+               <span>Full Width (100%)</span>
+             </label>
+             <label class="flex items-center gap-1.5 p-1.5 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+               <input type="radio" name="imgSizeChoice" value="60%" class="text-orange-600 focus:ring-orange-500" />
+               <span>Medium (60%)</span>
+             </label>
+             <label class="flex items-center gap-1.5 p-1.5 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+               <input type="radio" name="imgSizeChoice" value="35%" class="text-orange-600 focus:ring-orange-500" />
+               <span>Small (35%)</span>
+             </label>
+           </div>
+         </div>
+       </div>
 
-      <!-- Modal Footer Actions -->
-      <div class="mt-5 flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
-        <button onclick="closeEnhancedImageModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
-        <button onclick="applyEnhancedImageInsert()" class="px-4 py-1.5 rounded text-sm bg-orange-600 hover:bg-orange-700 text-white font-semibold flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">add_photo_alternate</span>
-          <span>Insert Image</span>
+       <!-- Modal Footer Actions -->
+       <div class="mt-5 flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+         <button onclick="closeEnhancedImageModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
+         <button onclick="applyEnhancedImageInsert()" class="px-4 py-1.5 rounded text-sm bg-orange-600 hover:bg-orange-700 text-white font-semibold flex items-center gap-1">
+           <span class="material-symbols-outlined text-[16px]">add_photo_alternate</span>
+           <span>Insert Image</span>
+         </button>
+       </div>
+
+     </div>
+   </div>
+
+
+  <!-- 5.3 DYNAMIC TABLE MAKER MODAL -->
+  <div id="tableModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 sm:p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <span class="material-symbols-outlined text-orange-600">table_chart</span>
+          Dynamic Table Maker
+        </h3>
+        <button onclick="closeTableModal()" class="text-gray-400 hover:text-gray-600">
+          <span class="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
 
+      <!-- Quick Interactive Grid Hover Picker (6x6) -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-semibold text-gray-700">Quick Grid Selector:</span>
+          <span id="gridPickerLabel" class="text-xs font-bold text-orange-600">3 x 3 Table</span>
+        </div>
+        <div id="gridPickerContainer" class="flex flex-col gap-1 p-2.5 bg-slate-50 border border-slate-200 rounded-lg inline-block select-none" onmouseleave="resetGridPickerHighlight()">
+          <!-- Injected via JavaScript (6 rows x 6 cols) -->
+        </div>
+      </div>
+
+      <!-- Row & Column Number Inputs -->
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Rows Count:</label>
+          <input 
+            id="tableRowsInput" 
+            type="number" 
+            min="1" 
+            max="30" 
+            value="3" 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-1.5 focus:ring-1 focus:ring-orange-500 focus:outline-none" 
+            onchange="updateGridFromInputs()"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Columns Count:</label>
+          <input 
+            id="tableColsInput" 
+            type="number" 
+            min="1" 
+            max="12" 
+            value="3" 
+            class="w-full text-sm border border-gray-300 rounded px-3 py-1.5 focus:ring-1 focus:ring-orange-500 focus:outline-none" 
+            onchange="updateGridFromInputs()"
+          />
+        </div>
+      </div>
+
+      <!-- Table Options -->
+      <div class="pt-2 border-t border-gray-100 space-y-2">
+        <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+          <input id="tableHeaderCheckbox" type="checkbox" checked class="rounded text-orange-600 focus:ring-orange-500" />
+          <span>Include Header Row (<code>&lt;th&gt;</code> styling)</span>
+        </label>
+        <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+          <input id="tableStripedCheckbox" type="checkbox" checked class="rounded text-orange-600 focus:ring-orange-500" />
+          <span>Striped Alternating Row Colors</span>
+        </label>
+      </div>
+
+      <div class="mt-5 flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+        <button onclick="closeTableModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
+        <button onclick="applyTableInsert()" class="px-4 py-1.5 rounded text-sm bg-orange-600 hover:bg-orange-700 text-white font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">grid_on</span>
+          <span>Insert Table</span>
+        </button>
+      </div>
     </div>
   </div>
 
 
-  <!-- 5.3 DYNAMIC QUIZ CARD SHORTCODE MODAL -->
+  <!-- 5.4 YOUTUBE VIDEO EMBEDDER MODAL -->
+  <div id="youtubeModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 sm:p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <span class="material-symbols-outlined text-red-600">smart_display</span>
+          Embed YouTube Video
+        </h3>
+        <button onclick="closeYouTubeModal()" class="text-gray-400 hover:text-gray-600">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">YouTube Video Link or Embed Code:</label>
+          <input 
+            id="youtubeUrlInput" 
+            type="text" 
+            placeholder="e.g. https://www.youtube.com/watch?v=... or https://youtu.be/..." 
+            class="w-full text-xs sm:text-sm border border-gray-300 rounded px-3 py-2 focus:ring-1 focus:ring-orange-500 focus:outline-none font-mono" 
+            oninput="handleYouTubeUrlInput(this.value)"
+          />
+          <div class="text-[11px] text-gray-400 mt-1">Supports regular URLs, Shorts, youtu.be links, and full iframe tags.</div>
+        </div>
+
+        <!-- Video Live Preview -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Live Video Preview:</label>
+          <div id="youtubePreviewWrapper" class="relative pb-[56.25%] h-0 bg-slate-900 rounded-lg overflow-hidden border border-gray-300 flex items-center justify-center">
+            <iframe id="youtubePreviewIframe" class="absolute top-0 left-0 w-full h-full border-0 hidden" allowfullscreen></iframe>
+            <div id="youtubePreviewEmpty" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 gap-1.5 p-4 text-center">
+              <span class="material-symbols-outlined text-[32px] text-red-500">play_circle</span>
+              <span class="text-xs">Paste a YouTube link above to see the live preview</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+        <button onclick="closeYouTubeModal()" class="px-3.5 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 font-medium">Cancel</button>
+        <button onclick="applyYouTubeInsert()" class="px-4 py-1.5 rounded text-sm bg-red-600 hover:bg-red-700 text-white font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">smart_display</span>
+          <span>Embed Video</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5.5 DYNAMIC QUIZ CARD SHORTCODE MODAL -->
   <div id="quizCardModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 border border-gray-200">
       <div class="flex items-center justify-between mb-4">
@@ -1253,7 +1460,7 @@
   </div>
 
 
-  <!-- 5.4 LIVE PREVIEW MODAL (Simulates Authentic Blogger Blog Page) -->
+  <!-- 5.6 LIVE PREVIEW MODAL (Simulates Authentic Blogger Blog Page) -->
   <div id="previewModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-2 sm:p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden border border-gray-300">
       
@@ -1309,7 +1516,7 @@
   </div>
 
 
-  <!-- 5.5 FLOATING INLINE IMAGE ADJUSTMENT TOOLBAR BUBBLE -->
+  <!-- 5.7 FLOATING INLINE IMAGE ADJUSTMENT TOOLBAR BUBBLE -->
   <div id="imageActionBubble">
     <button type="button" onclick="adjustSelectedImage('align', 'center')" class="img-bubble-btn" title="Center Align">
       <span class="material-symbols-outlined text-[16px]">format_align_center</span>
@@ -1341,6 +1548,37 @@
   </div>
 
 
+  <!-- 5.8 FLOATING INLINE TABLE MANIPULATION TOOLBAR BUBBLE -->
+  <div id="tableActionBubble">
+    <button type="button" onclick="insertTableRowBelow()" class="tbl-bubble-btn" title="Add Row Below">
+      <span class="material-symbols-outlined text-[15px]">add</span>
+      <span>Row</span>
+    </button>
+    <button type="button" onclick="insertTableColRight()" class="tbl-bubble-btn" title="Add Column to the Right">
+      <span class="material-symbols-outlined text-[15px]">add</span>
+      <span>Col</span>
+    </button>
+    
+    <div class="tbl-bubble-divider"></div>
+
+    <button type="button" onclick="deleteCurrentTableRow()" class="tbl-bubble-btn" title="Delete Current Row">
+      <span class="material-symbols-outlined text-[15px]">remove</span>
+      <span>Row</span>
+    </button>
+    <button type="button" onclick="deleteCurrentTableCol()" class="tbl-bubble-btn" title="Delete Current Column">
+      <span class="material-symbols-outlined text-[15px]">remove</span>
+      <span>Col</span>
+    </button>
+
+    <div class="tbl-bubble-divider"></div>
+
+    <button type="button" onclick="deleteEntireTable()" class="tbl-bubble-btn text-red-400 hover:text-red-200" title="Delete Entire Table">
+      <span class="material-symbols-outlined text-[15px]">delete</span>
+      <span>Table</span>
+    </button>
+  </div>
+
+
   <!-- ========================================================================= -->
   <!-- 6. TOAST NOTIFICATION BADGE                                              -->
   <!-- ========================================================================= -->
@@ -1364,6 +1602,8 @@
     let activeImageTab = 'url'; // 'url' or 'upload'
     let currentUploadedDataUrl = '';
     window.selectedImageElement = null;
+    window.activeTableCell = null;
+    window.activeTableElement = null;
 
     const STORAGE_KEY_CONTENT = 'rk_blogger_editor_content';
     const STORAGE_KEY_TITLE = 'rk_blogger_editor_title';
@@ -1377,6 +1617,7 @@
     const saveStatusText = document.getElementById('saveStatusText');
     const saveStatusDot = document.getElementById('saveStatusDot');
     const imageActionBubble = document.getElementById('imageActionBubble');
+    const tableActionBubble = document.getElementById('tableActionBubble');
 
     // -----------------------------------------------------------------------
     // INITIALIZATION & EVENT LISTENERS
@@ -1392,6 +1633,9 @@
       hydrateComposeView(composeArea);
       htmlSourceArea.value = beautifyHtml(getCleanExportHtml());
       updateStatistics();
+
+      // Build interactive table grid picker
+      buildGridPicker();
 
       // Setup Live Listeners for Two-Way Binding
       composeArea.addEventListener('input', () => {
@@ -1413,24 +1657,32 @@
         const sel = window.getSelection();
         if (sel && sel.rangeCount > 0) {
           const range = sel.getRangeAt(0);
-          // Only save range if focus is inside composeArea
           if (composeArea.contains(range.commonAncestorContainer)) {
             savedRange = range.cloneRange();
           }
         }
       });
 
-      // Interactive Image Click / Selection in Compose View
+      // Interactive Image & Table Click Detection in Compose View
       composeArea.addEventListener('click', (e) => {
         const img = e.target.closest('img');
+        const td = e.target.closest('td, th');
+
         if (img) {
           selectImageElement(img);
+          deselectTable();
         } else {
           deselectImage();
         }
+
+        if (td) {
+          selectTableElement(td);
+        } else if (!e.target.closest('#tableActionBubble')) {
+          deselectTable();
+        }
       });
 
-      // Click outside to close dropdowns & image bubble
+      // Click outside to close dropdowns, image bubble & table bubble
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.relative')) {
           closeAllDropdowns();
@@ -1438,18 +1690,19 @@
         if (!e.target.closest('img') && !e.target.closest('#imageActionBubble')) {
           deselectImage();
         }
+        if (!e.target.closest('td') && !e.target.closest('th') && !e.target.closest('#tableActionBubble')) {
+          deselectTable();
+        }
       });
 
-      // Reposition image bubble on scroll / resize
+      // Reposition floating bubbles on scroll / resize
       window.addEventListener('scroll', () => {
-        if (window.selectedImageElement) {
-          positionImageBubble(window.selectedImageElement);
-        }
+        if (window.selectedImageElement) positionImageBubble(window.selectedImageElement);
+        if (window.activeTableCell) positionTableBubble(window.activeTableCell);
       }, true);
       window.addEventListener('resize', () => {
-        if (window.selectedImageElement) {
-          positionImageBubble(window.selectedImageElement);
-        }
+        if (window.selectedImageElement) positionImageBubble(window.selectedImageElement);
+        if (window.activeTableCell) positionTableBubble(window.activeTableCell);
       });
 
       // Setup Drag & Drop Zone for Local Image Upload
@@ -1483,7 +1736,6 @@
       markUnsaved();
       updateStatistics();
 
-      // Debounce HTML sync for buttery smooth 60fps typing
       clearTimeout(syncTimeout);
       syncTimeout = setTimeout(() => {
         htmlSourceArea.value = beautifyHtml(getCleanExportHtml());
@@ -1550,7 +1802,6 @@
       closeAllDropdowns();
     }
 
-    // Ensures freshly parsed HTML has proper interactive classes and attributes
     function hydrateComposeView(container) {
       if (!container) return;
       container.querySelectorAll('img').forEach(img => {
@@ -1561,6 +1812,9 @@
       container.querySelectorAll('.rk-quiz-placeholder').forEach(card => {
         card.setAttribute('contenteditable', 'false');
       });
+      container.querySelectorAll('.video-responsive-wrapper').forEach(wrapper => {
+        wrapper.setAttribute('contenteditable', 'false');
+      });
     }
 
     // -----------------------------------------------------------------------
@@ -1570,18 +1824,17 @@
       currentMode = mode;
       closeAllDropdowns();
       deselectImage();
+      deselectTable();
 
       const label = document.getElementById('currentViewModeLabel');
       const icon = document.getElementById('currentViewModeIcon');
       const badge = document.getElementById('activeModeBadge');
 
-      // Update active states on dropdown
       document.getElementById('viewItemCompose').classList.toggle('active', mode === 'compose');
       document.getElementById('viewItemHtml').classList.toggle('active', mode === 'html');
       document.getElementById('viewItemSplit').classList.toggle('active', mode === 'split');
 
       if (mode === 'compose') {
-        // Sync HTML -> Compose before switching
         composeArea.innerHTML = htmlSourceArea.value;
         hydrateComposeView(composeArea);
         composeContainer.classList.remove('hidden');
@@ -1594,7 +1847,6 @@
         composeArea.focus();
       } 
       else if (mode === 'html') {
-        // Sync Compose -> HTML before switching
         htmlSourceArea.value = beautifyHtml(getCleanExportHtml());
         composeContainer.classList.add('hidden');
         htmlContainer.classList.remove('hidden');
@@ -1606,7 +1858,6 @@
         htmlSourceArea.focus();
       } 
       else if (mode === 'split') {
-        // Side-by-side Dual View
         htmlSourceArea.value = beautifyHtml(getCleanExportHtml());
         composeContainer.classList.remove('hidden');
         composeContainer.className = 'w-full lg:w-1/2 px-2';
@@ -1690,13 +1941,356 @@
     }
 
     // -----------------------------------------------------------------------
-    // FEATURE 1: DYNAMIC QUIZ CARD SHORTCODE INSERTER
+    // FEATURE 1: DYNAMIC TABLE MAKER (DATA GRIDS)
+    // -----------------------------------------------------------------------
+    function openTableModal() {
+      closeAllDropdowns();
+      deselectImage();
+      deselectTable();
+
+      const modal = document.getElementById('tableModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      highlightGridCells(3, 3);
+    }
+
+    function closeTableModal() {
+      const modal = document.getElementById('tableModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function buildGridPicker() {
+      const container = document.getElementById('gridPickerContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      for (let r = 1; r <= 6; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'flex gap-1';
+        for (let c = 1; c <= 6; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-picker-cell';
+          cell.setAttribute('data-row', r);
+          cell.setAttribute('data-col', c);
+          cell.onmouseenter = () => highlightGridCells(r, c);
+          cell.onclick = () => {
+            document.getElementById('tableRowsInput').value = r;
+            document.getElementById('tableColsInput').value = c;
+            applyTableInsert();
+          };
+          rowDiv.appendChild(cell);
+        }
+        container.appendChild(rowDiv);
+      }
+    }
+
+    function highlightGridCells(targetRow, targetCol) {
+      document.querySelectorAll('.grid-picker-cell').forEach(cell => {
+        const r = parseInt(cell.getAttribute('data-row'));
+        const c = parseInt(cell.getAttribute('data-col'));
+        if (r <= targetRow && c <= targetCol) {
+          cell.classList.add('highlighted');
+        } else {
+          cell.classList.remove('highlighted');
+        }
+      });
+      document.getElementById('gridPickerLabel').textContent = `${targetRow} x ${targetCol} Table`;
+    }
+
+    function resetGridPickerHighlight() {
+      const r = parseInt(document.getElementById('tableRowsInput').value) || 3;
+      const c = parseInt(document.getElementById('tableColsInput').value) || 3;
+      highlightGridCells(r, c);
+    }
+
+    function updateGridFromInputs() {
+      const r = Math.min(6, Math.max(1, parseInt(document.getElementById('tableRowsInput').value) || 1));
+      const c = Math.min(6, Math.max(1, parseInt(document.getElementById('tableColsInput').value) || 1));
+      highlightGridCells(r, c);
+    }
+
+    function applyTableInsert() {
+      const rows = parseInt(document.getElementById('tableRowsInput').value) || 3;
+      const cols = parseInt(document.getElementById('tableColsInput').value) || 3;
+      const hasHeader = document.getElementById('tableHeaderCheckbox').checked;
+      const isStriped = document.getElementById('tableStripedCheckbox').checked;
+
+      closeTableModal();
+
+      let tableHtml = '\n<div class="blog-table-wrapper" style="overflow-x: auto; margin: 18px 0; border-radius: 6px;">\n';
+      tableHtml += '  <table class="blog-data-table" style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; border: 1px solid #dadce0;">\n';
+
+      if (hasHeader) {
+        tableHtml += '    <thead>\n      <tr style="background-color: #f1f5f9;">\n';
+        for (let c = 1; c <= cols; c++) {
+          tableHtml += `        <th style="border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b;">शीर्षक ${c}</th>\n`;
+        }
+        tableHtml += '      </tr>\n    </thead>\n';
+      }
+
+      tableHtml += '    <tbody>\n';
+      for (let r = 1; r <= rows; r++) {
+        const bg = (isStriped && r % 2 === 0) ? ' style="background-color: #f8fafc;"' : '';
+        tableHtml += `      <tr${bg}>\n`;
+        for (let c = 1; c <= cols; c++) {
+          tableHtml += `        <td style="border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;">माहिती ${r}-${c}</td>\n`;
+        }
+        tableHtml += '      </tr>\n';
+      }
+      tableHtml += '    </tbody>\n  </table>\n</div>\n<p><br></p>\n';
+
+      if (currentMode === 'html') {
+        insertTextAtHtmlCursor(tableHtml);
+      } else {
+        restoreSelection();
+        document.execCommand('insertHTML', false, tableHtml);
+        handleComposeChange();
+      }
+
+      showToastNotification(`Inserted ${rows}x${cols} data table!`);
+    }
+
+    // -----------------------------------------------------------------------
+    // INLINE TABLE ACTIONS (ROW/COL ADDITION & DELETION)
+    // -----------------------------------------------------------------------
+    function selectTableElement(cell) {
+      if (!cell) return;
+      window.activeTableCell = cell;
+      window.activeTableElement = cell.closest('table');
+
+      positionTableBubble(cell);
+      tableActionBubble.style.display = 'flex';
+    }
+
+    function deselectTable() {
+      window.activeTableCell = null;
+      window.activeTableElement = null;
+      if (tableActionBubble) {
+        tableActionBubble.style.display = 'none';
+      }
+    }
+
+    function positionTableBubble(cell) {
+      if (!cell || !tableActionBubble) return;
+      const rect = cell.getBoundingClientRect();
+      const bubbleWidth = 280;
+      let top = window.scrollY + rect.top - 38;
+      let left = window.scrollX + rect.left + (rect.width / 2) - (bubbleWidth / 2);
+
+      if (top < window.scrollY + 60) {
+        top = window.scrollY + rect.bottom + 6;
+      }
+      if (left < 10) left = 10;
+      if (left + bubbleWidth > window.innerWidth) left = window.innerWidth - bubbleWidth - 15;
+
+      tableActionBubble.style.top = `${top}px`;
+      tableActionBubble.style.left = `${left}px`;
+    }
+
+    function insertTableRowBelow() {
+      const cell = window.activeTableCell;
+      if (!cell) return;
+      const tr = cell.closest('tr');
+      if (!tr) return;
+
+      const colCount = tr.children.length;
+      const newTr = document.createElement('tr');
+      for (let i = 0; i < colCount; i++) {
+        const newTd = document.createElement('td');
+        newTd.style.cssText = 'border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;';
+        newTd.textContent = 'नवीन माहिती';
+        newTr.appendChild(newTd);
+      }
+
+      tr.parentNode.insertBefore(newTr, tr.nextSibling);
+      handleComposeChange();
+      selectTableElement(newTr.children[0]);
+      showToastNotification('Table row added below');
+    }
+
+    function insertTableColRight() {
+      const cell = window.activeTableCell;
+      if (!cell) return;
+      const table = window.activeTableElement;
+      if (!table) return;
+
+      const cellIndex = cell.cellIndex;
+      const rows = table.rows;
+
+      for (let i = 0; i < rows.length; i++) {
+        const isHeader = rows[i].parentElement.tagName.toLowerCase() === 'thead' || rows[i].children[0].tagName.toLowerCase() === 'th';
+        const newCell = document.createElement(isHeader ? 'th' : 'td');
+        if (isHeader) {
+          newCell.style.cssText = 'border: 1px solid #cbd5e1; padding: 10px 14px; font-weight: 700; color: #1e293b; background-color: #f1f5f9;';
+          newCell.textContent = 'नवीन शीर्षक';
+        } else {
+          newCell.style.cssText = 'border: 1px solid #cbd5e1; padding: 8px 14px; color: #334155;';
+          newCell.textContent = 'माहिती';
+        }
+
+        const targetRef = rows[i].children[cellIndex];
+        if (targetRef) {
+          rows[i].insertBefore(newCell, targetRef.nextSibling);
+        } else {
+          rows[i].appendChild(newCell);
+        }
+      }
+
+      handleComposeChange();
+      selectTableElement(cell);
+      showToastNotification('Table column added to the right');
+    }
+
+    function deleteCurrentTableRow() {
+      const cell = window.activeTableCell;
+      if (!cell) return;
+      const tr = cell.closest('tr');
+      const table = window.activeTableElement;
+      if (!tr || !table) return;
+
+      if (table.rows.length <= 1) {
+        deleteEntireTable();
+        return;
+      }
+
+      tr.remove();
+      deselectTable();
+      handleComposeChange();
+      showToastNotification('Row deleted');
+    }
+
+    function deleteCurrentTableCol() {
+      const cell = window.activeTableCell;
+      if (!cell) return;
+      const table = window.activeTableElement;
+      if (!table) return;
+
+      const cellIndex = cell.cellIndex;
+      const rows = table.rows;
+
+      if (rows[0].children.length <= 1) {
+        deleteEntireTable();
+        return;
+      }
+
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].children[cellIndex]) {
+          rows[i].children[cellIndex].remove();
+        }
+      }
+
+      deselectTable();
+      handleComposeChange();
+      showToastNotification('Column deleted');
+    }
+
+    function deleteEntireTable() {
+      const table = window.activeTableElement;
+      if (!table) return;
+      const wrapper = table.closest('.blog-table-wrapper') || table;
+      deselectTable();
+      wrapper.remove();
+      handleComposeChange();
+      showToastNotification('Table deleted');
+    }
+
+    // -----------------------------------------------------------------------
+    // FEATURE 2: YOUTUBE VIDEO EMBEDDER
+    // -----------------------------------------------------------------------
+    function openYouTubeModal() {
+      closeAllDropdowns();
+      deselectImage();
+      deselectTable();
+
+      document.getElementById('youtubeUrlInput').value = '';
+      resetYouTubePreview();
+
+      const modal = document.getElementById('youtubeModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('youtubeUrlInput').focus();
+    }
+
+    function closeYouTubeModal() {
+      const modal = document.getElementById('youtubeModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      resetYouTubePreview();
+    }
+
+    function parseYouTubeVideoId(input) {
+      if (!input) return null;
+      input = input.trim();
+
+      const iframeMatch = input.match(/src=["'](?:https?:)?\/\/(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/i);
+      if (iframeMatch) return iframeMatch[1];
+
+      const shortMatch = input.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/i);
+      if (shortMatch) return shortMatch[1];
+
+      const fullMatch = input.match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts|live)\/|\S*?[?&]v=))([a-zA-Z0-9_-]{11})/i);
+      if (fullMatch) return fullMatch[1];
+
+      if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+
+      return null;
+    }
+
+    function handleYouTubeUrlInput(val) {
+      const videoId = parseYouTubeVideoId(val);
+      const iframe = document.getElementById('youtubePreviewIframe');
+      const emptyBox = document.getElementById('youtubePreviewEmpty');
+
+      if (videoId) {
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.classList.remove('hidden');
+        emptyBox.classList.add('hidden');
+      } else {
+        resetYouTubePreview();
+      }
+    }
+
+    function resetYouTubePreview() {
+      const iframe = document.getElementById('youtubePreviewIframe');
+      const emptyBox = document.getElementById('youtubePreviewEmpty');
+      iframe.src = '';
+      iframe.classList.add('hidden');
+      emptyBox.classList.remove('hidden');
+    }
+
+    function applyYouTubeInsert() {
+      const val = document.getElementById('youtubeUrlInput').value.trim();
+      const videoId = parseYouTubeVideoId(val);
+
+      if (!videoId) {
+        alert('Please enter a valid YouTube video link, share URL, or embed code.');
+        return;
+      }
+
+      closeYouTubeModal();
+
+      const videoHtml = `\n<div class="video-responsive-wrapper" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 18px 0; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);" contenteditable="false"><iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>\n<p><br></p>\n`;
+
+      if (currentMode === 'html') {
+        insertTextAtHtmlCursor(videoHtml);
+      } else {
+        restoreSelection();
+        document.execCommand('insertHTML', false, videoHtml);
+        handleComposeChange();
+      }
+
+      showToastNotification('YouTube Video embedded successfully!');
+    }
+
+    // -----------------------------------------------------------------------
+    // FEATURE: DYNAMIC QUIZ CARD SHORTCODE INSERTER
     // -----------------------------------------------------------------------
     function openQuizCardModal() {
       closeAllDropdowns();
       deselectImage();
+      deselectTable();
 
-      // Populate dropdown from existing localStorage quizzes if available
       const select = document.getElementById('quizCardSelectExisting');
       if (select) {
         select.innerHTML = '<option value="">-- Choose from existing quizzes or enter manually --</option>';
@@ -1713,7 +2307,6 @@
         } catch(e) {}
       }
 
-      // Initial defaults
       if (!document.getElementById('quizCardIdInput').value) {
         document.getElementById('quizCardIdInput').value = '101';
         document.getElementById('quizCardTitleInput').value = 'MPSC चालू घडामोडी सराव टेस्ट २०२६';
@@ -1774,13 +2367,13 @@
     }
 
     // -----------------------------------------------------------------------
-    // FEATURE 2: ENHANCED IMAGE HANDLER (WEB URL & LOCAL UPLOAD & INLINE CONTROLS)
+    // ENHANCED IMAGE HANDLER (WEB URL & LOCAL UPLOAD & INLINE CONTROLS)
     // -----------------------------------------------------------------------
     function openEnhancedImageModal() {
       closeAllDropdowns();
       deselectImage();
+      deselectTable();
 
-      // Reset modal inputs
       document.getElementById('imgWebUrlInput').value = '';
       document.getElementById('imgFileInput').value = '';
       document.getElementById('uploadFileInfo').classList.add('hidden');
@@ -1866,13 +2459,11 @@
         currentUploadedDataUrl = e.target.result;
         showImagePreview(currentUploadedDataUrl);
 
-        // Show file info badge
         const info = document.getElementById('uploadFileInfo');
         document.getElementById('uploadFileName').textContent = file.name;
         document.getElementById('uploadFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
         info.classList.remove('hidden');
 
-        // Autofill alt text if blank
         const altInput = document.getElementById('imgAltTextInput');
         if (!altInput.value) {
           altInput.value = file.name.replace(/\.[^.]+$/, '');
@@ -1929,7 +2520,6 @@
       closeEnhancedImageModal();
       restoreSelection();
 
-      // Build responsive styles
       let styleRules = ['max-width: 100%', 'height: auto', 'border-radius: 6px'];
       if (sizeVal !== '100%') {
         styleRules.push(`width: ${sizeVal}`);
@@ -1985,7 +2575,6 @@
       let top = window.scrollY + rect.top - 42;
       let left = window.scrollX + rect.left + (rect.width / 2) - (bubbleWidth / 2);
 
-      // Keep within viewport
       if (top < window.scrollY + 60) {
         top = window.scrollY + rect.bottom + 10;
       }
@@ -2046,7 +2635,7 @@
     }
 
     // -----------------------------------------------------------------------
-    // SHORTCODES INSERTER ([QUIZ_CARD_HERE], [MOCK_TEST_CTA], etc.)
+    // SHORTCODES INSERTER ([MOCK_TEST_CTA], etc.)
     // -----------------------------------------------------------------------
     function insertCustomShortcode(shortcode) {
       closeAllDropdowns();
@@ -2075,6 +2664,7 @@
     function openLinkModal() {
       closeAllDropdowns();
       deselectImage();
+      deselectTable();
       const sel = window.getSelection();
       let selectedText = '';
       if (sel && sel.toString().trim().length > 0) {
@@ -2135,8 +2725,8 @@
     function openPreviewModal() {
       closeAllDropdowns();
       deselectImage();
+      deselectTable();
 
-      // Ensure sync
       if (currentMode === 'html') {
         composeArea.innerHTML = htmlSourceArea.value;
       }
@@ -2149,7 +2739,6 @@
         year: 'numeric'
       });
 
-      // Prepare preview HTML with clean rendering of shortcode chips & quiz placeholders
       let previewHtml = composeArea.innerHTML;
       document.getElementById('previewBodyContent').innerHTML = previewHtml;
 
@@ -2200,7 +2789,7 @@
         img.classList.remove('active-img-selected');
       });
 
-      // 2. Convert temporary shortcode visual chips back to pure standard shortcode text [QUIZ_CARD_HERE]
+      // 2. Convert temporary shortcode visual chips back to pure standard shortcode text
       tempDiv.querySelectorAll('.shortcode-badge').forEach(badge => {
         const code = badge.getAttribute('data-shortcode') || badge.textContent.replace(/^[^\w\[]*/, '').trim();
         badge.replaceWith(document.createTextNode(code));
@@ -2225,7 +2814,6 @@
       const cleanHtml = getCleanExportHtml();
       navigator.clipboard.writeText(cleanHtml).then(() => {
         showToastNotification('Blogger HTML Code copied to clipboard!');
-        // Update copy button state
         const copyBtn = document.getElementById('copyBtnLabel');
         const originalText = copyBtn.textContent;
         copyBtn.textContent = 'Copied!';
@@ -2271,21 +2859,18 @@
       let result = '';
       let indent = '';
 
-      // Normalize line breaks & excessive spaces
       html = html.replace(/>\s*</g, '>\n<');
 
       html.split('\n').forEach(element => {
         element = element.trim();
         if (!element) return;
 
-        // Closing tag decreases indent
         if (element.match(/^<\/\w/)) {
           indent = indent.substring(tab.length);
         }
 
         result += indent + element + '\n';
 
-        // Opening tag increases indent (exclude void and self-closing tags)
         if (element.match(/^<\w[^>]*[^\/]>.*$/) && 
             !element.startsWith('<br') && 
             !element.startsWith('<hr') && 
