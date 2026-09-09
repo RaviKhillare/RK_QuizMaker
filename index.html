@@ -2976,6 +2976,89 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
             </div>
           </section>
 
+          <!-- Option 0: Blogger Compose View (Visual WYSIWYG) - Direct Paste -->
+          <section class="bg-surface-card rounded-2xl p-space-lg shadow-sm space-y-space-md mb-space-lg" style="background:#fff; border-width: 4px 1.5px 1.5px; border-style: solid; border-color: #059669 #cbd5e1 #cbd5e1; border-radius:18px; padding:24px; box-shadow: rgba(5, 150, 105, 0.12) 0px 10px 25px -5px; margin-bottom:24px;">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+              <div class="flex items-center gap-space-xs" style="display:flex; align-items:center; gap:12px;">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-[18px]" style="width:40px; height:40px; border-radius:10px; background:#059669; color:#fff; display:flex; align-items:center; justify-content:center;">
+                  <span class="material-symbols-outlined text-[22px]">content_paste_go</span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2" style="display:flex; align-items:center; gap:8px;">
+                    <h2 class="font-title-md text-title-md text-text-primary font-bold" style="font-size:18px; font-weight:700; color:#0f172a; margin:0;">
+                      Blogger Compose View (Visual Mode)
+                    </h2>
+                    <span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300" style="padding:2px 8px; border-radius:20px; background:#d1fae5; color:#065f46; font-size:11px; font-weight:700; border:1px solid #6ee7b7;">
+                      ⚡ 1-Click Direct Paste
+                    </span>
+                  </div>
+                  <p style="font-size:12px; color:#64748b; margin:2px 0 0;">ब्लॉगरमध्ये HTML कोड मोडमध्ये न जाता थेट <b>Compose View</b> (व्हिज्युअल मोड) मध्ये पेस्ट करा (फक्त Ctrl+V दाबा).</p>
+                </div>
+              </div>
+              <span class="font-label-sm text-label-sm text-emerald-800 font-mono bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg" style="font-size:12px; color:#065f46; font-family:monospace; background:#ecfdf5; padding:4px 10px; border-radius:6px; border:1px solid #a7f3d0;">
+                Mode: <strong class="text-emerald-900">Visual Compose View</strong>
+              </span>
+            </div>
+
+            <!-- Actions Bar with 2 Copy Buttons & Guidance -->
+            <div style="padding:14px 18px; border-radius:12px; background:#f0fdf4; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+              <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+                <button type="button" onclick="copyBloggerComposeCard(this)" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:10px; background:#059669; color:#fff; font-size:13px; font-weight:700; border:none; cursor:pointer; box-shadow:0 2px 6px rgba(5,150,105,0.3);" data-tooltip="Copy rich visual card for Blogger Compose View">
+                  <span class="material-symbols-outlined text-[18px]">brush</span>
+                  <span>Copy Visual Quiz Card (कार्ड कॉपी करा)</span>
+                </button>
+                <button type="button" onclick="copyBloggerComposePaper(this)" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:10px; background:#4f46e5; color:#fff; font-size:13px; font-weight:700; border:none; cursor:pointer; box-shadow:0 2px 6px rgba(79,70,229,0.3);" data-tooltip="Copy full question paper with collapsible answers">
+                  <span class="material-symbols-outlined text-[18px]">quiz</span>
+                  <span>Copy Question Paper (प्रश्नपत्रिका + उत्तरे)</span>
+                </button>
+              </div>
+              <div style="font-size:12px; color:#065f46; font-weight:600; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.85); padding:6px 12px; border-radius:8px; border:1px solid #86efac;">
+                <span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+                <span>Zero-script • Pure HTML • 100% Blogger Safe</span>
+              </div>
+            </div>
+
+            <!-- Preview & How to use in Blogger -->
+            <div class="embed-card-grid grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch w-full" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px;">
+              <!-- Left: Visual Preview of Compose Card -->
+              <div style="background:#f8fafc; border-radius:14px; padding:18px; border:1.5px solid #cbd5e1; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:12px; color:#64748b;">
+                  <span style="display:flex; align-items:center; gap:6px; color:#0f172a; font-weight:700;">
+                    <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+                    COMPOSE VIEW PREVIEW (ब्लॉगरमध्ये थेट असे दिसेल)
+                  </span>
+                  <span style="color:#059669; font-family:monospace; font-size:11px; font-weight:700;">Live Visual DOM</span>
+                </div>
+                <div id="bloggerComposePreviewBox" style="width:100%;">
+                  <!-- Dynamically rendered visual card -->
+                </div>
+              </div>
+
+              <!-- Right: Instructions Card -->
+              <div style="background:#fff; border-radius:14px; padding:18px; border:1.5px solid #cbd5e1; box-shadow:0 2px 8px rgba(15,23,42,0.04); display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+                <h4 style="font-size:15px; font-weight:700; color:#0f172a; margin:0; display:flex; align-items:center; gap:8px;">
+                  <span class="material-symbols-outlined text-[20px]" style="color:#059669;">help</span>
+                  Blogger Compose View मध्ये कसे वापरावे?
+                </h4>
+                <ol style="margin:0; padding-left:18px; font-size:12.5px; color:#334155; line-height:1.7; display:flex; flex-direction:column; gap:8px;">
+                  <li style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;">
+                    वरील <b>'Copy Visual Quiz Card'</b> किंवा <b>'Copy Question Paper'</b> बटणावर क्लिक करा.
+                  </li>
+                  <li style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;">
+                    तुमच्या Blogger डॅशबोर्डमध्ये पोस्ट उघडा. वरच्या डाव्या कोपऱ्यात <b>'Compose view'</b> (Visual Mode) चालू ठेवा. (HTML View ची अजिबात गरज नाही!)
+                  </li>
+                  <li style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;">
+                    कर्सर ठेवून फक्त <b>Ctrl + V</b> (Paste) दाबा. संपूर्ण कार्ड किंवा प्रश्नपत्रिका लगेच तयार होईल!
+                  </li>
+                </ol>
+                <div style="padding:10px 12px; border-radius:8px; background:#ecfdf5; border:1px solid #a7f3d0; font-size:12px; color:#065f46; display:flex; align-items:flex-start; gap:8px;">
+                  <span class="material-symbols-outlined text-[16px]" style="color:#059669; margin-top:2px;">tips_and_updates</span>
+                  <span>विद्यार्थी 'Start Quiz' बटणावर क्लिक करताच कोणत्याही मोबाईलवर चाचणी लगेच सुरू होईल!</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- Option 1: Interactive Scene Card (Hero Feature) -->
           <section class="bg-surface-card rounded-2xl p-space-lg shadow-sm space-y-space-md mb-space-lg" style="background:#fff; border-width: 4px 1.5px 1.5px; border-style: solid; border-color: rgb(79, 70, 229) rgb(203, 213, 225) rgb(203, 213, 225); border-radius:18px; padding:24px; box-shadow: rgba(15, 23, 42, 0.09) 0px 10px 25px -5px; margin-bottom:24px;">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
@@ -4776,6 +4859,9 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         '  <button type="button" onclick="startQuizPlayer(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-primary hover:bg-primary-dark text-on-primary shadow-xs transition-colors" style="padding:7px 10px; border-radius:8px; background:#3525cd; color:#fff; border:none; cursor:pointer;" data-tooltip="Run Test (चाचणी सुरू करा)">',
         '    <span class="material-symbols-outlined text-[18px]">play_arrow</span>',
         '  </button>',
+        '  <button type="button" onclick="copyBloggerCardForQuizId(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#ecfdf5; border:1.5px solid #a7f3d0; color:#065f46; cursor:pointer;" data-tooltip="Copy for Blogger Compose View (ब्लॉगर व्हिज्युअल कार्ड थेट कॉपी करा)">',
+        '    <span class="material-symbols-outlined text-[18px]">content_paste_go</span>',
+        '  </button>',
         '  <button type="button" onclick="openEmbedForQuiz(\'' + quiz.id + '\')" class="p-2 rounded-lg bg-surface-card hover:bg-surface-container text-text-secondary shadow-xs transition-colors" style="padding:7px; border-radius:8px; background:#fff; border:1.5px solid #cbd5e1; color:#334155; cursor:pointer;" data-tooltip="Blogger Embed Code (एम्बेड कोड)">',
         '    <span class="material-symbols-outlined text-[18px]">code</span>',
         '  </button>',
@@ -4852,6 +4938,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       '</div>' +
       '<div class="quiz-actions" style="display:flex; align-items:center; gap:6px;">' +
         '<button class="btn btn-primary btn-sm" onclick="startQuizPlayer(\'' + quiz.id + '\')" data-tooltip="Take Quiz (चाचणी द्या)"><i class="fas fa-play"></i></button>' +
+        '<button class="btn btn-outline btn-sm" style="color:#059669; border-color:#a7f3d0;" onclick="copyBloggerCardForQuizId(\'' + quiz.id + '\')" data-tooltip="Copy for Blogger Compose View (ब्लॉगर व्हिज्युअल कार्ड थेट कॉपी करा)"><i class="fas fa-paste"></i></button>' +
         '<button class="btn btn-outline btn-sm" onclick="openEmbedForQuiz(\'' + quiz.id + '\')" data-tooltip="Embed Code (एम्बेड कोड)"><i class="fas fa-code"></i></button>' +
         '<button class="btn btn-outline btn-sm" onclick="editQuizInBuilder(\'' + quiz.id + '\')" data-tooltip="Edit Quiz (संपादित करा)"><i class="fas fa-edit"></i></button>' +
         '<button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="deleteQuiz(\'' + quiz.id + '\')" data-tooltip="Delete Quiz (हटवा)"><i class="fas fa-trash"></i></button>' +
@@ -6163,6 +6250,12 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var timeText = isTimed ? (q.timeLimitMinutes + ' Mins') : 'Untimed (वेळ मर्यादा नाही)';
       var passText = (q ? (q.passingScore || 50) : 50) + '% Pass';
 
+      // 0. Update Blogger Compose View Live Preview
+      var composeBox = document.getElementById('bloggerComposePreviewBox');
+      if (composeBox && q) {
+        composeBox.innerHTML = getBloggerComposeCardHtml(q);
+      }
+
       // 1. Scene Card Snippet (Recommended for Blogger)
       var sceneCardCode = '<!-- RK QuizMaker Interactive Quiz Scene Card -->\n' +
         '<div class="rk-quiz-card" onclick="RKQuiz.open(\'' + quizId + '\')">\n' +
@@ -6321,6 +6414,165 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         showToast('Code copied to clipboard!');
         setTimeout(function () { btn.innerHTML = orig; }, 2000);
       });
+    }
+
+    // ==========================================================================
+    // BLOGGER COMPOSE VIEW (VISUAL MODE) DIRECT PASTE GENERATORS & CLIPBOARD
+    // ==========================================================================
+    function getBloggerComposeCardHtml(quiz) {
+      if (!quiz) return '';
+      var qCount = (quiz.questions || []).length;
+      var isTimed = quiz.timeLimitMinutes > 0;
+      var timeText = isTimed ? (quiz.timeLimitMinutes + ' मिनिटे') : 'वेळ मर्यादा नाही';
+      var playerUrl = 'https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + encodeURIComponent(quiz.id);
+      var category = quiz.category || 'MPSC / स्पर्धा परीक्षा सराव';
+      var title = quiz.title || 'Online Mock Quiz';
+      var desc = quiz.description || 'ही टेस्ट सोडवून स्वतःचे ज्ञान व परीक्षेची तयारी तपासा.';
+      var passScore = quiz.passingScore || 50;
+
+      return '<!-- RK QuizMaker: Blogger Compose View Ready Card -->\n' +
+        '<div style="margin:20px auto; max-width:620px; background:linear-gradient(135deg, #3525cd 0%, #1e108a 100%); border-radius:18px; padding:24px 22px; color:#ffffff; font-family:\'Mukta\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; box-shadow:0 12px 30px rgba(53,37,205,0.3); text-align:left; border:1.5px solid #4338ca; box-sizing:border-box;">\n' +
+        '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px; flex-wrap:wrap;">\n' +
+        '    <span style="background:rgba(255,255,255,0.22); color:#ffffff; font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px;">🎯 ' + escapeHtml(category) + '</span>\n' +
+        '    <span style="background:rgba(255,255,255,0.22); color:#ffffff; font-size:12px; font-weight:600; padding:4px 10px; border-radius:20px;">⏱️ ' + timeText + '</span>\n' +
+        '  </div>\n' +
+        '  <h3 style="margin:0 0 10px 0; font-size:20px; font-weight:800; color:#ffffff; line-height:1.4;">' + escapeHtml(title) + '</h3>\n' +
+        '  <p style="margin:0 0 16px 0; font-size:13.5px; color:#e0e7ff; line-height:1.6;">' + escapeHtml(desc) + '</p>\n' +
+        '  <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; font-size:12.5px; color:#c7d2fe;">\n' +
+        '    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">📝 <b>' + qCount + '</b> प्रश्न (Questions)</span>\n' +
+        '    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">⏱️ <b>' + timeText + '</b></span>\n' +
+        '    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">🏆 <b>Pass: ' + passScore + '%</b></span>\n' +
+        '  </div>\n' +
+        '  <div style="text-align:center;">\n' +
+        '    <a href="' + playerUrl + '" target="_blank" rel="noopener noreferrer" style="display:block; width:100%; box-sizing:border-box; background:#ffffff; color:#3525cd; font-size:16px; font-weight:800; padding:14px 20px; border-radius:12px; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,0.2); text-align:center;">\n' +
+        '      🚀 ऑनलाइन टेस्ट सोडवा (Start Quiz Now) &rarr;\n' +
+        '    </a>\n' +
+        '  </div>\n' +
+        '  <div style="text-align:center; margin-top:12px; font-size:11.5px; color:#a5b4fc;">\n' +
+        '    ⚡ Powered by RK QuizMaker • वेळ संपण्यापूर्वी टेस्ट सबमिट करा व निकाल पहा\n' +
+        '  </div>\n' +
+        '</div>';
+    }
+
+    function getBloggerQuestionsPaperHtml(quiz) {
+      if (!quiz) return '';
+      var qCount = (quiz.questions || []).length;
+      var playerUrl = 'https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + encodeURIComponent(quiz.id);
+      var title = quiz.title || 'Online Mock Quiz';
+      var desc = quiz.description || '';
+
+      var questionsHtml = (quiz.questions || []).map(function(q, idx) {
+        var qTitle = q.question || q.title || 'Untitled Question';
+        var opts = (q.options || []).map(function(opt, oIdx) {
+          return '<div style="font-size:13.5px; color:#334155; padding:5px 10px; border-radius:6px; background:#f8fafc; border:1px solid #e2e8f0; margin-bottom:4px;">' +
+            '<b>(' + String.fromCharCode(65 + oIdx) + ')</b> ' + escapeHtml(opt) +
+            '</div>';
+        }).join('');
+
+        var answer = q.correctAnswer || q.answer || '';
+        var explanation = q.explanation || '';
+
+        return '<div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">' +
+          '<div style="font-weight:700; font-size:15px; color:#0f172a; margin-bottom:10px;">' +
+          '<span style="color:#3525cd; margin-right:6px;">प्र. ' + (idx + 1) + '.</span> ' + escapeHtml(qTitle) +
+          '</div>' +
+          '<div style="margin-left:8px; margin-bottom:10px;">' + opts + '</div>' +
+          '<details style="margin-top:8px; font-size:13px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px 12px; cursor:pointer;">' +
+          '<summary style="font-weight:700; color:#15803d; outline:none;">🔍 योग्य उत्तर व स्पष्टीकरण (Click to Show Answer)</summary>' +
+          '<div style="margin-top:6px; color:#166534; font-size:13px; line-height:1.5;">' +
+          '<b>उत्तर:</b> ' + escapeHtml(answer || 'उत्तर उपलब्ध नाही') +
+          (explanation ? '<br><b>स्पष्टीकरण:</b> ' + escapeHtml(explanation) : '') +
+          '</div>' +
+          '</details>' +
+          '</div>';
+      }).join('');
+
+      return '<!-- RK QuizMaker: Blogger Compose View Question Paper -->\n' +
+        '<div style="margin:25px auto; max-width:680px; font-family:\'Mukta\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; color:#0f172a; line-height:1.6; text-align:left;">\n' +
+        '  <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-left:5px solid #3525cd; padding:16px 20px; border-radius:12px; margin-bottom:20px;">\n' +
+        '    <h3 style="margin:0 0 6px 0; font-size:19px; font-weight:800; color:#0f172a;">' + escapeHtml(title) + '</h3>\n' +
+        '    <p style="margin:0; font-size:13px; color:#64748b;">' + (desc ? escapeHtml(desc) + ' • ' : '') + 'एकूण प्रश्न: ' + qCount + '</p>\n' +
+        '  </div>\n' +
+        questionsHtml +
+        '  <div style="text-align:center; margin-top:20px;">\n' +
+        '    <a href="' + playerUrl + '" target="_blank" rel="noopener noreferrer" style="display:inline-block; background:#3525cd; color:#ffffff; font-size:15px; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; box-shadow:0 4px 12px rgba(53,37,205,0.3);">\n' +
+        '      ⏱️ ही संपूर्ण टेस्ट वेळेच्या मर्यादेत ऑनलाइन सोडवा &rarr;\n' +
+        '    </a>\n' +
+        '  </div>\n' +
+        '</div>';
+    }
+
+    function copyBloggerComposeCard(btn) {
+      var quizSel = document.getElementById('embed-quiz-select');
+      var quizId = quizSel ? quizSel.value : '';
+      var q = quizzes.find(function (item) { return item.id === quizId; }) || quizzes[0];
+      if (!q) return;
+      var html = getBloggerComposeCardHtml(q);
+      var plain = '🎯 ' + q.title + '\nTake online quiz: https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + q.id;
+      copyHtmlToClipboard(html, plain, 'Blogger Compose View कार्ड कॉपी झाले! ब्लॉगरमध्ये फक्त Ctrl+V दाबा.');
+    }
+
+    function copyBloggerComposePaper(btn) {
+      var quizSel = document.getElementById('embed-quiz-select');
+      var quizId = quizSel ? quizSel.value : '';
+      var q = quizzes.find(function (item) { return item.id === quizId; }) || quizzes[0];
+      if (!q) return;
+      var html = getBloggerQuestionsPaperHtml(q);
+      var plain = q.title + '\nQuestions: ' + (q.questions || []).length + '\nTake online quiz: https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + q.id;
+      copyHtmlToClipboard(html, plain, 'संपूर्ण प्रश्नपत्रिका कॉपी झाली! Blogger Compose View मध्ये फक्त Ctrl+V दाबा.');
+    }
+
+    function copyBloggerCardForQuizId(quizId) {
+      var q = quizzes.find(function (item) { return item.id === quizId; });
+      if (!q) return;
+      var html = getBloggerComposeCardHtml(q);
+      var plain = '🎯 ' + q.title + '\nTake online quiz: https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=' + q.id;
+      copyHtmlToClipboard(html, plain, 'Blogger Compose View कार्ड कॉपी झाले! ब्लॉगरमध्ये फक्त Ctrl+V दाबा.');
+    }
+
+    function copyHtmlToClipboard(htmlString, plainFallbackText, successMsg) {
+      if (navigator.clipboard && window.ClipboardItem) {
+        var htmlBlob = new Blob([htmlString], { type: 'text/html' });
+        var textBlob = new Blob([plainFallbackText || htmlString], { type: 'text/plain' });
+        navigator.clipboard.write([
+          new ClipboardItem({
+            'text/html': htmlBlob,
+            'text/plain': textBlob
+          })
+        ]).then(function () {
+          showToast(successMsg || 'Blogger Compose View साठी कॉपी झाले!');
+        }).catch(function (err) {
+          fallbackExecCopy(htmlString, successMsg);
+        });
+      } else {
+        fallbackExecCopy(htmlString, successMsg);
+      }
+    }
+
+    function fallbackExecCopy(htmlString, successMsg) {
+      var tempDiv = document.createElement('div');
+      tempDiv.contentEditable = 'true';
+      tempDiv.innerHTML = htmlString;
+      tempDiv.style.position = 'fixed';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '-9999px';
+      document.body.appendChild(tempDiv);
+      tempDiv.focus();
+      var range = document.createRange();
+      range.selectNodeContents(tempDiv);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try {
+        document.execCommand('copy');
+        showToast(successMsg || 'Blogger Compose View साठी कॉपी झाले!');
+      } catch (e) {
+        navigator.clipboard.writeText(htmlString).then(function () {
+          showToast('HTML कोड कॉपी झाला!');
+        });
+      }
+      sel.removeAllRanges();
+      document.body.removeChild(tempDiv);
     }
 
     // ==========================================================================

@@ -265,6 +265,10 @@
                 <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
                 <span class="hidden sm:inline">Save to Cloud DB</span>
               </button>
+              <button onclick="copyCurrentQuizForBloggerCompose()" class="px-3 py-2 rounded-lg text-emerald-800 bg-emerald-100 hover:bg-emerald-200 transition-all inline-flex items-center gap-1.5 shadow-sm font-semibold border border-emerald-300" type="button" data-tooltip="Copy for Blogger Compose View (ब्लॉगर व्हिज्युअल कार्ड थेट कॉपी करा)">
+                <span class="material-symbols-outlined text-[18px]">content_paste_go</span>
+                <span class="hidden sm:inline">Copy for Blogger</span>
+              </button>
             </div>
           </div>
         </div>
@@ -497,6 +501,10 @@
               <button onclick="saveQuizToDB()" class="flex-1 sm:flex-initial px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg text-on-primary bg-primary-container hover:bg-primary-dark transition-all flex items-center justify-center gap-2 shadow-md" type="button">
                 <span class="material-symbols-outlined text-[20px]">task_alt</span>
                 <span>Save Quiz to DB</span>
+              </button>
+              <button onclick="copyCurrentQuizForBloggerCompose()" class="flex-1 sm:flex-initial px-space-md py-2.5 rounded-xl font-label-lg text-label-lg text-emerald-800 bg-emerald-100 hover:bg-emerald-200 transition-all flex items-center justify-center gap-2 border border-emerald-300 shadow-sm" type="button" data-tooltip="Copy for Blogger Compose View (ब्लॉगर व्हिज्युअल कार्ड थेट कॉपी करा)">
+                <span class="material-symbols-outlined text-[20px]">content_paste_go</span>
+                <span>Copy for Blogger</span>
               </button>
             </div>
           </div>
@@ -1408,6 +1416,121 @@
         toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
         toast.classList.remove('translate-y-0', 'opacity-100');
       }, 3500);
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // BLOGGER COMPOSE VIEW (VISUAL MODE) DIRECT PASTE
+    // ══════════════════════════════════════════════════════════════
+    function copyCurrentQuizForBloggerCompose() {
+      const title = document.getElementById('quizTitleInput').value.trim() || 'Online Mock Quiz';
+      let quizId = document.getElementById('quizIdInput').value.trim();
+      if (!quizId) {
+        quizId = 'quiz_' + Date.now().toString(36);
+        document.getElementById('quizIdInput').value = quizId;
+      }
+      const category = document.getElementById('quizCategoryInput').value.trim() || 'MPSC / स्पर्धा परीक्षा';
+      const description = document.getElementById('quizDescInput').value.trim();
+      const timeLimitMinutes = parseInt(document.getElementById('quizTimerInput').value) || 0;
+      const passingScore = parseInt(document.getElementById('quizPassingScore').value) || 50;
+
+      const quizData = {
+        id: quizId,
+        title: title,
+        category: category,
+        description: description,
+        timeLimitMinutes: timeLimitMinutes,
+        passingScore: passingScore,
+        questions: currentQuestions
+      };
+
+      const html = getBloggerComposeCardHtml(quizData);
+      const plain = `🎯 ${title}\nTake online quiz: https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=${quizId}`;
+
+      copyHtmlToClipboard(html, plain, () => {
+        showToast('Blogger Compose View साठी कार्ड कॉपी झाले!', 'content_paste_go', 'ब्लॉगर पोस्टमध्ये जावून थेट Ctrl+V दाबा.');
+      });
+    }
+
+    function getBloggerComposeCardHtml(quiz) {
+      if (!quiz) return '';
+      const qCount = (quiz.questions || []).length;
+      const isTimed = quiz.timeLimitMinutes > 0;
+      const timeText = isTimed ? `${quiz.timeLimitMinutes} मिनिटे` : 'वेळ मर्यादा नाही';
+      const playerUrl = `https://ravikhillare.github.io/RK_QuizMaker/player.html?quizId=${encodeURIComponent(quiz.id)}`;
+      const category = quiz.category || 'MPSC / स्पर्धा परीक्षा';
+      const title = quiz.title || 'Online Mock Quiz';
+      const desc = quiz.description || 'ही टेस्ट सोडवून स्वतःचे ज्ञान व तयारी तपासा.';
+      const passScore = quiz.passingScore || 50;
+
+      const esc = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+      return `<!-- RK QuizMaker: Blogger Compose View Ready Card -->
+<div style="margin:20px auto; max-width:620px; background:linear-gradient(135deg, #3525cd 0%, #1e108a 100%); border-radius:18px; padding:24px 22px; color:#ffffff; font-family:'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow:0 12px 30px rgba(53,37,205,0.3); text-align:left; border:1.5px solid #4338ca; box-sizing:border-box;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+    <span style="background:rgba(255,255,255,0.22); color:#ffffff; font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px;">🎯 ${esc(category)}</span>
+    <span style="background:rgba(255,255,255,0.22); color:#ffffff; font-size:12px; font-weight:600; padding:4px 10px; border-radius:20px;">⏱️ ${timeText}</span>
+  </div>
+  <h3 style="margin:0 0 10px 0; font-size:20px; font-weight:800; color:#ffffff; line-height:1.4;">${esc(title)}</h3>
+  <p style="margin:0 0 16px 0; font-size:13.5px; color:#e0e7ff; line-height:1.6;">${esc(desc)}</p>
+  <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; font-size:12.5px; color:#c7d2fe;">
+    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">📝 <b>${qCount}</b> प्रश्न (Questions)</span>
+    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">⏱️ <b>${timeText}</b></span>
+    <span style="background:rgba(0,0,0,0.2); padding:5px 12px; border-radius:8px;">🏆 <b>Pass: ${passScore}%</b></span>
+  </div>
+  <div style="text-align:center;">
+    <a href="${playerUrl}" target="_blank" rel="noopener noreferrer" style="display:block; width:100%; box-sizing:border-box; background:#ffffff; color:#3525cd; font-size:16px; font-weight:800; padding:14px 20px; border-radius:12px; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,0.2); text-align:center;">
+      🚀 ऑनलाइन टेस्ट सोडवा (Start Quiz Now) &rarr;
+    </a>
+  </div>
+  <div style="text-align:center; margin-top:12px; font-size:11.5px; color:#a5b4fc;">
+    ⚡ Powered by RK QuizMaker • वेळ संपण्यापूर्वी टेस्ट सबमिट करा व निकाल पहा
+  </div>
+</div>`;
+    }
+
+    function copyHtmlToClipboard(htmlString, plainFallbackText, onDone) {
+      if (navigator.clipboard && window.ClipboardItem) {
+        const htmlBlob = new Blob([htmlString], { type: 'text/html' });
+        const textBlob = new Blob([plainFallbackText || htmlString], { type: 'text/plain' });
+        navigator.clipboard.write([
+          new ClipboardItem({
+            'text/html': htmlBlob,
+            'text/plain': textBlob
+          })
+        ]).then(() => {
+          if (onDone) onDone();
+        }).catch(err => {
+          fallbackExecCopy(htmlString, onDone);
+        });
+      } else {
+        fallbackExecCopy(htmlString, onDone);
+      }
+    }
+
+    function fallbackExecCopy(htmlString, onDone) {
+      const tempDiv = document.createElement('div');
+      tempDiv.contentEditable = 'true';
+      tempDiv.innerHTML = htmlString;
+      tempDiv.style.position = 'fixed';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '-9999px';
+      document.body.appendChild(tempDiv);
+      tempDiv.focus();
+      const range = document.createRange();
+      range.selectNodeContents(tempDiv);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try {
+        document.execCommand('copy');
+        if (onDone) onDone();
+      } catch (e) {
+        navigator.clipboard.writeText(htmlString).then(() => {
+          if (onDone) onDone();
+        });
+      }
+      sel.removeAllRanges();
+      document.body.removeChild(tempDiv);
     }
 
     // ══════════════════════════════════════════════════════════════
