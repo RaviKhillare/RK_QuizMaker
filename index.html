@@ -2466,7 +2466,7 @@
           <!-- Title + Tab Row -->
           <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px;">
             <h2 style="font-size:22px; font-weight:800; color:#0f172a; margin:0;">Bulk Question Import Hub</h2>
-            <div style="display:inline-flex; align-items:center; gap:5px; padding:4px; background:#f1f5f9; border:1.5px solid #cbd5e1; border-radius:12px;">
+            <div style="display:inline-flex; align-items:center; gap:5px; padding:4px; background:#f1f5f9; border:1.5px solid #cbd5e1; border-radius:12px; flex-wrap:wrap;">
               <button class="bulk-subtab-btn active" id="btn-subtab-sheets" onclick="switchBulkSubtab('sheets')"
                 style="padding:7px 14px; border-radius:8px; font-size:13px; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; background:#fff; color:#3525cd; box-shadow:0 1px 3px rgba(0,0,0,.12);">
                 <span class="material-symbols-outlined" style="font-size:17px;">table_chart</span>
@@ -2478,6 +2478,12 @@
                 <span class="material-symbols-outlined" style="font-size:17px;">text_snippet</span>
                 Plain Text Parser
                 <span style="background:#e2e8f0; color:#64748b; font-size:10px; padding:2px 6px; border-radius:10px;">Smart</span>
+              </button>
+              <button class="bulk-subtab-btn" id="btn-subtab-gform" onclick="switchBulkSubtab('gform')"
+                style="padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; color:#475569; background:transparent;">
+                <span class="material-symbols-outlined" style="font-size:17px; color:#7248b9;">dynamic_form</span>
+                Google Form (गुगल फॉर्म)
+                <span style="background:#7248b9; color:#fff; font-size:10px; padding:2px 6px; border-radius:10px; font-weight:700;">New ✨</span>
               </button>
             </div>
           </div>
@@ -2626,6 +2632,116 @@ Explanation: Dihydrogen monoxide.</pre>
                   </div>
                 </div>
               </div><!-- end subtab-text-content -->
+
+              <!-- TAB: Google Form to Quiz Converter -->
+              <div class="bulk-subtab-pane" id="subtab-gform-content" style="display:none;">
+                <div style="background:#fff; border-width:1.5px 1.5px 1.5px 5px; border-style:solid; border-color:#94a3b8 #94a3b8 #94a3b8 #7248b9; padding:20px; border-radius:16px; box-shadow:rgba(114,72,185,.12) 0 8px 24px -4px; margin-bottom:14px;">
+                  
+                  <!-- Header banner -->
+                  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <div style="width:38px; height:38px; border-radius:10px; background:#f3e8ff; color:#7248b9; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <span class="material-symbols-outlined" style="font-size:24px;">dynamic_form</span>
+                      </div>
+                      <div>
+                        <h2 style="font-size:16px; font-weight:800; color:#0f172a; margin:0; display:flex; align-items:center; gap:8px;">
+                          <span>Convert Google Form to Quiz</span>
+                          <span style="font-size:11px; font-weight:700; background:#f3e8ff; color:#7248b9; padding:2px 8px; border-radius:12px;">गुगल फॉर्मवरून क्विझ तयार करा</span>
+                        </h2>
+                        <p style="font-size:12px; color:#64748b; margin:2px 0 0 0;">
+                          कोणत्याही गुगल फॉर्मची लिंक (View किंवा Edit) पेस्ट करा. सर्व प्रश्न, पर्याय, उत्तरे आणि स्पष्टीकरण आपोआप एक्स्ट्रॅक्ट होऊन क्विझ तयार होईल.
+                        </p>
+                      </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <button type="button" onclick="insertIndexSampleGoogleForm()" style="background:#f3e8ff; color:#7248b9; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                        <span class="material-symbols-outlined" style="font-size:15px;">bolt</span>
+                        <span>Sample Form</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Input Box -->
+                  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <div style="position:relative; flex:1; min-width:280px;">
+                      <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:18px; color:#7248b9;">link</span>
+                      <input class="w-full" id="indexGoogleFormUrlInput" placeholder="Google Form URL (उदा. https://docs.google.com/forms/d/e/.../viewform किंवा https://forms.gle/...)" type="url"
+                        style="width:100%; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:10px 14px 10px 38px; font-size:13px; outline:none; box-sizing:border-box; color:#0f172a;"
+                        onkeydown="if(event.key==='Enter') handleIndexFetchGoogleForm()" />
+                    </div>
+                    <button class="shrink-0 shadow-sm" id="btnIndexFetchGoogleForm" onclick="handleIndexFetchGoogleForm()"
+                      style="padding:10px 18px; background:#7248b9; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:13.5px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; white-space:nowrap;">
+                      <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+                      <span id="btnIndexFetchGoogleFormText">⚡ Fetch &amp; Convert</span>
+                    </button>
+                  </div>
+
+                  <!-- Status -->
+                  <div id="indexGFormStatusBox" class="hidden" style="margin-top:12px; padding:10px 14px; background:#f8fafc; border-radius:8px; font-size:12.5px; border-left:3px solid #7248b9;">
+                    <div style="display:flex; align-items:center; gap:8px; color:#475569;">
+                      <span class="material-symbols-outlined text-[18px] animate-spin" style="color:#7248b9;">progress_activity</span>
+                      <span id="indexGFormStatusText">Connecting to Google Form...</span>
+                    </div>
+                  </div>
+
+                  <!-- Extracted Result Preview Box -->
+                  <div id="indexGFormResultCard" class="hidden" style="margin-top:16px; background:#faf5ff; border:1.5px solid #d8b4fe; border-radius:12px; padding:16px;">
+                    <div style="display:flex; align-items:start; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                      <div>
+                        <span style="font-size:10.5px; font-weight:800; background:#7248b9; color:#fff; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px;">Extracted Successfully</span>
+                        <h3 id="indexGFormParsedTitle" style="font-size:16px; font-weight:800; color:#1e1b4b; margin:6px 0 2px 0;"></h3>
+                        <p id="indexGFormParsedDesc" style="font-size:12px; color:#6b21a8; margin:0;"></p>
+                      </div>
+                      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <span class="badge" style="background:#fff; border:1px solid #d8b4fe; color:#7248b9; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:4px;">
+                          <span class="material-symbols-outlined" style="font-size:14px;">quiz</span>
+                          <span id="indexGFormQuestionCountPill">0 Questions</span>
+                        </span>
+                        <span class="badge" style="background:#fff; border:1px solid #d8b4fe; color:#7248b9; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:4px;">
+                          <span class="material-symbols-outlined" style="font-size:14px;">stars</span>
+                          <span id="indexGFormPointsPill">0 Points</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div style="display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:14px; flex-wrap:wrap; border-top:1px solid #e9d5ff; padding-top:12px;">
+                      <button type="button" onclick="sendIndexGFormToPreviewTable()" style="background:#fff; color:#7248b9; border:1.5px solid #7248b9; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                        <span class="material-symbols-outlined" style="font-size:16px;">preview</span>
+                        <span>Load into Preview Table Below</span>
+                      </button>
+                      <button type="button" onclick="saveIndexGFormQuizDirectly()" style="background:#7248b9; color:#fff; border:none; padding:8px 18px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(114,72,185,0.3);">
+                        <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
+                        <span>Create &amp; Save Quiz (थेट सेव्ह करा)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Manual HTML Paste Fallback Accordion -->
+                  <div style="margin-top:14px; border-top:1px dashed #cbd5e1; padding-top:10px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                      <button type="button" onclick="toggleIndexGFormHtmlFallback()" style="background:none; border:none; color:#64748b; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:0;">
+                        <span class="material-symbols-outlined" id="indexFallbackChevron" style="font-size:16px;">expand_more</span>
+                        <span>प्रॉक्सी एरर आल्यास: थेट गुगल फॉर्मचा सोर्स कोड (HTML) पेस्ट करा (Fallback)</span>
+                      </button>
+                      <span style="font-size:11px; color:#94a3b8; font-weight:600;">100% Offline Reliable</span>
+                    </div>
+                    <div id="indexGFormHtmlFallbackArea" class="hidden" style="margin-top:8px;">
+                      <p style="font-size:11.5px; color:#64748b; margin-bottom:6px;">
+                        गुगल फॉर्म ब्राऊजरमध्ये उघडा &rarr; उजवा क्लिक करून <b>View Page Source (Ctrl+U)</b> करा &rarr; सर्व कोड कॉपी (Ctrl+A &amp; Ctrl+C) करून खाली पेस्ट करा:
+                      </p>
+                      <textarea id="indexGFormRawHtmlInput" rows="4" placeholder="Paste Google Form HTML source code here..." style="width:100%; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px 10px; font-size:11.5px; font-family:monospace; box-sizing:border-box; outline:none; resize:vertical;"></textarea>
+                      <div style="display:flex; justify-content:flex-end; margin-top:6px;">
+                        <button type="button" onclick="handleIndexParseGFormHtmlDirect()" style="background:#475569; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+                          <span class="material-symbols-outlined" style="font-size:15px;">code</span>
+                          <span>Parse Source HTML</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div><!-- end subtab-gform-content -->
 
               <!-- Parsed Questions Preview Table -->
               <div id="bulk-preview-container" style="display:none; background:#fff;border-width:4px 1.5px 1.5px;border-style:solid;border-color:#10b981 #94a3b8 #94a3b8;padding:20px;border-radius:16px;box-shadow:rgba(15,23,42,.1) 0 10px 24px -4px;">
@@ -5354,10 +5470,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       switchView('quizzes');
     }
 
-    // ─── SWITCH BULK SUBTAB (2 tabs now, no chatgpt) ──────────────────────────
+    // ─── SWITCH BULK SUBTAB (Sheets, Text, Google Form) ──────────────────────────
     function switchBulkSubtab(tabName) {
       document.querySelectorAll('.bulk-subtab-btn').forEach(function (btn) {
         btn.classList.remove('active');
+        btn.style.background = 'transparent';
+        btn.style.color = '#475569';
+        btn.style.boxShadow = 'none';
       });
       document.querySelectorAll('.bulk-subtab-pane').forEach(function (pane) {
         pane.style.display = 'none';
@@ -5365,8 +5484,238 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
       var activeBtn = document.getElementById('btn-subtab-' + tabName);
       var activePane = document.getElementById('subtab-' + tabName + '-content');
-      if (activeBtn) activeBtn.classList.add('active');
-      if (activePane) activePane.style.display = 'block';
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.style.background = '#fff';
+        activeBtn.style.color = (tabName === 'gform') ? '#7248b9' : '#3525cd';
+        activeBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,.12)';
+      }
+      if (activePane) activePane.style.display = (tabName === 'sheets') ? 'flex' : 'block';
+    }
+
+    // ─── GOOGLE FORM CONVERTER IN MAIN INDEX.HTML ──────────────────────────────
+    var indexParsedGFormQuiz = null;
+
+    function insertIndexSampleGoogleForm() {
+      var inp = document.getElementById('indexGoogleFormUrlInput');
+      if (inp) inp.value = 'https://docs.google.com/forms/d/e/1FAIpQLScSampleMPSCQuiz2025/viewform';
+      indexParsedGFormQuiz = {
+        id: 'quiz_' + Date.now().toString(36),
+        title: 'MPSC राज्यसेवा & संयुक्त पूर्वपरीक्षा Mock Quiz',
+        description: 'Google Forms मधून आयात केलेले सराव प्रश्नसंच.',
+        category: 'Google Forms',
+        timeLimitMinutes: 15,
+        passingScore: 60,
+        shuffleQuestions: false,
+        showAnswers: true,
+        allowRetake: true,
+        questions: [
+          {
+            id: 'q_igf_' + Date.now() + '_1',
+            question: 'भारतातील सर्वात उंच शिखर कोणते आहे?',
+            type: 'MCQ',
+            options: ['के२ (गॉडविन ऑस्टिन)', 'कांचनगंगा', 'नंदा देवी', 'धौलागिरी'],
+            correctAnswer: 'के२ (गॉडविन ऑस्टिन)',
+            points: 1,
+            explanation: 'के२ (गॉडविन ऑस्टिन) हे पाकव्याप्त काश्मीरमध्ये असून भारताचे सर्वोच्च शिखर मानले जाते (८,६११ मी.).'
+          },
+          {
+            id: 'q_igf_' + Date.now() + '_2',
+            question: 'खालीलपैकी कोणत्या नद्या पश्चिमवाहिनी आहेत?',
+            type: 'CHECKBOX',
+            options: ['नर्मदा', 'तापी', 'गोदावरी', 'कृष्णा'],
+            correctAnswer: 'नर्मदा, तापी',
+            points: 2,
+            explanation: 'नर्मदा आणि तापी या नद्या खचदरीतून पश्चिमेकडे वाहतात.'
+          },
+          {
+            id: 'q_igf_' + Date.now() + '_3',
+            question: 'सत्यशोधक समाजाची स्थापना कोणी केली होती?',
+            type: 'SHORT_ANSWER',
+            options: [],
+            correctAnswer: 'महात्मा ज्योतिराव फुले',
+            points: 1,
+            explanation: '२४ सप्टेंबर १८७३ रोजी महात्मा ज्योतिराव फुले यांनी सत्यशोधक समाजाची स्थापना केली.'
+          }
+        ]
+      };
+      renderIndexGFormResult(indexParsedGFormQuiz);
+      showToast('Sample Google Form questions loaded!');
+    }
+
+    function handleIndexFetchGoogleForm() {
+      var inp = document.getElementById('indexGoogleFormUrlInput');
+      var url = inp ? inp.value.trim() : '';
+      if (!url) {
+        alert('कृपया गुगल फॉर्मची लिंक टाका (Please enter a Google Form URL).');
+        if (inp) inp.focus();
+        return;
+      }
+
+      var statusBox = document.getElementById('indexGFormStatusBox');
+      var statusText = document.getElementById('indexGFormStatusText');
+      var btn = document.getElementById('btnIndexFetchGoogleForm');
+      var btnText = document.getElementById('btnIndexFetchGoogleFormText');
+
+      if (statusBox) statusBox.classList.remove('hidden');
+      if (statusBox) statusBox.style.borderLeftColor = '#7248b9';
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = 'Fetching...';
+
+      if (!window.GoogleFormParser) {
+        alert('Google Form Parser engine is still loading. Please try in a moment.');
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = '⚡ Fetch & Convert';
+        return;
+      }
+
+      window.GoogleFormParser.convertGoogleFormToQuiz(url, function(step, msg) {
+        if (statusText) statusText.textContent = msg;
+      })
+      .then(function(quiz) {
+        if (statusBox) statusBox.classList.add('hidden');
+        indexParsedGFormQuiz = quiz;
+        renderIndexGFormResult(quiz);
+        sendIndexGFormToPreviewTable();
+        showToast('🎉 गुगल फॉर्ममधून ' + quiz.questions.length + ' प्रश्न यशस्वीरीत्या आयात केले!');
+      })
+      .catch(function(err) {
+        console.error('Index Google Form Import Error:', err);
+        if (statusBox) {
+          statusBox.classList.remove('hidden');
+          statusBox.style.borderLeftColor = '#ef4444';
+          if (statusText) {
+            statusText.innerHTML = '<span style="color:#b91c1c; font-weight:700;">एरर:</span> ' + escapeHtml(err.message);
+          }
+        }
+        var fallbackArea = document.getElementById('indexGFormHtmlFallbackArea');
+        if (fallbackArea && fallbackArea.classList.contains('hidden')) {
+          toggleIndexGFormHtmlFallback();
+        }
+      })
+      .finally(function() {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = '⚡ Fetch & Convert';
+      });
+    }
+
+    function handleIndexParseGFormHtmlDirect() {
+      var ta = document.getElementById('indexGFormRawHtmlInput');
+      var html = ta ? ta.value.trim() : '';
+      if (!html) {
+        alert('कृपया गुगल फॉर्मचा HTML कोड पेस्ट करा.');
+        return;
+      }
+
+      try {
+        if (!window.GoogleFormParser) throw new Error('Google Form Parser not loaded.');
+        var parsed = window.GoogleFormParser.parseGoogleFormHtml(html);
+        var quiz = {
+          id: 'quiz_' + Date.now().toString(36),
+          title: parsed.title || 'Google Form Quiz',
+          description: parsed.description || ('Imported on ' + new Date().toLocaleDateString()),
+          category: 'Google Forms',
+          timeLimitMinutes: Math.max(10, Math.ceil(parsed.questions.length * 1.5)),
+          passingScore: 60,
+          shuffleQuestions: false,
+          showAnswers: true,
+          allowRetake: true,
+          questions: parsed.questions
+        };
+
+        indexParsedGFormQuiz = quiz;
+        renderIndexGFormResult(quiz);
+        sendIndexGFormToPreviewTable();
+        showToast('HTML वरून ' + quiz.questions.length + ' प्रश्न यशस्वीरीत्या प्राप्त केले!');
+      } catch (err) {
+        alert('HTML पार्सिंग एरर: ' + err.message);
+      }
+    }
+
+    function renderIndexGFormResult(quiz) {
+      var card = document.getElementById('indexGFormResultCard');
+      var titleEl = document.getElementById('indexGFormParsedTitle');
+      var descEl = document.getElementById('indexGFormParsedDesc');
+      var countPill = document.getElementById('indexGFormQuestionCountPill');
+      var ptsPill = document.getElementById('indexGFormPointsPill');
+
+      if (titleEl) titleEl.textContent = quiz.title || 'Untitled Google Form Quiz';
+      if (descEl) descEl.textContent = quiz.description || 'Imported from Google Forms.';
+      if (countPill) countPill.textContent = quiz.questions.length + ' Questions';
+
+      var totalPoints = quiz.questions.reduce(function(sum, q) { return sum + (Number(q.points) || 1); }, 0);
+      if (ptsPill) ptsPill.textContent = totalPoints + ' Points';
+
+      if (card) card.classList.remove('hidden');
+    }
+
+    function sendIndexGFormToPreviewTable() {
+      if (!indexParsedGFormQuiz || !indexParsedGFormQuiz.questions) return;
+      var qList = indexParsedGFormQuiz.questions.map(function(q) {
+        return {
+          question: q.question || q.title || 'Untitled Question',
+          type: q.type || 'MCQ',
+          options: Array.isArray(q.options) ? q.options : [],
+          correctAnswer: q.correctAnswer || q.answer || (q.options ? q.options[0] : ''),
+          points: Number(q.points) || 1,
+          explanation: q.explanation || ''
+        };
+      });
+      renderBulkPreviewCards(qList);
+      var previewCont = document.getElementById('bulk-preview-container');
+      if (previewCont) {
+        previewCont.style.display = 'block';
+        previewCont.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function saveIndexGFormQuizDirectly() {
+      if (!indexParsedGFormQuiz || !indexParsedGFormQuiz.questions) {
+        alert('आधी गुगल फॉर्म फेच करा.');
+        return;
+      }
+      var newQ = {
+        id: indexParsedGFormQuiz.id || ('quiz_' + Date.now().toString(36)),
+        title: indexParsedGFormQuiz.title || 'Google Form Quiz',
+        description: indexParsedGFormQuiz.description || 'Imported from Google Forms.',
+        category: 'Google Forms',
+        timeLimitMinutes: indexParsedGFormQuiz.timeLimitMinutes || 15,
+        passingScore: indexParsedGFormQuiz.passingScore || 60,
+        allowRetake: true,
+        showAnswers: true,
+        shuffleQuestions: false,
+        questions: indexParsedGFormQuiz.questions.map(function(q, i) {
+          return {
+            id: 'q_' + Date.now().toString(36) + '_' + i,
+            question: q.question || q.title || 'Untitled Question',
+            type: q.type || 'MCQ',
+            options: Array.isArray(q.options) ? q.options : [],
+            correctAnswer: q.correctAnswer || q.answer || '',
+            points: Number(q.points) || 1,
+            explanation: q.explanation || ''
+          };
+        })
+      };
+
+      quizzes.unshift(newQ);
+      showToast('🎉 "' + newQ.title + '" क्विझ यशस्वीरीत्या सेव्ह झाले!');
+      saveState();
+      renderAllViews();
+      switchView('quizzes');
+    }
+
+    function toggleIndexGFormHtmlFallback() {
+      var area = document.getElementById('indexGFormHtmlFallbackArea');
+      var chevron = document.getElementById('indexFallbackChevron');
+      if (!area) return;
+      var isHidden = area.classList.contains('hidden');
+      if (isHidden) {
+        area.classList.remove('hidden');
+        if (chevron) chevron.textContent = 'expand_less';
+      } else {
+        area.classList.add('hidden');
+        if (chevron) chevron.textContent = 'expand_more';
+      }
     }
 
     // ─── TYPE-SPECIFIC CSV TEMPLATE DOWNLOAD ──────────────────────────────────
@@ -7821,6 +8170,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       visualCanvasElement.addEventListener('paste', handleSmartPaste);
     }
   </script>
+  <script src="google-form-parser.js"></script>
   <script src="shared-ui.js"></script>
   <script>
 
