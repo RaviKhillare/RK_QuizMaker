@@ -676,13 +676,13 @@ var RK_DB_PROP_KEY = 'RK_QUIZMAKER_DB_ID';
 function doGet(e) {
   e = e || { parameter: {} };
   var quizId = e.parameter.quizId || e.parameter.id;
-  var apiAction = e.parameter.api;
+  var apiAction = e.parameter.api || e.parameter.action;
   
   // CORS & API Endpoints
   if (apiAction === 'getQuiz') {
-    return createJsonResponse(getQuiz(quizId, false));
-  } else if (apiAction === 'listQuizzes') {
-    return createJsonResponse(listQuizzes());
+    return createJsonResponse(getQuiz(quizId, true));
+  } else if (apiAction === 'listQuizzes' || apiAction === 'getAllQuizzes') {
+    return createJsonResponse(getAllQuizzesWithQuestions());
   } else if (apiAction === 'getPollResults') {
     var qId = e.parameter.questionId;
     return createJsonResponse(getPollResults(quizId, qId));
@@ -740,6 +740,8 @@ function doPost(e) {
       result = submitPollVote(data.quizId, data.questionId, data.selectedOption);
     } else if (action === 'saveQuiz') {
       result = saveQuiz(data.quiz);
+    } else if (action === 'syncAllQuizzes' || action === 'saveAllQuizzes') {
+      result = syncAllQuizzes(data.quizzes || data.quizzesList);
     } else if (action === 'deleteQuiz') {
       result = deleteQuiz(data.quizId);
     } else if (action === 'bulkImport') {
@@ -891,6 +893,87 @@ function listQuizzes() {
   }
   
   return quizzes;
+}
+
+/**
+ * Returns all quizzes with their full questions array for cross-PC sync
+ */
+function getAllQuizzesWithQuestions() {
+  var ss = getOrCreateDatabaseSpreadsheet();
+  var quizSheet = ss.getSheetByName('Quizzes');
+  var qSheet = ss.getSheetByName('Questions');
+  
+  var quizData = quizSheet.getDataRange().getValues();
+  if (quizData.length < 2) return [];
+  
+  var qMap = {};
+  var questionsData = qSheet.getDataRange().getValues();
+  for (var i = 1; i < questionsData.length; i++) {
+    var qRow = questionsData[i];
+    var qQuizId = String(qRow[0]);
+    if (!qMap[qQuizId]) qMap[qQuizId] = [];
+    
+    var options = [];
+    try {
+      options = JSON.parse(qRow[4] || '[]');
+    } catch(e) {
+      options = String(qRow[4] || '').split(',').map(function(s){ return s.trim(); });
+    }
+    
+    qMap[qQuizId].push({
+      quizId: qQuizId,
+      questionId: String(qRow[1]),
+      type: String(qRow[2]).toUpperCase(),
+      question: qRow[3] || '',
+      options: options,
+      correctAnswer: qRow[5],
+      points: Number(qRow[6]) || 1,
+      explanation: qRow[7] || '',
+      orderIndex: Number(qRow[8]) || i
+    });
+  }
+  
+  var fullQuizzes = [];
+  for (var r = 1; r < quizData.length; r++) {
+    var row = quizData[r];
+    if (!row[0]) continue;
+    var qId = String(row[0]);
+    var qs = qMap[qId] || [];
+    qs.sort(function(a, b) { return a.orderIndex - b.orderIndex; });
+    
+    fullQuizzes.push({
+      id: qId,
+      title: row[1] || 'Untitled Quiz',
+      description: row[2] || '',
+      timeLimitMinutes: Number(row[3]) || 0,
+      passingScore: Number(row[4]) || 50,
+      allowRetake: Boolean(row[5]),
+      showAnswers: Boolean(row[6]),
+      shuffleQuestions: Boolean(row[7]),
+      createdAt: row[8] || '',
+      status: row[9] || 'ACTIVE',
+      questionCount: qs.length,
+      questions: qs
+    });
+  }
+  return fullQuizzes;
+}
+
+/**
+ * Syncs an entire array of quizzes and questions to Google Sheets in one batch
+ */
+function syncAllQuizzes(quizzesList) {
+  if (!quizzesList || !Array.isArray(quizzesList)) {
+    throw new Error('quizzes array is required for syncAllQuizzes');
+  }
+  var saved = 0;
+  for (var i = 0; i < quizzesList.length; i++) {
+    if (quizzesList[i]) {
+      saveQuiz(quizzesList[i]);
+      saved++;
+    }
+  }
+  return { success: true, count: saved, time: new Date().toISOString() };
 }
 
 /**

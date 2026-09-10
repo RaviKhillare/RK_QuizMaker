@@ -1979,6 +1979,9 @@
       </div>
 
       <div class="header-actions">
+        <button class="btn btn-sm" id="btn-top-cloud-sync" onclick="syncAllQuizzesToCloud()" style="display:inline-flex; align-items:center; gap:6px; background:#059669; color:#fff; font-weight:700; border:none; cursor:pointer; padding:6px 12px; border-radius:8px; box-shadow:0 1px 3px rgba(5,150,105,0.3);" data-tooltip="१-क्लिक सर्व डेटा Google Sheets वर सिंक करा">
+          <i class="fas fa-cloud-upload-alt"></i> <span class="hidden sm:inline">1-Click Sync</span>
+        </button>
         <div class="cloud-pill" id="db-status-pill" onclick="openPcSyncTransferModal()" style="cursor:pointer;" data-tooltip="क्लिक करा: डेटा स्टोरेज व दुसऱ्या PC वर ट्रान्सफर पर्याय">
           <i class="fas fa-laptop text-amber-500"></i> <span id="db-status-text">Local (This PC Only)</span>
         </div>
@@ -2355,16 +2358,69 @@
           </div>
         </div>
 
+        <!-- Live Cloud Database & Sync Status Card -->
+        <div id="cloudSyncStatusCard" style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:16px 20px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #f1f5f9;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div id="cloudStatusIconBox" style="width:40px; height:40px; border-radius:10px; background:#ecfdf5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                <i class="fas fa-cloud"></i>
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <h4 style="margin:0; font-size:15px; font-weight:800; color:#0f172a;">Google Sheets क्लाउड डेटाबेस (Cloud Database)</h4>
+                  <span id="cloudStatusBadge" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0;">
+                    <i class="fas fa-circle text-[8px]"></i> कनेक्टेड
+                  </span>
+                </div>
+                <p id="cloudDatabaseNameText" style="margin:2px 0 0; font-size:12px; color:#64748b;">
+                  Database: <strong>RK_QuizMaker_Master_Database.gsheet</strong>
+                </p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm" id="btnMainCloudSync" onclick="syncAllQuizzesToCloud()" style="background:#059669; color:#fff; font-weight:700; border:none; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-cloud-upload-alt"></i> <span>1-Click Cloud Sync (क्लाउडवर पाठवा)</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" id="btnMainCloudPull" onclick="fetchQuizzesFromCloud()" style="border-color:#2563eb; color:#2563eb; font-weight:700; background:#eff6ff; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-cloud-download-alt"></i> <span>क्लाउडवरून आणा (Pull)</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="openPcSyncTransferModal()" style="font-weight:600; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-sliders-h"></i> <span>सेटिंग्ज</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Statistics Row -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; font-size:12.5px;">
+            <div style="background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #f1f5f9;">
+              <span style="color:#64748b; font-size:11.5px; display:block;">स्थानिक संगणकावर (This PC)</span>
+              <strong id="statLocalQuizCount" style="font-size:15px; color:#0f172a;">--</strong>
+            </div>
+            <div style="background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #f1f5f9;">
+              <span style="color:#64748b; font-size:11.5px; display:block;">क्लाउडवर सिंक झालेले</span>
+              <strong id="statCloudQuizCount" style="font-size:15px; color:#059669;">--</strong>
+            </div>
+            <div style="background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #f1f5f9;">
+              <span style="color:#64748b; font-size:11.5px; display:block;">शेवटचा सिंक वेळ (Last Sync)</span>
+              <strong id="statLastSyncTime" style="font-size:13.5px; color:#334155;">कधीही नाही</strong>
+            </div>
+            <div style="background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #f1f5f9;">
+              <span style="color:#64748b; font-size:11.5px; display:block;">सिंक स्थिती (Status)</span>
+              <strong id="statLiveSyncStatus" style="font-size:13px; color:#059669;">तयार (Ready)</strong>
+            </div>
+          </div>
+        </div>
+
         <!-- Storage Context Hint Banner -->
         <div id="localStorageInfoBanner" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 16px; border-radius:12px; background:#fffbeb; border:1.5px solid #fde68a; font-size:12.5px; color:#92400e; margin-bottom:16px;">
           <div style="display:flex; align-items:center; gap:10px;">
             <span class="material-symbols-outlined text-[22px] text-amber-600">devices</span>
             <div>
-              <b>महत्त्वाची माहिती:</b> हे क्विझेस सध्या फक्त या कॉम्प्युटरच्या ब्राउझरमध्ये सेव्ह आहेत. दुसऱ्या PC वर काम करण्यासाठी <b>'Sync &amp; PC Transfer'</b> वरून १-क्लिक बॅकअप फाईल डाऊनलोड करा किंवा Google Sheets ऑटो-सिंक कनेक्ट करा.
+              <b>महत्त्वाची माहिती:</b> हे क्विझेस सध्या फक्त या कॉम्प्युटरच्या ब्राउझरमध्ये सेव्ह आहेत. दुसऱ्या PC वर काम करण्यासाठी <b>'1-Click Cloud Sync'</b> वरून Google Sheets मध्ये सिंक करा किंवा <b>'Sync &amp; PC Transfer'</b> वरून बॅकअप फाईल डाऊनलोड करा.
             </div>
           </div>
           <button onclick="openPcSyncTransferModal()" style="padding:6px 14px; border-radius:8px; background:#d97706; color:#fff; font-size:12px; font-weight:700; border:none; cursor:pointer; white-space:nowrap;">
-            दुसऱ्या PC वर न्या &rarr;
+            सेटिंग्ज &rarr;
           </button>
         </div>
 
@@ -8918,30 +8974,284 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       closePcSyncTransferModal();
     }
 
+    function formatLastSyncTime(isoStr) {
+      if (!isoStr) return 'अद्याप नाही (Never)';
+      try {
+        var d = new Date(isoStr);
+        if (isNaN(d.getTime())) return 'अद्याप नाही (Never)';
+        var now = new Date();
+        var isToday = (d.toDateString() === now.toDateString());
+        var timePart = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+        if (isToday) {
+          return 'आज, ' + timePart;
+        }
+        var datePart = d.toLocaleDateString([], { day: 'numeric', month: 'short' });
+        return datePart + ', ' + timePart;
+      } catch(e) {
+        return 'अद्याप नाही';
+      }
+    }
+
     function updateDbStatusPill() {
       var pill = document.getElementById('db-status-pill');
-      if (!pill) return;
       var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
       var hasCloud = cloudUrl && cloudUrl.indexOf('http') === 0 && cloudUrl.indexOf('SAMPLE_') === -1;
+      var lastSyncStr = localStorage.getItem('rk_last_cloud_sync_time') || '';
+      var syncedCount = localStorage.getItem('rk_cloud_synced_count') || '';
+      var totalLocal = (quizzes || []).length;
+      var formattedTime = formatLastSyncTime(lastSyncStr);
+
+      if (pill) {
+        if (hasCloud) {
+          var syncSnippet = lastSyncStr ? ' • Last: ' + formattedTime : '';
+          pill.innerHTML = '<i class="fas fa-check-circle text-emerald-500"></i> <span>Google Sheets (' + (syncedCount || totalLocal) + ' Qs)' + syncSnippet + '</span>';
+          pill.style.background = '#ecfdf5';
+          pill.style.color = '#065f46';
+          pill.style.border = '1.5px solid #a7f3d0';
+          pill.setAttribute('data-tooltip', 'Google Sheets Cloud Database Connected • Click for Sync Options');
+        } else {
+          pill.innerHTML = '<i class="fas fa-laptop text-amber-500"></i> <span>Local (' + totalLocal + ' Quizzes) • Click to Cloud Sync</span>';
+          pill.style.background = '#fffbeb';
+          pill.style.color = '#92400e';
+          pill.style.border = '1.5px solid #fde68a';
+          pill.setAttribute('data-tooltip', 'डेटा फक्त या संगणकावर आहे. Google Sheets क्लाउड सिंकसाठी क्लिक करा.');
+        }
+      }
+
+      // Update Cloud Sync Status Card
+      var iconBox = document.getElementById('cloudStatusIconBox');
+      var badge = document.getElementById('cloudStatusBadge');
+      var nameText = document.getElementById('cloudDatabaseNameText');
+      var statLocal = document.getElementById('statLocalQuizCount');
+      var statCloud = document.getElementById('statCloudQuizCount');
+      var statTime = document.getElementById('statLastSyncTime');
+      var statLive = document.getElementById('statLiveSyncStatus');
+
+      var totalQuestions = 0;
+      (quizzes || []).forEach(function(q) { totalQuestions += (q.questions || []).length; });
+
+      if (statLocal) statLocal.textContent = totalLocal + ' क्विझेस (' + totalQuestions + ' प्रश्न)';
+      if (statCloud) statCloud.textContent = hasCloud ? (syncedCount ? syncedCount + ' क्विझेस' : totalLocal + ' क्विझेस (तयार)') : '० (Not Synced)';
+      if (statTime) statTime.textContent = formattedTime;
 
       if (hasCloud) {
-        pill.innerHTML = '<i class="fas fa-check-circle text-emerald-500"></i> Google Sheets Synced';
-        pill.style.background = '#ecfdf5';
-        pill.style.color = '#065f46';
-        pill.style.border = '1.5px solid #a7f3d0';
-        pill.setAttribute('data-tooltip', 'Google Sheets Cloud Database Connected & Synced');
+        if (iconBox) {
+          iconBox.style.background = '#ecfdf5';
+          iconBox.style.color = '#059669';
+          iconBox.innerHTML = '<i class="fas fa-cloud"></i>';
+        }
+        if (badge) {
+          badge.style.background = '#ecfdf5';
+          badge.style.color = '#065f46';
+          badge.style.borderColor = '#a7f3d0';
+          badge.innerHTML = '<i class="fas fa-circle text-[8px] text-emerald-500"></i> क्लाउड कनेक्टेड (Active)';
+        }
+        if (nameText) {
+          nameText.innerHTML = 'Database: <strong>RK_QuizMaker_Master_Database.gsheet</strong> • Cloud URL: <span style="font-family:monospace; font-size:11px; color:#475569;">' + escapeHtml(cloudUrl.slice(0, 38)) + '...</span>';
+        }
+        if (statLive) statLive.innerHTML = '<span style="color:#059669;"><i class="fas fa-check-circle"></i> सिंक चालू आहे (Connected)</span>';
       } else {
-        pill.innerHTML = '<i class="fas fa-laptop text-amber-500"></i> Local Storage (This PC)';
-        pill.style.background = '#fffbeb';
-        pill.style.color = '#92400e';
-        pill.style.border = '1.5px solid #fde68a';
-        pill.setAttribute('data-tooltip', 'डेटा फक्त या कॉम्प्युटरच्या ब्राउझरमध्ये सेव्ह आहे. दुसऱ्या PC वर नेण्यासाठी क्लिक करा.');
+        if (iconBox) {
+          iconBox.style.background = '#fffbeb';
+          iconBox.style.color = '#d97706';
+          iconBox.innerHTML = '<i class="fas fa-laptop"></i>';
+        }
+        if (badge) {
+          badge.style.background = '#fffbeb';
+          badge.style.color = '#92400e';
+          badge.style.borderColor = '#fde68a';
+          badge.innerHTML = '<i class="fas fa-circle text-[8px] text-amber-500"></i> स्थानिक मोड (Offline Local PC)';
+        }
+        if (nameText) {
+          nameText.innerHTML = 'Google Sheets URL जोडलेली नाही. डेटा फक्त या कॉम्प्युटरच्या ब्राउझरमध्ये सेव्ह आहे.';
+        }
+        if (statLive) statLive.innerHTML = '<span style="color:#b45309;"><i class="fas fa-exclamation-circle"></i> क्लाउड सिंक बंद (Offline)</span>';
       }
 
       var banner = document.getElementById('localStorageInfoBanner');
       if (banner) {
         banner.style.display = hasCloud ? 'none' : 'flex';
       }
+    }
+
+    function syncAllQuizzesToCloud() {
+      var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
+      var hasCloud = cloudUrl && cloudUrl.indexOf('http') === 0 && cloudUrl.indexOf('SAMPLE_') === -1;
+      
+      if (!hasCloud) {
+        if (confirm('Google Sheets क्लाउड सिंक सुरू करण्यासाठी तुमचा Google Apps Script Web App URL सेट करणे आवश्यक आहे.\n\nआता सेटिंग्ज उघडायच्या का?')) {
+          openPcSyncTransferModal();
+        }
+        return;
+      }
+
+      var allQuizzes = (quizzes || []).slice();
+      try {
+        var v2 = JSON.parse(localStorage.getItem('rk_quizzes_v2') || '[]');
+        if (Array.isArray(v2)) {
+          v2.forEach(function(item) {
+            if (!allQuizzes.find(function(q) { return q.id === item.id; })) allQuizzes.push(item);
+          });
+        }
+      } catch(e) {}
+
+      if (allQuizzes.length === 0) {
+        alert('सिंक करण्यासाठी एकही क्विझ उपलब्ध नाही.');
+        return;
+      }
+
+      var syncBtns = [document.getElementById('btnMainCloudSync'), document.getElementById('btn-top-cloud-sync'), document.getElementById('btnModalCloudSync')];
+      syncBtns.forEach(function(b) {
+        if (b) {
+          b.disabled = true;
+          b.dataset.origHtml = b.innerHTML;
+          b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>सिंक होत आहे...</span>';
+        }
+      });
+
+      var statusEl = document.getElementById('statLiveSyncStatus');
+      if (statusEl) {
+        statusEl.innerHTML = '<span style="color:#d97706;"><i class="fas fa-spinner fa-spin"></i> सिंक प्रगतीपथावर आहे...</span>';
+      }
+
+      showToast('⏳ ' + allQuizzes.length + ' क्विझेस Google Sheets क्लाउडवर पाठवत आहे...');
+
+      var batchPayload = {
+        action: 'syncAllQuizzes',
+        quizzes: allQuizzes,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(cloudUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(batchPayload)
+      }).then(function() {
+        allQuizzes.forEach(function(q, idx) {
+          setTimeout(function() {
+            try {
+              fetch(cloudUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'saveQuiz', quiz: q })
+              }).catch(function() {});
+            } catch(e) {}
+          }, idx * 100);
+        });
+
+        var now = new Date();
+        localStorage.setItem('rk_last_cloud_sync_time', now.toISOString());
+        localStorage.setItem('rk_cloud_synced_count', String(allQuizzes.length));
+
+        setTimeout(function() {
+          syncBtns.forEach(function(b) {
+            if (b) {
+              b.disabled = false;
+              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+            }
+          });
+
+          updateDbStatusPill();
+          showToast('🎉 सर्व ' + allQuizzes.length + ' क्विझेस Google Sheets क्लाउडमध्ये यशस्वीरीत्या सिंक झाले!');
+        }, 1200);
+
+      }).catch(function(err) {
+        syncBtns.forEach(function(b) {
+          if (b) {
+            b.disabled = false;
+            if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+          }
+        });
+        if (statusEl) statusEl.innerHTML = '<span style="color:#ef4444;">सिंक अयशस्वी</span>';
+        alert('क्लाउड सिंक करताना अडचण आली: ' + err.message + '\nवेब अ‍ॅप URL बरोबर असल्याची खात्री करा.');
+      });
+    }
+
+    function fetchQuizzesFromCloud() {
+      var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
+      var hasCloud = cloudUrl && cloudUrl.indexOf('http') === 0 && cloudUrl.indexOf('SAMPLE_') === -1;
+      
+      if (!hasCloud) {
+        if (confirm('Google Sheets वरून डेटा आणण्यासाठी तुमचा Google Apps Script Web App URL सेट करणे आवश्यक आहे.\n\nआता सेटिंग्ज उघडायच्या का?')) {
+          openPcSyncTransferModal();
+        }
+        return;
+      }
+
+      var pullBtns = [document.getElementById('btnMainCloudPull'), document.getElementById('btnModalCloudPull')];
+      pullBtns.forEach(function(b) {
+        if (b) {
+          b.disabled = true;
+          b.dataset.origHtml = b.innerHTML;
+          b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>डाऊनलोड होत आहे...</span>';
+        }
+      });
+
+      showToast('⏳ Google Sheets वरून क्विझेस शोधत आहे...');
+
+      var fetchUrl = cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=getAllQuizzes';
+
+      fetch(fetchUrl)
+        .then(function(res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function(cloudList) {
+          if (!Array.isArray(cloudList) || cloudList.length === 0) {
+            return fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=listQuizzes')
+              .then(function(r) { return r.json(); });
+          }
+          return cloudList;
+        })
+        .then(function(cloudList) {
+          pullBtns.forEach(function(b) {
+            if (b) {
+              b.disabled = false;
+              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+            }
+          });
+
+          if (!Array.isArray(cloudList) || cloudList.length === 0) {
+            alert('Google Sheets मध्ये सध्या एकही सेव्ह केलेली क्विझ आढळली नाही.');
+            return;
+          }
+
+          var importedCount = 0;
+          cloudList.forEach(function(cq) {
+            var existingIdx = quizzes.findIndex(function(lq) { return lq.id === cq.id; });
+            if (existingIdx > -1) {
+              if (cq.questions && cq.questions.length > 0) {
+                quizzes[existingIdx] = cq;
+                importedCount++;
+              }
+            } else {
+              quizzes.push(cq);
+              importedCount++;
+            }
+          });
+
+          localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
+          localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
+          localStorage.setItem('rk_last_cloud_sync_time', new Date().toISOString());
+          localStorage.setItem('rk_cloud_synced_count', String(cloudList.length));
+
+          renderAllViews();
+          calculateStorageUsage();
+          updateDbStatusPill();
+
+          showToast('🎉 Google Sheets वरून ' + cloudList.length + ' क्विझेस या PC वर यशस्वीरीत्या लोड झाले!');
+        })
+        .catch(function(err) {
+          pullBtns.forEach(function(b) {
+            if (b) {
+              b.disabled = false;
+              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+            }
+          });
+          alert('Google Sheets वरून डेटा डाऊनलोड करताना अडचण आली:\n' + err.message + '\n\nवेब ॲप URL बरोबर असल्याची व Web App Deploy करताना "Who has access: Anyone" निवडल्याची खात्री करा.');
+        });
     }
 
     function syncQuizToCloudBackground(quiz) {
@@ -8952,8 +9262,10 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         fetch(cloudUrl, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'saveQuiz', quiz: quiz })
+        }).then(function() {
+          localStorage.setItem('rk_last_cloud_sync_time', new Date().toISOString());
         }).catch(function() {});
       } catch (e) {}
     }
@@ -8962,7 +9274,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url');
       if (!cloudUrl || cloudUrl.indexOf('https://script.google.com/') !== 0) return;
 
-      fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=listQuizzes')
+      fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=getAllQuizzes')
         .then(function(res) { return res.json(); })
         .then(function(cloudList) {
           if (Array.isArray(cloudList) && cloudList.length > 0) {
@@ -9021,18 +9333,24 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     }
 
     function testCloudConnection() {
-      const url = (document.getElementById('cloud-api-url') ? document.getElementById('cloud-api-url').value.trim() : '') || localStorage.getItem('rk_cloud_api_url');
+      const modalInput = document.getElementById('quickModalWebAppUrl');
+      const mainInput = document.getElementById('cloud-api-url');
+      const url = (modalInput && modalInput.value.trim()) || (mainInput && mainInput.value.trim()) || localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url');
       if (!url) {
-        alert('कृपया आधी Google Apps Script Web App URL टाका.');
+        alert('कृपया आधी Google Apps Script Web App URL प्रविष्ट करा.');
         return;
       }
-      showNotification('Google Drive शी संपर्क साधत आहे...');
-      fetch(url + '?action=ping', { mode: 'no-cors' })
+      showToast('⏳ Google Sheets शी संपर्क साधत आहे...');
+      const pingUrl = url + (url.indexOf('?') > -1 ? '&' : '?') + 'api=ping';
+      fetch(pingUrl, { mode: 'no-cors' })
         .then(() => {
-          alert('यशस्वी! Google Drive & Sheet Web App शी कनेक्शन चालू आहे.');
+          localStorage.setItem('rk_cloud_api_url', url.trim());
+          localStorage.setItem('rk_cloud_url', url.trim());
+          updateDbStatusPill();
+          alert('✅ यशस्वी! Google Drive & Sheet Web App शी कनेक्शन उत्तम चालू आहे.');
         })
         .catch(err => {
-          alert('कनेक्शन तपासताना अडचण: ' + err.message + ' (वेब अ‍ॅपचा एक्सेस Anyone असावा)');
+          alert('कनेक्शन तपासताना अडचण: ' + err.message + '\n\nवेब अ‍ॅप Deploy करताना "Who has access: Anyone" निवडल्याची खात्री करा.');
         });
     }
 
@@ -10079,18 +10397,49 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">Auto Cloud Sync</span>
       </div>
       <p class="text-[12px] text-text-secondary leading-normal">
-        तुमचा Google Apps Script Web App URL येथे टाका. यामुळे नवीन क्विझ थेट Google Sheets मध्ये सेव्ह होईल आणि कोणत्याही संगणकावर आपोआप दिसेल.
+        तुमचा Google Apps Script Web App URL येथे टाका. यामुळे सर्व क्विझेस थेट Google Sheets मध्ये कायमस्वरूपी सेव्ह राहतील व कोणत्याही PC वर १-क्लिकमध्ये उपलब्ध होतील.
       </p>
+
+      <!-- URL Input with Save and Test buttons -->
       <div class="flex flex-col gap-1.5">
         <label class="text-[12px] font-semibold text-text-primary">Google Apps Script Web App URL:</label>
         <div class="flex gap-2">
           <input type="url" id="quickModalWebAppUrl" class="flex-1 px-3 py-2 rounded-lg border border-border-medium bg-surface-card text-text-primary outline-none focus:border-primary text-[12.5px]" placeholder="https://script.google.com/macros/s/.../exec" />
           <button type="button" onclick="saveQuickModalCloudUrl()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[12.5px] font-bold shadow-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-colors">
-            <span class="material-symbols-outlined text-[16px]">cloud_sync</span>
-            <span>सिंक करा</span>
+            <span class="material-symbols-outlined text-[16px]">save</span>
+            <span>सेव्ह करा</span>
+          </button>
+          <button type="button" onclick="testCloudConnection()" class="px-3 py-2 rounded-lg border border-border-medium bg-surface-container hover:bg-surface-container-high text-text-secondary text-[12px] font-semibold flex items-center gap-1 cursor-pointer shrink-0" title="कनेक्शन तपासा">
+            <span class="material-symbols-outlined text-[16px]">wifi</span>
+            <span>Test</span>
           </button>
         </div>
       </div>
+
+      <!-- Action Buttons Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-dashed border-border-subtle">
+        <button type="button" id="btnModalCloudSync" onclick="syncAllQuizzesToCloud()" class="py-2.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[12.5px] shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-colors">
+          <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+          <span>सर्व डेटा क्लाउडवर पाठवा (Push)</span>
+        </button>
+        <button type="button" id="btnModalCloudPull" onclick="fetchQuizzesFromCloud()" class="py-2.5 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[12.5px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
+          <span class="material-symbols-outlined text-[18px]">cloud_download</span>
+          <span>क्लाउडवरून डेटा आणा (Pull)</span>
+        </button>
+      </div>
+
+      <!-- Quick Setup Guide Collapsible -->
+      <details class="text-[11.5px] text-text-muted bg-surface-card p-2.5 rounded-lg border border-border-subtle cursor-pointer">
+        <summary class="font-bold text-text-secondary hover:text-primary">ℹ️ Google Apps Script Web App URL कशी मिळवायची? (फक्त २ मिनिटांत)</summary>
+        <div class="mt-2 text-text-secondary space-y-1 pl-2 border-l-2 border-primary/30">
+          <p>१. तुमच्या <strong>Google Drive</strong> मध्ये जाऊन नवीन Google Sheet बनवा.</p>
+          <p>२. वर मेन्यूमध्ये <strong>Extensions &gt; Apps Script</strong> उघडा.</p>
+          <p>३. तिथे प्रोजेक्टमधील <strong>Code.gs</strong> मधील सर्व कोड पेस्ट करा व सेव्ह करा.</p>
+          <p>४. वर उजवीकडे <strong>Deploy &gt; New deployment</strong> निवडा. <em>Select type: Web app</em> करा.</p>
+          <p>५. <strong>Who has access: Anyone</strong> (कोणीही) निवडून <strong>Deploy</strong> करा.</p>
+          <p>६. मिळालेली Web App URL कॉपी करून वरील बॉक्समध्ये पेस्ट करा व 'सेव्ह करा' वर क्लिक करा!</p>
+        </div>
+      </details>
     </div>
 
     <!-- Modal Footer -->
