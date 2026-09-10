@@ -1949,10 +1949,10 @@
 
     <div class="sidebar-footer">
       <div class="developer-card">
-        <div class="dev-avatar">RK</div>
+        <div class="dev-avatar" id="sidebarDevAvatar">RK</div>
         <div>
-          <div class="dev-name">Ravindra Khillare</div>
-          <a href="https://timepasstimewithravi.blogspot.com/" target="_blank" class="dev-blog">
+          <div class="dev-name" id="sidebarDevName">RK QuizMaker</div>
+          <a href="https://timepasstimewithravi.blogspot.com/" target="_blank" class="dev-blog" id="sidebarDevBlogLink">
             Visit Blog <i class="fas fa-external-link-alt" style="font-size:9px;"></i>
           </a>
         </div>
@@ -2383,6 +2383,9 @@
               </button>
               <button type="button" class="btn btn-sm btn-outline" id="btnMainCloudPull" onclick="fetchQuizzesFromCloud()" style="border-color:#2563eb; color:#2563eb; font-weight:700; background:#eff6ff; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; cursor:pointer;">
                 <i class="fas fa-cloud-download-alt"></i> <span>क्लाउडवरून आणा (Pull)</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" id="btnCopyMultiPcLink" onclick="copyMultiPcSyncLink()" style="border-color:#059669; color:#059669; font-weight:700; background:#f0fdf4; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:8px; cursor:pointer;" title="दुसऱ्या PC वर १-क्लिकमध्ये हा सर्व डेटा आणण्यासाठी लिंक कॉपी करा">
+                <i class="fas fa-link"></i> <span>दुसऱ्या PC साठी लिंक</span>
               </button>
               <button type="button" class="btn btn-sm btn-outline" onclick="openPcSyncTransferModal()" style="font-weight:600; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:8px; cursor:pointer;">
                 <i class="fas fa-sliders-h"></i> <span>सेटिंग्ज</span>
@@ -3733,7 +3736,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
                 <div class="p-2.5 rounded-lg bg-surface-canvas border border-border-subtle flex items-center justify-between">
                   <div class="min-w-0">
                     <span class="text-[11px] text-text-muted block">Connected Google Account:</span>
-                    <strong class="text-[13px] text-text-primary truncate block" id="currentAccountEmailDisplay">ravindra.khillare@gmail.com</strong>
+                    <strong class="text-[13px] text-text-secondary truncate block" id="currentAccountEmailDisplay">जोडलेले नाही (Not Configured)</strong>
                   </div>
                   <span class="material-symbols-outlined text-[20px] text-status-success">check_circle</span>
                 </div>
@@ -4744,7 +4747,30 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     var playerTimeSeconds = 0;
 
     // Initialize App
-    window.addEventListener('DOMContentLoaded', function () { if(typeof initDefaultBlogDraftsIfEmpty === 'function') initDefaultBlogDraftsIfEmpty();
+    window.addEventListener('DOMContentLoaded', function () {
+      // Check for 1-Click Multi-PC Sync Link parameters
+      try {
+        var urlParams = new URLSearchParams(window.location.search);
+        var incomingCloudUrl = urlParams.get('cloudUrl');
+        var incomingEmail = urlParams.get('email');
+        if (incomingCloudUrl) {
+          localStorage.setItem('rk_cloud_api_url', incomingCloudUrl);
+          localStorage.setItem('rk_cloud_url', incomingCloudUrl);
+          if (incomingEmail) {
+            localStorage.setItem('rk_google_account_email', incomingEmail);
+          }
+          if (window.history && window.history.replaceState) {
+            var cleanUrl = window.location.pathname + (window.location.hash || '');
+            window.history.replaceState({}, document.title, cleanUrl);
+          }
+          setTimeout(function() {
+            showToast('🔗 नवीन कॉम्प्युटरवर Google Sheets क्लाउड लिंक आपोआप जोडली गेली! क्विझेस डाऊनलोड होत आहेत...');
+            fetchQuizzesFromCloud();
+          }, 600);
+        }
+      } catch(e) {}
+
+      if (typeof initDefaultBlogDraftsIfEmpty === 'function') initDefaultBlogDraftsIfEmpty();
       loadState();
       renderAllViews();
       updateEmbedSnippets();
@@ -8836,8 +8862,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       }
 
       const emailDisp = document.getElementById('currentAccountEmailDisplay');
-      const savedEmail = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
-      if (emailDisp) emailDisp.textContent = savedEmail;
+      const savedEmail = localStorage.getItem('rk_google_account_email') || '';
+      if (emailDisp) emailDisp.textContent = savedEmail || 'जोडलेले नाही (Not Configured)';
     }
 
     function downloadFullBackupJSON() {
@@ -8863,7 +8889,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         pollVotes: pollVotes || [],
         settings: {
           cloudApiUrl: localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '',
-          accountEmail: localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com'
+          accountEmail: localStorage.getItem('rk_google_account_email') || ''
         }
       };
 
@@ -9206,42 +9232,62 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
           return cloudList;
         })
         .then(function(cloudList) {
-          pullBtns.forEach(function(b) {
-            if (b) {
-              b.disabled = false;
-              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
-            }
-          });
-
           if (!Array.isArray(cloudList) || cloudList.length === 0) {
+            pullBtns.forEach(function(b) {
+              if (b) {
+                b.disabled = false;
+                if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+              }
+            });
             alert('Google Sheets मध्ये सध्या एकही सेव्ह केलेली क्विझ आढळली नाही.');
             return;
           }
 
-          var importedCount = 0;
-          cloudList.forEach(function(cq) {
-            var existingIdx = quizzes.findIndex(function(lq) { return lq.id === cq.id; });
-            if (existingIdx > -1) {
-              if (cq.questions && cq.questions.length > 0) {
-                quizzes[existingIdx] = cq;
+          // If quizzes don't have questions array, fetch each quiz individually via getQuiz
+          var needsFetchQuestions = cloudList.some(function(q) { return !q.questions || q.questions.length === 0; });
+          var quizPromise = needsFetchQuestions
+            ? Promise.all(cloudList.map(function(q) {
+                if (q.questions && q.questions.length > 0) return Promise.resolve(q);
+                return fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=getQuiz&quizId=' + encodeURIComponent(q.id))
+                  .then(function(r) { return r.json(); })
+                  .then(function(fullQ) { return (fullQ && fullQ.id) ? fullQ : q; })
+                  .catch(function() { return q; });
+              }))
+            : Promise.resolve(cloudList);
+
+          return quizPromise.then(function(resolvedList) {
+            pullBtns.forEach(function(b) {
+              if (b) {
+                b.disabled = false;
+                if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+              }
+            });
+
+            var importedCount = 0;
+            resolvedList.forEach(function(cq) {
+              var existingIdx = quizzes.findIndex(function(lq) { return lq.id === cq.id; });
+              if (existingIdx > -1) {
+                if (cq.questions && cq.questions.length > 0) {
+                  quizzes[existingIdx] = cq;
+                  importedCount++;
+                }
+              } else {
+                quizzes.push(cq);
                 importedCount++;
               }
-            } else {
-              quizzes.push(cq);
-              importedCount++;
-            }
+            });
+
+            localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
+            localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
+            localStorage.setItem('rk_last_cloud_sync_time', new Date().toISOString());
+            localStorage.setItem('rk_cloud_synced_count', String(resolvedList.length));
+
+            renderAllViews();
+            calculateStorageUsage();
+            updateDbStatusPill();
+
+            showToast('🎉 Google Sheets वरून ' + resolvedList.length + ' क्विझेस या PC वर यशस्वीरीत्या लोड झाले!');
           });
-
-          localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
-          localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
-          localStorage.setItem('rk_last_cloud_sync_time', new Date().toISOString());
-          localStorage.setItem('rk_cloud_synced_count', String(cloudList.length));
-
-          renderAllViews();
-          calculateStorageUsage();
-          updateDbStatusPill();
-
-          showToast('🎉 Google Sheets वरून ' + cloudList.length + ' क्विझेस या PC वर यशस्वीरीत्या लोड झाले!');
         })
         .catch(function(err) {
           pullBtns.forEach(function(b) {
@@ -9252,6 +9298,30 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
           });
           alert('Google Sheets वरून डेटा डाऊनलोड करताना अडचण आली:\n' + err.message + '\n\nवेब ॲप URL बरोबर असल्याची व Web App Deploy करताना "Who has access: Anyone" निवडल्याची खात्री करा.');
         });
+    }
+
+    function copyMultiPcSyncLink() {
+      var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
+      if (!cloudUrl || cloudUrl.indexOf('http') !== 0) {
+        alert('Google Sheets Web App URL अजून जोडलेली नाही.\n\nकृपया आधी या PC वर Web App URL टाका व सेव्ह करा.');
+        openPcSyncTransferModal();
+        return;
+      }
+      var email = localStorage.getItem('rk_google_account_email') || '';
+      var base = window.location.origin + window.location.pathname;
+      var syncLink = base + '?cloudUrl=' + encodeURIComponent(cloudUrl);
+      if (email) syncLink += '&email=' + encodeURIComponent(email);
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(syncLink).then(function() {
+          showToast('📋 दुसऱ्या PC साठी सिंक लिंक कॉपी झाली!');
+          alert('✅ दुसऱ्या PC साठी डायरेक्ट १-क्लिक लिंक कॉपी झाली आहे!\n\nही लिंक दुसऱ्या PC वर (WhatsApp किंवा Email द्वारे पाठवून) कोणत्याही ब्राऊझरमध्ये उघडा.\nउघडताच सर्व क्विझेस त्या PC वर आपोआप लोड होतील!');
+        }).catch(function() {
+          prompt('दुसऱ्या PC वर उघडण्यासाठी खालील लिंक कॉपी करा:', syncLink);
+        });
+      } else {
+        prompt('दुसऱ्या PC वर उघडण्यासाठी खालील लिंक कॉपी करा:', syncLink);
+      }
     }
 
     function syncQuizToCloudBackground(quiz) {
@@ -9300,7 +9370,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     // FEATURE 8: CHANGE GOOGLE ACCOUNT & SHEET URL IN INDEX.HTML
     // =========================================================================
     function openChangeAccountDialog() {
-      const currentEmail = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
+      const currentEmail = localStorage.getItem('rk_google_account_email') || '';
       const currentUrl = localStorage.getItem('rk_cloud_api_url') || '';
 
       const newEmail = prompt('तुमचा Google Drive Account Email प्रविष्ट करा:', currentEmail);
@@ -9311,6 +9381,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
       if (newEmail.trim()) {
         localStorage.setItem('rk_google_account_email', newEmail.trim());
+      } else {
+        localStorage.removeItem('rk_google_account_email');
       }
       localStorage.setItem('rk_cloud_api_url', newUrl.trim());
 
@@ -10100,13 +10172,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
   }
 
   function updateDriveAccountDisplays() {
-    var email = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
+    var email = localStorage.getItem('rk_google_account_email') || '';
     var folder = localStorage.getItem('rk_drive_folder') || 'RK_QuizMaker';
     var sheetName = localStorage.getItem('rk_drive_sheet_name') || 'RK_QuizMaker_Master_Database.gsheet';
     var url = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
 
     var emailEl = document.getElementById('currentAccountEmailDisplay');
-    if (emailEl) emailEl.textContent = email;
+    if (emailEl) emailEl.textContent = email || 'जोडलेले नाही (Not Configured)';
 
     var sheetUrlEl = document.getElementById('currentSheetUrlDisplay');
     if (sheetUrlEl) {
@@ -10124,7 +10196,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     var modal = document.getElementById('accountSettingsModal');
     if (!modal) return;
     var emailInput = document.getElementById('settingAccountEmail');
-    if (emailInput) emailInput.value = localStorage.getItem('rk_google_account_email') || 'ravindra.khillare@gmail.com';
+    if (emailInput) emailInput.value = localStorage.getItem('rk_google_account_email') || '';
     var folderInput = document.getElementById('settingDriveFolder');
     if (folderInput) folderInput.value = localStorage.getItem('rk_drive_folder') || 'RK_QuizMaker';
     var sheetInput = document.getElementById('settingSheetName');
@@ -10146,12 +10218,16 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     var sheetInput = document.getElementById('settingSheetName');
     var urlInput = document.getElementById('settingWebAppUrl');
 
-    var email = (emailInput ? emailInput.value.trim() : '') || 'ravindra.khillare@gmail.com';
+    var email = emailInput ? emailInput.value.trim() : '';
     var folder = (folderInput ? folderInput.value.trim() : '') || 'RK_QuizMaker';
     var sheetName = (sheetInput ? sheetInput.value.trim() : '') || 'RK_QuizMaker_Master_Database.gsheet';
     var url = urlInput ? urlInput.value.trim() : '';
 
-    localStorage.setItem('rk_google_account_email', email);
+    if (email) {
+      localStorage.setItem('rk_google_account_email', email);
+    } else {
+      localStorage.removeItem('rk_google_account_email');
+    }
     localStorage.setItem('rk_drive_folder', folder);
     localStorage.setItem('rk_drive_sheet_name', sheetName);
     if (url) {
@@ -10425,6 +10501,10 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         <button type="button" id="btnModalCloudPull" onclick="fetchQuizzesFromCloud()" class="py-2.5 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[12.5px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
           <span class="material-symbols-outlined text-[18px]">cloud_download</span>
           <span>क्लाउडवरून डेटा आणा (Pull)</span>
+        </button>
+        <button type="button" onclick="copyMultiPcSyncLink()" class="col-span-1 sm:col-span-2 py-2.5 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-[12.5px] flex items-center justify-center gap-2 cursor-pointer transition-colors" title="ही लिंक दुसऱ्या संगणकावर उघडल्यास सर्व डेटा आपोआप लोड होईल">
+          <span class="material-symbols-outlined text-[18px]">share</span>
+          <span>🔗 दुसऱ्या संगणकासाठी (PC 2) १-क्लिक लिंक कॉपी करा (Copy 1-Click Link)</span>
         </button>
       </div>
 
