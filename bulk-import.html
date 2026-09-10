@@ -1435,7 +1435,7 @@ Answer: New Delhi`;
 
       try {
         let quizzes = [];
-        const raw = localStorage.getItem('rk_quizzes_v2');
+        const raw = localStorage.getItem('rk_quizzes') || localStorage.getItem('rk_quizzes_v2');
         if (raw) quizzes = JSON.parse(raw);
 
         const newQuiz = {
@@ -1457,6 +1457,11 @@ Answer: New Delhi`;
         };
         quizzes.unshift(newQuiz);
         localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
+        localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
+
+        // Background Cloud Sync if connected
+        syncQuizToCloudBackground(newQuiz);
+
         showToast(`Successfully imported ${parsedQuestionsList.length} questions into new quiz!`);
       } catch(e) {
         showToast("Imported successfully to local session!");
@@ -1714,7 +1719,7 @@ Answer: New Delhi`;
 
       try {
         let quizzes = [];
-        const raw = localStorage.getItem('rk_quizzes_v2');
+        const raw = localStorage.getItem('rk_quizzes') || localStorage.getItem('rk_quizzes_v2');
         if (raw) quizzes = JSON.parse(raw);
 
         // Check if already exists, update or unshift
@@ -1726,6 +1731,11 @@ Answer: New Delhi`;
         }
 
         localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
+        localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
+
+        // Background Cloud Sync if connected
+        syncQuizToCloudBackground(currentParsedGFormQuiz);
+
         showToast(`🎉 "${currentParsedGFormQuiz.title}" नवीन क्विझ म्हणून सेव्ह झाले!`);
 
         const builderBtn = document.getElementById('gformOpenBuilderBtn');
@@ -1754,6 +1764,20 @@ Answer: New Delhi`;
         area.classList.add('hidden');
         if (chevron) chevron.textContent = 'expand_more';
       }
+    }
+
+    function syncQuizToCloudBackground(quiz) {
+      if (!quiz) return;
+      const cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url');
+      if (!cloudUrl || !cloudUrl.startsWith('https://script.google.com/')) return;
+      try {
+        fetch(cloudUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'saveQuiz', quiz: quiz })
+        }).catch(() => {});
+      } catch (e) {}
     }
 
     window.addEventListener('DOMContentLoaded', () => {

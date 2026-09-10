@@ -688,7 +688,7 @@
 
       let quizzes = [];
       try {
-        quizzes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        quizzes = JSON.parse(localStorage.getItem('rk_quizzes') || localStorage.getItem(STORAGE_KEY) || '[]');
       } catch (e) {
         quizzes = [];
       }
@@ -1388,7 +1388,21 @@
       }
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(quizzes));
+      localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
       document.getElementById('quizIdInput').value = quizId;
+
+      // Background Cloud Sync if connected
+      const cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url');
+      if (cloudUrl && cloudUrl.startsWith('https://script.google.com/')) {
+        try {
+          fetch(cloudUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'saveQuiz', quiz: quizData })
+          }).catch(() => {});
+        } catch (e) {}
+      }
 
       showToast(`Quiz "${title}" saved to Cloud DB & Local Storage!`, 'cloud_done');
     }
