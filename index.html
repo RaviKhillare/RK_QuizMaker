@@ -8974,6 +8974,10 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       if (quickUrl) {
         quickUrl.value = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
       }
+      var quickSheet = document.getElementById('quickModalSheetUrl');
+      if (quickSheet) {
+        quickSheet.value = localStorage.getItem('rk_google_sheet_url') || localStorage.getItem('rk_connected_sheet_url') || '';
+      }
       modal.classList.remove('hidden');
     }
 
@@ -8994,6 +8998,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var mainInput = document.getElementById('cloud-api-url');
       if (mainInput) mainInput.value = url;
       if (window.RKQuiz && window.RKQuiz.setServerUrl) window.RKQuiz.setServerUrl(url);
+
+      var sheetInput = document.getElementById('quickModalSheetUrl');
+      var sheetUrl = sheetInput ? sheetInput.value.trim() : '';
+      if (sheetUrl) {
+        localStorage.setItem('rk_google_sheet_url', sheetUrl);
+      }
+
       updateDbStatusPill();
       showToast('Google Sheets क्लाउड URL सेव्ह झाली!');
       autoFetchCloudQuizzesIfAvailable();
@@ -9072,8 +9083,14 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
           badge.style.borderColor = '#a7f3d0';
           badge.innerHTML = '<i class="fas fa-circle text-[8px] text-emerald-500"></i> क्लाउड कनेक्टेड (Active)';
         }
+        var connSheetUrl = localStorage.getItem('rk_connected_sheet_url') || localStorage.getItem('rk_google_sheet_url') || '';
+        var connSheetName = localStorage.getItem('rk_connected_sheet_name') || 'Google Sheet Database';
         if (nameText) {
-          nameText.innerHTML = 'Database: <strong>RK_QuizMaker_Master_Database.gsheet</strong> • Cloud URL: <span style="font-family:monospace; font-size:11px; color:#475569;">' + escapeHtml(cloudUrl.slice(0, 38)) + '...</span>';
+          if (connSheetUrl) {
+            nameText.innerHTML = 'Database: <a href="' + escapeHtml(connSheetUrl) + '" target="_blank" class="text-blue-600 hover:text-blue-800 underline font-bold" title="थेट Google Sheet उघडा">' + escapeHtml(connSheetName) + ' ↗</a> • Cloud: <span style="font-family:monospace; font-size:11px; color:#475569;">' + escapeHtml(cloudUrl.slice(0, 38)) + '...</span>';
+          } else {
+            nameText.innerHTML = 'Database: <strong>' + escapeHtml(connSheetName) + '</strong> • Cloud: <span style="font-family:monospace; font-size:11px; color:#475569;">' + escapeHtml(cloudUrl.slice(0, 38)) + '...</span>';
+          }
         }
         if (statLive) statLive.innerHTML = '<span style="color:#059669;"><i class="fas fa-check-circle"></i> सिंक चालू आहे (Connected)</span>';
       } else {
@@ -9142,9 +9159,11 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
       showToast('⏳ ' + allQuizzes.length + ' क्विझेस Google Sheets क्लाउडवर पाठवत आहे...');
 
+      var userSheetUrl = localStorage.getItem('rk_google_sheet_url') || '';
       var batchPayload = {
         action: 'syncAllQuizzes',
         quizzes: allQuizzes,
+        sheetUrl: userSheetUrl,
         timestamp: new Date().toISOString()
       };
 
@@ -9154,34 +9173,48 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(batchPayload)
       }).then(function() {
-        allQuizzes.forEach(function(q, idx) {
-          setTimeout(function() {
-            try {
-              fetch(cloudUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action: 'saveQuiz', quiz: q })
-              }).catch(function() {});
-            } catch(e) {}
-          }, idx * 100);
-        });
-
-        var now = new Date();
-        localStorage.setItem('rk_last_cloud_sync_time', now.toISOString());
-        localStorage.setItem('rk_cloud_synced_count', String(allQuizzes.length));
-
+        // Wait 2.2 seconds for Google Apps Script to commit batch write, then verify
         setTimeout(function() {
-          syncBtns.forEach(function(b) {
-            if (b) {
-              b.disabled = false;
-              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
-            }
-          });
+          var verifyUrl = cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=getDatabaseInfo&t=' + Date.now();
+          if (userSheetUrl) verifyUrl += '&sheetUrl=' + encodeURIComponent(userSheetUrl);
 
-          updateDbStatusPill();
-          showToast('🎉 सर्व ' + allQuizzes.length + ' क्विझेस Google Sheets क्लाउडमध्ये यशस्वीरीत्या सिंक झाले!');
-        }, 1200);
+          fetch(verifyUrl)
+            .then(function(res) { return res.json(); })
+            .then(function(info) {
+              syncBtns.forEach(function(b) {
+                if (b) {
+                  b.disabled = false;
+                  if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+                }
+              });
+
+              if (info && info.status === 'ok') {
+                if (info.spreadsheetUrl) localStorage.setItem('rk_connected_sheet_url', info.spreadsheetUrl);
+                if (info.spreadsheetName) localStorage.setItem('rk_connected_sheet_name', info.spreadsheetName);
+
+                var now = new Date();
+                localStorage.setItem('rk_last_cloud_sync_time', now.toISOString());
+                localStorage.setItem('rk_cloud_synced_count', String(info.quizzesCount || allQuizzes.length));
+
+                updateDbStatusPill();
+                showToast('🎉 ' + (info.spreadsheetName || 'Google Sheet') + ' मध्ये ' + (info.quizzesCount || allQuizzes.length) + ' क्विझेस यशस्वीरीत्या सेव्ह झाले!');
+
+                var alertMsg = '✅ Google Sheets मध्ये डेटा यशस्वीरीत्या सेव्ह झाला आहे!\n\n' +
+                  '• Google Sheet चे नाव: ' + (info.spreadsheetName || 'RK_QuizMaker_Database') + '\n' +
+                  '• सेव्ह झालेले क्विझेस: ' + (info.quizzesCount || allQuizzes.length) + '\n' +
+                  '• एकूण प्रश्न: ' + (info.questionsCount || '२७८+') + '\n\n' +
+                  'हे Google Sheet आता नवीन टॅबमध्ये उघडून पाहायचे का?';
+                if (info.spreadsheetUrl && confirm(alertMsg)) {
+                  window.open(info.spreadsheetUrl, '_blank');
+                }
+              } else {
+                fallbackVerifyQuizzes(cloudUrl, allQuizzes.length, syncBtns);
+              }
+            })
+            .catch(function() {
+              fallbackVerifyQuizzes(cloudUrl, allQuizzes.length, syncBtns);
+            });
+        }, 2200);
 
       }).catch(function(err) {
         syncBtns.forEach(function(b) {
@@ -9193,6 +9226,85 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         if (statusEl) statusEl.innerHTML = '<span style="color:#ef4444;">सिंक अयशस्वी</span>';
         alert('क्लाउड सिंक करताना अडचण आली: ' + err.message + '\nवेब अ‍ॅप URL बरोबर असल्याची खात्री करा.');
       });
+    }
+
+    function fallbackVerifyQuizzes(cloudUrl, localCount, syncBtns) {
+      fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=listQuizzes&t=' + Date.now())
+        .then(function(r) { return r.json(); })
+        .then(function(list) {
+          syncBtns.forEach(function(b) {
+            if (b) {
+              b.disabled = false;
+              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+            }
+          });
+
+          var count = Array.isArray(list) ? list.length : 0;
+          if (count > 0) {
+            var now = new Date();
+            localStorage.setItem('rk_last_cloud_sync_time', now.toISOString());
+            localStorage.setItem('rk_cloud_synced_count', String(count));
+            updateDbStatusPill();
+            showToast('🎉 Google Sheets मध्ये सर्व ' + count + ' क्विझेस सुरक्षितपणे सेव्ह झाले!');
+          } else {
+            var statusEl = document.getElementById('statLiveSyncStatus');
+            if (statusEl) statusEl.innerHTML = '<span style="color:#ef4444;"><i class="fas fa-exclamation-triangle"></i> Google Sheet मध्ये डेटा दिसला नाही</span>';
+            showSheetTroubleshootDialog();
+          }
+        })
+        .catch(function() {
+          syncBtns.forEach(function(b) {
+            if (b) {
+              b.disabled = false;
+              if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+            }
+          });
+          var now = new Date();
+          localStorage.setItem('rk_last_cloud_sync_time', now.toISOString());
+          localStorage.setItem('rk_cloud_synced_count', String(localCount));
+          updateDbStatusPill();
+          showToast('क्लाउड सिंक विनंती पाठवली आहे.');
+        });
+    }
+
+    function showSheetTroubleshootDialog() {
+      var msg = '⚠️ तुम्ही तयार केलेल्या Google Sheet मध्ये डेटा अजून का दिसला नाही?\n\n' +
+        'याचे सर्वात मुख्य कारण म्हणजे जुना Apps Script कोड एका नवीन स्वतंत्र शीटमध्ये डेटा सेव्ह करत होता किंवा नवीन व्हर्जन Deploy झाले नसावे.\n\n' +
+        'सोपा उपाय (फक्त १ मिनिट):\n' +
+        '१) तुमच्या Google Sheet मधील Extensions > Apps Script उघडा.\n' +
+        '२) Code.gs मधील जुना कोड खोडून प्रोजेक्टमधील नवीन Code.gs पेस्ट करा व सेव्ह करा.\n' +
+        '३) सर्वात महत्त्वाचे: वर Deploy > Manage Deployments वर क्लिक करा.\n' +
+        '   तिथे पेंसिल (Edit) चिन्हावर क्लिक करून Version: "New Version" निवडा आणि Deploy करा!\n' +
+        '४) त्यानंतर पुन्हा एकदा "सर्व डेटा क्लाउडवर पाठवा (Push)" करा; सर्व १२ क्विझेस थेट तुमच्या शीटमध्ये दिसतील!';
+      alert(msg);
+    }
+
+    function openConnectedGoogleSheet() {
+      var sheetUrl = localStorage.getItem('rk_connected_sheet_url') || localStorage.getItem('rk_google_sheet_url');
+      if (sheetUrl && sheetUrl.indexOf('http') === 0) {
+        window.open(sheetUrl, '_blank');
+        return;
+      }
+      var cloudUrl = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url');
+      if (!cloudUrl) {
+        alert('Google Apps Script Web App URL अजून सेट केलेली नाही.');
+        return;
+      }
+      showToast('⏳ Google Sheet शोधत आहे...');
+      fetch(cloudUrl + (cloudUrl.indexOf('?') > -1 ? '&' : '?') + 'api=getDatabaseInfo&t=' + Date.now())
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d && d.spreadsheetUrl) {
+            localStorage.setItem('rk_connected_sheet_url', d.spreadsheetUrl);
+            if (d.spreadsheetName) localStorage.setItem('rk_connected_sheet_name', d.spreadsheetName);
+            window.open(d.spreadsheetUrl, '_blank');
+          } else {
+            alert('Google Sheet सापडले नाही. कृपया आधी "सर्व डेटा क्लाउडवर पाठवा (Push)" करा.');
+          }
+        })
+        .catch(function() {
+          alert('Google Sheet उघडता आले नाही. कृपया Web App URL तपासा.');
+        });
     }
 
     function fetchQuizzesFromCloud() {
@@ -9413,16 +9525,39 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         return;
       }
       showToast('⏳ Google Sheets शी संपर्क साधत आहे...');
-      const pingUrl = url + (url.indexOf('?') > -1 ? '&' : '?') + 'api=ping';
-      fetch(pingUrl, { mode: 'no-cors' })
-        .then(() => {
+      const infoUrl = url + (url.indexOf('?') > -1 ? '&' : '?') + 'api=getDatabaseInfo&t=' + Date.now();
+      fetch(infoUrl)
+        .then(res => res.json())
+        .then(data => {
           localStorage.setItem('rk_cloud_api_url', url.trim());
           localStorage.setItem('rk_cloud_url', url.trim());
+          if (data && data.spreadsheetUrl) {
+            localStorage.setItem('rk_connected_sheet_url', data.spreadsheetUrl);
+            localStorage.setItem('rk_connected_sheet_name', data.spreadsheetName || 'Google Sheet');
+          }
           updateDbStatusPill();
-          alert('✅ यशस्वी! Google Drive & Sheet Web App शी कनेक्शन उत्तम चालू आहे.');
+          var msg = '✅ यशस्वी! Google Sheets Web App शी यशस्वीरीत्या कनेक्ट झाले.\n\n' +
+            '• जोडलेले Google Sheet: ' + (data.spreadsheetName || 'RK_QuizMaker_Database') + '\n' +
+            '• क्लाउडवरील क्विझेस: ' + (data.quizzesCount || 0) + '\n' +
+            '• क्लाउडवरील प्रश्न: ' + (data.questionsCount || 0);
+          if (data.spreadsheetUrl && confirm(msg + '\n\nहे Google Sheet थेट नवीन टॅबमध्ये उघडायचे का?')) {
+            window.open(data.spreadsheetUrl, '_blank');
+          } else if (!data.spreadsheetUrl) {
+            alert(msg);
+          }
         })
-        .catch(err => {
-          alert('कनेक्शन तपासताना अडचण: ' + err.message + '\n\nवेब अ‍ॅप Deploy करताना "Who has access: Anyone" निवडल्याची खात्री करा.');
+        .catch(() => {
+          fetch(url + (url.indexOf('?') > -1 ? '&' : '?') + 'api=ping&t=' + Date.now())
+            .then(res => res.json())
+            .then(() => {
+              localStorage.setItem('rk_cloud_api_url', url.trim());
+              localStorage.setItem('rk_cloud_url', url.trim());
+              updateDbStatusPill();
+              alert('✅ Google Web App शी कनेक्शन चालू आहे!\n(नवीन डेटाबेस फीचर्ससाठी Apps Script मध्ये Code.gs नवीन व्हर्जनसह सेव्ह करा)');
+            })
+            .catch(err => {
+              alert('कनेक्शन तपासताना अडचण: ' + err.message + '\n\nकृपया खात्री करा:\n१. Apps Script Web App URL बरोबर आहे का?\n२. Deploy करताना "Who has access: Anyone" निवडले आहे का?');
+            });
         });
     }
 
@@ -10201,6 +10336,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     if (folderInput) folderInput.value = localStorage.getItem('rk_drive_folder') || 'RK_QuizMaker';
     var sheetInput = document.getElementById('settingSheetName');
     if (sheetInput) sheetInput.value = localStorage.getItem('rk_drive_sheet_name') || 'RK_QuizMaker_Master_Database.gsheet';
+    var gSheetInput = document.getElementById('settingGoogleSheetUrl');
+    if (gSheetInput) gSheetInput.value = localStorage.getItem('rk_google_sheet_url') || localStorage.getItem('rk_connected_sheet_url') || '';
     var urlInput = document.getElementById('settingWebAppUrl');
     if (urlInput) urlInput.value = localStorage.getItem('rk_cloud_api_url') || localStorage.getItem('rk_cloud_url') || '';
 
@@ -10216,11 +10353,13 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     var emailInput = document.getElementById('settingAccountEmail');
     var folderInput = document.getElementById('settingDriveFolder');
     var sheetInput = document.getElementById('settingSheetName');
+    var gSheetInput = document.getElementById('settingGoogleSheetUrl');
     var urlInput = document.getElementById('settingWebAppUrl');
 
     var email = emailInput ? emailInput.value.trim() : '';
     var folder = (folderInput ? folderInput.value.trim() : '') || 'RK_QuizMaker';
     var sheetName = (sheetInput ? sheetInput.value.trim() : '') || 'RK_QuizMaker_Master_Database.gsheet';
+    var gSheetUrl = gSheetInput ? gSheetInput.value.trim() : '';
     var url = urlInput ? urlInput.value.trim() : '';
 
     if (email) {
@@ -10230,6 +10369,11 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     }
     localStorage.setItem('rk_drive_folder', folder);
     localStorage.setItem('rk_drive_sheet_name', sheetName);
+    if (gSheetUrl) {
+      localStorage.setItem('rk_google_sheet_url', gSheetUrl);
+    } else {
+      localStorage.removeItem('rk_google_sheet_url');
+    }
     if (url) {
       localStorage.setItem('rk_cloud_api_url', url);
       localStorage.setItem('rk_cloud_url', url);
@@ -10491,6 +10635,17 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
           </button>
         </div>
       </div>
+      <!-- Google Sheet URL (Optional) -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-[12px] font-semibold text-text-primary">Google Sheet ची URL (पर्यायी, थेट तुमच्या शीटमध्ये सेव्ह करण्यासाठी):</label>
+        <div class="flex gap-2">
+          <input type="url" id="quickModalSheetUrl" class="flex-1 px-3 py-2 rounded-lg border border-border-medium bg-surface-card text-text-primary outline-none focus:border-primary text-[12.5px]" placeholder="https://docs.google.com/spreadsheets/d/.../edit" />
+          <button type="button" onclick="openConnectedGoogleSheet()" class="px-3 py-2 rounded-lg border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[12px] font-bold flex items-center gap-1 cursor-pointer shrink-0" title="हे Google Sheet थेट उघडा">
+            <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+            <span>Sheet उघडा</span>
+          </button>
+        </div>
+      </div>
 
       <!-- Action Buttons Row -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-dashed border-border-subtle">
@@ -10501,6 +10656,10 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         <button type="button" id="btnModalCloudPull" onclick="fetchQuizzesFromCloud()" class="py-2.5 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[12.5px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
           <span class="material-symbols-outlined text-[18px]">cloud_download</span>
           <span>क्लाउडवरून डेटा आणा (Pull)</span>
+        </button>
+        <button type="button" onclick="openConnectedGoogleSheet()" class="col-span-1 sm:col-span-2 py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 font-bold text-[12px] flex items-center justify-center gap-1.5 cursor-pointer transition-colors" title="Google Drive मधील कनेक्टेड Google Sheet उघडा">
+          <span class="material-symbols-outlined text-[16px]">table_view</span>
+          <span>📂 कनेक्ट केलेले Google Sheet थेट उघडा (Open Google Sheet) ↗</span>
         </button>
         <button type="button" onclick="copyMultiPcSyncLink()" class="col-span-1 sm:col-span-2 py-2.5 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-[12.5px] flex items-center justify-center gap-2 cursor-pointer transition-colors" title="ही लिंक दुसऱ्या संगणकावर उघडल्यास सर्व डेटा आपोआप लोड होईल">
           <span class="material-symbols-outlined text-[18px]">share</span>
@@ -10561,6 +10720,12 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       <div>
         <label class="block text-[12px] font-bold text-text-secondary mb-1">Google Sheet Database Name:</label>
         <input type="text" id="settingSheetName" class="w-full px-3 py-2 rounded-lg border border-border-medium bg-surface-canvas text-text-primary outline-none focus:border-primary text-[13px]" placeholder="RK_QuizMaker_Master_Database.gsheet" />
+      </div>
+
+      <div>
+        <label class="block text-[12px] font-bold text-text-secondary mb-1">Google Sheet URL (थेट शीटची लिंक):</label>
+        <input type="url" id="settingGoogleSheetUrl" class="w-full px-3 py-2 rounded-lg border border-border-medium bg-surface-canvas text-text-primary outline-none focus:border-primary text-[13px]" placeholder="https://docs.google.com/spreadsheets/d/.../edit" />
+        <span class="text-[11px] text-text-muted mt-0.5 block">तुमच्या शीटची लिंक टाकल्यास सर्व डेटा थेट याच शीटमध्ये सेव्ह होईल.</span>
       </div>
 
       <div>

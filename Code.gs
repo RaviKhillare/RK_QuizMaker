@@ -686,8 +686,29 @@ function doGet(e) {
   } else if (apiAction === 'getPollResults') {
     var qId = e.parameter.questionId;
     return createJsonResponse(getPollResults(quizId, qId));
+  } else if (apiAction === 'getDatabaseInfo') {
+    var ss = getOrCreateDatabaseSpreadsheet(e.parameter.sheetUrl);
+    var qSheet = ss.getSheetByName('Quizzes');
+    var questSheet = ss.getSheetByName('Questions');
+    var quizCount = qSheet ? Math.max(0, qSheet.getLastRow() - 1) : 0;
+    var questCount = questSheet ? Math.max(0, questSheet.getLastRow() - 1) : 0;
+    return createJsonResponse({
+      status: 'ok',
+      spreadsheetName: ss.getName(),
+      spreadsheetUrl: ss.getUrl(),
+      spreadsheetId: ss.getId(),
+      quizzesCount: quizCount,
+      questionsCount: questCount,
+      time: new Date().toISOString()
+    });
   } else if (apiAction === 'ping') {
-    return createJsonResponse({ status: 'ok', time: new Date().toISOString() });
+    var ss = getOrCreateDatabaseSpreadsheet();
+    return createJsonResponse({
+      status: 'ok',
+      spreadsheetName: ss ? ss.getName() : null,
+      spreadsheetUrl: ss ? ss.getUrl() : null,
+      time: new Date().toISOString()
+    });
   }
   
   // HTML Views
@@ -739,13 +760,15 @@ function doPost(e) {
     } else if (action === 'submitPollVote') {
       result = submitPollVote(data.quizId, data.questionId, data.selectedOption);
     } else if (action === 'saveQuiz') {
-      result = saveQuiz(data.quiz);
+      result = saveQuiz(data.quiz, data.sheetUrl);
     } else if (action === 'syncAllQuizzes' || action === 'saveAllQuizzes') {
-      result = syncAllQuizzes(data.quizzes || data.quizzesList);
+      result = syncAllQuizzes(data.quizzes || data.quizzesList, data.sheetUrl);
     } else if (action === 'deleteQuiz') {
       result = deleteQuiz(data.quizId);
     } else if (action === 'bulkImport') {
       result = bulkImportQuestions(data.quizId, data.rawText, data.format);
+    } else if (action === 'setDatabaseSheet') {
+      result = setDatabaseSpreadsheetUrl(data.sheetUrl);
     }
     
     return createJsonResponse(result);
@@ -765,22 +788,51 @@ function createJsonResponse(data) {
 /**
  * Returns or automatically initializes the lifetime free Google Sheets Database
  */
-function getOrCreateDatabaseSpreadsheet() {
+function getOrCreateDatabaseSpreadsheet(optionalSheetUrl) {
   var props = PropertiesService.getScriptProperties();
-  var ssId = props.getProperty(RK_DB_PROP_KEY);
-  var ss;
-  
-  if (ssId) {
+  var ss = null;
+
+  // 1. If an explicit Google Sheet URL is provided, prioritize it
+  if (optionalSheetUrl && typeof optionalSheetUrl === 'string' && optionalSheetUrl.indexOf('http') === 0) {
     try {
-      ss = SpreadsheetApp.openById(ssId);
+      ss = SpreadsheetApp.openByUrl(optionalSheetUrl);
+      props.setProperty(RK_DB_PROP_KEY, ss.getId());
     } catch (e) {
       ss = null;
     }
   }
-  
+
+  // 2. If the script is container-bound to a Google Sheet (opened via Extensions > Apps Script)
   if (!ss) {
-    // Create new Database Sheet
-    ss = SpreadsheetApp.create('RK_QuizMaker_Database');
+    try {
+      ss = SpreadsheetApp.getActiveSpreadsheet();
+      if (ss) {
+        props.setProperty(RK_DB_PROP_KEY, ss.getId());
+      }
+    } catch (e) {
+      ss = null;
+    }
+  }
+
+  // 3. If a spreadsheet ID was previously saved in Script Properties
+  if (!ss) {
+    var ssId = props.getProperty(RK_DB_PROP_KEY);
+    if (ssId) {
+      try {
+        if (ssId.indexOf('http') === 0) {
+          ss = SpreadsheetApp.openByUrl(ssId);
+        } else {
+          ss = SpreadsheetApp.openById(ssId);
+        }
+      } catch (e) {
+        ss = null;
+      }
+    }
+  }
+
+  // 4. Fallback: Create a new Database Sheet in Google Drive
+  if (!ss) {
+    ss = SpreadsheetApp.create('RK_QuizMaker_Master_Database');
     props.setProperty(RK_DB_PROP_KEY, ss.getId());
   }
   
@@ -960,20 +1012,98 @@ function getAllQuizzesWithQuestions() {
 }
 
 /**
- * Syncs an entire array of quizzes and questions to Google Sheets in one batch
+ * Syncs an entire array of quizzes and questions to Google Sheets in one fast atomic batch
  */
-function syncAllQuizzes(quizzesList) {
+function syncAllQuizzes(quizzesList, sheetUrl) {
   if (!quizzesList || !Array.isArray(quizzesList)) {
     throw new Error('quizzes array is required for syncAllQuizzes');
   }
-  var saved = 0;
-  for (var i = 0; i < quizzesList.length; i++) {
-    if (quizzesList[i]) {
-      saveQuiz(quizzesList[i]);
-      saved++;
+  var lock = LockService.getScriptLock();
+  lock.tryLock(30000);
+  try {
+    var ss = getOrCreateDatabaseSpreadsheet(sheetUrl);
+    var quizSheet = ss.getSheetByName('Quizzes');
+    var qSheet = ss.getSheetByName('Questions');
+
+    ensureSheetHeaders(ss, 'Quizzes', [
+      'id', 'title', 'description', 'timeLimitMinutes', 'passingScore',
+      'allowRetake', 'showAnswers', 'shuffleQuestions', 'createdAt', 'status'
+    ], '#4285F4');
+    
+    ensureSheetHeaders(ss, 'Questions', [
+      'quizId', 'questionId', 'type', 'question', 'optionsJson',
+      'correctAnswer', 'points', 'explanation', 'orderIndex'
+    ], '#34A853');
+
+    // Clear old data rows below headers
+    if (quizSheet.getLastRow() > 1) {
+      quizSheet.getRange(2, 1, quizSheet.getLastRow() - 1, Math.max(10, quizSheet.getLastColumn())).clearContent();
     }
+    if (qSheet.getLastRow() > 1) {
+      qSheet.getRange(2, 1, qSheet.getLastRow() - 1, Math.max(9, qSheet.getLastColumn())).clearContent();
+    }
+
+    var quizRows = [];
+    var questionRows = [];
+
+    for (var i = 0; i < quizzesList.length; i++) {
+      var quiz = quizzesList[i];
+      if (!quiz) continue;
+      var quizId = quiz.id || ('quiz_' + Utilities.getUuid().slice(0, 8));
+      var createdAt = quiz.createdAt || new Date().toISOString();
+
+      quizRows.push([
+        quizId,
+        quiz.title || 'Untitled Quiz',
+        quiz.description || '',
+        Number(quiz.timeLimitMinutes) || 0,
+        Number(quiz.passingScore) || 50,
+        quiz.allowRetake !== false,
+        quiz.showAnswers !== false,
+        Boolean(quiz.shuffleQuestions),
+        createdAt,
+        quiz.status || 'ACTIVE'
+      ]);
+
+      if (quiz.questions && Array.isArray(quiz.questions)) {
+        for (var m = 0; m < quiz.questions.length; m++) {
+          var q = quiz.questions[m];
+          var qId = q.questionId || ('q_' + (m + 1) + '_' + Utilities.getUuid().slice(0, 4));
+          var optionsJson = JSON.stringify(q.options || []);
+          questionRows.push([
+            quizId,
+            qId,
+            (q.type || 'MCQ').toUpperCase(),
+            q.question || '',
+            optionsJson,
+            q.correctAnswer || '',
+            Number(q.points) || 1,
+            q.explanation || '',
+            m + 1
+          ]);
+        }
+      }
+    }
+
+    if (quizRows.length > 0) {
+      quizSheet.getRange(2, 1, quizRows.length, quizRows[0].length).setValues(quizRows);
+    }
+    if (questionRows.length > 0) {
+      qSheet.getRange(2, 1, questionRows.length, questionRows[0].length).setValues(questionRows);
+    }
+
+    SpreadsheetApp.flush();
+    return {
+      success: true,
+      count: quizRows.length,
+      questionsCount: questionRows.length,
+      spreadsheetName: ss.getName(),
+      spreadsheetUrl: ss.getUrl(),
+      time: new Date().toISOString()
+    };
+  } finally {
+    lock.releaseLock();
   }
-  return { success: true, count: saved, time: new Date().toISOString() };
 }
 
 /**
@@ -1064,79 +1194,97 @@ function getQuiz(quizId, includeAnswers) {
 /**
  * Creates or updates a quiz and its questions
  */
-function saveQuiz(quiz) {
+function saveQuiz(quiz, sheetUrl) {
   if (!quiz) throw new Error('Quiz data is missing');
-  var ss = getOrCreateDatabaseSpreadsheet();
-  var quizSheet = ss.getSheetByName('Quizzes');
-  var qSheet = ss.getSheetByName('Questions');
-  
-  var quizId = quiz.id || ('quiz_' + Utilities.getUuid().slice(0, 8));
-  var isNew = !quiz.id;
-  var createdAt = quiz.createdAt || new Date().toISOString();
-  
-  var quizRows = quizSheet.getDataRange().getValues();
-  var rowIndex = -1;
-  for (var i = 1; i < quizRows.length; i++) {
-    if (String(quizRows[i][0]) === String(quizId)) {
-      rowIndex = i + 1;
-      break;
-    }
-  }
-  
-  var rowData = [
-    quizId,
-    quiz.title || 'Untitled Quiz',
-    quiz.description || '',
-    Number(quiz.timeLimitMinutes) || 0,
-    Number(quiz.passingScore) || 50,
-    quiz.allowRetake !== false,
-    quiz.showAnswers !== false,
-    Boolean(quiz.shuffleQuestions),
-    createdAt,
-    quiz.status || 'ACTIVE'
-  ];
-  
-  if (rowIndex > 0) {
-    quizSheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
-  } else {
-    quizSheet.appendRow(rowData);
-  }
-  
-  // Update Questions
-  if (quiz.questions && Array.isArray(quiz.questions)) {
-    // Remove existing questions for this quiz
-    var qRows = qSheet.getDataRange().getValues();
-    for (var k = qRows.length - 1; k >= 1; k--) {
-      if (String(qRows[k][0]) === String(quizId)) {
-        qSheet.deleteRow(k + 1);
+  var lock = LockService.getScriptLock();
+  lock.tryLock(20000);
+  try {
+    var ss = getOrCreateDatabaseSpreadsheet(sheetUrl);
+    var quizSheet = ss.getSheetByName('Quizzes');
+    var qSheet = ss.getSheetByName('Questions');
+
+    ensureSheetHeaders(ss, 'Quizzes', [
+      'id', 'title', 'description', 'timeLimitMinutes', 'passingScore',
+      'allowRetake', 'showAnswers', 'shuffleQuestions', 'createdAt', 'status'
+    ], '#4285F4');
+    
+    ensureSheetHeaders(ss, 'Questions', [
+      'quizId', 'questionId', 'type', 'question', 'optionsJson',
+      'correctAnswer', 'points', 'explanation', 'orderIndex'
+    ], '#34A853');
+
+    var quizId = quiz.id || ('quiz_' + Utilities.getUuid().slice(0, 8));
+    var createdAt = quiz.createdAt || new Date().toISOString();
+
+    var quizRows = quizSheet.getDataRange().getValues();
+    var rowIndex = -1;
+    for (var i = 1; i < quizRows.length; i++) {
+      if (String(quizRows[i][0]) === String(quizId)) {
+        rowIndex = i + 1;
+        break;
       }
     }
-    
-    // Add updated questions
-    var newQRows = [];
-    for (var m = 0; m < quiz.questions.length; m++) {
-      var q = quiz.questions[m];
-      var qId = q.questionId || ('q_' + (m + 1) + '_' + Utilities.getUuid().slice(0, 4));
-      var optionsJson = JSON.stringify(q.options || []);
-      newQRows.push([
-        quizId,
-        qId,
-        (q.type || 'MCQ').toUpperCase(),
-        q.question || '',
-        optionsJson,
-        q.correctAnswer || '',
-        Number(q.points) || 1,
-        q.explanation || '',
-        m + 1
-      ]);
+
+    var rowData = [
+      quizId,
+      quiz.title || 'Untitled Quiz',
+      quiz.description || '',
+      Number(quiz.timeLimitMinutes) || 0,
+      Number(quiz.passingScore) || 50,
+      quiz.allowRetake !== false,
+      quiz.showAnswers !== false,
+      Boolean(quiz.shuffleQuestions),
+      createdAt,
+      quiz.status || 'ACTIVE'
+    ];
+
+    if (rowIndex > 0) {
+      quizSheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
+    } else {
+      quizSheet.appendRow(rowData);
     }
-    
-    if (newQRows.length > 0) {
-      qSheet.getRange(qSheet.getLastRow() + 1, 1, newQRows.length, newQRows[0].length).setValues(newQRows);
+
+    // Update Questions fast without row-by-row delete
+    if (quiz.questions && Array.isArray(quiz.questions)) {
+      var allQData = qSheet.getDataRange().getValues();
+      var remainingQRows = [];
+      if (allQData.length > 0) {
+        remainingQRows.push(allQData[0]); // Preserve header
+      }
+      for (var r = 1; r < allQData.length; r++) {
+        if (String(allQData[r][0]) !== String(quizId)) {
+          remainingQRows.push(allQData[r]);
+        }
+      }
+
+      for (var m = 0; m < quiz.questions.length; m++) {
+        var q = quiz.questions[m];
+        var qId = q.questionId || ('q_' + (m + 1) + '_' + Utilities.getUuid().slice(0, 4));
+        var optionsJson = JSON.stringify(q.options || []);
+        remainingQRows.push([
+          quizId,
+          qId,
+          (q.type || 'MCQ').toUpperCase(),
+          q.question || '',
+          optionsJson,
+          q.correctAnswer || '',
+          Number(q.points) || 1,
+          q.explanation || '',
+          m + 1
+        ]);
+      }
+
+      qSheet.clearContents();
+      if (remainingQRows.length > 0) {
+        qSheet.getRange(1, 1, remainingQRows.length, remainingQRows[0].length).setValues(remainingQRows);
+      }
     }
+
+    SpreadsheetApp.flush();
+    return { success: true, quizId: quizId, spreadsheetUrl: ss.getUrl(), spreadsheetName: ss.getName() };
+  } finally {
+    lock.releaseLock();
   }
-  
-  return { success: true, quizId: quizId };
 }
 
 /**
