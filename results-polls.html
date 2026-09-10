@@ -1170,13 +1170,21 @@
     reader.onload = function(e) {
       try {
         const imported = JSON.parse(e.target.result);
-        if (!imported.quizzes || !Array.isArray(imported.quizzes)) {
-          alert('अवैध बॅकअप फाइल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाइल निवडा.');
+        let quizList = null;
+        if (Array.isArray(imported)) {
+          quizList = imported;
+        } else if (imported && Array.isArray(imported.quizzes)) {
+          quizList = imported.quizzes;
+        }
+
+        if (!quizList || quizList.length === 0) {
+          alert('अवैध किंवा रिकामी बॅकअप फाइल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाइल निवडा.');
           return;
         }
 
-        if (confirm('या बॅकअपमध्ये ' + imported.quizzes.length + ' क्विझेस आढळले आहेत. हा बॅकअप रिस्टोअर करायचा आहे का?')) {
-          localStorage.setItem('rk_quizzes', JSON.stringify(imported.quizzes));
+        if (confirm('या बॅकअपमध्ये ' + quizList.length + ' क्विझेस आढळले आहेत. हा बॅकअप रिस्टोअर करायचा आहे का?')) {
+          localStorage.setItem('rk_quizzes', JSON.stringify(quizList));
+          localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizList));
 
           if (imported.submissions && Array.isArray(imported.submissions)) {
             localStorage.setItem('rk_submissions', JSON.stringify(imported.submissions));
@@ -1192,7 +1200,7 @@
           }
 
           showToast('डेटा बॅकअप यशस्वीरित्या रिस्टोअर झाला!', 'cloud_done');
-          setTimeout(() => location.reload(), 1000);
+          setTimeout(() => location.reload(), 800);
         }
       } catch (err) {
         alert('फाइल वाचताना त्रुटी आली: ' + err.message);

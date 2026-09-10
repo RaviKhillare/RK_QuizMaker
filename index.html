@@ -4826,7 +4826,7 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
     // Render Metrics
     function renderMetrics() {
       var totalQ = 0;
-      quizzes.forEach(function (q) { totalQ += (q.questions || []).length; });
+      (quizzes || []).forEach(function (q) { totalQ += (q.questions || []).length; });
 
       var totalVotes = 0;
       for (var qid in pollVotes) {
@@ -4835,10 +4835,14 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         }
       }
 
-      document.getElementById('stat-total-quizzes').textContent = quizzes.length;
-      document.getElementById('stat-total-questions').textContent = totalQ;
-      document.getElementById('stat-total-submissions').textContent = submissions.length;
-      document.getElementById('stat-total-votes').textContent = totalVotes;
+      var elQ = document.getElementById('stat-total-quizzes');
+      if (elQ) elQ.textContent = (quizzes || []).length;
+      var elQuest = document.getElementById('stat-total-questions');
+      if (elQuest) elQuest.textContent = totalQ;
+      var elSub = document.getElementById('stat-total-submissions');
+      if (elSub) elSub.textContent = (submissions || []).length;
+      var elVotes = document.getElementById('stat-total-votes');
+      if (elVotes) elVotes.textContent = totalVotes;
     }
 
     // Render Quizzes
@@ -4846,26 +4850,26 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var overviewGrid = document.getElementById('overview-quizzes-grid');
       var allGrid = document.getElementById('all-quizzes-grid');
 
-      overviewGrid.innerHTML = '';
-      allGrid.innerHTML = '';
+      if (overviewGrid) overviewGrid.innerHTML = '';
+      if (allGrid) allGrid.innerHTML = '';
 
-      if (quizzes.length === 0) {
+      if (!quizzes || quizzes.length === 0) {
         var emptyHtml = '<div style="grid-column:1/-1; text-align:center; padding:40px; background:white; border-radius:12px; border:1.5px dashed var(--border);">' +
           '<i class="fas fa-box-open fa-3x" style="color:#cbd5e1; margin-bottom:12px;"></i>' +
           '<h3>No quizzes found</h3>' +
           '<p style="color:var(--text-muted); margin:6px 0 16px;">Create your first quiz or bulk import questions.</p>' +
           '<button class="btn btn-primary" onclick="openQuizBuilder()"><i class="fas fa-plus"></i> Create Quiz</button>' +
           '</div>';
-        overviewGrid.innerHTML = emptyHtml;
-        allGrid.innerHTML = emptyHtml;
+        if (overviewGrid) overviewGrid.innerHTML = emptyHtml;
+        if (allGrid) allGrid.innerHTML = emptyHtml;
         return;
       }
 
       quizzes.forEach(function (quiz, idx) {
         var qCard = createQuizCardElement(quiz);
-        allGrid.appendChild(qCard);
+        if (allGrid && qCard) allGrid.appendChild(qCard);
 
-        if (idx < 4) {
+        if (idx < 4 && overviewGrid) {
           overviewGrid.appendChild(createModernOverviewCard(quiz));
         }
       });
@@ -6123,7 +6127,8 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         return;
       }
 
-      var targetQuizId = document.getElementById('bulk-target-select').value;
+      var targetQuizSel = document.getElementById('bulk-target-select');
+      var targetQuizId = targetQuizSel ? targetQuizSel.value : '';
 
       if (targetQuizId) {
         var quiz = quizzes.find(function (q) { return q.id === targetQuizId; });
@@ -6245,19 +6250,23 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       var embedSel = document.getElementById('embed-quiz-select');
       var bulkSel = document.getElementById('bulk-target-select');
 
-      embedSel.innerHTML = '';
-      bulkSel.innerHTML = '<option value="">-- Create as Brand New Quiz --</option>';
+      if (embedSel) embedSel.innerHTML = '';
+      if (bulkSel) bulkSel.innerHTML = '<option value="">-- Create as Brand New Quiz --</option>';
 
-      quizzes.forEach(function (q) {
-        var opt1 = document.createElement('option');
-        opt1.value = q.id;
-        opt1.textContent = q.title;
-        embedSel.appendChild(opt1);
+      (quizzes || []).forEach(function (q) {
+        if (embedSel) {
+          var opt1 = document.createElement('option');
+          opt1.value = q.id;
+          opt1.textContent = q.title;
+          embedSel.appendChild(opt1);
+        }
 
-        var opt2 = document.createElement('option');
-        opt2.value = q.id;
-        opt2.textContent = q.title;
-        bulkSel.appendChild(opt2);
+        if (bulkSel) {
+          var opt2 = document.createElement('option');
+          opt2.value = q.id;
+          opt2.textContent = q.title;
+          bulkSel.appendChild(opt2);
+        }
       });
 
       updateEmbedSnippets();
@@ -7121,13 +7130,15 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
 
       // KPI 1: Attempts
       var totalAttempts = testSubs.length;
-      document.getElementById('stat-test-attempts').textContent = totalAttempts;
+      var attEl = document.getElementById('stat-test-attempts');
+      if (attEl) attEl.textContent = totalAttempts;
 
       // KPI 2: Average Score %
       var avgScore = totalAttempts > 0
         ? Math.round(testSubs.reduce(function (acc, s) { return acc + (s.percentage || 0); }, 0) / totalAttempts)
         : 0;
-      document.getElementById('stat-test-avg').textContent = avgScore + '%';
+      var avgEl = document.getElementById('stat-test-avg');
+      if (avgEl) avgEl.textContent = avgScore + '%';
 
       // KPI 3: Top Scorer / Topper
       var topper = null;
@@ -7137,22 +7148,25 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
         }
       });
       var topperEl = document.getElementById('stat-test-topper');
-      if (topper) {
-        topperEl.textContent = topper.userName + ' (' + topper.percentage + '%)';
-        topperEl.title = topper.userName + ' - ' + topper.score + '/' + topper.totalPoints + ' (' + topper.percentage + '%)';
-      } else {
-        topperEl.textContent = 'None';
-        topperEl.title = 'No submissions yet';
+      if (topperEl) {
+        if (topper) {
+          topperEl.textContent = topper.userName + ' (' + topper.percentage + '%)';
+          topperEl.title = topper.userName + ' - ' + topper.score + '/' + topper.totalPoints + ' (' + topper.percentage + '%)';
+        } else {
+          topperEl.textContent = 'None';
+          topperEl.title = 'No submissions yet';
+        }
       }
 
       // KPI 4: Pass Rate %
       var passedCount = testSubs.filter(function (s) { return s.passed; }).length;
       var passRate = totalAttempts > 0 ? Math.round((passedCount / totalAttempts) * 100) : 0;
-      document.getElementById('stat-test-passrate').textContent = passRate + '%';
+      var passEl = document.getElementById('stat-test-passrate');
+      if (passEl) passEl.textContent = passRate + '%';
 
       // 2. Render Leaderboard Cards (Top 3 Rankers)
       var lbContainer = document.getElementById('leaderboard-container');
-      lbContainer.innerHTML = '';
+      if (lbContainer) lbContainer.innerHTML = '';
 
       var sortedRankers = testSubs.slice().sort(function (a, b) {
         return (b.percentage - a.percentage) || (b.score - a.score);
@@ -7211,87 +7225,90 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       if (countBadge) countBadge.textContent = filteredTableSubs.length;
 
       var tbody = document.getElementById('submissions-table-body');
-      tbody.innerHTML = '';
+      if (tbody) {
+        tbody.innerHTML = '';
+        if (filteredTableSubs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">' +
+            '<i class="fas fa-search" style="font-size:24px; margin-bottom:8px; display:block;"></i>No matching submissions found for this filter.' +
+          '</td></tr>';
+        } else {
+          filteredTableSubs.forEach(function (sub, i) {
+            var tr = document.createElement('tr');
+            var passPill = sub.passed
+              ? '<span class="status-pill pass"><i class="fas fa-check"></i> PASS</span>'
+              : '<span class="status-pill fail"><i class="fas fa-times"></i> FAIL</span>';
 
-      if (filteredTableSubs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">' +
-          '<i class="fas fa-search" style="font-size:24px; margin-bottom:8px; display:block;"></i>No matching submissions found for this filter.' +
-        '</td></tr>';
-      } else {
-        filteredTableSubs.forEach(function (sub, i) {
-          var tr = document.createElement('tr');
-          var passPill = sub.passed
-            ? '<span class="status-pill pass"><i class="fas fa-check"></i> PASS</span>'
-            : '<span class="status-pill fail"><i class="fas fa-times"></i> FAIL</span>';
+            var rankIcon = (i === 0 && sub.passed) ? '🥇 1' : (i === 1 && sub.passed ? '🥈 2' : (i === 2 && sub.passed ? '🥉 3' : (i + 1)));
 
-          var rankIcon = (i === 0 && sub.passed) ? '🥇 1' : (i === 1 && sub.passed ? '🥈 2' : (i === 2 && sub.passed ? '🥉 3' : (i + 1)));
+            tr.innerHTML = '<td><strong>' + rankIcon + '</strong></td>' +
+              '<td><strong>' + escapeHtml(sub.userName) + '</strong><br><span style="font-size:11.5px; color:var(--text-muted);">' + escapeHtml(sub.email || 'No email') + '</span></td>' +
+              '<td>' + escapeHtml(sub.quizTitle) + '</td>' +
+              '<td><strong>' + sub.score + '</strong> / ' + sub.totalPoints + '</td>' +
+              '<td><strong>' + sub.percentage + '%</strong></td>' +
+              '<td>' + passPill + '</td>' +
+              '<td style="color:var(--text-muted); font-size:12px;">' + escapeHtml(sub.date) + '</td>' +
+              '<td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="viewStudentReview(\'' + sub.id + '\')" title="View Detailed Answers Review"><i class="fas fa-eye"></i> Review</button></td>';
 
-          tr.innerHTML = '<td><strong>' + rankIcon + '</strong></td>' +
-            '<td><strong>' + escapeHtml(sub.userName) + '</strong><br><span style="font-size:11.5px; color:var(--text-muted);">' + escapeHtml(sub.email || 'No email') + '</span></td>' +
-            '<td>' + escapeHtml(sub.quizTitle) + '</td>' +
-            '<td><strong>' + sub.score + '</strong> / ' + sub.totalPoints + '</td>' +
-            '<td><strong>' + sub.percentage + '%</strong></td>' +
-            '<td>' + passPill + '</td>' +
-            '<td style="color:var(--text-muted); font-size:12px;">' + escapeHtml(sub.date) + '</td>' +
-            '<td style="text-align:right;"><button class="btn btn-outline btn-sm" onclick="viewStudentReview(\'' + sub.id + '\')" title="View Detailed Answers Review"><i class="fas fa-eye"></i> Review</button></td>';
-
-          tbody.appendChild(tr);
-        });
+            tbody.appendChild(tr);
+          });
+        }
       }
 
       // 4. Render Test-Wise Poll Analytics
       var pollContainer = document.getElementById('polls-analytics-container');
-      pollContainer.innerHTML = '';
+      if (pollContainer) {
+        pollContainer.innerHTML = '';
 
-      var pollQuestions = [];
-      var targetQuizzes = selectedQuizObj ? [selectedQuizObj] : quizzes;
+        var pollQuestions = [];
+        var targetQuizzes = selectedQuizObj ? [selectedQuizObj] : (quizzes || []);
 
-      targetQuizzes.forEach(function (q) {
-        (q.questions || []).forEach(function (item) {
-          if (item.type === 'POLL') {
-            pollQuestions.push({ quizTitle: q.title, item: item });
-          }
-        });
-      });
-
-      if (pollQuestions.length === 0) {
-        pollContainer.innerHTML = '<p style="color:var(--text-muted); padding:10px;">No live poll questions found for this test.</p>';
-      } else {
-        pollQuestions.forEach(function (pObj) {
-          var qItem = pObj.item;
-          var pData = pollVotes[qItem.questionId] || {};
-          var total = 0;
-          for (var k in pData) total += pData[k];
-
-          var div = document.createElement('div');
-          div.style.marginBottom = '20px';
-          div.style.background = '#f8fafc';
-          div.style.padding = '16px 18px';
-          div.style.borderRadius = '8px';
-          div.style.border = '1px solid var(--border)';
-
-          var html = '<div style="display:flex; justify-content:space-between; margin-bottom:10px;">' +
-            '<div><strong>' + escapeHtml(qItem.question) + '</strong><br><span style="font-size:12px; color:var(--text-muted);">Quiz: ' + escapeHtml(pObj.quizTitle) + '</span></div>' +
-            '<span class="badge purple">' + total + ' Votes</span>' +
-          '</div>';
-
-          (qItem.options || []).forEach(function (opt) {
-            var count = pData[opt] || 0;
-            var pct = total > 0 ? Math.round((count / total) * 100) : 0;
-            html += '<div style="margin-bottom:8px;">' +
-              '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">' +
-                '<span>' + escapeHtml(opt) + ' (' + count + ' votes)</span>' +
-                '<strong>' + pct + '%</strong>' +
-              '</div>' +
-              '<div style="height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">' +
-                '<div style="height:100%; background:linear-gradient(90deg, #4f46e5, #06b6d4); width:' + pct + '%; transition:width 0.5s;"></div>' +
-              '</div>' +
-            '</div>';
+        targetQuizzes.forEach(function (q) {
+          (q.questions || []).forEach(function (item) {
+            if (item.type === 'POLL') {
+              pollQuestions.push({ quizTitle: q.title, item: item });
+            }
           });
-
-          div.innerHTML = html;
-          pollContainer.appendChild(div);
         });
+
+        if (pollQuestions.length === 0) {
+          pollContainer.innerHTML = '<p style="color:var(--text-muted); padding:10px;">No live poll questions found for this test.</p>';
+        } else {
+          pollQuestions.forEach(function (pObj) {
+            var qItem = pObj.item;
+            var pData = pollVotes[qItem.questionId] || {};
+            var total = 0;
+            for (var k in pData) total += pData[k];
+
+            var div = document.createElement('div');
+            div.style.marginBottom = '20px';
+            div.style.background = '#f8fafc';
+            div.style.padding = '16px 18px';
+            div.style.borderRadius = '8px';
+            div.style.border = '1px solid var(--border)';
+
+            var html = '<div style="display:flex; justify-content:space-between; margin-bottom:10px;">' +
+              '<div><strong>' + escapeHtml(qItem.question) + '</strong><br><span style="font-size:12px; color:var(--text-muted);">Quiz: ' + escapeHtml(pObj.quizTitle) + '</span></div>' +
+              '<span class="badge purple">' + total + ' Votes</span>' +
+            '</div>';
+
+            (qItem.options || []).forEach(function (opt) {
+              var count = pData[opt] || 0;
+              var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+              html += '<div style="margin-bottom:8px;">' +
+                '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">' +
+                  '<span>' + escapeHtml(opt) + ' (' + count + ' votes)</span>' +
+                  '<strong>' + pct + '%</strong>' +
+                '</div>' +
+                '<div style="height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">' +
+                  '<div style="height:100%; background:linear-gradient(90deg, #4f46e5, #06b6d4); width:' + pct + '%; transition:width 0.5s;"></div>' +
+                '</div>' +
+              '</div>';
+            });
+
+            div.innerHTML = html;
+            pollContainer.appendChild(div);
+          });
+        }
       }
     }
 
@@ -8814,13 +8831,20 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
       reader.onload = function(e) {
         try {
           const imported = JSON.parse(e.target.result);
-          if (!imported.quizzes || !Array.isArray(imported.quizzes)) {
-            alert('अवैध बॅकअप फाईल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाईल निवडा.');
+          let quizList = null;
+          if (Array.isArray(imported)) {
+            quizList = imported;
+          } else if (imported && Array.isArray(imported.quizzes)) {
+            quizList = imported.quizzes;
+          }
+
+          if (!quizList || quizList.length === 0) {
+            alert('अवैध किंवा रिकामी बॅकअप फाईल! कृपया RK QuizMaker ची योग्य JSON बॅकअप फाईल निवडा.');
             return;
           }
 
-          if (confirm('या बॅकअपमध्ये ' + imported.quizzes.length + ' क्विझेस आढळले आहेत.\nहा डेटा या कॉम्प्युटरवर रिस्टोअर करायचा आहे का?')) {
-            quizzes = imported.quizzes;
+          if (confirm('या बॅकअपमध्ये ' + quizList.length + ' क्विझेस आढळले आहेत.\nहा डेटा या कॉम्प्युटरवर रिस्टोअर करायचा आहे का?')) {
+            quizzes = quizList;
             localStorage.setItem('rk_quizzes', JSON.stringify(quizzes));
             localStorage.setItem('rk_quizzes_v2', JSON.stringify(quizzes));
 
@@ -8840,10 +8864,15 @@ Question | Type | Options | Correct Answer | Points | Explanation</div>
               localStorage.setItem('rk_google_account_email', imported.settings.accountEmail);
             }
 
-            renderAllViews();
-            calculateStorageUsage();
-            updateDbStatusPill();
+            try { renderAllViews(); } catch (re) { console.warn('renderAllViews error:', re); }
+            try { calculateStorageUsage(); } catch (re) { console.warn('calculateStorageUsage error:', re); }
+            try { updateDbStatusPill(); } catch (re) { console.warn('updateDbStatusPill error:', re); }
+            try { closePcSyncTransferModal(); } catch (re) {}
+
             showToast('🎉 ' + quizzes.length + ' क्विझेस यशस्वीरीत्या या PC वर रिस्टोअर झाले!');
+            setTimeout(function() {
+              window.location.reload();
+            }, 700);
           }
         } catch (err) {
           alert('फाइल वाचताना त्रुटी आली: ' + err.message);
